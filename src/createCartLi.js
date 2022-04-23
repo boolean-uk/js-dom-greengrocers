@@ -21,22 +21,20 @@ const createCartLi = (veg) => {
   plusBtn.innerText = "+";
   plusBtn.setAttribute("class", "quantity-btn add-btn center");
 
-  cartLi.append(cartVegImg, cartVegName, minusBtn, quantityText, plusBtn);
-
   minusBtn.addEventListener("click", () => {
     if (veg.quantity > 0) {
       veg.quantity--;
       quantityText.innerText = veg.quantity;
-      console.log(veg.quantity);
     }
+    if (veg.quantity === 0) cartLi.remove();
   });
 
   plusBtn.addEventListener("click", () => {
     veg.quantity++;
     quantityText.innerText = veg.quantity;
-    console.log(veg.quantity);
   });
 
+  cartLi.append(cartVegImg, cartVegName, minusBtn, quantityText, plusBtn);
   return cartLi;
 };
 

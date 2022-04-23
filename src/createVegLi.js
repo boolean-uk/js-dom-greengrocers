@@ -1,5 +1,6 @@
 import addToCart from "./addToCart.js";
 import renderCartList from "./renderCartList.js";
+import getTotal from "./getTotal.js";
 
 const createVegLi = (veg) => {
   const vegLi = document.createElement("li");
@@ -21,6 +22,7 @@ const createVegLi = (veg) => {
   addToCartBtn.addEventListener("click", () => {
     addToCart(veg);
     renderCartList();
+    getTotal();
   });
 
   return vegLi;
