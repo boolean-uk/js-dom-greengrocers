@@ -54,33 +54,21 @@ const state = {
   cart: [],
 };
 
-const svgList = [
-  "001-beetroot",
-  "002-carrot",
-  "003-apple",
-  "004-apricot",
-  "005-avocado",
-  "006-bananas",
-  "007-bell-pepper",
-  "008-berry",
-  "009-blueberry",
-  "010-eggplant",
-];
-
 const itemList = document.querySelector(".store--item-list");
 const cartList = document.querySelector(".cart--item-list");
 
 function createShop() {
-  svgList.forEach((el, index) => {
-    let fruit = svgList[index];
+  state.items.forEach((el, index) => {
+    el.amount = 1;
+    let fruit = state.items[index].id;
 
     let item = `<li>
-  <div class="store--item-icon">
-    <img src="assets/icons/${fruit}.svg" alt=${fruit.slice(4)} />
-  </div>
-  <button id=${fruit} class='add-to-basket' >Add to cart</button>
-  </li> 
-  `;
+    <div class="store--item-icon">
+      <img src="assets/icons/${fruit}.svg" alt=${fruit.slice(4)} />
+    </div>
+    <button id=${fruit} class='add-to-basket' >Add to cart</button>
+    </li> 
+    `;
 
     itemList.insertAdjacentHTML("beforeend", item);
   });
@@ -91,25 +79,97 @@ const buttons = document.querySelectorAll(".add-to-basket");
 
 buttons.forEach((button) => {
   button.addEventListener("click", (event) => {
-    if (!state.cart.includes(event.target.id)) {
-      createBasket(event);
-      state.cart.push(event.target.id);
-    }
+    updateCartState(event);
   });
 });
 
-function createBasket(event) {
-  const fruit = event.target.id;
+function updateCartState(event) {
+  if (!state.cart.includes(returnItem(event.target.id))) {
+    console.log(
+      "88....returnItem function returns : ",
+      returnItem(event.target.id)
+    );
+    console.log(
+      "93   before push includes....",
+      state.cart.includes(returnItem(event.target.id))
+    );
+    console.log("96....state.cart...", state.cart);
+    state.cart.push({ ...returnItem(event.target.id), amount: 1 });
+    console.log("98....", state.cart.includes(returnItem(event.target.id)));
+    console.log("99....after push...", returnItem(event.target.id));
+    console.log(
+      "100....cart...",
+      state.cart.includes(returnItem(event.target.id))
+    );
+    console.log(
+      "102  after push includes....",
+      state.cart.includes(returnItem(event.target.id))
+    );
+    renderCart();
+  }
+}
+
+function returnItem(id) {
+  let item = state.items.find((el) => el.id === id);
+  // console.log("item", item);
+  // console.log("cart", state.cart);
+  return item.id;
+}
+
+function createBasket(id) {
+  let item = returnItem(id);
+
   let cartItem = `<li>
-    <img
-      class="cart--item-icon"
-      src="assets/icons/${fruit}.svg"
-      alt= '${fruit}'
-    />
-    <p>${fruit.slice(4)}</p>
-    <button class="quantity-btn remove-btn center">-</button>
-    <span class="quantity-text center">1</span>
-    <button class="quantity-btn add-btn center">+</button>
-  </li>`;
+      <img
+        class="cart--item-icon"
+        src="assets/icons/${item.id}.svg"
+        alt= '${item.id}'
+      />
+      <p>${item.name}</p>
+      <button id='remove${item.id}' class='remove-from-basket' >Remove</button>
+      <button id='subtract${item.name}' class="quantity-btn remove-btn center">-</button>
+      <span class="quantity-text center">${item.amount}</span>
+      <button id='add${item.name}' class="quantity-btn add-btn center">+</button>
+    </li>`;
   cartList.insertAdjacentHTML("beforeend", cartItem);
+  const removeButton = document.querySelector(`#remove${item.id}`);
+  removeButton.addEventListener("click", () => removeBasketItem(item.id));
+
+  const addAmount = document.getElementById(`add${item.name}`);
+  addAmount.addEventListener("click", () => {
+    state.cart = state.cart.map((el) => {
+      if (el.id === item.id) {
+        el.amount++;
+      }
+      console.log(el.amount);
+      return el;
+    });
+
+    renderCart();
+  });
+
+  const subtractAmount = document.getElementById(`subtract${item.name}`);
+  subtractAmount.addEventListener("click", () => {
+    state.cart.map((el) => {
+      if (el.id === item.id) {
+        el.amount--;
+      }
+      console.log(el.amount);
+      return el;
+    });
+    renderCart();
+  });
+}
+
+function removeBasketItem(id) {
+  let filteredArray = state.cart.filter((el) => el.id !== id);
+  state.cart = filteredArray;
+  renderCart();
+}
+
+function renderCart() {
+  cartList.innerHTML = "";
+  state.cart.forEach((el) => {
+    createBasket(el.id);
+  });
 }
