@@ -75,36 +75,26 @@ const alphaSortButton = document.querySelector(".alpha-sort-button");
 const vegetableOnly = document.querySelector(".veg-filter");
 const fruitOnly = document.querySelector(".fruit-filter");
 
-vegetableOnly.addEventListener("click", (event) => {
-  if (event.target.checked) {
-    itemList.innerHTML = "";
-    sortVegetableOnly(state);
-  } else {
-    state.filteredItems = state.items;
-  }
+function filterAddListener(element, type) {
+  element.addEventListener("click", (event) => {
+    if (event.target.checked) {
+      itemList.innerHTML = "";
+      filterByType(type);
+    } else {
+      state.filteredItems = state.items;
+    }
 
-  createShop();
-});
+    createShop();
+  });
+}
 
-function sortVegetableOnly(state) {
-  let filteredArray = state.items.filter((el) => el.type === "vegetable");
+function filterByType(type) {
+  let filteredArray = state.items.filter((el) => el.type === type);
   state.filteredItems = filteredArray;
 }
 
-fruitOnly.addEventListener("click", (event) => {
-  if (event.target.checked) {
-    itemList.innerHTML = "";
-    sortFruitOnly(state);
-  } else {
-    state.filteredItems = state.items;
-  }
-  createShop();
-});
-
-function sortFruitOnly(state) {
-  let filteredArray = state.items.filter((el) => el.type === "fruit");
-  state.filteredItems = filteredArray;
-}
+filterAddListener(vegetableOnly, "vegetable");
+filterAddListener(fruitOnly, "fruit");
 
 alphaSortButton.addEventListener("click", () => {
   itemList.innerHTML = "";
@@ -218,6 +208,8 @@ function subtractFromCart(id) {
   renderCart();
 }
 
+function incrementDecrement() {}
+
 function renderCart() {
   cartList.innerHTML = "";
   state.cart.forEach((el) => {
@@ -232,3 +224,34 @@ function totalCost() {
   });
   cartTotal.innerText = `$${total.toFixed(2)}`;
 }
+
+// vegetableOnly.addEventListener("click", (event) => {
+//   if (event.target.checked) {
+//     itemList.innerHTML = "";
+//     sortVegetableOnly(state);
+//   } else {
+//     state.filteredItems = state.items;
+//   }
+
+//   createShop();
+// });
+
+// function sortVegetableOnly(state) {
+//   let filteredArray = state.items.filter((el) => el.type === "vegetable");
+//   state.filteredItems = filteredArray;
+// }
+
+// fruitOnly.addEventListener("click", (event) => {
+//   if (event.target.checked) {
+//     itemList.innerHTML = "";
+//     sortFruitOnly(state);
+//   } else {
+//     state.filteredItems = state.items;
+//   }
+//   createShop();
+// });
+
+// function sortFruitOnly(state) {
+//   let filteredArray = state.items.filter((el) => el.type === "fruit");
+//   state.filteredItems = filteredArray;
+// }
