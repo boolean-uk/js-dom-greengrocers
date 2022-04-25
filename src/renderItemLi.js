@@ -11,8 +11,8 @@ const priceHighBtn = document.querySelector("#priceHigh-btn");
 const nameBtn = document.querySelector("#name-btn");
 const storeItemList = document.querySelector(".store--item-list");
 
-const renderAll = () => {
-  state.items.forEach((item) => {
+const renderList = (listType) => {
+  listType.forEach((item) => {
     const itemLi = createVegLi(item);
     storeItemList.append(itemLi);
   });
@@ -20,43 +20,37 @@ const renderAll = () => {
 
 allBtn.addEventListener("change", () => {
   storeItemList.innerHTML = "";
-  renderAll();
+  renderList(state.items);
 });
 
 vegBtn.addEventListener("change", () => {
   const onlyVeg = filterBy("vegetable");
   storeItemList.innerHTML = "";
-  onlyVeg.forEach((veg) => {
-    const vegLi = createVegLi(veg);
-    storeItemList.append(vegLi);
-  });
+  renderList(onlyVeg);
 });
 
 fruitBtn.addEventListener("change", () => {
   const onlyFruit = filterBy("fruit");
   storeItemList.innerHTML = "";
-  onlyFruit.forEach((fruit) => {
-    const fruitLi = createVegLi(fruit);
-    storeItemList.append(fruitLi);
-  });
+  renderList(onlyFruit);
 });
 
 priceLowBtn.addEventListener("change", () => {
   storeItemList.innerHTML = "";
   sortBy("lowToHigh");
-  renderAll();
+  renderList(state.items);
 });
 
 priceHighBtn.addEventListener("change", () => {
   storeItemList.innerHTML = "";
   sortBy("highToLow");
-  renderAll();
+  renderList(state.items);
 });
 
 nameBtn.addEventListener("change", () => {
   storeItemList.innerHTML = "";
   sortBy("name");
-  renderAll();
+  renderList(state.items);
 });
 
-renderAll();
+renderList(state.items);
