@@ -3,9 +3,9 @@ import createVegLi from "./createItemLi.js";
 import filterVeg from "./filterVeg.js";
 import filterFruit from "./filterFruit.js";
 
-const vegBtn = document.querySelector(".veg-btn");
-const fruitBtn = document.querySelector(".fruit-btn");
-const allBtn = document.querySelector(".all-btn");
+const vegBtn = document.querySelector("#veg-btn");
+const fruitBtn = document.querySelector("#fruit-btn");
+const allBtn = document.querySelector("#all-btn");
 const storeItemList = document.querySelector(".store--item-list");
 
 // Creates the store Item list
@@ -16,7 +16,7 @@ const renderAll = () => {
   });
 };
 
-vegBtn.addEventListener("click", () => {
+vegBtn.addEventListener("input", () => {
   const onlyVeg = filterVeg();
   storeItemList.innerHTML = "";
   onlyVeg.forEach((veg) => {
@@ -25,7 +25,7 @@ vegBtn.addEventListener("click", () => {
   });
 });
 
-fruitBtn.addEventListener("click", () => {
+fruitBtn.addEventListener("input", () => {
   const onlyFruit = filterFruit();
   storeItemList.innerHTML = "";
   onlyFruit.forEach((fruit) => {
@@ -34,7 +34,7 @@ fruitBtn.addEventListener("click", () => {
   });
 });
 
-allBtn.addEventListener("click", () => {
+allBtn.addEventListener("input", () => {
   storeItemList.innerHTML = "";
   renderAll();
 });
