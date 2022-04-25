@@ -3,7 +3,7 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      type: "fruit",
+      type: "vegetable",
       price: 0.35,
     },
     {
@@ -70,6 +70,22 @@ const itemList = document.querySelector(".store--item-list");
 const cartList = document.querySelector(".cart--item-list");
 const cartTotal = document.querySelector(".total-number");
 const alphaSortButton = document.querySelector(".alpha-sort-button");
+const vegetableOnly = document.querySelector(".veg-filter");
+const fruitOnly = document.querySelector(".fruit-filter");
+
+vegetableOnly.addEventListener("click", () => {
+  itemList.innerHTML = "";
+  sortVegetableOnly(state);
+  createShop();
+});
+
+fruitOnly.addEventListener("click", (event) => {
+  if (event.target.checked) {
+    itemList.innerHTML = "";
+    sortFruitOnly(state);
+    createShop();
+  }
+});
 
 alphaSortButton.addEventListener("click", () => {
   itemList.innerHTML = "";
@@ -78,6 +94,7 @@ alphaSortButton.addEventListener("click", () => {
 });
 
 function sortABC(state) {
+  console.log(state);
   let sortedStateItems = state.items.sort((a, b) =>
     a.name.localeCompare(b.name)
   );
@@ -85,7 +102,16 @@ function sortABC(state) {
   return state.items;
 }
 
-// sortABC(state);
+function sortFruitOnly(state) {
+  let filteredArray = state.items.filter((el) => el.type === "fruit");
+  state.items = filteredArray;
+}
+
+function sortVegetableOnly(state) {
+  let filteredArray = state.items.filter((el) => el.type === "vegetable");
+  state.items = filteredArray;
+  console.log(state.items);
+}
 
 function createShop() {
   state.items.forEach((el, index) => {
@@ -197,10 +223,4 @@ function totalCost() {
     total += el.amount * el.price;
   });
   cartTotal.innerText = `$${total.toFixed(2)}`;
-}
-
-{
-  /* <button id='remove${item.id}' class='remove-from-basket' >Remove</button> */
-  // const removeButton = document.querySelector(`#remove${item.id}`);
-  // removeButton.addEventListener("click", () => removeCartItem(item.id));
 }
