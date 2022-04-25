@@ -1,14 +1,16 @@
 import state from "./state.js";
 import createVegLi from "./createItemLi.js";
-import filterVeg from "./filterVeg.js";
-import filterFruit from "./filterFruit.js";
+import filterBy from "./filterBy.js";
+import sortBy from "./sortBy.js";
 
 const vegBtn = document.querySelector("#veg-btn");
 const fruitBtn = document.querySelector("#fruit-btn");
 const allBtn = document.querySelector("#all-btn");
+const priceLowBtn = document.querySelector("#priceLow-btn");
+const priceHighBtn = document.querySelector("#priceHigh-btn");
+const nameBtn = document.querySelector("#name-btn");
 const storeItemList = document.querySelector(".store--item-list");
 
-// Creates the store Item list
 const renderAll = () => {
   state.items.forEach((item) => {
     const itemLi = createVegLi(item);
@@ -16,8 +18,13 @@ const renderAll = () => {
   });
 };
 
+allBtn.addEventListener("change", () => {
+  storeItemList.innerHTML = "";
+  renderAll();
+});
+
 vegBtn.addEventListener("change", () => {
-  const onlyVeg = filterVeg();
+  const onlyVeg = filterBy("vegetable");
   storeItemList.innerHTML = "";
   onlyVeg.forEach((veg) => {
     const vegLi = createVegLi(veg);
@@ -26,7 +33,7 @@ vegBtn.addEventListener("change", () => {
 });
 
 fruitBtn.addEventListener("change", () => {
-  const onlyFruit = filterFruit();
+  const onlyFruit = filterBy("fruit");
   storeItemList.innerHTML = "";
   onlyFruit.forEach((fruit) => {
     const fruitLi = createVegLi(fruit);
@@ -34,8 +41,21 @@ fruitBtn.addEventListener("change", () => {
   });
 });
 
-allBtn.addEventListener("change", () => {
+priceLowBtn.addEventListener("change", () => {
   storeItemList.innerHTML = "";
+  sortBy("lowToHigh");
+  renderAll();
+});
+
+priceHighBtn.addEventListener("change", () => {
+  storeItemList.innerHTML = "";
+  sortBy("highToLow");
+  renderAll();
+});
+
+nameBtn.addEventListener("change", () => {
+  storeItemList.innerHTML = "";
+  sortBy("name");
   renderAll();
 });
 
