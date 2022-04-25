@@ -271,6 +271,26 @@ const removeItemInCart = (item) => {
   state.cart.splice(index, 1);
 };
 
+// const variable declared to store the function cartTotal()
+const cartTotal = () => {
+  // reduce() used to produce a single number of the total of the cart items in the array
+  return state.cart.reduce(
+    // the reduce() sum, then goes through a function as the item price is multiplied by the quantity, the value starts at 0
+    (sum, cartItem) => sum + cartItem.item.price * cartItem.quantity,
+    0
+  );
+};
+
+// const variable declared to store the function renderCartTotal()
+const renderCartTotal = () => {
+  // const variable declared to store the access to the .total-number class in the document (HTML)
+  const totalElement = document.querySelector(".total-number");
+  // Const variable total created to store the cartTotal, where the number is fixed to 2 decimal places, show as a string - eg "£1.75"
+  const total = cartTotal().toFixed(2).toString();
+  // the amount (total) number inserted using innerText into the totalElement which is the .total-number class
+  totalElement.innerText = `£${total}`;
+};
+
 // render arrow function used to render different methods.
 // eg - renderItemList() allowing the items to be rendered on the ul, showing on the page
 const render = () => {
@@ -280,6 +300,8 @@ const render = () => {
   renderItemList();
   //  renderCartList() will be called when render() is called
   renderCartItems();
+  //  renderCartTotal() will be called when render() is called
+  renderCartTotal();
 };
 
 // clear the cart function will activate the clearCartItems() function to make cart empty
