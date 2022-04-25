@@ -1,7 +1,7 @@
 /* Typography */
 
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif;
 }
 
 h1,
@@ -20,6 +20,13 @@ button {
   cursor: pointer;
 }
 
+button .remove-from-basket {
+  padding: 0.1rem 0.1rem;
+
+  font-size: 0.8rem;
+
+  cursor: pointer;
+}
 /* Store */
 
 #store {
@@ -45,7 +52,7 @@ button {
 .store--item-list li {
   display: grid;
   place-items: center;
-  grid-row-gap: 0.5rem;
+  grid-row-gap: 2.5rem;
 }
 
 .store--item-icon {
@@ -105,7 +112,7 @@ button {
   padding: 1rem 0;
 
   display: grid;
-  grid-template-columns: 24px minmax(150px, 1fr) repeat(3, auto);
+  grid-template-columns: 24px minmax(150px, 1fr) repeat(4, auto);
   grid-gap: 0.5rem;
   align-items: center;
 
