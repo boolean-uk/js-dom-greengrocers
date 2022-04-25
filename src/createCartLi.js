@@ -1,4 +1,5 @@
 import getTotal from "./getTotal.js";
+import removeQuantity0 from "./removeQuantity0.js";
 
 const createCartLi = (veg) => {
   // li
@@ -31,6 +32,7 @@ const createCartLi = (veg) => {
       getTotal();
     }
     if (veg.quantity === 0) {
+      removeQuantity0();
       cartLi.remove();
     }
   });
