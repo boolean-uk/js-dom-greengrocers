@@ -162,8 +162,10 @@ const createCartItem = (cartItem) => {
   const cartImage = createCartImage(cartItem);
   // Using the createCartItemText() function to be stored in the variable pText which can then be appended
   const pText = createCartItemText(cartItem);
+  // Using the itemAmountControls() function to be stored in the variable amount which can then be appended
+  const amount = itemAmountControls(cartItem);
   // Appending the cartContainer onto the page with the cartImage & pText variables in the parameters included within the li elements displaying ther cart items
-  cartContainer.append(cartImage, pText);
+  cartContainer.append(cartImage, pText, ...amount);
   // returning cartContainer to be appended onto the page when the function is called & rendered.
   return cartContainer;
 };
@@ -187,7 +189,8 @@ const addingItemToCart = (item) => {
     return;
   }
   // push the item into the cart array in the state object.
-  state.cart.push({ item: item });
+  // The quantity also pushed and shown in the cart, starting at 1
+  state.cart.push({ item: item, quantity: 1 });
   // call the rend function to display on the page
   render();
 };
@@ -204,19 +207,82 @@ const checkItemInCart = (item) => {
 const clearCartItems = () => {
   // cartContainer variable declared to store the access to the .cart--item-list class in the html document.
   const cartContainer = document.querySelector(".cart--item-list");
-
+  // items variable declared which stores the children (items) from the cartContainer (.cart--item-list class)
   const items = Array.from(cartContainer.children);
+  // for each (item) remove the item to make the cart clear, using the remove() function
   items.forEach((item) => item.remove());
+};
+
+// delcared a const variable to store the createLessItemsButton() function. With cartItem in the parameter
+const createLessItemsButton = (cartItem) => {
+  // lessItemsButton variable declared to store the button element which is created
+  const lessItemsButton = document.createElement("button");
+  // adding the class list - "quantity-btn", "remove-btn", "center" for the button
+  lessItemsButton.classList.add("quantity-btn", "remove-btn", "center");
+  // adding the - for the button
+  lessItemsButton.innerText = "-";
+  // adding the event "click" so when the user clicks on the - an action occurs
+  lessItemsButton.addEventListener("click", () => {
+    // The action is the cartItem goes dowwn in quantity
+    cartItem.quantity--;
+    // an if condition, so when the cartItem quantity === 0
+    if (cartItem.quantity === 0) {
+      // then the item is removed from the cart using the removeItemInCart() function
+      removeItemInCart(cartItem.item);
+    }
+    // render function called to get this shown on the page & then appended to be seen by user
+    render();
+  });
+  // lessItemButton is returned when the createLessItemsButton is called
+  return lessItemsButton;
+};
+
+// similar to the createLessItemsButton, just no if condition & the quantity increases ++
+const createMoreItemsButton = (cartItem) => {
+  const moreItemsButton = document.createElement("button");
+  moreItemsButton.classList.add("quantity-btn", "remove-btn", "center");
+  moreItemsButton.innerText = "+";
+  moreItemsButton.addEventListener("click", () => {
+    cartItem.quantity++;
+    render();
+  });
+  return moreItemsButton;
+};
+
+// itemAmountControls variable declared to store the function, cartItem used in the parameter
+const itemAmountControls = (cartItem) => {
+  // lessItemsButton variable created ready to be appended using the createLessItemsButton() function
+  const lessItemsButton = createLessItemsButton(cartItem);
+  // moreItemsButton variable created ready to be appended using the createMoreItemsButton() function
+  const moreItemsButton = createMoreItemsButton(cartItem);
+  // amount variable used to store the span element which is created. Span located on cart-item.html
+  const amount = document.createElement("span");
+  // using amount.innerHTML to locate the span element which will be appended
+  amount.innerHTML = cartItem.quantity;
+  // returns array lessItemsButton, amount, moreItemsButton which can be used when itemAmountControls function is called by the createCartItem()
+  return [lessItemsButton, amount, moreItemsButton];
+};
+
+// const variable declared to store the removeItemInCart() function, item used as a parameter
+const removeItemInCart = (item) => {
+  // const index declared to store the index once it is found (findIndex) & matched item === item
+  const index = state.cart.findIndex((cartItem) => cartItem.item === item);
+  // splice method used to remove the matched item in the cart
+  state.cart.splice(index, 1);
 };
 
 // render arrow function used to render different methods.
 // eg - renderItemList() allowing the items to be rendered on the ul, showing on the page
 const render = () => {
+  // clear the cart function, render will show this action on the webpage
   clearCart();
+  //  renderItemList() will be called when render() is called
   renderItemList();
+  //  renderCartList() will be called when render() is called
   renderCartItems();
 };
 
+// clear the cart function will activate the clearCartItems() function to make cart empty
 const clearCart = () => {
   clearCartItems();
 };
