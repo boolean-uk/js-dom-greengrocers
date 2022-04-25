@@ -39,6 +39,10 @@ button {
   text-align: center;
 }
 
+.store--sort-container {
+  text-align: center;
+}
+
 .store--item-list {
   display: grid;
   grid-template-columns: repeat(4, 125px);

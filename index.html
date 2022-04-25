@@ -13,12 +13,20 @@
     <header id="store">
       <h1>Greengrocers</h1>
       <div class="store--filter-container">
+        <h3>Filter By</h3>
         <label for="#all-btn">All</label>
-        <input type="radio" id="all-btn" name="itemType" checked />
+        <input type="radio" id="all-btn" name="filterBy" checked />
         <label for="#veg-btn">Vegetable</label>
-        <input type="radio" id="veg-btn" name="itemType" />
+        <input type="radio" id="veg-btn" name="filterBy" />
         <label for="#fruit-btn">Fruit</label>
-        <input type="radio" id="fruit-btn" name="itemType" />
+        <input type="radio" id="fruit-btn" name="filterBy" />
+      </div>
+      <div class="store--sort-container">
+        <h3>Sort By</h3>
+        <label for="#price-btn">Price</label>
+        <input type="radio" id="price-btn" name="sortBy" checked />
+        <label for="#name-btn">Name</label>
+        <input type="radio" id="name-btn" name="sortBy" />
       </div>
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->

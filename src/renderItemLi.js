@@ -16,7 +16,7 @@ const renderAll = () => {
   });
 };
 
-vegBtn.addEventListener("input", () => {
+vegBtn.addEventListener("change", () => {
   const onlyVeg = filterVeg();
   storeItemList.innerHTML = "";
   onlyVeg.forEach((veg) => {
@@ -25,7 +25,7 @@ vegBtn.addEventListener("input", () => {
   });
 });
 
-fruitBtn.addEventListener("input", () => {
+fruitBtn.addEventListener("change", () => {
   const onlyFruit = filterFruit();
   storeItemList.innerHTML = "";
   onlyFruit.forEach((fruit) => {
@@ -34,7 +34,7 @@ fruitBtn.addEventListener("input", () => {
   });
 });
 
-allBtn.addEventListener("input", () => {
+allBtn.addEventListener("change", () => {
   storeItemList.innerHTML = "";
   renderAll();
 });
