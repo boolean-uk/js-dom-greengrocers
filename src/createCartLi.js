@@ -3,6 +3,7 @@ import getTotal from "./getTotal.js";
 const createCartLi = (veg) => {
   // li
   const cartLi = document.createElement("li");
+  // img icon
   const cartVegImg = document.createElement("img");
   cartVegImg.setAttribute("class", "cart--item-icon");
   cartVegImg.src = `assets/icons/${veg.id}.svg`;
@@ -29,7 +30,9 @@ const createCartLi = (veg) => {
       quantityText.innerText = veg.quantity;
       getTotal();
     }
-    if (veg.quantity === 0) cartLi.remove();
+    if (veg.quantity === 0) {
+      cartLi.remove();
+    }
   });
 
   plusBtn.addEventListener("click", () => {
