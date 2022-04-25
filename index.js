@@ -3,51 +3,61 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
+      type: "fruit",
       price: 0.35,
     },
     {
       id: "002-carrot",
       name: "carrot",
+      type: "vegetable",
       price: 0.35,
     },
     {
       id: "003-apple",
       name: "apple",
+      type: "fruit",
       price: 0.35,
     },
     {
       id: "004-apricot",
       name: "apricot",
+      type: "fruit",
       price: 0.35,
     },
     {
       id: "005-avocado",
       name: "avocado",
+      type: "vegetable",
       price: 0.35,
     },
     {
       id: "006-bananas",
       name: "bananas",
+      type: "fruit",
       price: 0.35,
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
+      type: "vegetable",
       price: 0.35,
     },
     {
       id: "008-berry",
       name: "berry",
+      type: "fruit",
       price: 0.35,
     },
     {
       id: "009-blueberry",
       name: "blueberry",
+      type: "fruit",
       price: 0.35,
     },
     {
       id: "010-eggplant",
       name: "eggplant",
+      type: "vegetable",
       price: 0.35,
     },
   ],
@@ -58,8 +68,24 @@ const state = {
 
 const itemList = document.querySelector(".store--item-list");
 const cartList = document.querySelector(".cart--item-list");
-
 const cartTotal = document.querySelector(".total-number");
+const alphaSortButton = document.querySelector(".alpha-sort-button");
+
+alphaSortButton.addEventListener("click", () => {
+  itemList.innerHTML = "";
+  sortABC(state);
+  createShop();
+});
+
+function sortABC(state) {
+  let sortedStateItems = state.items.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+  state.items = sortedStateItems;
+  return state.items;
+}
+
+// sortABC(state);
 
 function createShop() {
   state.items.forEach((el, index) => {
@@ -108,15 +134,11 @@ function createCartItem(id) {
         alt= '${item.id}'
       />
       <p>${item.name}</p>
-      <button id='remove${item.id}' class='remove-from-basket' >Remove</button>
       <button id='subtract${item.name}' class="quantity-btn remove-btn center">-</button>
       <span class="quantity-text center">${item.amount}</span>
       <button id='add${item.name}' class="quantity-btn add-btn center">+</button>
     </li>`;
   cartList.insertAdjacentHTML("beforeend", cartItem);
-
-  const removeButton = document.querySelector(`#remove${item.id}`);
-  removeButton.addEventListener("click", () => removeCartItem(item.id));
 
   const addAmount = document.getElementById(`add${item.name}`);
   addAmount.addEventListener("click", () => addToCart(item.id));
@@ -126,13 +148,14 @@ function createCartItem(id) {
 
   totalCost();
 
+  removeItemWhenTotalZero(item);
+}
+
+function removeItemWhenTotalZero(item) {
   if (item.amount === 0) {
-    console.log("128...ZERO");
     removeCartItem(item.id);
     item.amount = 1;
   }
-
-  // renderCart();
 }
 
 function removeCartItem(id) {
@@ -173,5 +196,11 @@ function totalCost() {
   state.cart.forEach((el) => {
     total += el.amount * el.price;
   });
-  cartTotal.innerText = total.toFixed(2);
+  cartTotal.innerText = `$${total.toFixed(2)}`;
+}
+
+{
+  /* <button id='remove${item.id}' class='remove-from-basket' >Remove</button> */
+  // const removeButton = document.querySelector(`#remove${item.id}`);
+  // removeButton.addEventListener("click", () => removeCartItem(item.id));
 }
