@@ -1,5 +1,5 @@
 import state from "./state.js";
-import createVegLi from "./createItemLi.js";
+import createItemLi from "./createItemLi.js";
 import filterBy from "./filterBy.js";
 import sortBy from "./sortBy.js";
 
@@ -13,7 +13,7 @@ const storeItemList = document.querySelector(".store--item-list");
 
 const renderList = (listType) => {
   listType.forEach((item) => {
-    const itemLi = createVegLi(item);
+    const itemLi = createItemLi(item);
     storeItemList.append(itemLi);
   });
 };
