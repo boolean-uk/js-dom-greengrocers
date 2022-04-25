@@ -62,9 +62,11 @@ const state = {
     },
   ],
   cart: [],
-  baseTotal: 0,
   total: 0,
+  filteredItems: [],
 };
+
+state.filteredItems = state.items;
 
 const itemList = document.querySelector(".store--item-list");
 const cartList = document.querySelector(".cart--item-list");
@@ -73,19 +75,36 @@ const alphaSortButton = document.querySelector(".alpha-sort-button");
 const vegetableOnly = document.querySelector(".veg-filter");
 const fruitOnly = document.querySelector(".fruit-filter");
 
-vegetableOnly.addEventListener("click", () => {
-  itemList.innerHTML = "";
-  sortVegetableOnly(state);
+vegetableOnly.addEventListener("click", (event) => {
+  if (event.target.checked) {
+    itemList.innerHTML = "";
+    sortVegetableOnly(state);
+  } else {
+    state.filteredItems = state.items;
+  }
+
   createShop();
 });
+
+function sortVegetableOnly(state) {
+  let filteredArray = state.items.filter((el) => el.type === "vegetable");
+  state.filteredItems = filteredArray;
+}
 
 fruitOnly.addEventListener("click", (event) => {
   if (event.target.checked) {
     itemList.innerHTML = "";
     sortFruitOnly(state);
-    createShop();
+  } else {
+    state.filteredItems = state.items;
   }
+  createShop();
 });
+
+function sortFruitOnly(state) {
+  let filteredArray = state.items.filter((el) => el.type === "fruit");
+  state.filteredItems = filteredArray;
+}
 
 alphaSortButton.addEventListener("click", () => {
   itemList.innerHTML = "";
@@ -94,7 +113,6 @@ alphaSortButton.addEventListener("click", () => {
 });
 
 function sortABC(state) {
-  console.log(state);
   let sortedStateItems = state.items.sort((a, b) =>
     a.name.localeCompare(b.name)
   );
@@ -102,21 +120,11 @@ function sortABC(state) {
   return state.items;
 }
 
-function sortFruitOnly(state) {
-  let filteredArray = state.items.filter((el) => el.type === "fruit");
-  state.items = filteredArray;
-}
-
-function sortVegetableOnly(state) {
-  let filteredArray = state.items.filter((el) => el.type === "vegetable");
-  state.items = filteredArray;
-  console.log(state.items);
-}
-
 function createShop() {
-  state.items.forEach((el, index) => {
+  itemList.innerHTML = "";
+  state.filteredItems.forEach((el, index) => {
     el.amount = 1;
-    let fruit = state.items[index].id;
+    let fruit = state.filteredItems[index].id;
     let item = `<li>
     <div class="store--item-icon">
       <img src="assets/icons/${fruit}.svg" alt=${fruit.slice(4)} />
