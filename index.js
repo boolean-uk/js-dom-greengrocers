@@ -1,61 +1,3 @@
-const state = {
-  items: [
-    {
-      id: "001-beetroot",
-      name: "beetroot",
-      price: 0.35,
-    },
-    {
-      id: "002-carrot",
-      name: "carrot",
-      price: 0.35,
-    },
-    {
-      id: "003-apple",
-      name: "apple",
-      price: 0.35,
-    },
-    {
-      id: "004-apricot",
-      name: "apricot",
-      price: 0.35,
-    },
-    {
-      id: "005-avocado",
-      name: "avocado",
-      price: 0.35,
-    },
-    {
-      id: "006-bananas",
-      name: "bananas",
-      price: 0.35,
-    },
-    {
-      id: "007-bell-pepper",
-      name: "bell pepper",
-      price: 0.35,
-    },
-    {
-      id: "008-berry",
-      name: "berry",
-      price: 0.35,
-    },
-    {
-      id: "009-blueberry",
-      name: "blueberry",
-      price: 0.35,
-    },
-    {
-      id: "010-eggplant",
-      name: "eggplant",
-      price: 0.35,
-    },
-  ],
-  cart: [],
-};
-
-console.log(state);
-
 // Arrow function to create the image, const variable declared to store this. Item as the argument.
 const createItemImage = (item) => {
   // itemImage const variable used to store "img", document.createElement is used to create this element ("img") which will later be appended to the page and be seen
@@ -126,6 +68,8 @@ const createItemList = (items) => {
 const renderItemList = () => {
   // accessing the .store--item-list class on the ul, by using ul const variable
   const ul = document.querySelector(".store--item-list");
+  // used to reset the HTML & stop the items from duplicating
+  ul.innerHTML = "";
   //appending the items using the createItemList(), from the state & items obect path onto the ul
   ul.append(...createItemList(state.items));
 };
