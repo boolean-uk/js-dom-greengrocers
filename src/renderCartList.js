@@ -5,8 +5,10 @@ const renderCartList = () => {
   const cartUl = document.querySelector(".cart--item-list");
   cartUl.innerHTML = "";
   state.cart.forEach((veg) => {
-    const cartLi = createCartLi(veg);
-    cartUl.append(cartLi);
+    if (veg.quantity !== 0) {
+      const cartLi = createCartLi(veg);
+      cartUl.append(cartLi);
+    }
   });
 };
 
