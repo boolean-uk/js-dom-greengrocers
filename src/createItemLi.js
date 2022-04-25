@@ -2,30 +2,30 @@ import addToCart from "./addToCart.js";
 import renderCartList from "./renderCartList.js";
 import getTotal from "./getTotal.js";
 
-const createVegLi = (veg) => {
-  const vegLi = document.createElement("li");
+const createItemLi = (item) => {
+  const itemLi = document.createElement("li");
   // img div
-  const vegImgWrapper = document.createElement("div");
-  vegImgWrapper.setAttribute("class", "store--item-icon");
+  const itemImgWrapper = document.createElement("div");
+  itemImgWrapper.setAttribute("class", "store--item-icon");
   // img
-  const vegImg = document.createElement("img");
-  vegImg.src = `assets/icons/${veg.id}.svg`;
-  vegImg.alt = veg.name;
+  const itemImg = document.createElement("img");
+  itemImg.src = `assets/icons/${item.id}.svg`;
+  itemImg.alt = item.name;
   // button add to cart
   const addToCartBtn = document.createElement("button");
   addToCartBtn.setAttribute("class", "add-to-cart__btn");
   addToCartBtn.innerText = "Add To Cart";
 
-  vegImgWrapper.append(vegImg);
-  vegLi.append(vegImgWrapper, addToCartBtn);
+  itemImgWrapper.append(itemImg);
+  itemLi.append(itemImgWrapper, addToCartBtn);
 
   addToCartBtn.addEventListener("click", () => {
-    addToCart(veg);
+    addToCart(item);
     renderCartList();
     getTotal();
   });
 
-  return vegLi;
+  return itemLi;
 };
 
-export default createVegLi;
+export default createItemLi;
