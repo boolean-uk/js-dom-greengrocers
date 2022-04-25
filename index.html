@@ -8,14 +8,15 @@
     <link rel="stylesheet" href="styles/index.css" />
     <title>Greengrocers</title>
     <script defer type="module" src="src/renderVegLi.js"></script>
+    <script defer type="module" src="src/filterVeg.js"></script>
   </head>
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
       <div class="store--filter-container">
-        <button>All</button>
-        <button>Vegetable</button>
-        <button>Fruit</button>
+        <button class="all-btn">All</button>
+        <button class="veg-btn">Vegetable</button>
+        <button class="fruit-btn">Fruit</button>
       </div>
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->

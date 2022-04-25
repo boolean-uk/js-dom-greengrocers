@@ -1,8 +1,12 @@
 import state from "./state.js";
+const vegBtn = document.querySelector(".veg-btn");
 
-const filterVeg = (veg) => {
-  const onlyVeg = state.items((item) => item.type === "vegetable");
+const filterVeg = () => {
+  const onlyVeg = state.items.filter((item) => item.type === "vegetable");
   return onlyVeg;
 };
 
-export default filterVeg;
+vegBtn.addEventListener("click", () => {
+  filterVeg();
+  console.log(filterVeg());
+});
