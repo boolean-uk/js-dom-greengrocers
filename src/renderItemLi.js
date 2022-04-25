@@ -24,14 +24,14 @@ allBtn.addEventListener("change", () => {
 });
 
 vegBtn.addEventListener("change", () => {
-  const onlyVeg = filterBy("vegetable");
   storeItemList.innerHTML = "";
+  const onlyVeg = filterBy("vegetable");
   renderList(onlyVeg);
 });
 
 fruitBtn.addEventListener("change", () => {
-  const onlyFruit = filterBy("fruit");
   storeItemList.innerHTML = "";
+  const onlyFruit = filterBy("fruit");
   renderList(onlyFruit);
 });
 
