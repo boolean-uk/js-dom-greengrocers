@@ -125,12 +125,19 @@ function createCartItem(id) {
   subtractAmount.addEventListener("click", () => subtractFromCart(item.id));
 
   totalCost();
+
+  if (item.amount === 0) {
+    console.log("128...ZERO");
+    removeCartItem(item.id);
+    item.amount = 1;
+  }
+
+  // renderCart();
 }
 
 function removeCartItem(id) {
   let filteredArray = state.cart.filter((el) => el.id !== id);
   state.cart = filteredArray;
-  // renderCart();
 }
 
 function addToCart(id) {
