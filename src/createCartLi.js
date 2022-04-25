@@ -1,3 +1,5 @@
+import getTotal from "./getTotal.js";
+
 const createCartLi = (veg) => {
   // li
   const cartLi = document.createElement("li");
@@ -25,6 +27,7 @@ const createCartLi = (veg) => {
     if (veg.quantity > 0) {
       veg.quantity--;
       quantityText.innerText = veg.quantity;
+      getTotal();
     }
     if (veg.quantity === 0) cartLi.remove();
   });
@@ -32,6 +35,7 @@ const createCartLi = (veg) => {
   plusBtn.addEventListener("click", () => {
     veg.quantity++;
     quantityText.innerText = veg.quantity;
+    getTotal();
   });
 
   cartLi.append(cartVegImg, cartVegName, minusBtn, quantityText, plusBtn);

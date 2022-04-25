@@ -5,7 +5,6 @@ const getTotal = () => {
   const priceArr = state.cart.map((veg) => {
     return veg.price * veg.quantity;
   });
-  console.log(priceArr);
 
   const totalPrice = priceArr.reduce((veg1, veg2) => {
     return veg1 + veg2;
