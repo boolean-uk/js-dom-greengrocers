@@ -52,10 +52,14 @@ const state = {
     },
   ],
   cart: [],
+  baseTotal: 0,
+  total: 0,
 };
 
 const itemList = document.querySelector(".store--item-list");
 const cartList = document.querySelector(".cart--item-list");
+
+const cartTotal = document.querySelector(".total-number");
 
 function createShop() {
   state.items.forEach((el, index) => {
@@ -94,7 +98,7 @@ function returnItem(id) {
   return item;
 }
 
-function createBasket(id) {
+function createCartItem(id) {
   let item = returnItem(id);
 
   let cartItem = `<li>
@@ -112,19 +116,21 @@ function createBasket(id) {
   cartList.insertAdjacentHTML("beforeend", cartItem);
 
   const removeButton = document.querySelector(`#remove${item.id}`);
-  removeButton.addEventListener("click", () => removeBasketItem(item.id));
+  removeButton.addEventListener("click", () => removeCartItem(item.id));
 
   const addAmount = document.getElementById(`add${item.name}`);
   addAmount.addEventListener("click", () => addToCart(item.id));
 
   const subtractAmount = document.getElementById(`subtract${item.name}`);
   subtractAmount.addEventListener("click", () => subtractFromCart(item.id));
+
+  totalCost();
 }
 
-function removeBasketItem(id) {
+function removeCartItem(id) {
   let filteredArray = state.cart.filter((el) => el.id !== id);
   state.cart = filteredArray;
-  renderCart();
+  // renderCart();
 }
 
 function addToCart(id) {
@@ -132,7 +138,6 @@ function addToCart(id) {
     if (el.id === id) {
       el.amount++;
     }
-
     return el;
   });
 
@@ -152,6 +157,14 @@ function subtractFromCart(id) {
 function renderCart() {
   cartList.innerHTML = "";
   state.cart.forEach((el) => {
-    createBasket(el.id);
+    createCartItem(el.id);
   });
+}
+
+function totalCost() {
+  let total = 0;
+  state.cart.forEach((el) => {
+    total += el.amount * el.price;
+  });
+  cartTotal.innerText = total.toFixed(2);
 }
