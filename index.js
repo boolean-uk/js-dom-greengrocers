@@ -83,8 +83,6 @@ buttons.forEach((button) => {
 });
 
 function updateCartState(event) {
-  console.log(returnItem(event.target.id));
-  console.log(state.cart);
   if (!state.cart.includes(returnItem(event.target.id))) {
     state.cart.push(returnItem(event.target.id));
     renderCart();
@@ -93,8 +91,6 @@ function updateCartState(event) {
 
 function returnItem(id) {
   let item = state.items.find((el) => el.id === id);
-  // console.log("item", item);
-  // console.log("cart", state.cart);
   return item;
 }
 
@@ -114,38 +110,42 @@ function createBasket(id) {
       <button id='add${item.name}' class="quantity-btn add-btn center">+</button>
     </li>`;
   cartList.insertAdjacentHTML("beforeend", cartItem);
+
   const removeButton = document.querySelector(`#remove${item.id}`);
   removeButton.addEventListener("click", () => removeBasketItem(item.id));
 
   const addAmount = document.getElementById(`add${item.name}`);
-  addAmount.addEventListener("click", () => {
-    state.cart = state.cart.map((el) => {
-      if (el.id === item.id) {
-        el.amount++;
-      }
-      console.log(el.amount);
-      return el;
-    });
-
-    renderCart();
-  });
+  addAmount.addEventListener("click", () => addToCart(item.id));
 
   const subtractAmount = document.getElementById(`subtract${item.name}`);
-  subtractAmount.addEventListener("click", () => {
-    state.cart.map((el) => {
-      if (el.id === item.id) {
-        el.amount--;
-      }
-      console.log(el.amount);
-      return el;
-    });
-    renderCart();
-  });
+  subtractAmount.addEventListener("click", () => subtractFromCart(item.id));
 }
 
 function removeBasketItem(id) {
   let filteredArray = state.cart.filter((el) => el.id !== id);
   state.cart = filteredArray;
+  renderCart();
+}
+
+function addToCart(id) {
+  state.cart = state.cart.map((el) => {
+    if (el.id === id) {
+      el.amount++;
+    }
+
+    return el;
+  });
+
+  renderCart();
+}
+
+function subtractFromCart(id) {
+  state.cart = state.cart.map((el) => {
+    if (el.id === id) {
+      el.amount--;
+    }
+    return el;
+  });
   renderCart();
 }
 
