@@ -125,16 +125,16 @@ function createShop() {
 
     itemList.insertAdjacentHTML("beforeend", item);
   });
-}
-createShop();
+  const buttons = document.querySelectorAll(".add-to-basket");
 
-const buttons = document.querySelectorAll(".add-to-basket");
-
-buttons.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    updateCartState(event);
+  buttons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      updateCartState(event);
+    });
   });
-});
+}
+
+createShop();
 
 function updateCartState(event) {
   if (!state.cart.includes(returnItem(event.target.id))) {
