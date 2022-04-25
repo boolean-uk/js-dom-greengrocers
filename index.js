@@ -61,7 +61,6 @@ function createShop() {
   state.items.forEach((el, index) => {
     el.amount = 1;
     let fruit = state.items[index].id;
-
     let item = `<li>
     <div class="store--item-icon">
       <img src="assets/icons/${fruit}.svg" alt=${fruit.slice(4)} />
@@ -84,27 +83,10 @@ buttons.forEach((button) => {
 });
 
 function updateCartState(event) {
+  console.log(returnItem(event.target.id));
+  console.log(state.cart);
   if (!state.cart.includes(returnItem(event.target.id))) {
-    console.log(
-      "88....returnItem function returns : ",
-      returnItem(event.target.id)
-    );
-    console.log(
-      "93   before push includes....",
-      state.cart.includes(returnItem(event.target.id))
-    );
-    console.log("96....state.cart...", state.cart);
-    state.cart.push({ ...returnItem(event.target.id), amount: 1 });
-    console.log("98....", state.cart.includes(returnItem(event.target.id)));
-    console.log("99....after push...", returnItem(event.target.id));
-    console.log(
-      "100....cart...",
-      state.cart.includes(returnItem(event.target.id))
-    );
-    console.log(
-      "102  after push includes....",
-      state.cart.includes(returnItem(event.target.id))
-    );
+    state.cart.push(returnItem(event.target.id));
     renderCart();
   }
 }
@@ -113,7 +95,7 @@ function returnItem(id) {
   let item = state.items.find((el) => el.id === id);
   // console.log("item", item);
   // console.log("cart", state.cart);
-  return item.id;
+  return item;
 }
 
 function createBasket(id) {
