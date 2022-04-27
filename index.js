@@ -188,27 +188,18 @@ function removeCartItem(id) {
 }
 
 function addToCart(id) {
-  state.cart = state.cart.map((el) => {
-    if (el.id === id) {
-      el.amount++;
-    }
-    return el;
-  });
+  const cartItem = state.cart.find((el) => el.id === id);
+  if (cartItem) cartItem.amount += 1;
 
   renderCart();
 }
 
 function subtractFromCart(id) {
-  state.cart = state.cart.map((el) => {
-    if (el.id === id) {
-      el.amount--;
-    }
-    return el;
-  });
+  const cartItem = state.cart.find((el) => el.id === id);
+  if (cartItem) cartItem.amount -= 1;
+
   renderCart();
 }
-
-function incrementDecrement() {}
 
 function renderCart() {
   cartList.innerHTML = "";
