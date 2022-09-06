@@ -6,61 +6,61 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.15,
-      type: "vegetable"
+      type: "Vegetables"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.20,
-      type: "vegetable"
+      price: 0.10,
+      type: "Vegetables"
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.30,
-      type: "fruit"
+      type: "Fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.22,
-      type: "fruit"
+      type: "Fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.18,
-      type: "vegetable"
+      type: "Vegetables"
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.20,
-      type: "fruit"
+      type: "Fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.19,
-      type: "vegetable"
+      price: 0.23,
+      type: "Vegetables"
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.10,
-      type: "fruit"
+      type: "Fruit"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.40,
-      type: "fruit"
+      type: "Fruit"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 1,
-      type: "vegetable"
+      type: "Vegetables"
     }
   ],
   cart: []
@@ -75,7 +75,7 @@ function filterAndRender(filter, sorting) {
 
   let shopItems = state.items
 
-  if (filter === 'vegetable' || filter === 'fruit') {
+  if (filter === 'Vegetables' || filter === 'Fruit') {
     shopItems = shopItems.filter(item => item.type === filter)
     document.querySelector('#filterStatus').innerText = filter
   } else {
@@ -115,10 +115,10 @@ function renderStorefront(shopItems) {
 
 function prepareFilters() {
   document.getElementById('filterForVeggies').addEventListener('click', function () {
-    filterAndRender('vegetable', document.querySelector('#sortStatus').innerText)
+    filterAndRender('Vegetables', document.querySelector('#sortStatus').innerText)
   })
   document.getElementById('filterForFruit').addEventListener('click', function () {
-    filterAndRender('fruit', document.querySelector('#sortStatus').innerText)
+    filterAndRender('Fruit', document.querySelector('#sortStatus').innerText)
   })
   document.getElementById('clearFilter').addEventListener('click', function () {
     filterAndRender('', document.querySelector('#sortStatus').innerText)
