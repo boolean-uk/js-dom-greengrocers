@@ -53,3 +53,22 @@ const state = {
   ],
   cart: []
 };
+
+function setupShop() {
+  const storeItems = document.querySelector('.store--item-list')
+
+  state.items.forEach(item => {
+    const storeListItem = document.createElement('li')
+    storeListItem.innerHTML = `
+      <li>
+        <div class="store--item-icon">
+          <img src="assets/icons/${item.id}.svg" alt="${item.name}" />
+        </div>
+        <button id="add${item.name}">Add to cart</button>
+      </li>
+    `
+    storeItems.appendChild(storeListItem)
+  });
+}
+
+setupShop()
