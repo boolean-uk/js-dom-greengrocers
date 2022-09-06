@@ -1,86 +1,104 @@
+const storeFront = document.querySelector('.store--item-list')
+
 const state = {
   items: [
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35,
+      price: 0.15,
       type: "vegetable"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35,
+      price: 0.20,
       type: "vegetable"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35,
+      price: 0.30,
       type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35,
+      price: 0.22,
       type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35,
+      price: 0.18,
       type: "vegetable"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35,
+      price: 0.20,
       type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35,
+      price: 0.19,
       type: "vegetable"
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35,
+      price: 0.10,
       type: "fruit"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35,
+      price: 0.40,
       type: "fruit"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35,
+      price: 1,
       type: "vegetable"
     }
   ],
   cart: []
-};
+}
 
 function setupShop() {
-  renderStorefront()
+  filterAndRender('all', 'sortAlphabetically')
   prepareFilters()
 }
 
-function renderStorefront(filter) {
-  const storeItems = document.querySelector('.store--item-list')
-  storeItems.innerHTML = ''
+function filterAndRender(filter, sorting) {
 
   let shopItems = state.items
 
-  if (filter) {
-    shopItems = state.items.filter(item => item.type === filter);
+  if (filter === 'vegetable' || filter === 'fruit') {
+    shopItems = state.items.filter(item => item.type === filter)
     document.querySelector('#filterStatus').innerText = "Shows only " + filter
   } else {
     document.querySelector('#filterStatus').innerText = "Shows both fruit and vegetables"
   }
+
+  if (sorting === 'sortByPrice') {
+    shopItems = shopItems.sort((a, b) => { return a.price - b.price })
+    document.querySelector('#sortStatus').innerText = "Sorting by price"
+  }
+
+  if (sorting === 'sortAlphabetically') {
+    shopItems = shopItems.sort((a, b) => { return a.name.localeCompare(b.name) })
+    document.querySelector('#sortStatus').innerText = "Sorting alphabetically"
+  }
+
+  renderStorefront(shopItems)
+
+}
+
+function renderStorefront(shopItems) {
+
+  storeFront.innerHTML = ''
 
   shopItems.forEach(item => {
     const storeListItem = document.createElement('li')
@@ -88,22 +106,28 @@ function renderStorefront(filter) {
         <div class="store--item-icon"><img src="assets/icons/${item.id}.svg" alt="${item.name}" /></div>
         <button id="${item.id}">Add to cart</button>
     `
-    storeItems.appendChild(storeListItem)
+    storeFront.appendChild(storeListItem)
     document.getElementById(item.id).addEventListener('click', function () {
       addItemToCart(this.id)
     })
-  });
+  })
 }
 
 function prepareFilters() {
   document.getElementById('filterForVeggies').addEventListener('click', function () {
-    renderStorefront('vegetable')
+    filterAndRender('vegetable', '')
   })
   document.getElementById('filterForFruit').addEventListener('click', function () {
-    renderStorefront('fruit')
+    filterAndRender('fruit', '')
   })
   document.getElementById('clearFilter').addEventListener('click', function () {
-    renderStorefront()
+    filterAndRender('all', '')
+  })
+  document.getElementById('sortByPrice').addEventListener('click', function () {
+    filterAndRender('all', 'sortByPrice')
+  })
+  document.getElementById('sortAlphabetically').addEventListener('click', function () {
+    filterAndRender('all', 'sortAlphabetically')
   })
 }
 
@@ -164,7 +188,7 @@ function decreaseAmountInCart(id) {
     foundItem.amount--
   }
   if (foundItem.amount <= 0) {
-    state.cart = state.cart.filter(item => item.id != PURE_ID[1]);
+    state.cart = state.cart.filter(item => item.id != PURE_ID[1])
   }
 
   renderCartView()
@@ -182,7 +206,7 @@ function changeAmountInCart(id, newAmount) {
   const foundItem = state.cart.find(({ id }) => id === PURE_ID[1])
   foundItem.amount = newAmount
   if (foundItem.amount <= 0) {
-    state.cart = state.cart.filter(item => item.id != PURE_ID[1]);
+    state.cart = state.cart.filter(item => item.id != PURE_ID[1])
   }
   renderCartView()
 }

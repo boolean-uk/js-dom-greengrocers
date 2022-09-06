@@ -200,12 +200,12 @@ input[type=number] {
   text-align: center;
 }
 
-.filter-controls {
+.filter-controls, .sort-controls {
   text-align: center;
   background-color:aliceblue
 }
 
-#filterStatus {
+#filterStatus, #sortStatus {
   height: 1rem;
   color: darkgrey;
   font-size: small;
