@@ -121,7 +121,7 @@ function prepareFilters() {
     filterAndRender('fruit', document.querySelector('#sortStatus'))
   })
   document.getElementById('clearFilter').addEventListener('click', function () {
-    filterAndRender(document.querySelector('#filterStatus'), '')
+    filterAndRender('', document.querySelector('#sortStatus'))
   })
   document.getElementById('sortByPrice').addEventListener('click', function () {
     filterAndRender(document.querySelector('#filterStatus'), 'Sorted by price')
