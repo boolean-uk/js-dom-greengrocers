@@ -76,7 +76,7 @@ function filterAndRender(filter, sorting) {
   let shopItems = state.items
 
   if (filter === 'vegetable' || filter === 'fruit') {
-    shopItems = state.items.filter(item => item.type === filter)
+    shopItems = shopItems.filter(item => item.type === filter)
     document.querySelector('#filterStatus').innerText = filter
   } else {
     document.querySelector('#filterStatus').innerText = "Shows both fruit and vegetables"
