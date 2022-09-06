@@ -76,7 +76,7 @@ function renderStorefront(filter) {
   let shopItems = state.items
 
   if (filter) {
-    shopItems = state.items.filter(item => item.type != filter);
+    shopItems = state.items.filter(item => item.type === filter);
     document.querySelector('#filterStatus').innerText = "Shows only " + filter
   } else {
     document.querySelector('#filterStatus').innerText = "Shows both fruit and vegetables"
