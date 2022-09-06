@@ -3,69 +3,90 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     }
   ],
   cart: []
 };
 
 function setupShop() {
-  const storeItems = document.querySelector('.store--item-list')
+  renderStorefront()
+  prepareFilters()
+}
 
-  state.items.forEach(item => {
+function renderStorefront(filter) {
+  const storeItems = document.querySelector('.store--item-list')
+  storeItems.innerHTML = ''
+
+  let shopItems = state.items
+
+  if (filter) {
+    shopItems = state.items.filter(item => item.type != filter);
+    document.querySelector('#filterStatus').innerText = "Shows only " + filter
+  } else {
+    document.querySelector('#filterStatus').innerText = "Shows both fruit and vegetables"
+  }
+
+  shopItems.forEach(item => {
     const storeListItem = document.createElement('li')
     storeListItem.innerHTML = `
-      <li>
-        <div class="store--item-icon">
-          <img src="assets/icons/${item.id}.svg" alt="${item.name}" />
-        </div>
+        <div class="store--item-icon"><img src="assets/icons/${item.id}.svg" alt="${item.name}" /></div>
         <button id="${item.id}">Add to cart</button>
-      </li>
     `
     storeItems.appendChild(storeListItem)
     document.getElementById(item.id).addEventListener('click', function () {
@@ -74,10 +95,22 @@ function setupShop() {
   });
 }
 
+function prepareFilters() {
+  document.getElementById('filterForVeggies').addEventListener('click', function () {
+    renderStorefront('vegetable')
+  })
+  document.getElementById('filterForFruit').addEventListener('click', function () {
+    renderStorefront('fruit')
+  })
+  document.getElementById('clearFilter').addEventListener('click', function () {
+    renderStorefront()
+  })
+}
+
 function addItemToCart(itemId) {
   const shoppingItem = state.items.find(({ id }) => id === itemId)
   if(state.cart.find(({ id }) => id === itemId)) {
-    shoppingItem.amount += 1
+    shoppingItem.amount++
   } else {
     shoppingItem.amount = 1
     state.cart = [...state.cart, shoppingItem]
@@ -97,7 +130,13 @@ function renderCartView() {
 
   state.cart.forEach(item => {
     const cartItem = document.createElement('li')
-    cartItem.innerHTML = `<img src="assets/icons/${item.id}.svg">${capitalizeFirstLetter(item.name)}&nbsp;<button id="decrease_${item.id}">-</button><input type="number" class="cart-amount" id="amount_${item.id}" value="${item.amount}" min="0" max="50"><button id="increase_${item.id}">+</button>`
+    cartItem.innerHTML = `
+    <img class="cart--item-icon" src="assets/icons/${item.id}.svg">
+    ${capitalizeFirstLetter(item.name)}
+    &nbsp;<button id="decrease_${item.id}" class="quantity-btn remove-btn center">-</button>
+    <input type="number" class="cart-amount" id="amount_${item.id}" value="${item.amount}" min="0" max="50">
+    <button id="increase_${item.id}" class="quantity-btn add-btn center">+</button>
+    `
     cartList.appendChild(cartItem)
 
     totalCartValue += Number(item.amount) * Number(item.price)

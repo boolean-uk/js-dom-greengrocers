@@ -199,3 +199,14 @@ input[type=number] {
   border-radius: 0.3rem;
   text-align: center;
 }
+
+.filter-controls {
+  text-align: center;
+  background-color:aliceblue
+}
+
+#filterStatus {
+  height: 1rem;
+  color: darkgrey;
+  font-size: small;
+}
