@@ -76,7 +76,12 @@ function setupShop() {
 
 function addItemToCart(itemId) {
   const shoppingItem = state.items.find(({ id }) => id === itemId)
-  state.cart = [...state.cart, shoppingItem]
+  if(state.cart.find(({ id }) => id === itemId)) {
+    shoppingItem.amount += 1
+  } else {
+    shoppingItem.amount = 1
+    state.cart = [...state.cart, shoppingItem]
+  }
   updateCartView()
 }
 
@@ -89,9 +94,17 @@ function updateCartView() {
   cartList.innerHTML = ''
   state.cart.forEach(item => {
     const cartItem = document.createElement('li')
-
-    cartItem.innerHTML = `<img src="assets/icons/${item.id}.svg">${capitalizeFirstLetter(item.name)}`
+    cartItem.innerHTML = `<img src="assets/icons/${item.id}.svg">${capitalizeFirstLetter(item.name)}&nbsp;<button id="reduce-${item.id}">-</button><input type="number" class="cart-amount" id="amount-${item.id}" value="${item.amount}" min="0" max="10"><button id="increase-${item.id}">+</button>`
     cartList.appendChild(cartItem)
+    document.querySelector('#reduce-' + item.id).addEventListener('click', function (event) {
+      console.log('Decrease amount')
+    })
+    document.querySelector('#increase-' + item.id).addEventListener('click', function (event) {
+      console.log('Increase amount')
+    })
+    document.querySelector('#amount-' + item.id).addEventListener('change', function (event) {
+      console.log('Amount')
+    })
   })
 }
 
