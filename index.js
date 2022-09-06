@@ -106,8 +106,8 @@ function renderStorefront(shopItems) {
 
     const STORE_ITEM_NAME_PRICE = document.createElement('span')
     STORE_ITEM_NAME_PRICE.setAttribute('class', 'itemNamePrice')
-    const STORE_ITEM_NAME_PRICE_TEXT_NODE = document.createTextNode(`${capitalizeFirstLetter(item.name)} £${item.price.toFixed(2)}`)
-    STORE_ITEM_NAME_PRICE.appendChild(STORE_ITEM_NAME_PRICE_TEXT_NODE)
+    STORE_ITEM_NAME_PRICE.innerText = capitalizeFirstLetter(item.name) +  ' £' + item.price.toFixed(2)
+
 
     const STORE_ITEM_NAME_BR = document.createElement('br')
 
@@ -117,8 +117,7 @@ function renderStorefront(shopItems) {
 
     const STORE_ITEM_BUTTON = document.createElement('button')
     STORE_ITEM_BUTTON.setAttribute('id', item.id)
-    const STORE_ITEM_BUTTON_TEXT_NODE = document.createTextNode('Add to cart')
-    STORE_ITEM_BUTTON.appendChild(STORE_ITEM_BUTTON_TEXT_NODE)
+    STORE_ITEM_BUTTON.innerText = 'Add to cart'
 
     STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_PRICE)
     STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_BR)
@@ -182,12 +181,10 @@ function renderCartView() {
     ITEM_IMG.setAttribute('src', 'assets/icons/' + item.id + '.svg')
 
     const CART_NAME = document.createElement('p')
-    const CART_NAME_TEXT_NODE = document.createTextNode(capitalizeFirstLetter(item.name))
-    CART_NAME.appendChild(CART_NAME_TEXT_NODE)
+    CART_NAME.innerText = capitalizeFirstLetter(item.name)
 
     const CART_DECREASE_BUTTON = document.createElement('button')
-    const CART_DECREASE_BUTTON_TEXT_NODE = document.createTextNode('-')
-    CART_DECREASE_BUTTON.appendChild(CART_DECREASE_BUTTON_TEXT_NODE)
+    CART_DECREASE_BUTTON.innerText = '-'
     CART_DECREASE_BUTTON.setAttribute('id', 'decrease_' + item.id)
     CART_DECREASE_BUTTON.setAttribute('class', 'quantity-btn remove-btn center')
 
@@ -198,8 +195,7 @@ function renderCartView() {
     CART_INPUT_FIELD.setAttribute('value', item.amount)
   
     const CART_INCREASE_BUTTON = document.createElement('button')
-    const CART_INCREASE_BUTTON_TEXT_NODE = document.createTextNode('+')
-    CART_INCREASE_BUTTON.appendChild(CART_INCREASE_BUTTON_TEXT_NODE)
+    CART_INCREASE_BUTTON.innerText = '+'
     CART_INCREASE_BUTTON.setAttribute('id', 'increase_' + item.id)
     CART_INCREASE_BUTTON.setAttribute('class', 'quantity-btn add-btn center')
 
