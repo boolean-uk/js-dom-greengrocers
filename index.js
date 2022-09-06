@@ -74,8 +74,25 @@ function setupShop() {
   });
 }
 
-function addItemToCart(id) {
-  console.log(id)
+function addItemToCart(itemId) {
+  const shoppingItem = state.items.find(({ id }) => id === itemId)
+  state.cart = [...state.cart, shoppingItem]
+  updateCartView()
+}
+
+function capitalizeFirstLetter(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+function updateCartView() {
+  const cartList = document.querySelector('.cart--item-list')
+  cartList.innerHTML = ''
+  state.cart.forEach(item => {
+    const cartItem = document.createElement('li')
+
+    cartItem.innerHTML = `<img src="assets/icons/${item.id}.svg">${capitalizeFirstLetter(item.name)}`
+    cartList.appendChild(cartItem)
+  })
 }
 
 setupShop()
