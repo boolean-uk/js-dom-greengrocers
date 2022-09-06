@@ -195,11 +195,16 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.itemNamePrice {
+  font-size: small;
+}
+
 .cart-amount {
   padding: 0.2rem;
   border: 1px solid lightgray;
   border-radius: 0.3rem;
   text-align: center;
+  width: 3rem;
 }
 
 .filter-controls, .sort-controls {

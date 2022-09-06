@@ -1,6 +1,6 @@
-const storeFront = document.querySelector('.store--item-list')
+const STORE_FRONT = document.querySelector('.store--item-list')
 
-const state = {
+const STATE = {
   items: [
     {
       id: "001-beetroot",
@@ -69,11 +69,11 @@ const state = {
 function setupShop() {
   filterAndRender('all', 'Sorted alphabetically')
   prepareFilters()
+  document.querySelector('#clearCart').addEventListener('click', clearCart)
 }
 
 function filterAndRender(filter, sorting) {
-
-  let shopItems = state.items
+  let shopItems = STATE.items
 
   if (filter === 'Vegetables' || filter === 'Fruit') {
     shopItems = shopItems.filter(item => item.type === filter)
@@ -93,20 +93,42 @@ function filterAndRender(filter, sorting) {
   }
 
   renderStorefront(shopItems)
-
 }
 
 function renderStorefront(shopItems) {
-
-  storeFront.innerHTML = ''
+  STORE_FRONT.innerHTML = ''
 
   shopItems.forEach(item => {
-    const storeListItem = document.createElement('li')
-    storeListItem.innerHTML = `
-        <div class="store--item-icon">${capitalizeFirstLetter(item.name)} £${item.price.toFixed(2)}<br/><img src="assets/icons/${item.id}.svg" alt="${item.name}" /></div>
-        <button id="${item.id}">Add to cart</button>
-    `
-    storeFront.appendChild(storeListItem)
+    const STORE_LIST_ITEM = document.createElement('li')
+    
+    const STORE_ITEM_DIV = document.createElement('div')
+    STORE_ITEM_DIV.setAttribute('class', 'store--item-icon')
+
+    const STORE_ITEM_NAME_PRICE = document.createElement('span')
+    STORE_ITEM_NAME_PRICE.setAttribute('class', 'itemNamePrice')
+    const STORE_ITEM_NAME_PRICE_TEXT_NODE = document.createTextNode(`${capitalizeFirstLetter(item.name)} £${item.price.toFixed(2)}`)
+    STORE_ITEM_NAME_PRICE.appendChild(STORE_ITEM_NAME_PRICE_TEXT_NODE)
+
+    const STORE_ITEM_NAME_BR = document.createElement('br')
+
+    const STORE_ITEM_IMAGE = document.createElement('img')
+    STORE_ITEM_IMAGE.setAttribute('src', 'assets/icons/' + item.id + '.svg')
+    STORE_ITEM_IMAGE.setAttribute('alt', item.name)
+
+    const STORE_ITEM_BUTTON = document.createElement('button')
+    STORE_ITEM_BUTTON.setAttribute('id', item.id)
+    const STORE_ITEM_BUTTON_TEXT_NODE = document.createTextNode('Add to cart')
+    STORE_ITEM_BUTTON.appendChild(STORE_ITEM_BUTTON_TEXT_NODE)
+
+    STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_PRICE)
+    STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_BR)
+    STORE_ITEM_DIV.appendChild(STORE_ITEM_IMAGE)
+    STORE_ITEM_DIV.appendChild(STORE_ITEM_BUTTON)
+
+    STORE_LIST_ITEM.appendChild(STORE_ITEM_DIV)
+
+    STORE_FRONT.appendChild(STORE_LIST_ITEM)
+
     document.getElementById(item.id).addEventListener('click', function () {
       addItemToCart(this.id)
     })
@@ -132,12 +154,12 @@ function prepareFilters() {
 }
 
 function addItemToCart(itemId) {
-  const shoppingItem = state.items.find(({ id }) => id === itemId)
-  if(state.cart.find(({ id }) => id === itemId)) {
+  const shoppingItem = STATE.items.find(({ id }) => id === itemId)
+  if(STATE.cart.find(({ id }) => id === itemId)) {
     shoppingItem.amount++
   } else {
     shoppingItem.amount = 1
-    state.cart = [...state.cart, shoppingItem]
+    STATE.cart = [...STATE.cart, shoppingItem]
   }
   renderCartView()
 }
@@ -147,21 +169,47 @@ function capitalizeFirstLetter(text) {
 }
 
 function renderCartView() {
-  const cartList = document.querySelector('.cart--item-list')
-  let totalCartValue = 0
-  
-  cartList.innerHTML = ''
+  const CART_LIST = document.querySelector('.cart--item-list')
+  CART_LIST.innerHTML = ''
 
-  state.cart.forEach(item => {
-    const cartItem = document.createElement('li')
-    cartItem.innerHTML = `
-    <img class="cart--item-icon" src="assets/icons/${item.id}.svg">
-    ${capitalizeFirstLetter(item.name)}
-    &nbsp;<button id="decrease_${item.id}" class="quantity-btn remove-btn center">-</button>
-    <input type="number" class="cart-amount" id="amount_${item.id}" value="${item.amount}" min="0" max="50">
-    <button id="increase_${item.id}" class="quantity-btn add-btn center">+</button>
-    `
-    cartList.appendChild(cartItem)
+  let totalCartValue = 0
+
+  STATE.cart.forEach(item => {
+    const CART_ITEM = document.createElement('li')
+
+    const ITEM_IMG = document.createElement('img')
+    ITEM_IMG.setAttribute('class', 'cart--item-icon')
+    ITEM_IMG.setAttribute('src', 'assets/icons/' + item.id + '.svg')
+
+    const CART_NAME = document.createElement('p')
+    const CART_NAME_TEXT_NODE = document.createTextNode(capitalizeFirstLetter(item.name))
+    CART_NAME.appendChild(CART_NAME_TEXT_NODE)
+
+    const CART_DECREASE_BUTTON = document.createElement('button')
+    const CART_DECREASE_BUTTON_TEXT_NODE = document.createTextNode('-')
+    CART_DECREASE_BUTTON.appendChild(CART_DECREASE_BUTTON_TEXT_NODE)
+    CART_DECREASE_BUTTON.setAttribute('id', 'decrease_' + item.id)
+    CART_DECREASE_BUTTON.setAttribute('class', 'quantity-btn remove-btn center')
+
+    const CART_INPUT_FIELD = document.createElement('input')
+    CART_INPUT_FIELD.setAttribute('type', 'number')
+    CART_INPUT_FIELD.setAttribute('class', 'cart-amount center')
+    CART_INPUT_FIELD.setAttribute('id', 'amount_' + item.id)
+    CART_INPUT_FIELD.setAttribute('value', item.amount)
+  
+    const CART_INCREASE_BUTTON = document.createElement('button')
+    const CART_INCREASE_BUTTON_TEXT_NODE = document.createTextNode('+')
+    CART_INCREASE_BUTTON.appendChild(CART_INCREASE_BUTTON_TEXT_NODE)
+    CART_INCREASE_BUTTON.setAttribute('id', 'increase_' + item.id)
+    CART_INCREASE_BUTTON.setAttribute('class', 'quantity-btn add-btn center')
+
+    CART_ITEM.appendChild(ITEM_IMG)
+    CART_ITEM.appendChild(CART_NAME)
+    CART_ITEM.appendChild(CART_DECREASE_BUTTON)
+    CART_ITEM.appendChild(CART_INPUT_FIELD)
+    CART_ITEM.appendChild(CART_INCREASE_BUTTON)
+
+    CART_LIST.appendChild(CART_ITEM)
 
     totalCartValue += Number(item.amount) * Number(item.price)
 
@@ -180,15 +228,20 @@ function renderCartView() {
   totalPriceInView.innerText = "£" + totalCartValue.toFixed(2)
 }
 
+function clearCart() {
+  STATE.cart = []
+  renderCartView()
+}
+
 function decreaseAmountInCart(id) {
   const PURE_ID = id.split('_')
-  const foundItem = state.cart.find(({ id }) => id === PURE_ID[1])
+  const foundItem = STATE.cart.find(({ id }) => id === PURE_ID[1])
 
   if (foundItem.amount > 0) {
     foundItem.amount--
   }
   if (foundItem.amount <= 0) {
-    state.cart = state.cart.filter(item => item.id != PURE_ID[1])
+    STATE.cart = STATE.cart.filter(item => item.id != PURE_ID[1])
   }
 
   renderCartView()
@@ -196,17 +249,17 @@ function decreaseAmountInCart(id) {
 
 function increaseAmountInCart(id) {
   const PURE_ID = id.split('_')
-  const foundItem = state.cart.find(({ id }) => id === PURE_ID[1])
+  const foundItem = STATE.cart.find(({ id }) => id === PURE_ID[1])
   foundItem.amount++
   renderCartView()
 }
 
 function changeAmountInCart(id, newAmount) {
   const PURE_ID = id.split('_')
-  const foundItem = state.cart.find(({ id }) => id === PURE_ID[1])
+  const foundItem = STATE.cart.find(({ id }) => id === PURE_ID[1])
   foundItem.amount = newAmount
   if (foundItem.amount <= 0) {
-    state.cart = state.cart.filter(item => item.id != PURE_ID[1])
+    STATE.cart = STATE.cart.filter(item => item.id != PURE_ID[1])
   }
   renderCartView()
 }
