@@ -67,7 +67,7 @@ const state = {
 }
 
 function setupShop() {
-  filterAndRender('all', 'sortAlphabetically')
+  filterAndRender('all', 'Sorted alphabetically')
   prepareFilters()
 }
 
@@ -77,19 +77,19 @@ function filterAndRender(filter, sorting) {
 
   if (filter === 'vegetable' || filter === 'fruit') {
     shopItems = state.items.filter(item => item.type === filter)
-    document.querySelector('#filterStatus').innerText = "Shows only " + filter
+    document.querySelector('#filterStatus').innerText = filter
   } else {
     document.querySelector('#filterStatus').innerText = "Shows both fruit and vegetables"
   }
 
-  if (sorting === 'sortByPrice') {
+  if (sorting === 'Sorted by price') {
     shopItems = shopItems.sort((a, b) => { return a.price - b.price })
-    document.querySelector('#sortStatus').innerText = "Sorting by price"
+    document.querySelector('#sortStatus').innerText = "Sorted by price"
   }
 
-  if (sorting === 'sortAlphabetically') {
+  if (sorting === 'Sorted alphabetically') {
     shopItems = shopItems.sort((a, b) => { return a.name.localeCompare(b.name) })
-    document.querySelector('#sortStatus').innerText = "Sorting alphabetically"
+    document.querySelector('#sortStatus').innerText = "Sorted alphabetically"
   }
 
   renderStorefront(shopItems)
@@ -103,7 +103,7 @@ function renderStorefront(shopItems) {
   shopItems.forEach(item => {
     const storeListItem = document.createElement('li')
     storeListItem.innerHTML = `
-        <div class="store--item-icon"><img src="assets/icons/${item.id}.svg" alt="${item.name}" /></div>
+        <div class="store--item-icon">${capitalizeFirstLetter(item.name)} £${item.price.toFixed(2)}<br/><img src="assets/icons/${item.id}.svg" alt="${item.name}" /></div>
         <button id="${item.id}">Add to cart</button>
     `
     storeFront.appendChild(storeListItem)
@@ -115,19 +115,19 @@ function renderStorefront(shopItems) {
 
 function prepareFilters() {
   document.getElementById('filterForVeggies').addEventListener('click', function () {
-    filterAndRender('vegetable', '')
+    filterAndRender('vegetable', document.querySelector('#sortStatus'))
   })
   document.getElementById('filterForFruit').addEventListener('click', function () {
-    filterAndRender('fruit', '')
+    filterAndRender('fruit', document.querySelector('#sortStatus'))
   })
   document.getElementById('clearFilter').addEventListener('click', function () {
-    filterAndRender('all', '')
+    filterAndRender(document.querySelector('#filterStatus'), '')
   })
   document.getElementById('sortByPrice').addEventListener('click', function () {
-    filterAndRender('all', 'sortByPrice')
+    filterAndRender(document.querySelector('#filterStatus'), 'Sorted by price')
   })
   document.getElementById('sortAlphabetically').addEventListener('click', function () {
-    filterAndRender('all', 'sortAlphabetically')
+    filterAndRender(document.querySelector('#filterStatus'), 'Sorted alphabetically')
   })
 }
 
