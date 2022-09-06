@@ -91,11 +91,17 @@ function capitalizeFirstLetter(text) {
 
 function updateCartView() {
   const cartList = document.querySelector('.cart--item-list')
+  let totalCartValue = 0
+  
   cartList.innerHTML = ''
+
   state.cart.forEach(item => {
     const cartItem = document.createElement('li')
     cartItem.innerHTML = `<img src="assets/icons/${item.id}.svg">${capitalizeFirstLetter(item.name)}&nbsp;<button id="reduce-${item.id}">-</button><input type="number" class="cart-amount" id="amount-${item.id}" value="${item.amount}" min="0" max="10"><button id="increase-${item.id}">+</button>`
     cartList.appendChild(cartItem)
+    
+    totalCartValue += Number(item.amount) * Number(item.price)
+
     document.querySelector('#reduce-' + item.id).addEventListener('click', function (event) {
       console.log('Decrease amount')
     })
@@ -103,9 +109,12 @@ function updateCartView() {
       console.log('Increase amount')
     })
     document.querySelector('#amount-' + item.id).addEventListener('change', function (event) {
-      console.log('Amount')
+      console.log('Amount changed')
     })
   })
+
+  const totalPriceInView = document.querySelector('.total-number')
+  totalPriceInView.innerText = "£" + totalCartValue.toFixed(2)
 }
 
 setupShop()

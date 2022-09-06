@@ -182,3 +182,20 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.cart-amount {
+  padding: 0.2rem;
+  border: 1px solid lightgray;
+  border-radius: 0.3rem;
+  text-align: center;
+}
