@@ -64,11 +64,18 @@ function setupShop() {
         <div class="store--item-icon">
           <img src="assets/icons/${item.id}.svg" alt="${item.name}" />
         </div>
-        <button id="add${item.name}">Add to cart</button>
+        <button id="${item.id}">Add to cart</button>
       </li>
     `
     storeItems.appendChild(storeListItem)
+    document.getElementById(item.id).addEventListener('click', function () {
+      addItemToCart(this.id)
+    })
   });
+}
+
+function addItemToCart(id) {
+  console.log(id)
 }
 
 setupShop()
