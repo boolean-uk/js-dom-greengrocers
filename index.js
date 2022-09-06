@@ -84,12 +84,12 @@ function filterAndRender(filter, sorting) {
 
   if (sorting === 'Sorted by price') {
     shopItems = shopItems.sort((a, b) => { return a.price - b.price })
-    document.querySelector('#sortStatus').innerText = "Sorted by price"
+    document.querySelector('#sortStatus').innerText = sorting
   }
 
   if (sorting === 'Sorted alphabetically') {
     shopItems = shopItems.sort((a, b) => { return a.name.localeCompare(b.name) })
-    document.querySelector('#sortStatus').innerText = "Sorted alphabetically"
+    document.querySelector('#sortStatus').innerText = sorting
   }
 
   renderStorefront(shopItems)
@@ -115,19 +115,19 @@ function renderStorefront(shopItems) {
 
 function prepareFilters() {
   document.getElementById('filterForVeggies').addEventListener('click', function () {
-    filterAndRender('vegetable', document.querySelector('#sortStatus'))
+    filterAndRender('vegetable', document.querySelector('#sortStatus').innerText)
   })
   document.getElementById('filterForFruit').addEventListener('click', function () {
-    filterAndRender('fruit', document.querySelector('#sortStatus'))
+    filterAndRender('fruit', document.querySelector('#sortStatus').innerText)
   })
   document.getElementById('clearFilter').addEventListener('click', function () {
-    filterAndRender('', document.querySelector('#sortStatus'))
+    filterAndRender('', document.querySelector('#sortStatus').innerText)
   })
   document.getElementById('sortByPrice').addEventListener('click', function () {
-    filterAndRender(document.querySelector('#filterStatus'), 'Sorted by price')
+    filterAndRender(document.querySelector('#filterStatus').innerText, 'Sorted by price')
   })
   document.getElementById('sortAlphabetically').addEventListener('click', function () {
-    filterAndRender(document.querySelector('#filterStatus'), 'Sorted alphabetically')
+    filterAndRender(document.querySelector('#filterStatus').innerText, 'Sorted alphabetically')
   })
 }
 
