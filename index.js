@@ -82,14 +82,14 @@ function addItemToCart(itemId) {
     shoppingItem.amount = 1
     state.cart = [...state.cart, shoppingItem]
   }
-  updateCartView()
+  renderCartView()
 }
 
 function capitalizeFirstLetter(text) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-function updateCartView() {
+function renderCartView() {
   const cartList = document.querySelector('.cart--item-list')
   let totalCartValue = 0
   
@@ -97,24 +97,55 @@ function updateCartView() {
 
   state.cart.forEach(item => {
     const cartItem = document.createElement('li')
-    cartItem.innerHTML = `<img src="assets/icons/${item.id}.svg">${capitalizeFirstLetter(item.name)}&nbsp;<button id="reduce-${item.id}">-</button><input type="number" class="cart-amount" id="amount-${item.id}" value="${item.amount}" min="0" max="10"><button id="increase-${item.id}">+</button>`
+    cartItem.innerHTML = `<img src="assets/icons/${item.id}.svg">${capitalizeFirstLetter(item.name)}&nbsp;<button id="decrease_${item.id}">-</button><input type="number" class="cart-amount" id="amount_${item.id}" value="${item.amount}" min="0" max="50"><button id="increase_${item.id}">+</button>`
     cartList.appendChild(cartItem)
-    
+
     totalCartValue += Number(item.amount) * Number(item.price)
 
-    document.querySelector('#reduce-' + item.id).addEventListener('click', function (event) {
-      console.log('Decrease amount')
+    document.querySelector('#decrease_' + item.id).addEventListener('click', function (event) {
+      decreaseAmountInCart(this.id)
     })
-    document.querySelector('#increase-' + item.id).addEventListener('click', function (event) {
-      console.log('Increase amount')
+    document.querySelector('#increase_' + item.id).addEventListener('click', function (event) {
+      increaseAmountInCart(this.id)
     })
-    document.querySelector('#amount-' + item.id).addEventListener('change', function (event) {
-      console.log('Amount changed')
+    document.querySelector('#amount_' + item.id).addEventListener('change', function (event) {
+      changeAmountInCart(this.id, this.value)
     })
   })
 
   const totalPriceInView = document.querySelector('.total-number')
   totalPriceInView.innerText = "£" + totalCartValue.toFixed(2)
+}
+
+function decreaseAmountInCart(id) {
+  const PURE_ID = id.split('_')
+  const foundItem = state.cart.find(({ id }) => id === PURE_ID[1])
+
+  if (foundItem.amount > 0) {
+    foundItem.amount--
+  }
+  if (foundItem.amount <= 0) {
+    state.cart = state.cart.filter(item => item.id != PURE_ID[1]);
+  }
+
+  renderCartView()
+}
+
+function increaseAmountInCart(id) {
+  const PURE_ID = id.split('_')
+  const foundItem = state.cart.find(({ id }) => id === PURE_ID[1])
+  foundItem.amount++
+  renderCartView()
+}
+
+function changeAmountInCart(id, newAmount) {
+  const PURE_ID = id.split('_')
+  const foundItem = state.cart.find(({ id }) => id === PURE_ID[1])
+  foundItem.amount = newAmount
+  if (foundItem.amount <= 0) {
+    state.cart = state.cart.filter(item => item.id != PURE_ID[1]);
+  }
+  renderCartView()
 }
 
 setupShop()
