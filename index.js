@@ -4,51 +4,61 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
+      type: "veg",
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
+      type: "veg",
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
+      type: "veg",
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
+      type: "veg",
     },
   ],
   cart: [],
@@ -160,35 +170,55 @@ function totalCart() {
   console.log(newCart);
 }
 
+function orderAlpha() {
+  const header = document.querySelector("#store");
+  const button = document.createElement("button");
+  button.className = "bttnAlpha";
+  button.innerText = "Alphabetic order";
 
+  header.insertBefore(button, header.firstChild);
 
-
-function orderAlpha(){
-  const header = document.querySelector('#store')
-  const button = document.createElement('button')
-  button.innerText = 'Alphabetic order' 
-
-  header.insertBefore(button, header.firstChild)
-
-  button.addEventListener('click', () => {
+  button.addEventListener("click", () => {
     const storeItems = document.querySelector(".item-list");
-    storeItems.innerHTML = ''
+    storeItems.innerHTML = "";
     // let newItems = state.items.map((a) => a.name);
     // console.log(newItems.sort())
-    function compare( a, b ) {
-      if ( a.name < b.name ){
+    function compare(a, b) {
+      if (a.name < b.name) {
         return -1;
       }
-      if ( a.name > b.name ){
+      if (a.name > b.name) {
         return 1;
       }
       return 0;
     }
-    state.items.sort( compare )
-    console.log(state.items)
-    renderList()
-  })
-
+    state.items.sort(compare);
+    console.log(state.items);
+    renderList();
+  });
 }
-orderAlpha()
+orderAlpha();
 
+function fruitOnly() {
+  const header = document.querySelector("#store");
+  const buttonFruit = document.createElement("button");
+
+  buttonFruit.innerText = "Filter Fruit";
+  header.insertBefore(buttonFruit, header.firstChild);
+
+  buttonFruit.addEventListener("click", () => {
+    let fruitArr = [];
+    state.items.forEach((e) => {
+      if (Object.values(state.items[e]).includes("fruit")) {
+        fruitArr.push(e);
+      }
+      console.log(fruitArr);
+    });
+  });
+}
+
+fruitOnly();
+
+function vegOnly() {}
+
+vegOnly();
