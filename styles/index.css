@@ -50,7 +50,7 @@ button {
 
 .store--item-icon {
   width: 125px;
-  height: 150px;
+  height: 180px;
   text-align: center;
   margin-top: 1rem;
 }
@@ -218,3 +218,9 @@ input[type=number] {
   color: darkgrey;
   font-size: small;
 }
+
+.totalsPriceEachItemInCart, .inStock {
+  color: gray;
+  font-size: small;
+}
+

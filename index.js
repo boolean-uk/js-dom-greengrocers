@@ -6,61 +6,71 @@ const STATE = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.15,
-      type: "Vegetables"
+      type: "Vegetables",
+      inStock: 12
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.10,
-      type: "Vegetables"
+      type: "Vegetables",
+      inStock: 34
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.30,
-      type: "Fruit"
+      type: "Fruit",
+      inStock: 43
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.22,
-      type: "Fruit"
+      type: "Fruit",
+      inStock: 17
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.18,
-      type: "Vegetables"
+      type: "Vegetables",
+      inStock: 86
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.20,
-      type: "Fruit"
+      type: "Fruit",
+      inStock: 43
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.23,
-      type: "Vegetables"
+      type: "Vegetables",
+      inStock: 12
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.10,
-      type: "Fruit"
+      type: "Fruit",
+      inStock: 34
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.40,
-      type: "Fruit"
+      type: "Fruit",
+      inStock: 28
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 1,
-      type: "Vegetables"
+      type: "Vegetables",
+      inStock: 19
     }
   ],
   cart: []
@@ -109,9 +119,14 @@ function renderStorefront(shopItems) {
     const STORE_ITEM_NAME_PRICE = document.createElement('span')
     STORE_ITEM_NAME_PRICE.setAttribute('class', 'itemNamePrice')
     STORE_ITEM_NAME_PRICE.innerText = capitalizeFirstLetter(item.name) +  ' £' + item.price.toFixed(2)
+    
+    const STORE_ITEM_NAME_BR_1 = document.createElement('br')
 
+    const STORE_ITEM_LEFT = document.createElement('span')
+    STORE_ITEM_LEFT.setAttribute('class', 'inStock')
+    STORE_ITEM_LEFT.innerText = '(' + item.inStock +  ' left in stock)'
 
-    const STORE_ITEM_NAME_BR = document.createElement('br')
+    const STORE_ITEM_NAME_BR_2 = document.createElement('br')
 
     const STORE_ITEM_IMAGE = document.createElement('img')
     STORE_ITEM_IMAGE.setAttribute('src', 'assets/icons/' + item.id + '.svg')
@@ -122,7 +137,9 @@ function renderStorefront(shopItems) {
     STORE_ITEM_BUTTON.innerText = 'Add to cart'
 
     STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_PRICE)
-    STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_BR)
+    STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_BR_1)
+    STORE_ITEM_DIV.appendChild(STORE_ITEM_LEFT)
+    STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_BR_2)
     STORE_ITEM_DIV.appendChild(STORE_ITEM_IMAGE)
     STORE_ITEM_DIV.appendChild(STORE_ITEM_BUTTON)
 
@@ -182,10 +199,16 @@ function renderCartView() {
     ITEM_IMG.setAttribute('class', 'cart--item-icon')
     ITEM_IMG.setAttribute('src', 'assets/icons/' + item.id + '.svg')
 
-    const ITEM_TOTAL_PRICE = Number(item.amount) * Number(item.price)
+    const CART_ITEM_NAME = document.createElement('p')
+    CART_ITEM_NAME.innerText = capitalizeFirstLetter(item.name)
 
-    const CART_NAME = document.createElement('p')
-    CART_NAME.innerText = capitalizeFirstLetter(item.name) + ' (£' + Number(item.price) + ' each) £' + (ITEM_TOTAL_PRICE.toFixed(2)) + ' for ' + Number(item.amount)
+    const ITEM_TOTAL_PRICE = Number(item.amount) * Number(item.price)
+    totalCartValue += ITEM_TOTAL_PRICE
+    
+    const TOTALS = document.createElement('p')
+    TOTALS.setAttribute('class', 'totalsPriceEachItemInCart')
+    TOTALS.innerText = ' (£' + Number(item.price) + ' each - £' + (ITEM_TOTAL_PRICE.toFixed(2)) + ' for ' + Number(item.amount) + ')'
+    CART_ITEM_NAME.appendChild(TOTALS)
 
     const CART_DECREASE_BUTTON = document.createElement('button')
     CART_DECREASE_BUTTON.innerText = '-'
@@ -204,14 +227,12 @@ function renderCartView() {
     CART_INCREASE_BUTTON.setAttribute('class', 'quantity-btn add-btn center')
 
     CART_ITEM.appendChild(ITEM_IMG)
-    CART_ITEM.appendChild(CART_NAME)
+    CART_ITEM.appendChild(CART_ITEM_NAME)
     CART_ITEM.appendChild(CART_DECREASE_BUTTON)
     CART_ITEM.appendChild(CART_INPUT_FIELD)
     CART_ITEM.appendChild(CART_INCREASE_BUTTON)
 
     CART_LIST.appendChild(CART_ITEM)
-
-    totalCartValue += Number(item.amount) * Number(item.price)
 
     document.querySelector('#decrease_' + item.id).addEventListener('click', function (event) {
       decreaseAmountInCart(this.id)
