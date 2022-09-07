@@ -71,26 +71,22 @@ function renderList() {
     div.append(img);
 
     button.addEventListener("click", () => {
-      if (state.cart.some(e => e.id === o.id)) {
-        
-        state.cart[o].quantity ++
-        console.log(state.cart)
-        return ;
+      if (state.cart.some((e) => e.id === o.id)) {
+        state.cart[state.cart.indexOf(o)].quantity++;
+        state.cart[state.cart.indexOf(o)].price =
+          state.cart[state.cart.indexOf(o)].price + 0.35;
 
-      } else {
-        
-        
-        // // const container = {
-        // //   item,
-        // //   quantity: 1,
-        // // };
-        // o.quantity = 1
-
-        state.cart.push(o);
+        renderCart();
+        totalCart();
         console.log(state.cart);
+
+        return;
+      } else {
+        o.quantity = 1;
+        state.cart.push(o);
       }
       renderCart();
-      totalCart()
+      totalCart();
     });
   });
 }
@@ -116,7 +112,7 @@ function renderCart() {
     removeBtn.className = "quantity-btn remove-btn center";
     removeBtn.innerText = "-";
     span.className = "quantity-text center";
-    span.innerHTML = sum;
+    span.innerHTML = obj.quantity;
     addBtn.className = "quantity-btn add-btn center";
     addBtn.innerText = "+";
 
@@ -134,7 +130,6 @@ function renderCart() {
 
       span.textContent = sum;
       totalCart();
-      // console.log('remove button', state.cart);
     });
 
     addBtn.addEventListener("click", () => {
@@ -142,28 +137,25 @@ function renderCart() {
       span.textContent = sum;
       state.cart.push(obj);
       totalCart();
-      // console.log('plus button', state.cart);
     });
   });
 }
 
-function totalCart(){
-  const total = document.querySelector('.total-number')
-  total.innerHTML = ''
+function totalCart() {
+  const total = document.querySelector(".total-number");
+  total.innerHTML = "";
   let sumTotal;
 
-  let newCart = state.cart.map(a => a.price)
+  let newCart = state.cart.map((a) => a.price);
 
-
-  if(newCart.length <= 0){
-    total.textContent = '£0.00'
-    return
+  if (newCart.length <= 0) {
+    total.textContent = "£0.00";
+    return;
   }
 
-  sumTotal = newCart.reduce((pv, cv) => pv + cv)
+  sumTotal = newCart.reduce((pv, cv) => pv + cv);
 
-  total.textContent = '£' + Math.round(sumTotal * 100) / 100
- 
+  total.textContent = "£" + Math.round(sumTotal * 100) / 100;
 
-  console.log(newCart)
+  console.log(newCart);
 }
