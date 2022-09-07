@@ -1,4 +1,6 @@
 const STORE_FRONT = document.querySelector('.store--item-list')
+let filterSetting = 'all'
+let sortSetting = 'Sorted alphabetically'
 
 const STATE = {
   items: [
@@ -77,7 +79,7 @@ const STATE = {
 }
 
 function setupShop() {
-  filterAndRender('all', 'Sorted alphabetically')
+  filterAndRender(filterSetting, sortSetting)
   prepareFilters()
   document.querySelector('#clearCart').addEventListener('click', clearCart)
 }
@@ -155,19 +157,23 @@ function renderStorefront(shopItems) {
 
 function prepareFilters() {
   document.getElementById('filterForVeggies').addEventListener('click', function () {
-    filterAndRender('Vegetables', document.querySelector('#sortStatus').innerText)
+    filterSetting = 'Vegetables'
+    filterAndRender('Vegetables', sortSetting)
   })
   document.getElementById('filterForFruit').addEventListener('click', function () {
-    filterAndRender('Fruit', document.querySelector('#sortStatus').innerText)
+    filterSetting = 'Fruit'
+    filterAndRender('Fruit', sortSetting)
   })
   document.getElementById('clearFilter').addEventListener('click', function () {
-    filterAndRender('', document.querySelector('#sortStatus').innerText)
+    filterAndRender('all', sortSetting)
   })
   document.getElementById('sortByPrice').addEventListener('click', function () {
-    filterAndRender(document.querySelector('#filterStatus').innerText, 'Sorted by price')
+    sortSetting = 'Sorted by price'
+    filterAndRender(filterSetting, 'Sorted by price')
   })
   document.getElementById('sortAlphabetically').addEventListener('click', function () {
-    filterAndRender(document.querySelector('#filterStatus').innerText, 'Sorted alphabetically')
+    sortSetting = 'Sorted alphabetically'
+    filterAndRender(filterSetting, 'Sorted alphabetically')
   })
 }
 
@@ -181,12 +187,12 @@ function addItemToCart(itemId) {
   if (STATE.cart.find(({ id }) => id === itemId)) {
     shoppingItem.amount++
     shoppingItem.inStock--
-    filterAndRender(document.querySelector('#filterStatus').innerText, document.querySelector('#sortStatus').innerText)
+    filterAndRender(filterSetting, sortSetting)
   } else {
     shoppingItem.amount = 1
     shoppingItem.inStock--
     STATE.cart = [...STATE.cart, shoppingItem]
-    filterAndRender(document.querySelector('#filterStatus').innerText, document.querySelector('#sortStatus').innerText)
+    filterAndRender(filterSetting, sortSetting)
   }
   renderCartView()
 }
@@ -268,8 +274,13 @@ function renderCartView() {
 }
 
 function clearCart() {
+  STATE.cart.forEach( cartItem => {
+    const foundStoreItem = STATE.items.find(({ id }) => id === cartItem.id)  
+    foundStoreItem.inStock += cartItem.amount
+  } )
   STATE.cart = []
   renderCartView()
+  filterAndRender(filterSetting, sortSetting)
 }
 
 function decreaseAmountInCart(id) {
@@ -280,7 +291,7 @@ function decreaseAmountInCart(id) {
   if (foundCartItem.amount > 0) {
     foundCartItem.amount--
     foundStoreItem.inStock++
-    filterAndRender(document.querySelector('#filterStatus').innerText, document.querySelector('#sortStatus').innerText)
+    filterAndRender(filterSetting, sortSetting)
   }
   if (foundCartItem.amount <= 0) {
     STATE.cart = STATE.cart.filter(item => item.id != PURE_ID[1])
@@ -299,5 +310,5 @@ function increaseAmountInCart(id) {
   foundCartItem.amount++
   foundStoreItem.inStock--
   renderCartView()
-  filterAndRender(document.querySelector('#filterStatus').innerText, document.querySelector('#sortStatus').innerText)
+  filterAndRender(filterSetting, sortSetting)
 }
