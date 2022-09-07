@@ -159,3 +159,36 @@ function totalCart() {
 
   console.log(newCart);
 }
+
+
+
+
+function orderAlpha(){
+  const header = document.querySelector('#store')
+  const button = document.createElement('button')
+  button.innerText = 'Alphabetic order' 
+
+  header.insertBefore(button, header.firstChild)
+
+  button.addEventListener('click', () => {
+    const storeItems = document.querySelector(".item-list");
+    storeItems.innerHTML = ''
+    // let newItems = state.items.map((a) => a.name);
+    // console.log(newItems.sort())
+    function compare( a, b ) {
+      if ( a.name < b.name ){
+        return -1;
+      }
+      if ( a.name > b.name ){
+        return 1;
+      }
+      return 0;
+    }
+    state.items.sort( compare )
+    console.log(state.items)
+    renderList()
+  })
+
+}
+orderAlpha()
+
