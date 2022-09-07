@@ -7,7 +7,7 @@ const STATE = {
       name: "beetroot",
       price: 0.15,
       type: "Vegetables",
-      inStock: 12
+      inStock: 3
     },
     {
       id: "002-carrot",
@@ -21,7 +21,7 @@ const STATE = {
       name: "apple",
       price: 0.30,
       type: "Fruit",
-      inStock: 43
+      inStock: 4
     },
     {
       id: "004-apricot",
@@ -35,7 +35,7 @@ const STATE = {
       name: "avocado",
       price: 0.18,
       type: "Vegetables",
-      inStock: 86
+      inStock: 6
     },
     {
       id: "006-bananas",
