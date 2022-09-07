@@ -20,6 +20,15 @@ button {
   cursor: pointer;
 }
 
+#Vegetables, #Fruits {
+  box-sizing: inline;
+}
+
+.header-filters-type, .header-filters-sort {
+  justify-self: center;
+  float: right;
+}
+
 /* Store */
 
 #store {
@@ -29,6 +38,9 @@ button {
   overflow-y: scroll;
 
   background-color: #e7f4ea;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 #store h1 {
@@ -85,7 +97,7 @@ button {
 }
 
 .cart--item-list-container {
-  min-width: 320px;
+  width: 320px;
   height: 100%;
   padding: 0 1rem;
 
