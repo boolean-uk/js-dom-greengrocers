@@ -112,19 +112,19 @@ function renderStorefront(shopItems) {
 
   shopItems.forEach(item => {
     const STORE_LIST_ITEM = document.createElement('li')
-    
+
     const STORE_ITEM_DIV = document.createElement('div')
     STORE_ITEM_DIV.setAttribute('class', 'store--item-icon')
 
     const STORE_ITEM_NAME_PRICE = document.createElement('span')
     STORE_ITEM_NAME_PRICE.setAttribute('class', 'itemNamePrice')
-    STORE_ITEM_NAME_PRICE.innerText = capitalizeFirstLetter(item.name) +  ' £' + item.price.toFixed(2)
-    
+    STORE_ITEM_NAME_PRICE.innerText = capitalizeFirstLetter(item.name) + ' £' + item.price.toFixed(2)
+
     const STORE_ITEM_NAME_BR_1 = document.createElement('br')
 
     const STORE_ITEM_LEFT = document.createElement('span')
     STORE_ITEM_LEFT.setAttribute('class', 'inStock')
-    STORE_ITEM_LEFT.innerText = '(' + item.inStock +  ' left in stock)'
+    STORE_ITEM_LEFT.innerText = '(' + item.inStock + ' left in stock)'
 
     const STORE_ITEM_NAME_BR_2 = document.createElement('br')
 
@@ -173,13 +173,32 @@ function prepareFilters() {
 
 function addItemToCart(itemId) {
   const shoppingItem = STATE.items.find(({ id }) => id === itemId)
-  if(STATE.cart.find(({ id }) => id === itemId)) {
+
+  if(checkOutOfStock(shoppingItem)) {
+    return
+  }
+
+  if (STATE.cart.find(({ id }) => id === itemId)) {
     shoppingItem.amount++
+    shoppingItem.inStock--
+    filterAndRender(document.querySelector('#filterStatus').innerText, document.querySelector('#sortStatus').innerText)
   } else {
     shoppingItem.amount = 1
+    shoppingItem.inStock--
     STATE.cart = [...STATE.cart, shoppingItem]
+    filterAndRender(document.querySelector('#filterStatus').innerText, document.querySelector('#sortStatus').innerText)
   }
   renderCartView()
+}
+
+function checkOutOfStock(shoppingItem) {
+  if(shoppingItem.inStock <= 0 ) {
+    let stockWarning = document.querySelector('.outOfStock')
+    stockWarning.innerText = 'Item out of stock'
+    return true
+  }
+
+  return false
 }
 
 function capitalizeFirstLetter(text) {
@@ -204,23 +223,25 @@ function renderCartView() {
 
     const ITEM_TOTAL_PRICE = Number(item.amount) * Number(item.price)
     totalCartValue += ITEM_TOTAL_PRICE
-    
+
     const TOTALS = document.createElement('p')
     TOTALS.setAttribute('class', 'totalsPriceEachItemInCart')
     TOTALS.innerText = ' (£' + Number(item.price) + ' each - £' + (ITEM_TOTAL_PRICE.toFixed(2)) + ' for ' + Number(item.amount) + ')'
+    const OUT_OF_STOCK = document.createElement('span')
+    OUT_OF_STOCK.setAttribute('class', 'outOfStock')
     CART_ITEM_NAME.appendChild(TOTALS)
+    CART_ITEM_NAME.appendChild(OUT_OF_STOCK)
 
     const CART_DECREASE_BUTTON = document.createElement('button')
     CART_DECREASE_BUTTON.innerText = '-'
     CART_DECREASE_BUTTON.setAttribute('id', 'decrease_' + item.id)
     CART_DECREASE_BUTTON.setAttribute('class', 'quantity-btn remove-btn center')
 
-    const CART_INPUT_FIELD = document.createElement('input')
-    CART_INPUT_FIELD.setAttribute('type', 'number')
-    CART_INPUT_FIELD.setAttribute('class', 'cart-amount center')
+    const CART_INPUT_FIELD = document.createElement('span')
+    CART_INPUT_FIELD.setAttribute('class', 'quantity-text center')
     CART_INPUT_FIELD.setAttribute('id', 'amount_' + item.id)
-    CART_INPUT_FIELD.setAttribute('value', item.amount)
-  
+    CART_INPUT_FIELD.innerText = item.amount
+
     const CART_INCREASE_BUTTON = document.createElement('button')
     CART_INCREASE_BUTTON.innerText = '+'
     CART_INCREASE_BUTTON.setAttribute('id', 'increase_' + item.id)
@@ -239,9 +260,6 @@ function renderCartView() {
     })
     document.querySelector('#increase_' + item.id).addEventListener('click', function (event) {
       increaseAmountInCart(this.id)
-    })
-    document.querySelector('#amount_' + item.id).addEventListener('change', function (event) {
-      changeAmountInCart(this.id, this.value)
     })
   })
 
