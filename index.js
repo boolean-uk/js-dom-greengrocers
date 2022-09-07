@@ -53,3 +53,31 @@ const state = {
   ],
   cart: []
 };
+
+let groceryList = document.querySelector('.store--item-list')
+
+
+function createStoreItemList() {
+for (let i=0; i < state.items.length; i++) {
+    const item = state.items[i]
+    console.log(i, item);
+
+    const listItem = document.createElement('li')
+      listItem.innerText = item.name
+      groceryList.append(listItem)
+
+      // adding an image to listItem//
+      const itemImage = document.createElement('div')
+      itemImage.setAttribute('class', 'store--item-icon')
+      itemImage.innerHTML = `<img src="assets/icons/${item.id}.svg" alt="beetroot" />`
+      listItem.append(itemImage)
+
+    }
+}
+createStoreItemList()
+
+
+
+
+
+
