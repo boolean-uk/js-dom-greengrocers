@@ -274,12 +274,15 @@ function clearCart() {
 
 function decreaseAmountInCart(id) {
   const PURE_ID = id.split('_')
-  const foundItem = STATE.cart.find(({ id }) => id === PURE_ID[1])
+  const foundCartItem = STATE.cart.find(({ id }) => id === PURE_ID[1])
+  const foundStoreItem = STATE.items.find(({ id }) => id === PURE_ID[1])
 
-  if (foundItem.amount > 0) {
-    foundItem.amount--
+  if (foundCartItem.amount > 0) {
+    foundCartItem.amount--
+    foundStoreItem.inStock++
+    filterAndRender(document.querySelector('#filterStatus').innerText, document.querySelector('#sortStatus').innerText)
   }
-  if (foundItem.amount <= 0) {
+  if (foundCartItem.amount <= 0) {
     STATE.cart = STATE.cart.filter(item => item.id != PURE_ID[1])
   }
 
@@ -288,17 +291,13 @@ function decreaseAmountInCart(id) {
 
 function increaseAmountInCart(id) {
   const PURE_ID = id.split('_')
-  const foundItem = STATE.cart.find(({ id }) => id === PURE_ID[1])
-  foundItem.amount++
-  renderCartView()
-}
-
-function changeAmountInCart(id, newAmount) {
-  const PURE_ID = id.split('_')
-  const foundItem = STATE.cart.find(({ id }) => id === PURE_ID[1])
-  foundItem.amount = newAmount
-  if (foundItem.amount <= 0) {
-    STATE.cart = STATE.cart.filter(item => item.id != PURE_ID[1])
+  const foundCartItem = STATE.cart.find(({ id }) => id === PURE_ID[1])
+  const foundStoreItem = STATE.items.find(({ id }) => id === PURE_ID[1])
+  if(checkOutOfStock(foundStoreItem)) {
+    return
   }
+  foundCartItem.amount++
+  foundStoreItem.inStock--
   renderCartView()
+  filterAndRender(document.querySelector('#filterStatus').innerText, document.querySelector('#sortStatus').innerText)
 }
