@@ -137,6 +137,9 @@ function renderStorefront(shopItems) {
     const STORE_ITEM_BUTTON = document.createElement('button')
     STORE_ITEM_BUTTON.setAttribute('id', item.id)
     STORE_ITEM_BUTTON.innerText = 'Add to cart'
+    STORE_ITEM_BUTTON.addEventListener('click', function () {
+      addItemToCart(this.id)
+    })
 
     STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_PRICE)
     STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_BR_1)
@@ -149,9 +152,6 @@ function renderStorefront(shopItems) {
 
     STORE_FRONT.appendChild(STORE_LIST_ITEM)
 
-    document.getElementById(item.id).addEventListener('click', function () {
-      addItemToCart(this.id)
-    })
   })
 }
 
@@ -200,7 +200,7 @@ function addItemToCart(itemId) {
 function checkOutOfStock(shoppingItem) {
   if(shoppingItem.inStock <= 0 ) {
     let stockWarning = document.querySelector('#outOfStock_' + shoppingItem.id)
-    stockWarning.innerText = 'Item out of stock'
+    stockWarning.innerText = 'No more items left in stock'
     return true
   }
 
@@ -245,6 +245,9 @@ function renderCartView() {
     CART_DECREASE_BUTTON.innerText = '-'
     CART_DECREASE_BUTTON.setAttribute('id', 'decrease_' + item.id)
     CART_DECREASE_BUTTON.setAttribute('class', 'quantity-btn remove-btn center')
+    CART_DECREASE_BUTTON.addEventListener('click', function (event) {
+      decreaseAmountInCart(this.id)
+    })
 
     const CART_INPUT_FIELD = document.createElement('span')
     CART_INPUT_FIELD.setAttribute('class', 'quantity-text center')
@@ -255,6 +258,9 @@ function renderCartView() {
     CART_INCREASE_BUTTON.innerText = '+'
     CART_INCREASE_BUTTON.setAttribute('id', 'increase_' + item.id)
     CART_INCREASE_BUTTON.setAttribute('class', 'quantity-btn add-btn center')
+    CART_INCREASE_BUTTON.addEventListener('click', function (event) {
+      increaseAmountInCart(this.id)
+    })
 
     CART_ITEM.appendChild(ITEM_IMG)
     CART_ITEM.appendChild(CART_ITEM_NAME)
@@ -264,12 +270,6 @@ function renderCartView() {
 
     CART_LIST.appendChild(CART_ITEM)
 
-    document.querySelector('#decrease_' + item.id).addEventListener('click', function (event) {
-      decreaseAmountInCart(this.id)
-    })
-    document.querySelector('#increase_' + item.id).addEventListener('click', function (event) {
-      increaseAmountInCart(this.id)
-    })
   })
 
   const totalPriceInView = document.querySelector('.total-number')
