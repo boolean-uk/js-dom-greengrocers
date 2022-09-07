@@ -212,5 +212,6 @@ input[type=number] {
 }
 
 .outOfStock {
+  padding-left: 0.4rem;
   color: red;
 }

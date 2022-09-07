@@ -227,17 +227,19 @@ function renderCartView() {
     const CART_ITEM_NAME = document.createElement('p')
     CART_ITEM_NAME.innerText = capitalizeFirstLetter(item.name)
 
+    const OUT_OF_STOCK = document.createElement('span')
+    OUT_OF_STOCK.setAttribute('class', 'outOfStock')
+    OUT_OF_STOCK.setAttribute('id', 'outOfStock_' + item.id)
+    CART_ITEM_NAME.appendChild(OUT_OF_STOCK)
+
     const ITEM_TOTAL_PRICE = Number(item.amount) * Number(item.price)
     totalCartValue += ITEM_TOTAL_PRICE
 
     const TOTALS = document.createElement('p')
     TOTALS.setAttribute('class', 'totalsPriceEachItemInCart')
     TOTALS.innerText = ' (£' + Number(item.price) + ' each - £' + (ITEM_TOTAL_PRICE.toFixed(2)) + ' for ' + Number(item.amount) + ')'
-    const OUT_OF_STOCK = document.createElement('span')
-    OUT_OF_STOCK.setAttribute('class', 'outOfStock')
-    OUT_OF_STOCK.setAttribute('id', 'outOfStock_' + item.id)
     CART_ITEM_NAME.appendChild(TOTALS)
-    CART_ITEM_NAME.appendChild(OUT_OF_STOCK)
+
 
     const CART_DECREASE_BUTTON = document.createElement('button')
     CART_DECREASE_BUTTON.innerText = '-'
