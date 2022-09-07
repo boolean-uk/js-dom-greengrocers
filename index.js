@@ -199,7 +199,7 @@ function addItemToCart(itemId) {
 
 function checkOutOfStock(shoppingItem) {
   if(shoppingItem.inStock <= 0 ) {
-    let stockWarning = document.querySelector('.outOfStock')
+    let stockWarning = document.querySelector('#outOfStock_' + shoppingItem.id)
     stockWarning.innerText = 'Item out of stock'
     return true
   }
@@ -235,6 +235,7 @@ function renderCartView() {
     TOTALS.innerText = ' (£' + Number(item.price) + ' each - £' + (ITEM_TOTAL_PRICE.toFixed(2)) + ' for ' + Number(item.amount) + ')'
     const OUT_OF_STOCK = document.createElement('span')
     OUT_OF_STOCK.setAttribute('class', 'outOfStock')
+    OUT_OF_STOCK.setAttribute('id', 'outOfStock_' + item.id)
     CART_ITEM_NAME.appendChild(TOTALS)
     CART_ITEM_NAME.appendChild(OUT_OF_STOCK)
 
