@@ -87,14 +87,15 @@ button {
 }
 
 .cart--item-list-container {
-  min-width: 320px;
+  min-width: 600px;
   height: 100%;
   padding: 0 1rem;
 
   overflow-y: scroll;
 
   border-radius: 0.5rem;
-  border: 2px solid #757575;
+  border: 1px solid lightgray;
+  background-color: #f9f9f9
 }
 
 @media only screen and (max-width: 450px) {

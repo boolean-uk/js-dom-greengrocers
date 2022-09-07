@@ -72,6 +72,8 @@ function setupShop() {
   document.querySelector('#clearCart').addEventListener('click', clearCart)
 }
 
+setupShop()
+
 function filterAndRender(filter, sorting) {
   let shopItems = STATE.items
 
@@ -180,8 +182,10 @@ function renderCartView() {
     ITEM_IMG.setAttribute('class', 'cart--item-icon')
     ITEM_IMG.setAttribute('src', 'assets/icons/' + item.id + '.svg')
 
+    const ITEM_TOTAL_PRICE = Number(item.amount) * Number(item.price)
+
     const CART_NAME = document.createElement('p')
-    CART_NAME.innerText = capitalizeFirstLetter(item.name)
+    CART_NAME.innerText = capitalizeFirstLetter(item.name) + ' (£' + Number(item.price) + ' each) £' + (ITEM_TOTAL_PRICE.toFixed(2)) + ' for ' + Number(item.amount)
 
     const CART_DECREASE_BUTTON = document.createElement('button')
     CART_DECREASE_BUTTON.innerText = '-'
@@ -259,5 +263,3 @@ function changeAmountInCart(id, newAmount) {
   }
   renderCartView()
 }
-
-setupShop()
