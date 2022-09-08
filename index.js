@@ -70,17 +70,17 @@ const createLi = () => {
     const myLi = document.createElement('li')
     const theDiv = document.createElement('div')
     const foodButton = document.createElement("button");
-
+    const imageOfFood = document.createElement('img')
 
     foodButton.textContent = ' add to cart'
-    console.log(foodButton)
+    //console.log(foodButton)
     theDiv.classList = "store--item-icon"
     // const foodDiv = document.createElement('div')
     greenGrocers.append(myLi)
     myLi.append(theDiv)
 
     const fruitAndVegId = state.items[i].id
-    const imageOfFood = document.createElement('img')
+    
     //console.log(fruitAndVegId)
      imageOfFood.setAttribute('src', "/assets/icons/" + fruitAndVegId + ".svg" )
     // console.log(" the image here is ", imageOfFood)
@@ -93,18 +93,61 @@ const createLi = () => {
 createLi()
 
 
+function cartForLoop() {
+  for(let i = 0; i < itemArray.length; i++){
+
+  const cartLi = document.createElement('li')
+  const imageOfFoodInCart = document.createElement('img')
+  const foodName = document.createElement('p')
+  const removeBtn = document.createElement('button')
+  const quantitySpan = document.createElement('span')
+  const addBtn = document.createElement('button')
+
+  removeBtn.classList = 'quantity-btn', 'remove-btn center'
+  removeBtn.textContent = '-'
+
+  addBtn.classList = 'quantity-btn', 'add-btn center'
+  addBtn.textContent = '+'
+
+  quantitySpan.textContent= '1'
+  
+  foodName.textContent = state.items[i].name
 
 
+  const foodId = state.items[i].id
+
+  imageOfFoodInCart.classList = "cart--item-icon"
+  imageOfFoodInCart.setAttribute('src', "/assets/icons/" + foodId + ".svg" )
+  //console.log(imageOfFoodInCart)
+  
+  
+
+
+    userCart.append(cartLi)
+    cartLi.append(imageOfFoodInCart, foodName, removeBtn,quantitySpan,addBtn)
+  }
+ 
+}
+cartForLoop()
 
 
 // function renderCart() {
 //   state.cart.forEach( item => {
 //     //create cart elements for each item and appent them to the cart ul
+//     const cartLi = document.createElement('li')
+//     console.log('this is an', cartLi)
+//     userCart.append(cartLi)
 //   })  
 //  }
 
-//  addToCartBtn.addEventListener('click', function(){
-//    userCart.push(item)
-//    renderCart()
+//  renderCart(state) 
+ 
+
+//  const addToCartButton = document.querySelector('button')
+
+//  addToCartButton.addEventListener('click', function(){
+//   alert('hello')
+//   //  userCart.push(item)
+//   //  renderCart()
 //  })
 
