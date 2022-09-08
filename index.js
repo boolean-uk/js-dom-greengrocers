@@ -132,7 +132,13 @@ function renderCart() {
     //adding all to cartItem //
     cartItem.append(pEl, buttonRemove, spanEl, buttonAdd);
 
-    // renderTotalCart(totalPrice)
+
+    //adding event listener to add button
+    buttonAdd.addEventListener("click", () => {
+      item.quantity++
+      renderTotalCart(totalPrice)
+      renderCart()
+    });
 
     //adding event listener to remove button - unfinished//
 
