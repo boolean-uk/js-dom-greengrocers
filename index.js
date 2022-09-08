@@ -118,40 +118,14 @@ function renderStorefront(shopItems) {
     const STORE_ITEM_DIV = document.createElement('div')
     STORE_ITEM_DIV.setAttribute('class', 'store--item-icon')
 
-    const STORE_ITEM_NAME_PRICE = document.createElement('span')
-    STORE_ITEM_NAME_PRICE.setAttribute('class', 'itemNamePrice')
-    STORE_ITEM_NAME_PRICE.innerText = capitalizeFirstLetter(item.name) + ' £' + item.price.toFixed(2)
-
-    const STORE_ITEM_NAME_BR_1 = document.createElement('br')
-
-    const STORE_ITEM_LEFT = document.createElement('span')
-    STORE_ITEM_LEFT.setAttribute('class', 'inStock')
-    STORE_ITEM_LEFT.innerText = '(' + item.inStock + ' left in stock)'
-
-    const STORE_ITEM_NAME_BR_2 = document.createElement('br')
-
-    const STORE_ITEM_IMAGE = document.createElement('img')
-    STORE_ITEM_IMAGE.setAttribute('src', 'assets/icons/' + item.id + '.svg')
-    STORE_ITEM_IMAGE.setAttribute('alt', item.name)
-
-    const STORE_ITEM_BUTTON = document.createElement('button')
-    STORE_ITEM_BUTTON.setAttribute('id', item.id)
-    STORE_ITEM_BUTTON.innerText = 'Add to cart'
-    STORE_ITEM_BUTTON.addEventListener('click', function () {
-      addItemToCart(this.id)
-    })
-
-    STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_PRICE)
-    STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_BR_1)
-    STORE_ITEM_DIV.appendChild(STORE_ITEM_LEFT)
-    STORE_ITEM_DIV.appendChild(STORE_ITEM_NAME_BR_2)
-    STORE_ITEM_DIV.appendChild(STORE_ITEM_IMAGE)
-    STORE_ITEM_DIV.appendChild(STORE_ITEM_BUTTON)
+    STORE_ITEM_DIV.appendChild(generateStoreItemNamePrice(item.name, item.price))
+    STORE_ITEM_DIV.appendChild(generateStoreQuantityIndicator(item.inStock))
+    STORE_ITEM_DIV.appendChild(generateStoreImage(item.id, item.name))
+    STORE_ITEM_DIV.appendChild(createStoreItemButton(item.id))
 
     STORE_LIST_ITEM.appendChild(STORE_ITEM_DIV)
 
     STORE_FRONT.appendChild(STORE_LIST_ITEM)
-
   })
 }
 
@@ -180,7 +154,7 @@ function prepareFilters() {
 function addItemToCart(itemId) {
   const shoppingItem = STATE.items.find(({ id }) => id === itemId)
 
-  if(checkOutOfStock(shoppingItem)) {
+  if (checkOutOfStock(shoppingItem)) {
     return
   }
 
@@ -198,17 +172,13 @@ function addItemToCart(itemId) {
 }
 
 function checkOutOfStock(shoppingItem) {
-  if(shoppingItem.inStock <= 0 ) {
+  if (shoppingItem.inStock <= 0) {
     let stockWarning = document.querySelector('#outOfStock_' + shoppingItem.id)
     stockWarning.innerText = 'No more items left in stock'
     return true
   }
 
   return false
-}
-
-function capitalizeFirstLetter(text) {
-  return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
 function renderCartView() {
@@ -220,67 +190,27 @@ function renderCartView() {
   STATE.cart.forEach(item => {
     const CART_ITEM = document.createElement('li')
 
-    const ITEM_IMG = document.createElement('img')
-    ITEM_IMG.setAttribute('class', 'cart--item-icon')
-    ITEM_IMG.setAttribute('src', 'assets/icons/' + item.id + '.svg')
-
-    const CART_ITEM_NAME = document.createElement('p')
-    CART_ITEM_NAME.innerText = capitalizeFirstLetter(item.name)
-
-    const OUT_OF_STOCK = document.createElement('span')
-    OUT_OF_STOCK.setAttribute('class', 'outOfStock')
-    OUT_OF_STOCK.setAttribute('id', 'outOfStock_' + item.id)
-    CART_ITEM_NAME.appendChild(OUT_OF_STOCK)
-
     const ITEM_TOTAL_PRICE = Number(item.amount) * Number(item.price)
     totalCartValue += ITEM_TOTAL_PRICE
 
-    const TOTALS = document.createElement('p')
-    TOTALS.setAttribute('class', 'totalsPriceEachItemInCart')
-    TOTALS.innerText = ' (£' + Number(item.price) + ' each - £' + (ITEM_TOTAL_PRICE.toFixed(2)) + ' for ' + Number(item.amount) + ')'
-    CART_ITEM_NAME.appendChild(TOTALS)
-
-
-    const CART_DECREASE_BUTTON = document.createElement('button')
-    CART_DECREASE_BUTTON.innerText = '-'
-    CART_DECREASE_BUTTON.setAttribute('id', 'decrease_' + item.id)
-    CART_DECREASE_BUTTON.setAttribute('class', 'quantity-btn remove-btn center')
-    CART_DECREASE_BUTTON.addEventListener('click', function (event) {
-      decreaseAmountInCart(this.id)
-    })
-
-    const CART_INPUT_FIELD = document.createElement('span')
-    CART_INPUT_FIELD.setAttribute('class', 'quantity-text center')
-    CART_INPUT_FIELD.setAttribute('id', 'amount_' + item.id)
-    CART_INPUT_FIELD.innerText = item.amount
-
-    const CART_INCREASE_BUTTON = document.createElement('button')
-    CART_INCREASE_BUTTON.innerText = '+'
-    CART_INCREASE_BUTTON.setAttribute('id', 'increase_' + item.id)
-    CART_INCREASE_BUTTON.setAttribute('class', 'quantity-btn add-btn center')
-    CART_INCREASE_BUTTON.addEventListener('click', function (event) {
-      increaseAmountInCart(this.id)
-    })
-
-    CART_ITEM.appendChild(ITEM_IMG)
-    CART_ITEM.appendChild(CART_ITEM_NAME)
-    CART_ITEM.appendChild(CART_DECREASE_BUTTON)
-    CART_ITEM.appendChild(CART_INPUT_FIELD)
-    CART_ITEM.appendChild(CART_INCREASE_BUTTON)
+    CART_ITEM.appendChild(createImageElement(item.id))
+    CART_ITEM.appendChild(createNameElement(item.name, item.id, item.price, item.amount, ITEM_TOTAL_PRICE))
+    CART_ITEM.appendChild(createDecreaseButton(item.id))
+    CART_ITEM.appendChild(createCartQuantityField(item.id, item.amount))
+    CART_ITEM.appendChild(createIncreaseButton(item.id))
 
     CART_LIST.appendChild(CART_ITEM)
 
   })
 
-  const totalPriceInView = document.querySelector('.total-number')
-  totalPriceInView.innerText = "£" + totalCartValue.toFixed(2)
+  updateTotalNumber(totalCartValue)
 }
 
 function clearCart() {
-  STATE.cart.forEach( cartItem => {
-    const foundStoreItem = STATE.items.find(({ id }) => id === cartItem.id)  
+  STATE.cart.forEach(cartItem => {
+    const foundStoreItem = STATE.items.find(({ id }) => id === cartItem.id)
     foundStoreItem.inStock += cartItem.amount
-  } )
+  })
   STATE.cart = []
   renderCartView()
   filterAndRender(filterSetting, sortSetting)
@@ -307,11 +237,116 @@ function increaseAmountInCart(id) {
   const PURE_ID = id.split('_')
   const foundCartItem = STATE.cart.find(({ id }) => id === PURE_ID[1])
   const foundStoreItem = STATE.items.find(({ id }) => id === PURE_ID[1])
-  if(checkOutOfStock(foundStoreItem)) {
+  if (checkOutOfStock(foundStoreItem)) {
     return
   }
   foundCartItem.amount++
   foundStoreItem.inStock--
   renderCartView()
   filterAndRender(filterSetting, sortSetting)
+}
+
+function updateTotalNumber(totalCartValue) {
+  const totalPriceInView = document.querySelector('.total-number')
+  totalPriceInView.innerText = "£" + totalCartValue.toFixed(2)
+}
+
+function capitalizeFirstLetter(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+
+/* Generate Store Elements */
+
+function generateStoreItemNamePrice(itemName, itemPrice) {
+  const STORE_ITEM_NAME_PRICE = document.createElement('p')
+  STORE_ITEM_NAME_PRICE.setAttribute('class', 'itemNamePrice')
+  STORE_ITEM_NAME_PRICE.innerText = capitalizeFirstLetter(itemName) + ' £' + itemPrice.toFixed(2)
+
+  return STORE_ITEM_NAME_PRICE
+}
+
+function generateStoreQuantityIndicator(itemsInStock) {
+  const STORE_ITEM_REMAINING = document.createElement('p')
+  STORE_ITEM_REMAINING.setAttribute('class', 'inStock')
+  STORE_ITEM_REMAINING.innerText = '(' + itemsInStock + ' left in stock)'
+  return STORE_ITEM_REMAINING
+}
+
+function generateStoreImage(itemId, itemName) {
+  const STORE_ITEM_IMAGE = document.createElement('img')
+  STORE_ITEM_IMAGE.setAttribute('src', 'assets/icons/' + itemId + '.svg')
+  STORE_ITEM_IMAGE.setAttribute('alt', itemName)
+
+  return STORE_ITEM_IMAGE
+}
+
+function createStoreItemButton(itemId) {
+  const STORE_ITEM_BUTTON = document.createElement('button')
+  STORE_ITEM_BUTTON.setAttribute('id', itemId)
+  STORE_ITEM_BUTTON.innerText = 'Add to cart'
+  STORE_ITEM_BUTTON.addEventListener('click', function () {
+    addItemToCart(this.id)
+  })
+
+  return STORE_ITEM_BUTTON
+}
+
+/* Generate Cart Elements */
+
+function createImageElement(itemId) {
+  const ITEM_IMG = document.createElement('img')
+  ITEM_IMG.setAttribute('class', 'cart--item-icon')
+  ITEM_IMG.setAttribute('src', 'assets/icons/' + itemId + '.svg')
+
+  return ITEM_IMG
+}
+
+function createNameElement(itemName, itemId, itemPrice, itemAmount, itemTotalPrice) {
+  const CART_ITEM_NAME = document.createElement('p')
+  CART_ITEM_NAME.innerText = capitalizeFirstLetter(itemName)
+
+  const OUT_OF_STOCK = document.createElement('span')
+  OUT_OF_STOCK.setAttribute('class', 'outOfStock')
+  OUT_OF_STOCK.setAttribute('id', 'outOfStock_' + itemId)
+  CART_ITEM_NAME.appendChild(OUT_OF_STOCK)
+
+  const TOTALS = document.createElement('p')
+  TOTALS.setAttribute('class', 'totalsPriceEachItemInCart')
+  TOTALS.innerText = ' (£' + itemPrice.toFixed(2) + ' each - £' + itemTotalPrice.toFixed(2) + ' for ' + itemAmount + ')'
+  CART_ITEM_NAME.appendChild(TOTALS)
+
+  return CART_ITEM_NAME
+}
+
+function createDecreaseButton(itemId) {
+  const CART_DECREASE_BUTTON = document.createElement('button')
+  CART_DECREASE_BUTTON.innerText = '-'
+  CART_DECREASE_BUTTON.setAttribute('id', 'decrease_' + itemId)
+  CART_DECREASE_BUTTON.setAttribute('class', 'quantity-btn remove-btn center')
+  CART_DECREASE_BUTTON.addEventListener('click', function (event) {
+    decreaseAmountInCart(this.id)
+  })
+  return CART_DECREASE_BUTTON
+}
+
+function createCartQuantityField(itemId, itemAmount) {
+  const CART_QUANTITY_FIELD = document.createElement('span')
+  CART_QUANTITY_FIELD.setAttribute('class', 'quantity-text center')
+  CART_QUANTITY_FIELD.setAttribute('id', 'amount_' + itemId)
+  CART_QUANTITY_FIELD.innerText = itemAmount
+
+  return CART_QUANTITY_FIELD
+}
+
+function createIncreaseButton(itemId) {
+  const CART_INCREASE_BUTTON = document.createElement('button')
+  CART_INCREASE_BUTTON.innerText = '+'
+  CART_INCREASE_BUTTON.setAttribute('id', 'increase_' + itemId)
+  CART_INCREASE_BUTTON.setAttribute('class', 'quantity-btn add-btn center')
+  CART_INCREASE_BUTTON.addEventListener('click', function (event) {
+    increaseAmountInCart(this.id)
+  })
+
+  return CART_INCREASE_BUTTON
 }
