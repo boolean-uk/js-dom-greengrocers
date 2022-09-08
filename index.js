@@ -83,10 +83,11 @@ function createStoreItemList() {
       }
 
       item.quantity++;
-      state.cart.push(item);
-      
-      cartItemList.innerHTML = "";
 
+      if (!state.cart.find(({id})=> id === item.id) ) {
+        state.cart.push(item);
+      }
+      
       renderCart();
     });
   }
@@ -95,7 +96,11 @@ createStoreItemList();
 
 //renderCart function//
 function renderCart() {
+  cartItemList.innerHTML = ''
+  let totalPrice = 0
   state.cart.forEach((item) => {
+    totalPrice += item.quantity * item.price
+
     cartItem = document.createElement("li");
     cartItemList.append(cartItem);
 
@@ -104,7 +109,6 @@ function renderCart() {
     cartItemImg.setAttribute("class", "cart--item-icon");
     cartItemImg.setAttribute("alt", `${item.name}`);
     cartItem.append(cartItemImg);
-    let sum = 1;
 
     //adding <p> to cartItem//
     const pEl = document.createElement("p");
@@ -118,7 +122,7 @@ function renderCart() {
     //creating span within cartItem //
     const spanEl = document.createElement("span");
     spanEl.setAttribute("class", "quantity-text center");
-    spanEl.innerHTML = item.quantity;
+    spanEl.innerText = item.quantity;
 
     //creating 2nd button within cartItem//
     const buttonAdd = document.createElement("button");
@@ -128,38 +132,29 @@ function renderCart() {
     //adding all to cartItem //
     cartItem.append(pEl, buttonRemove, spanEl, buttonAdd);
 
+    // renderTotalCart(totalPrice)
+
     //adding event listener to remove button - unfinished//
 
     buttonRemove.addEventListener("click", () => {
-      if (spanEl.textContent <= 1) {
-        cartItem.remove();
+      item.quantity--
+      if(item.quantity <= 0 ) {
+        state.cart = state.cart.filter(thisItem => thisItem.id != item.id)
       }
+      renderTotalCart(totalPrice)
+      renderCart()
 
-      let removeIndex = state.cart.indexOf(item);
-      state.cart.splice(removeIndex, 1);
-      sum--;
-      spanEl.textContent = sum;
-      totalCart();
     });
   });
+  renderTotalCart(totalPrice)
 }
 
 // calculating total sum//
 
-function totalCart() {
+function renderTotalCart(totalPrice) {
   const total = document.querySelector(".total-number");
-  total.innerHTML = "";
-  let sumTotal;
+  
 
-  let updatedCart = state.cart.map((a) => a.price);
-
-  if (updatedCart.length <= 0) {
-    total.textContent = "£0.00";
-    return;
-  }
-
-  sumTotal = updatedCart.reduce((pv, cv) => pv + cv);
-
-  total.textContent = "£" + Math.round(sumTotal * 100) / 100;
+  total.innerText = "£" + totalPrice.toFixed(2)
 
 }
