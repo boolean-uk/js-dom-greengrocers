@@ -181,8 +181,7 @@ function orderAlpha() {
   button.addEventListener("click", () => {
     const storeItems = document.querySelector(".item-list");
     storeItems.innerHTML = "";
-    // let newItems = state.items.map((a) => a.name);
-    // console.log(newItems.sort())
+
     function compare(a, b) {
       if (a.name < b.name) {
         return -1;
@@ -193,7 +192,7 @@ function orderAlpha() {
       return 0;
     }
     state.items.sort(compare);
-    console.log(state.items);
+
     renderList();
   });
 }
@@ -207,18 +206,38 @@ function fruitOnly() {
   header.insertBefore(buttonFruit, header.firstChild);
 
   buttonFruit.addEventListener("click", () => {
-    let fruitArr = [];
     state.items.forEach((e) => {
-      if (Object.values(state.items[e]).includes("fruit")) {
-        fruitArr.push(e);
+      if (Object.values(e).includes("fruit") === false) {
+        state.items.splice(state.items.indexOf(e), 1)    
+        const storeItems = document.querySelector(".item-list");
+        storeItems.innerHTML = "";
+        renderList();
       }
-      console.log(fruitArr);
     });
   });
 }
 
 fruitOnly();
 
-function vegOnly() {}
+function vegOnly(){
+  const header = document.querySelector("#store");
+  const buttonVeg = document.createElement("button");
+
+  buttonVeg.innerText = "Filter Veg";
+  header.insertBefore(buttonVeg, header.firstChild);
+
+  buttonVeg.addEventListener("click", () => {
+    state.items.forEach((e) => {
+      // let test = Object.values(e).includes("veg")
+      if (Object.values(e).includes("veg") === false) {
+        state.items.splice(state.items.indexOf(e), 1)    
+        const storeItems = document.querySelector(".item-list");
+        storeItems.innerHTML = "";
+        renderList();
+        console.log(state.items)
+      }
+    });
+  });
+}
 
 vegOnly();
