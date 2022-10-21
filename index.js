@@ -86,7 +86,8 @@ function addFruitToCartState(item) {
   const newCartItem = {
     name: item.name,
     price: item.price,
-    img: `assets/icons/${item.id}.svg`
+    img: `assets/icons/${item.id}.svg`,
+    quantity: 1
   }
 
   state.cart.push(newCartItem)
@@ -96,24 +97,39 @@ function renderUserCart(){
   const cartItemList = document.querySelector('.cart--item-list');
   cartItemList.innerHTML = '';
   for (let item of state.cart) {
+    console.log(state.cart)
     const li = document.createElement('li');
     cartItemList.appendChild(li);
 
     const img = document.createElement('img');
-    img.setAttribute('src', `assets/icons/${item.id}.svg`);
+    img.setAttribute('src', item.img);
     img.setAttribute('alt', item.name);
     img.setAttribute('class', "cart--item-icon");
-    div.appendChild(img);
+    li.appendChild(img);
 
     const p = document.createElement('p');
-    button.innerText = item.name;
+    p.innerText = item.name;
     li.appendChild(p);
 
-    removeButton
+    const removeButton = document.createElement('button');
+    removeButton.setAttribute('class', 'quantity-btn remove-btn center');
+    li.appendChild(removeButton);
 
-    button.addEventListener("click", function() {
-      addFruitToCartState(item)
-      renderUserCart()
+    const counterSpan = document.createElement('counterSpan');
+    counterSpan.setAttribute('class', 'quantity-text center');
+    counterSpan.innerText = item.quantity;
+    li.appendChild(counterSpan);
+
+    const addButton = document.createElement('button');
+    addButton.setAttribute('class', 'quantity-btn add-btn center');
+    li.appendChild(addButton);
+
+    addButton.addEventListener("click", function() {
+      console.log('Add button clicked, will need to do some magic')
+    })
+
+    removeButton.addEventListener("click", function() {
+      console.log('Remove button clicked, will need to do some magic')
     })
     }
 }
