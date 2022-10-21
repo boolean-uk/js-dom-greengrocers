@@ -61,30 +61,38 @@ function renderStore(items) {
   // Clear store-item--list
   storeItemList.innerHTML = ''
 
-  // Create an li for each object in state.items
+  
   items.forEach(item => {
-    const li = document.createElement('li')
-    // Create a div to contain the img with class 'store--item-icon'
-    const div = document.createElement('div')
-    div.setAttribute('class', 'store--item-icon')
-    // Create food item img/svg for appending into the div
-    const img = document.createElement('img')
-    img.setAttribute('src', `assets/icons/${item.id}.svg`)
-    img.setAttribute('alt', item.name)
+    // Create an li for each object in state.items
     
+    // Create a div to contain the img with class 'store--item-icon'
+    // Create food item img/svg for appending into the div
+    // Create button for appending into the li
+    // Append everything to where it should be
+    storeItemList.innerHTML += `
+    <li id='storeLi'>
+      <div class='store--item-icon'>
+        <img class='store--item-icon'
+        src='assets/icons/${item.id}.svg'
+        alt='item.name'/>
+      </div>
+      
+      <button id='storeButton'>Add to cart</button>
+    </li>`
 
-    //Append everything to where it should be
-    storeItemList.appendChild(li)
-    li.appendChild(div)
-    div.appendChild(img)
+    // Define elements as variables in case I need them later
+    const li = document.querySelector('#storeLi')
+    const button = document.querySelector('#storeButton')
+
+    // Event Listener for when the button is clicked
+      //pushes clicked item/object into state.cart
   })
   
   
   
 
-  // Implement button into the li
-  // Event Listener for when the button is clicked
-    //pushes clicked item/object into state.cart
+  
+  
 
 // function end
 }
