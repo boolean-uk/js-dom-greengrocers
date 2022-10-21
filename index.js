@@ -67,7 +67,7 @@ function renderStore(items) {
     // Create a div to contain the img with class 'store--item-icon'
     const div = document.createElement('div')
     div.setAttribute('class', 'store--item-icon')
-    // Implement food item img/svg into the div
+    // Create food item img/svg for appending into the div
     const img = document.createElement('img')
     img.setAttribute('src', `assets/icons/${item.id}.svg`)
     img.setAttribute('alt', item.name)
