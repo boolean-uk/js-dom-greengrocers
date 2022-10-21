@@ -62,31 +62,74 @@ const store = document.querySelector(".store--item-list");
 const cart = document.querySelector(".cart--item-list");
 
 function createStoreItem(product) {
-  return (html = `
-    <li>
-      <div class="store--item-icon">
-        <img src="assets/icons/${product.id}.svg" alt="${product.name}" />
-      </div>
-      <button class='cart-btn'>Add to cart</button>
-    </li>
-`);
+  const li = document.createElement("li");
+
+  const div = document.createElement("div");
+  div.classList.add("store--item-icon");
+
+  const img = document.createElement("img");
+  img.src = `assets/icons/${product.id}.svg`;
+  img.alt = product.name;
+
+  const button = document.createElement("button");
+  button.innerText = "Add to cart";
+
+  div.appendChild(img);
+  li.appendChild(div);
+  li.appendChild(button);
+
+  return li;
 }
 
 state.items.forEach((product) => {
   const item = createStoreItem(product);
 
-  store.innerHTML += item;
+  // add products to store
+  store.append(item);
 
-  handleButton();
+  const cartBtn = item.querySelector("button");
+  cartBtn.addEventListener("click", function () {
+    // perhaps I should be passing in the cart data instead
+    const cartItem = createCartItem(product);
+    cart.append(cartItem);
+  });
 });
 
 // function to select the button and add the event listener which will listen for click event
-function handleButton() {
-  const cartBtn = document.querySelector(".cart-btn");
-  console.log(cartBtn);
-}
 
 // function to render the cart items
+
+// function to add item to cart
+function createCartItem(product) {
+  const li = document.createElement("li");
+
+  const img = document.createElement("img");
+  img.src = `assets/icons/${product.id}.svg`;
+  img.alt = product.name;
+  img.classList.add("cart--item-icon");
+
+  const p = document.createElement("p");
+  p.innerText = product.name;
+
+  const removeBtn = document.createElement("button");
+  const addBtn = document.createElement("button");
+  removeBtn.classList.add("quantity-btn", "remove-btn", "center");
+  removeBtn.innerText = "-";
+  addBtn.classList.add("quantity-btn", "add-btn", "center");
+  addBtn.innerText = "+";
+
+  const span = document.createElement("span");
+  span.classList.add("quantity-text", "center");
+  span.innerText = "1";
+
+  li.appendChild(img);
+  li.appendChild(p);
+  li.appendChild(removeBtn);
+  li.appendChild(span);
+  li.appendChild(addBtn);
+
+  return li;
+}
 
 // function to clear the cart list
 function clearCart() {
