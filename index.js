@@ -53,3 +53,19 @@ const state = {
   ],
   cart: []
 };
+const shop = document.querySelector(".store--item-list");
+const cart = document.querySelector(".cart--item-list");
+state.items.forEach(item => {
+  console.log("eachOne", item)
+})
+// const items = state.items
+// console.log("shop is:", items[1].id)
+function fromShop (shopItem){
+  const li = document.createElement("li")
+  console.log("branch", li)
+  const div = document.createElement("div")
+  const img = `src="assets/icons/001-beetroot.svg"`
+
+  return li
+}
+fromShop()
