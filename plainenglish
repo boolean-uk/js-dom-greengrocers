@@ -1,0 +1,22 @@
+// the food lists need to be added to the
+// greengrocers sections with their images
+// i'd suspect adding a ul to the header section
+// and then add the groceries into that
+
+// pull images from the assets folder ^^
+
+// my items lists ( grocers that can be purchased) will need to be scrollable
+// in order to be able to view them all.
+//
+
+// write a function to check through the items in the cart
+// and if there are there already then add to their quantity
+// a user should be able to adjust quantity from the cart.
+// If the items quantity = 0 then it should be removed from
+// "your cart" section.
+
+// there should a running total of all the
+// items in the cart and the total cost of each item.
+
+//
+//
