@@ -53,3 +53,38 @@ const state = {
   ],
   cart: []
 };
+
+// render shop items
+// 1. query selector item list
+// 2. function to create li
+//      create + append div to li
+//      create + append img to div
+//      create + append button to li
+// 3. for each state item run create li function
+
+const shopItems = document.querySelector(".item-list")
+const itemData = state.items
+
+itemData.forEach((item) => {
+  shopItems.appendChild(createShopItem(item))
+})
+
+function createShopItem (item) {
+
+  const shopItem = document.createElement('li')
+  const shopIconCon = document.createElement('div')
+  const shopIcon = document.createElement('img')
+  const addToCart = document.createElement('button')
+
+  shopIconCon.setAttribute('class', "store--item-icon" )
+  shopIcon.src = `assets/icons/${item.id}.svg`
+  addToCart.innerText = 'Add to cart'
+
+  shopItem.appendChild(shopIconCon)
+  shopIconCon.appendChild(shopIcon)
+  shopItem.appendChild(addToCart)
+
+  return shopItem
+
+}
+
