@@ -53,9 +53,29 @@ const state = {
   ],
   cart: [],
 };
-const storeItems = document.querySelector(".item-list");
+const vegetables = [
+  "001-beetroot",
+  "002-carrot",
+  "005-avocado",
+  "007-bell-pepper",
+  "010-eggplant",
+];
+const storeItems = document.querySelector(".store--item-list");
 const cartItems = document.querySelector(".cart--item-list");
 const addToCartButton = document.querySelector(".add");
+const h1 = document.querySelector("h1");
+
+const allFilter = document.createElement("button");
+allFilter.innerText = "All";
+h1.appendChild(allFilter);
+
+const vegetablesFilter = document.createElement("button");
+vegetablesFilter.innerText = "Vegetables";
+h1.appendChild(vegetablesFilter);
+
+const fruitsFilter = document.createElement("button");
+fruitsFilter.innerText = "Fruits";
+h1.appendChild(fruitsFilter);
 
 function addStoreItem(item) {
   const li = document.createElement("li");
@@ -73,6 +93,18 @@ function addStoreItem(item) {
   storeItems.appendChild(li);
   addToCartButton.addEventListener("click", () => {
     addToCart(item);
+  });
+
+  allFilter.addEventListener("click", () => {
+    li.remove();
+    addStoreItem(item);
+  });
+
+  vegetablesFilter.addEventListener("click", () => {
+    li.remove();
+  });
+  fruitsFilter.addEventListener("click", () => {
+    li.remove();
   });
 }
 
@@ -100,7 +132,7 @@ function addToCart(item) {
   minusButton.setAttribute("class", "remove-btn");
   minusButton.innerText = "-";
   const span = document.createElement("span");
-  span.innerText = 1;
+  span.innerText = "1";
   const plusButton = document.createElement("button");
   plusButton.setAttribute("class", "add-btn");
   plusButton.innerText = "+";
@@ -111,5 +143,19 @@ function addToCart(item) {
   li.appendChild(plusButton);
   cartItems.appendChild(li);
   state.cart.push(item);
+  plusButton.addEventListener("click", () => {
+    item.quantity += 1;
+    span.innerText = item.quantity;
+  });
+  console.log(item.quantity);
+  minusButton.addEventListener("click", () => {
+    item.quantity -= 1;
+    if (item.quantity < 1) {
+      li.remove();
+      // li.innerHTML = "";
+    }
+    span.innerText = item.quantity;
+  });
 }
+
 render();
