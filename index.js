@@ -90,14 +90,21 @@ state.items.forEach((product) => {
   const cartBtn = item.querySelector("button");
   cartBtn.addEventListener("click", function () {
     // perhaps I should be passing in the cart data instead
-    const cartItem = createCartItem(product);
-    cart.append(cartItem);
+    addToCart(product);
+    renderCart();
   });
 });
 
 // function to select the button and add the event listener which will listen for click event
 
 // function to render the cart items
+function renderCart() {
+  clearCart();
+  state.cart.forEach((cartItem) => {
+    const cartItemDOM = createCartItem(cartItem);
+    cart.appendChild(cartItemDOM);
+  });
+}
 
 // function to add item to cart
 function createCartItem(product) {
@@ -120,7 +127,7 @@ function createCartItem(product) {
 
   const span = document.createElement("span");
   span.classList.add("quantity-text", "center");
-  span.innerText = "1";
+  span.innerText = product.quantity;
 
   li.appendChild(img);
   li.appendChild(p);
@@ -129,6 +136,12 @@ function createCartItem(product) {
   li.appendChild(addBtn);
 
   return li;
+}
+
+// updates state.cart
+function addToCart(product) {
+  product.quantity = 1;
+  state.cart.push(product);
 }
 
 // function to clear the cart list
