@@ -53,25 +53,63 @@ const state = {
   ],
   cart: [],
 };
+const storeItems = document.querySelector(".item-list");
+const cartItems = document.querySelector(".cart--item-list");
+const addToCartButton = document.querySelector(".add");
 
-function addStoreItems() {
+function addStoreItem(item) {
   const li = document.createElement("li");
   const div = document.createElement("div");
   div.setAttribute("class", "store--item-icon");
   const img = document.createElement("img");
-  img.innerHTML = 'src="assets/icons/001-beetroot.svg" alt="beetroot"';
+  img.setAttribute("src", item.image);
+  img.setAttribute("alt", item.name);
   const addToCartButton = document.createElement("button");
+  addToCartButton.setAttribute("class", "add");
   addToCartButton.innerText = "ADD TO CART";
   li.appendChild(div);
   div.appendChild(img);
   li.appendChild(addToCartButton);
   storeItems.appendChild(li);
+  addToCartButton.addEventListener("click", () => {
+    addToCart(item);
+  });
 }
-const storeItems = document.querySelector(".item-list");
+
 function render() {
   state.items.forEach((item) => {
-    const li = addStoreItems(item);
-    addStoreItems();
+    item.quantity = 1;
+    item.image = `assets/icons/${item.id}.svg`;
+    addStoreItem(item);
   });
+}
+
+function addToCart(item) {
+  if (state.cart.includes(item)) {
+    return;
+  }
+
+  const li = document.createElement("li");
+  const img = document.createElement("img");
+  img.setAttribute("class", "cart--item-icon");
+  img.setAttribute("src", item.image);
+  img.setAttribute("alt", item.name);
+  const p = document.createElement("p");
+  p.innerText = item.name;
+  const minusButton = document.createElement("button");
+  minusButton.setAttribute("class", "remove-btn");
+  minusButton.innerText = "-";
+  const span = document.createElement("span");
+  span.innerText = 1;
+  const plusButton = document.createElement("button");
+  plusButton.setAttribute("class", "add-btn");
+  plusButton.innerText = "+";
+  li.appendChild(img);
+  li.appendChild(p);
+  li.appendChild(minusButton);
+  li.appendChild(span);
+  li.appendChild(plusButton);
+  cartItems.appendChild(li);
+  state.cart.push(item);
 }
 render();
