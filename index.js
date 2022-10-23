@@ -91,7 +91,6 @@ function resetList(listName) {
       ul.removeChild(ul.firstChild)
     }
   }
-  console.log("- Reset")
 }
 
 // Called when ready
@@ -114,10 +113,10 @@ function renderCart() {
   data.cart.forEach((item) => {   
     // call function to render item
     createCart(item)
-
-    // Update total adding item price to total
-    updateTotal(item.price)
   })
+
+  // Update total adding item price to total
+  updateTotal()
 }
 
 // render and append individual item to store
@@ -215,14 +214,22 @@ function removeFromCart(item) {
   renderCart()
 }
 
-function updateTotal(value) {
-  const total = document.querySelector(".total-number")
-  
-  const selfFloat = parseFloat(total.innerText.slice(1)) 
-  const fixedValue = Number(selfFloat + value).toFixed(2)
-  console.log(`Add value ${value} to total ${total.innerText}`)
-  
-  total.innerText = `£${fixedValue}`
+// Iterates though the Cart items checking for the item quantity.
+function updateTotal() {
+  const totalSpan = document.querySelector(".total-number")
+  let total = 0
+
+  data.cart.forEach((item) => {
+    // Iterate though the items to check its quantity
+    for (let i = 1; i <= item.quantity; i++) {
+      // Looping though the item quantity, add here
+      total += item.price
+    }
+  })
+
+  // Fix the value to only 2 zeros after .
+  total = total.toFixed(2)
+  totalSpan.innerText = `£${total}` // Updates HTML
 }
 
 renderStore()
