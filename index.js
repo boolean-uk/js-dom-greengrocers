@@ -68,7 +68,9 @@ state.items.forEach(item => {
   addButton.addEventListener("click", function (e){
     e.preventDefault();
     state.cart.push(item)
-    console.log("what is that", state)
+    cartItem().stopImmediatepropogation()
+    
+    console.log("what is that", state.cart)
   })
   li.append(div, addButton)
   div.append(img)
@@ -87,7 +89,7 @@ console.log("after method", state.items[4].name)
 // }
 // fromShop()
 function cartItem () {
-  state.items.forEach(item => {
+  state.cart.forEach(item => {
     const li = document.createElement("li");
     const img = document.createElement("img");
     img.setAttribute("class", "cart--item-icon")
