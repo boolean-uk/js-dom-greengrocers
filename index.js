@@ -93,16 +93,30 @@ function resetList(listName) {
   }
 }
 
-// Called when ready
-function renderStore() {
+// Called when ready (Categories: all, vegetable, fruit)
+function renderStore(category) {
   // reset before iterating though new ones
   resetList("store")
 
-  // iterate though data.items
-  data.items.forEach((item) => {
-    // call function to render item card
-    createStore(item)
-  })
+  // classes: all, vegetable, fruit
+  // check whether it is supposed to render all or a specific category
+  if (category === "all") {
+    // iterate though data.items
+    data.items.forEach((item) => {
+      // call function to render item card
+      createStore(item)
+    })
+  }
+  // has a category specified
+  else {
+    // iterate though data.items
+    data.items.forEach((item) => {
+      // if item.class not same as category, jump to next item
+      if (item.class !== category) { return }
+      // if the same as category, render item
+      createStore(item)
+    })
+  }
 }
 // Called at the end of addToCart and removeFromCart
 function renderCart() {
@@ -232,4 +246,4 @@ function updateTotal() {
   totalSpan.innerText = `£${total}` // Updates HTML
 }
 
-renderStore()
+renderStore("fruit")
