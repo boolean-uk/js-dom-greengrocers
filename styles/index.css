@@ -2,6 +2,14 @@
 
 body {
   font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+  display: grid;
+  grid-template:
+  "header aside" auto
+  "main aside" 1fr
+  "footer aside" auto /
+  auto auto;
+
+  overflow: hidden;
 }
 
 h1,
@@ -12,27 +20,105 @@ h2 {
 /* Buttons */
 
 button {
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 1rem;
 
   text-transform: uppercase;
   font-size: 0.725rem;
+  font-weight: bolder;
+
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background-color: white;
+
+  border-radius: 8px;
+  border: none;
 
   cursor: pointer;
 }
+button:hover {
+  filter: brightness(92%);
+}
+button:active {
+  filter: brightness(88%);
+}
+
+/* Header */
+#header {
+  grid-area: header;
+
+  display: grid;
+  grid-template-columns: auto auto;
+
+  height: fit-content;
+
+  padding: 8px;
+}
+
+#header h1 { margin: 0; }
+
+#header .right-side {
+  display: grid;
+  grid-template-columns: auto auto;
+
+  width: fit-content;
+  gap: 32px;
+  margin-right: 8px;
+  
+  justify-self: right;
+  align-content: center;
+}
+
+.dropdown { /* Main Container <div>*/
+  position: relative;
+  display: inline-block;
+}
+.dropbtn { /* Drop button */
+  border: none;
+  background-color: white;
+  box-shadow: none;
+
+  scale: 1.5;
+}
+.dropdown-content { /* dropdown-content */
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: -14px;
+
+  background-color: white;
+  overflow: hidden; /* Hide children border */
+
+  border-radius: 8px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.dropdown-content a { /* Links of dropdown */
+  color: black;
+  background-color: white;
+  text-decoration: none;
+  padding: 12px 16px;
+
+  display: block;
+}
+.dropdown-content a:hover {
+  filter: brightness(92%);
+  cursor: pointer;
+}
+.dropdown-content a:active { filter: brightness(88%); }
+/* Show on hover */
+.dropdown:hover .dropdown-content {display: block;}
+/* Change btn on hover*/
+.dropdown:hover .dropbtn {filter: brightness(88%)}
 
 /* Store */
 
 #store {
-  height: 40vh;
+  grid-area: main;
+
   padding: 1rem;
 
   overflow-y: scroll;
 
   background-color: #e7f4ea;
-}
-
-#store h1 {
-  text-align: center;
 }
 
 .store--item-list {
@@ -68,7 +154,11 @@ button {
 /* Cart */
 
 #cart {
+  grid-area: aside;
+
   height: 60vh;
+  width: auto;
+  margin: 0 auto;
   padding: 1rem;
 
   display: grid;
@@ -181,4 +271,13 @@ button {
     border-top: 2px solid #00675b;
     border-bottom: 2px solid #00675b;
   }
+}
+
+/* Footer */
+
+#footer {
+  grid-area: footer;
+
+  padding: 8px;
+  text-align: center;
 }
