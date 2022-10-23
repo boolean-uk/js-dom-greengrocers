@@ -1,4 +1,11 @@
-# Greengrocers
+#  Luciano - Greengrocers Notes
+
+I choose to create a new layout for this challenge. The design can be seen [here](https://miro.com/welcomeonboard/ME5kS3FvVHBmZU1Sblc3VW5reXpzVTZuaXJGTUViVGZCc3dxYmVyN05DYnZUc3N0YkFnczhWS2NVSFFrRzVFM3wzNDU4NzY0NTMyNTk1NDg5MTc2fDI=?share_link_id=984467263935) *(comments are welcome 🙂)*
+Made in miro.com
+
+![Result](design.png)
+
+# Boolean - Greengrocers
 In this exercise we explore a common scenario in eCommerce, adding and removing items from the cart, and calculating the total. You final solution should look like this:
 
 ![Result](result.gif)
