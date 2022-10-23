@@ -95,8 +95,6 @@ function resetList(listName) {
   }
 }
 
-// arr.sort() alphabetically
-
 // Called when ready (Categories: all, vegetable, fruit)
 function renderStore(category, sortBy) {
   // reset before iterating though new ones
@@ -288,4 +286,29 @@ function updateTotal() {
   totalSpan.innerText = `£${total}` // Updates HTML
 }
 
-renderStore("all", "none")
+function filterPressed(category, element) {
+  // Set all filter buttons as not active
+  const listOfButtons = document.querySelectorAll(".filter-content-btn")
+  for (let i = 0; i < listOfButtons.length; i++) {
+    listOfButtons[i].setAttribute("class", "filter-content-btn")
+  }
+
+  // Set filter button as active
+  element.setAttribute("class", "filter-content-btn activeBtn")
+
+  renderStore(category, data.sortBy)
+}
+function sortPressed(sortBy, element) {
+  // Set all sort buttons as not active
+  const listOfButtons = document.querySelectorAll(".sort-content-btn")
+  for (let i = 0; i < listOfButtons.length; i++) {
+    listOfButtons[i].setAttribute("class", "sort-content-btn")
+  }
+
+  // Set sort button as active
+  element.setAttribute("class", "sort-content-btn activeBtn")
+
+  renderStore(data.category, sortBy)
+}
+
+renderStore(data.category, data.sortBy)

@@ -15,21 +15,21 @@
     <header id="header">
       <h1>Greengrocers</h1>
       <div class="right-side">
-        <div class="filter dropdown">
+        <div class="dropdown">
           <button class="dropbtn material-symbols-outlined">filter_alt</button>
-          <div class="filter dropdown-content">
-            <a onclick="renderStore('fruit', data.sortBy)">Fruits</a>
-            <a onclick="renderStore('vegetable', data.sortBy)">Vegetables</a>
-            <a onclick="renderStore('all', data.sortBy)">All</a>
+          <div class="dropdown-content">
+            <a class="filter-content-btn" onclick="filterPressed('fruit', this)">Fruits</a>
+            <a class="filter-content-btn" onclick="filterPressed('vegetable', this)">Vegetables</a>
+            <a class="activeBtn filter-content-btn" onclick="filterPressed('all', this)">All</a>
           </div>
         </div>
 
-        <div class="sort dropdown">
+        <div class="dropdown">
           <button class="dropbtn material-symbols-outlined">sort</button>
-          <div class="sort dropdown-content">
-            <a onclick="renderStore(data.category, 'price')">Price</a>
-            <a onclick="renderStore(data.category, 'alpha')">Alphabetically</a>
-            <a onclick="renderStore(data.category, 'none')">None</a>
+          <div class="dropdown-content">
+            <a class="sort-content-btn" onclick="sortPressed('price', this)">Price</a>
+            <a class="sort-content-btn" onclick="sortPressed('alpha', this)">Alphabetically</a>
+            <a class="activeBtn sort-content-btn" onclick="sortPressed('none', this)">None</a>
           </div>
         </div>
       </div>

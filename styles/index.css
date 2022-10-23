@@ -41,6 +41,11 @@ button:active {
   filter: brightness(88%);
 }
 
+/* active Button */
+.activeBtn {
+  filter: brightness(88%);
+}
+
 /* Header */
 #header {
   grid-area: header;
