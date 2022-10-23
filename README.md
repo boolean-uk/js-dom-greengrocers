@@ -1,7 +1,8 @@
 #  Luciano - Greengrocers Notes
 
 I choose to create a new layout for this challenge. The design can be seen [here](https://miro.com/welcomeonboard/ME5kS3FvVHBmZU1Sblc3VW5reXpzVTZuaXJGTUViVGZCc3dxYmVyN05DYnZUc3N0YkFnczhWS2NVSFFrRzVFM3wzNDU4NzY0NTMyNTk1NDg5MTc2fDI=?share_link_id=984467263935) *(comments are welcome 🙂)*
-Made in miro.com
+
+Check it out on your browser [HERE](https://lucianosimoni.github.io/js-dom-greengrocers/)
 
 ![Result](design.png)
 
