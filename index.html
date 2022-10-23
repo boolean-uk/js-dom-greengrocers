@@ -18,18 +18,18 @@
         <div class="filter dropdown">
           <button class="dropbtn material-symbols-outlined">filter_alt</button>
           <div class="filter dropdown-content">
-            <a onclick="renderStore('fruit')">Fruits</a>
-            <a onclick="renderStore('vegetable')">Vegetables</a>
-            <a onclick="renderStore('all')">All</a>
+            <a onclick="renderStore('fruit', data.sortBy)">Fruits</a>
+            <a onclick="renderStore('vegetable', data.sortBy)">Vegetables</a>
+            <a onclick="renderStore('all', data.sortBy)">All</a>
           </div>
         </div>
 
         <div class="sort dropdown">
           <button class="dropbtn material-symbols-outlined">sort</button>
           <div class="sort dropdown-content">
-            <a>Price</a>
-            <a href="">Alphabetically</a>
-            <a href="">None</a>
+            <a onclick="renderStore(data.category, 'price')">Price</a>
+            <a onclick="renderStore(data.category, 'alpha')">Alphabetically</a>
+            <a onclick="renderStore(data.category, 'none')">None</a>
           </div>
         </div>
       </div>

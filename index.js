@@ -1,4 +1,6 @@
 const data = {
+  category: "all",
+  sortBy: "none",
   items: [
     {
       id: "001-beetroot",
@@ -93,16 +95,25 @@ function resetList(listName) {
   }
 }
 
+// arr.sort() alphabetically
+
 // Called when ready (Categories: all, vegetable, fruit)
-function renderStore(category) {
+function renderStore(category, sortBy) {
   // reset before iterating though new ones
   resetList("store")
+
+  // Update the value, so when we call this through button
+  // we just need to set one value (filter or sort)
+  data.category = category
+  data.sortBy = sortBy
+
+  const sortedItems = sortStore(sortBy)
 
   // classes: all, vegetable, fruit
   // check whether it is supposed to render all or a specific category
   if (category === "all") {
     // iterate though data.items
-    data.items.forEach((item) => {
+    sortedItems.forEach((item) => {
       // call function to render item card
       createStore(item)
     })
@@ -110,7 +121,7 @@ function renderStore(category) {
   // has a category specified
   else {
     // iterate though data.items
-    data.items.forEach((item) => {
+    sortedItems.forEach((item) => {
       // if item.class not same as category, jump to next item
       if (item.class !== category) { return }
       // if the same as category, render item
@@ -131,6 +142,37 @@ function renderCart() {
 
   // Update total adding item price to total
   updateTotal()
+}
+
+// price, alpha, none
+function sortStore(sortBy) { // Returns the items array
+  // Creates a clone of data.items to sort
+  let sortedItems = [...data.items]
+
+  if (sortBy === "alpha") {
+    sortedItems.sort(compareName)
+  }
+  else if (sortBy === "price") {
+    sortedItems.sort(comparePrice)
+  }
+  else {
+    // Return the default array
+    return [...data.items]
+  }
+
+  return sortedItems
+}
+function compareName(a, b) { // A and B are items
+  const nameA = a.name.toUpperCase()
+  const nameB = b.name.toUpperCase()
+
+  if (nameA < nameB) { return -1; }
+  if (nameA > nameB) { return 1; }
+  // names must be equal
+  return 0;
+}
+function comparePrice(a, b) { // A and B are items
+  return a.price - b.price
 }
 
 // render and append individual item to store
@@ -246,4 +288,4 @@ function updateTotal() {
   totalSpan.innerText = `£${total}` // Updates HTML
 }
 
-renderStore("fruit")
+renderStore("all", "none")
