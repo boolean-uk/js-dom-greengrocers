@@ -86,21 +86,45 @@ function fruitAndVeg() {
     image.alt = `${item.id}`
     div.appendChild(image)
 
-    const button = document.createElement('button')
-    button.innerText = 'Add to Cart'
-    li.appendChild(button)
+    const buttonAddToCart = document.createElement('button')
+    buttonAddToCart.innerText = 'Add to Cart'
+    li.appendChild(buttonAddToCart)
+    buttonAddToCart.setAttribute('style', 'color: blue')
+
+    // 2: From the store, a user can add an item to their cart
+    // 2.1: add on click even to add the item and move from store data array to cart data array.
+
+    addToCartListener(buttonAddToCart, item)
   })
 }
 
 fruitAndVeg()
 
-// - From the store, a user can add an item to their cart
-// add on click even to add the item
+function addToCartListener(buttonAddToCart, item) {
+  buttonAddToCart.addEventListener('click', (event) => {
+    console.log('hello')
+    const objectThatHoldsGrocers = {
+      quatity: 1,
+      image: `assets/icons/${item.id}.svg`,
+      name: item.name
+    }
+    state.cart.push(objectThatHoldsGrocers) // items that will be pushed need to be declared in
+    console.log(state.cart)
+  })
+}
 
-//   - If the item is already in the cart, increase the item's quantity in the cart
+const cartItems = document.createElement('li')
+const cartItemList = document.querySelector('.cart--item-list')
+cartItemList.appendChild(cartItems)
+cartItems.innerText = 'hello'
 
-//   - From the cart, a user can view and adjust the number of items in their cart
+// 2.2: create a li in the cart area to push the slected items to.
+// 2.3:
 
-//   - If an item's quantity equals zero it is removed from the cart
+//   3:If the item is already in the cart, increase the item's quantity in the cart
 
-// - A user can view the current total in their cart
+//   4: From the cart, a user can view and adjust the number of items in their cart
+
+//   5: If an item's quantity equals zero it is removed from the cart
+// 5.1: for loop and an onclick event -> if data index = 0 then remove from cart data array
+// 6: A user can view the current total in their cart
