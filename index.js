@@ -79,14 +79,15 @@ state.items.forEach(item => {
           // state.cart.push(item)
       // }
       if (!item.quantity) {
-        console.log("boolean", !item.quantity)
+        console.log("which boolean", !item.quantity)
         console.log("quantity", item.quantity)
         item.quantity = 0;
       }
       
-      item.quantity++;
+      item.quantity += 1;
 
-      if (!state.cart.find((id) => id === item.id)) {
+      if (!state.cart.find(({id}) => id === item.id)) {
+
         console.log("it must be from here", !state.cart)
         state.cart.push(item);
       }
@@ -99,7 +100,6 @@ state.items.forEach(item => {
   div.append(img)
   shop.append(li)
 })
-console.log("after method", state.items[4].name)
 // const items = state.items
 // console.log("shop is:", items[1].id)
 // function fromShop (shopItem){
@@ -128,6 +128,10 @@ function cartItem () {
     removeButton.innerText = "-";
     removeButton.addEventListener("click", () => {
       item.quantity --;
+      if (item.quantity <= 0) {
+        // arr = arr.filter(item => item !== value)
+        state.cart = state.cart.filter(decreasingItem => decreasingItem.id !== item.id)
+      }
       cartItem();
     })
     // removeButton.addEventListener("click", () => )
@@ -138,10 +142,11 @@ function cartItem () {
     const addButton = document.createElement("button")
     addButton.setAttribute("class", "quantity-btn add-btn center")
     addButton.innerText = "+";
-    // removeButton.addEventListener("click", () => {
-    //   item.quantity ++;
-    //   cartItem();
-    // })
+    addButton.addEventListener("click", () => {
+      item.quantity ++;
+      cartItem();
+    })
+    
     cart.append(li);
     li.append(img, p, removeButton, span, addButton)
     return li
