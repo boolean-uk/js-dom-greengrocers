@@ -55,8 +55,9 @@ const state = {
 };
 const shop = document.querySelector(".store--item-list");
 const cart = document.querySelector(".cart--item-list");
+
 state.items.forEach(item => {
-  console.log("eachOne", item)
+  // console.log("eachOne", item)
   const li = document.createElement("li")
   const div = document.createElement("div")
   div.setAttribute("class", "store--item-icon")
@@ -67,9 +68,31 @@ state.items.forEach(item => {
   addButton.innerText="add to cart"
   addButton.addEventListener("click", function (e){
     e.preventDefault();
-    state.cart.push(item)
-    cartItem().stopImmediatepropogation()
+    // state.cart.push(item)
+      console.log("here is the id", item.id)
+      // if (cartItem.id === item.id){
+      //   // quantity =+1
+      //   return true;
+      //   // console.log("Quantity", quantity)
+      // }else{
+      //   return false
+          // state.cart.push(item)
+      // }
+      if (!item.quantity) {
+        console.log("boolean", !item.quantity)
+        console.log("quantity", item.quantity)
+        item.quantity = 0;
+      }
+      
+      item.quantity++;
+
+      if (!state.cart.find((id) => id === item.id)) {
+        console.log("it must be from here", !state.cart)
+        state.cart.push(item);
+      }
     
+    
+    cartItem()
     console.log("what is that", state.cart)
   })
   li.append(div, addButton)
@@ -88,7 +111,10 @@ console.log("after method", state.items[4].name)
 //   return li
 // }
 // fromShop()
+
 function cartItem () {
+  cart.innerHTML = ""
+  let totalPrice = 0
   state.cart.forEach(item => {
     const li = document.createElement("li");
     const img = document.createElement("img");
@@ -100,11 +126,22 @@ function cartItem () {
     const removeButton = document.createElement("button");
     removeButton.setAttribute("class", "quantity-btn remove-btn center");
     removeButton.innerText = "-";
+    removeButton.addEventListener("click", () => {
+      item.quantity --;
+      cartItem();
+    })
+    // removeButton.addEventListener("click", () => )
     const span = document.createElement("span")
-    span.innerText = "";
+    span.setAttribute("class", "quantity-text center")
+    span.innerText = item.quantity
+    // quantity = ;
     const addButton = document.createElement("button")
     addButton.setAttribute("class", "quantity-btn add-btn center")
     addButton.innerText = "+";
+    // removeButton.addEventListener("click", () => {
+    //   item.quantity ++;
+    //   cartItem();
+    // })
     cart.append(li);
     li.append(img, p, removeButton, span, addButton)
     return li
