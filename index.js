@@ -69,7 +69,7 @@ const state = {
 // - A user can view a selection of items in the store
 
 const itemList = document.querySelector('.store--item-list')
-
+const cartItemList = document.querySelector('.cart--item-list')
 function fruitAndVeg() {
   itemList.innerHTML = ''
 
@@ -91,18 +91,17 @@ function fruitAndVeg() {
     li.appendChild(buttonAddToCart)
     buttonAddToCart.setAttribute('style', 'color: blue')
 
-    // 2: From the store, a user can add an item to their cart
-    // 2.1: add on click even to add the item and move from store data array to cart data array.
-
     addToCartListener(buttonAddToCart, item)
   })
 }
 
 fruitAndVeg()
 
+// 2: From the store, a user can add an item to their cart
+// 2.1: add on click even to add the item and move from store data array to cart data array.
+
 function addToCartListener(buttonAddToCart, item) {
   buttonAddToCart.addEventListener('click', (event) => {
-    console.log('hello')
     const objectThatHoldsGrocers = {
       quatity: 1,
       image: `assets/icons/${item.id}.svg`,
@@ -113,13 +112,14 @@ function addToCartListener(buttonAddToCart, item) {
   })
 }
 
-const cartItems = document.createElement('li')
-const cartItemList = document.querySelector('.cart--item-list')
-cartItemList.appendChild(cartItems)
-cartItems.innerText = 'hello'
-
 // 2.2: create a li in the cart area to push the slected items to.
-// 2.3:
+const cartItems = document.createElement('li')
+
+// eslint-disable-next-line no-unused-vars
+const cartListOfPickedItems = document.querySelector('.cart--item-list')
+cartItemList.appendChild(cartItems)
+cartItems.setAttribute('class', 'cart--item-list')
+cartItems.innerText = state[item]
 
 //   3:If the item is already in the cart, increase the item's quantity in the cart
 
