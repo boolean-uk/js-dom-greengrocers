@@ -54,7 +54,8 @@ const state = {
   cart: [],
 };
 
-const store = document.querySelector(".store--item-list");
+const store = document.querySelector(".store--item-list")
+const cart = document.querySelector(".cart--item-list")
 
 function renderStoreItems() {
   store.innerHTML= ""
@@ -76,9 +77,45 @@ function renderStoreItems() {
   button.innerText = "Add to cart";
   li.appendChild(button)
 
+  button.addEventListener("click", (event)=>{
+    renderCart()
+  }
+  )
+
   })
 
 
+}
+
+function renderCart (){
+  cart.innerHTML= ""
+
+  state.items.forEach((cartItem) => {
+    const cartLi = document.createElement("li")
+    cart.appendChild(cartLi)
+
+    const cartImg = document.createElement("img")
+    cartImg.src = `assets/icons/${cartItem.id}.svg`
+    cartImg.alt = `${cartItem.id}`
+    cartLi.appendChild(cartImg)
+
+    const itemName = document.createElement('p')
+    itemName.innerText = `${cartItem.name}`
+    cartLi.appendChild(itemName)
+
+    const plusButton = document.createElement("button")
+    const minusButton = document.createElement("button")
+
+    minusButton.setAttribute("class","quantity-btn remove-btn center")
+    plusButton.setAttribute("class","quantity-btn add-btn center")
+
+    plusButton.innerText="+"
+    minusButton.innerText="-"
+
+    cartLi.appendChild(plusButton)
+    cartLi.appendChild(minusButton)
+
+})
 }
 
 renderStoreItems()
