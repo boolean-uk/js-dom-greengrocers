@@ -131,6 +131,7 @@ function renderUserCart(){
 
     const removeButton = document.createElement('button');
     removeButton.setAttribute('class', 'quantity-btn remove-btn center');
+    removeButton.innerText = '-'
     li.appendChild(removeButton);
 
     const counterSpan = document.createElement('counterSpan');
@@ -140,12 +141,14 @@ function renderUserCart(){
 
     const addButton = document.createElement('button');
     addButton.setAttribute('class', 'quantity-btn add-btn center');
+    addButton.innerText = '+'
     li.appendChild(addButton);
 
     removeButton.addEventListener("click", function() {
       if (item.quantity <= 1) {
         itemToRemove = state.cart.indexOf(item)
         state.cart.splice(itemToRemove, 1)
+        fruitIsAlreadyInCart = false;
       } else {
         item.quantity -= 1
       }
