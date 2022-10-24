@@ -121,21 +121,37 @@ function renderCart() {
     // Create minus button within the lis with class 'quantity-btn remove-btn center'
     const minusButton = document.createElement('button')
     minusButton.setAttribute('class', 'quantity-btn remove-btn center')
+    minusButton.innerText = '-'
 
-    // Event listener for when minus button is clicked
-        // Minus one from the displayed amount
+    minusButton.addEventListener('click', (event) => {
+      // Event listener for when minus button is clicked
+      // Find the correct item/object within the cart
+      const existingItem = state.cart.find(item => item.id === itemDisplay.item.id)
+      // Minus one from the displayed amount
+      state.cart.splice(state.cart.indexOf(existingItem), 1)
+      // Render cart again after the change
+      renderCart()
+    })
 
     // Create amount number display within lis with class 'quantity-text center'
     const span = document.createElement('span')
     span.setAttribute('class', 'quantity-text center')
+    span.innerText = itemDisplay.quantity
 
     // Create plus button within lis with class 'quantity-btn add-btn center'
     const plusButton = document.createElement('button')
     plusButton.setAttribute('class', 'quantity-btn add-btn center')
+    plusButton.innerText = '+'
 
-    // Event listener for when plus button is clicked
-        // Add one to the displayed amount
 
+    plusButton.addEventListener('click', (event) => {
+      // Event listener for when plus button is clicked
+      // Add one to the displayed amount
+      state.cart.push(itemDisplay.item)
+      // Render cart again after the change
+      renderCart()
+    })
+    
     //Append the elements to where they should be
     cartItemList.appendChild(li)
     li.append(img, p, minusButton, span, plusButton)
