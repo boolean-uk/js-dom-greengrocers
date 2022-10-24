@@ -54,10 +54,12 @@ const state = {
   cart: []
 };
 
+fruitIsAlreadyInCart = false
+index = 0
 
 function renderStoreIcons() {
   const storeItemList = document.querySelector('.store--item-list');
-  storeItemList.innerHTML = '';
+  storeItemList.innerHTML = ''
   for (let item of state.items) {
     const li = document.createElement('li');
     storeItemList.appendChild(li);
@@ -89,15 +91,31 @@ function addFruitToCartState(item) {
     img: `assets/icons/${item.id}.svg`,
     quantity: 1
   }
+  checkIfFruitIsAlreadyInCart(item)
+  if (fruitIsAlreadyInCart) {
+    state.cart[index].quantity += 1
+  } else {
+    state.cart.push(newCartItem)
+  }
+  console.log(state.cart)
+}
 
-  state.cart.push(newCartItem)
+function checkIfFruitIsAlreadyInCart(newFruit) {
+  for (i = 0; i < state.cart.length; i++) {
+    if (state.cart[i].name === newFruit.name) {
+      fruitIsAlreadyInCart = true;
+      index = i;
+      break
+    } else {
+      fruitIsAlreadyInCart = false
+    }
+  }
 }
 
 function renderUserCart(){
   const cartItemList = document.querySelector('.cart--item-list');
   cartItemList.innerHTML = '';
   for (let item of state.cart) {
-    console.log(state.cart)
     const li = document.createElement('li');
     cartItemList.appendChild(li);
 
@@ -124,12 +142,19 @@ function renderUserCart(){
     addButton.setAttribute('class', 'quantity-btn add-btn center');
     li.appendChild(addButton);
 
-    addButton.addEventListener("click", function() {
-      console.log('Add button clicked, will need to do some magic')
+    removeButton.addEventListener("click", function() {
+      if (item.quantity <= 1) {
+        itemToRemove = state.cart.indexOf(item)
+        state.cart.splice(itemToRemove, 1)
+      } else {
+        item.quantity -= 1
+      }
+      renderUserCart()
     })
 
-    removeButton.addEventListener("click", function() {
-      console.log('Remove button clicked, will need to do some magic')
+    addButton.addEventListener("click", function() {
+      item.quantity += 1
+      renderUserCart()
     })
     }
 }
