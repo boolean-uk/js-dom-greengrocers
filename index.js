@@ -74,7 +74,7 @@ function renderStoreIcons() {
     div.appendChild(img);
 
     const button = document.createElement('button');
-    button.innerText = 'Add to card';
+    button.innerText = 'Add to cart';
     li.appendChild(button);
 
     button.addEventListener("click", function() {
