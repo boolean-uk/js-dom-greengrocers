@@ -54,21 +54,18 @@ const state = {
   cart: []
 };
 
-// render shop items
-// 1. query selector item list
-// 2. function to create li
-//      create + append div to li
-//      create + append img to div
-//      create + append button to li
-// 3. for each state item run create li function
-
+// queries
 const shopItems = document.querySelector(".item-list")
+const cartList = document.querySelector(".cart--item-list")
 const itemData = state.items
+const cartData = state.cart
+const totalNumber = document.querySelector(".total-number")
 
 itemData.forEach((item) => {
   shopItems.appendChild(createShopItem(item))
 })
 
+// function to create shop item
 function createShopItem (item) {
 
   const shopItem = document.createElement('li')
@@ -78,13 +75,108 @@ function createShopItem (item) {
 
   shopIconCon.setAttribute('class', "store--item-icon" )
   shopIcon.src = `assets/icons/${item.id}.svg`
+  shopItem.id = item.id
+  shopItem.name = item.name
+  shopItem.price = item.price
+
   addToCart.innerText = 'Add to cart'
 
+let itemCopy = {}
+    itemCopy.id = shopItem.id
+    itemCopy.name = shopItem.name
+    itemCopy.price = shopItem.price
+    itemCopy.quantity = 0
+
+  addToCart.addEventListener('click', () => {
+    
+    if(itemCopy.quantity === 0){
+    itemCopy.quantity += 1
+    if (itemCopy.quantity === 1){
+    cartData.push(itemCopy)
+    // subTotals()
+// render cart function
+    renderCart()
+    renderTotal()
+// console.log(cartData)
+    }
+  }
+  })
   shopItem.appendChild(shopIconCon)
   shopIconCon.appendChild(shopIcon)
   shopItem.appendChild(addToCart)
 
   return shopItem
-
 }
+// function to create shop cart item
+function createShopCartItem (item){
 
+  const shopCartItem = document.createElement('li')
+  const shopCartItemImg = document.createElement('img')
+  const shopCartItemName = document.createElement('p')
+  const removeButton = document.createElement('button')
+  const quantity = document.createElement('span')
+  const addButton = document.createElement('button')
+
+  shopCartItemImg.setAttribute('class', "cart--item-icon")
+  shopCartItemImg.src = `assets/icons/${item.id}.svg`
+  shopCartItemImg.alt = item.name
+  shopCartItemName.innerText = item.name
+  removeButton.setAttribute('class', "remove-btn center")
+  removeButton.innerText = '-'
+  quantity.setAttribute('class', "quantity-text center")
+  quantity.innerText = item.quantity
+  addButton.setAttribute = ('class', "add-btn center")
+  addButton.innerText = '+'
+// add button event listeners
+  removeButton.addEventListener('click', () =>{
+
+    if (item.quantity === 0){
+      for (i = 0; i < cartData.length; i++){
+        if (cartData[i].name === item.name){
+          cartData.splice(i, 1)
+          renderCart()
+          renderTotal()  
+        }       
+      }
+    }
+    else {
+      item.quantity -= 1
+      renderCart()  
+      renderTotal()
+    }
+    } )
+
+    addButton.addEventListener('click', () => {
+      item.quantity += 1
+      renderCart()  
+      renderTotal()
+    })
+
+  shopCartItem.appendChild(shopCartItemImg)
+  shopCartItem.appendChild(shopCartItemName)
+  shopCartItem.appendChild(removeButton)
+  shopCartItem.appendChild(quantity)
+  shopCartItem.appendChild(addButton)
+  
+  return shopCartItem
+}
+// function to render cart data
+function renderCart(){
+  cartList.innerHTML = ''
+  cartData.forEach((item) => {
+    const li = createShopCartItem(item)
+    cartList.appendChild(li)
+  })
+}
+// function for sub totals
+function subTotals (){
+ return subTotal = cartData.map(item => item.quantity * item.price)
+  }
+// function for total
+function renderTotal(){
+  let grandTotal = 0
+    subTotals().forEach((item) => {
+      totalNumber.innerText = `£${Math.round(grandTotal += item * 100) / 100}`
+    })
+    }
+  
