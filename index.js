@@ -56,6 +56,7 @@ const state = {
 
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
+const totalNumber = document.querySelector('.total-number')
 
 // Create function for store items
 function renderStore(items) {
@@ -156,14 +157,20 @@ function renderCart() {
     cartItemList.appendChild(li)
     li.append(img, p, minusButton, span, plusButton)
   })
+  renderTotal()
   // Function end
 }
 
 function renderTotal() {
-// Create function for displaying total
-
+  // Create function for displaying total
   // Create sum of the cart item price * cart item quantity
+  let total = state.cart.reduce(
+    (sum, cartItem) => sum + cartItem.price, 0
+  )
+  console.log(total)
   // Append sum into span with class total-number
+  totalNumber.innerText = `£${total.toPrecision(3)}`
+  
 
 // Function end
 }
