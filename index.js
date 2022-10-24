@@ -169,7 +169,7 @@ function renderTotal() {
   )
   console.log(total)
   // Append sum into span with class total-number
-  totalNumber.innerText = `£${total.toPrecision(3)}`
+  totalNumber.innerText = `£${total.toFixed(2)}`
   
 
 // Function end
