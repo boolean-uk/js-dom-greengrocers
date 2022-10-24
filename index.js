@@ -87,7 +87,6 @@ function renderStore(items) {
       // Event Listener for when the button is clicked
       // Pushes clicked item/object into state.cart
       state.cart.push(item)
-      console.log(state.cart)
       // Render cart on click to keep it up to date
       renderCart()
     })
@@ -167,7 +166,6 @@ function renderTotal() {
   let total = state.cart.reduce(
     (sum, cartItem) => sum + cartItem.price, 0
   )
-  console.log(total)
   // Append sum into span with class total-number
   totalNumber.innerText = `£${total.toFixed(2)}`
   
