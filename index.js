@@ -55,6 +55,7 @@ const state = {
 };
 
 const storeItemList = document.querySelector('.store--item-list')
+const cartItemList = document.querySelector('.cart--item-list')
 
 // Create function for store items
 function renderStore(items) {
@@ -65,56 +66,81 @@ function renderStore(items) {
   items.forEach(item => {
     // Create an li for each object in state.items
     const li = document.createElement('li')
+
     // Create a div to contain the img with class 'store--item-icon'
     const div = document.createElement('div')
     div.setAttribute('class', 'store--item-icon')
+
     // Create food item img/svg for appending into the div
     const img = document.createElement('img')
     img.setAttribute('src', `assets/icons/${item.id}.svg`)
-    img.setAttribute('alt', 'item.name')
+    img.setAttribute('alt', item.name)
+
     // Create button for appending into the li
     const button = document.createElement('button')
     button.innerText = 'Add to cart'
     // Append img to the div
     div.append(img)
 
-    console.log(item)
-
     button.addEventListener('click', (event) => {
       // Event Listener for when the button is clicked
-      //pushes clicked item/object into state.cart
+      // Pushes clicked item/object into state.cart
       state.cart.push(item)
-      console.log(item)
+      console.log(state.cart)
+      // Render cart on click to keep it up to date
+      renderCart()
     })
     
     // Append everything else AFTER the event listener
     storeItemList.append(li)
     li.append(div, button)
   })
-  // function end
+  // Function end
 }
 
-function renderCart() {
 // Create function for cart
+function renderCart() {
   // Clear cart--item-list-container
+  cartItemList.innerHTML = ''
 
-  // Create an li for each item/object in state.cart
-  // Add the item/object img within the li
-  // Create a p element within each li containing state.cart.name
+  const cartItemsDisplay = checkCartItems()
+  cartItemsDisplay.forEach(itemDisplay => {
+    // Create an li for each item/object in state.cart
+    const li = document.createElement('li')
 
-  // Create minus button within the lis with class 'quantity-btn remove-btn center'
-  
-  // Create amount number display within lis with class 'quantity-text center'
-  
-  // Create plus button within lis with class 'quantity-btn add-btn center'
+    // Add the item/object img within the li
+    const img = document.createElement('img')
+    img.setAttribute('class', 'cart--item-icon')
+    img.setAttribute('src', `assets/icons/${itemDisplay.item.id}.svg`)
+    img.setAttribute('alt', itemDisplay.item.name)
 
-  // Event listener for when minus button is clicked
-    // Minus one from the displayed amount
+    // Create a p element within each li containing state.cart.name
+    const p = document.createElement('p')
+    p.innerText = itemDisplay.item.name
 
-  // Event listener for when plus button is clicked
-    // Add one to the displayed amount
+    // Create minus button within the lis with class 'quantity-btn remove-btn center'
+    const minusButton = document.createElement('button')
+    minusButton.setAttribute('class', 'quantity-btn remove-btn center')
 
-// function end
+    // Event listener for when minus button is clicked
+        // Minus one from the displayed amount
+
+    // Create amount number display within lis with class 'quantity-text center'
+    const span = document.createElement('span')
+    span.setAttribute('class', 'quantity-text center')
+
+    // Create plus button within lis with class 'quantity-btn add-btn center'
+    const plusButton = document.createElement('button')
+    plusButton.setAttribute('class', 'quantity-btn add-btn center')
+
+    // Event listener for when plus button is clicked
+        // Add one to the displayed amount
+
+    //Append the elements to where they should be
+    cartItemList.appendChild(li)
+    li.append(img, p, minusButton, span, plusButton)
+  })
+  // Function end
 }
 
 function renderTotal() {
@@ -123,5 +149,32 @@ function renderTotal() {
   // Create sum of the cart item price * cart item quantity
   // Append sum into span with class total-number
 
-//function end
+// Function end
 }
+
+function checkCartItems() {
+  // Create a function for checking items that have been pushed into state.cart
+
+  let display = []
+
+  state.cart.forEach(item => {
+    // For each item in the cart find a name, and check if it's already in the array
+    const existingItem = display.find(itemDisplay => item.name === itemDisplay.item.name)
+    
+    // If the return is undefined (name not found)
+    // then push the item into the array with a quantity of 1
+    if (existingItem === undefined) {
+      display.push({item: item, quantity: 1})
+    } else {
+      // If the name is found, then add 1 to the quantity
+      existingItem.quantity++
+    }
+  })
+
+  return display
+
+  // Function end
+}
+
+// Call render functions
+renderStore(state.items)
