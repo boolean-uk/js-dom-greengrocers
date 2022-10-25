@@ -80,6 +80,7 @@ function renderStoreIcons() {
     button.addEventListener("click", function() {
       addFruitToCartState(item)
       renderUserCart()
+      renderTotalPrice()
     })
   }
 }
@@ -153,17 +154,34 @@ function renderUserCart(){
         item.quantity -= 1
       }
       renderUserCart()
+      renderTotalPrice()
     })
 
     addButton.addEventListener("click", function() {
       item.quantity += 1
       renderUserCart()
+      renderTotalPrice()
     })
     }
 }
 
+function renderTotalPrice() {
+  const currencyFormatter = new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: 'GBP',
+  });
+
+  totalPrice = 0
+  for (item of state.cart) {
+    totalPrice += item.price * item.quantity
+  }
+  totalPriceContainer = document.querySelector('.total-number')
+  totalPriceContainer.innerText = currencyFormatter.format(totalPrice)
+}
+
 function init() {
   renderStoreIcons();
+  renderTotalPrice();
 }
 
 init();
