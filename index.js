@@ -238,6 +238,7 @@ function filter(toggledOn, category) {
 }
 
 // Extension 2
+// IF YOU WANT TO USE BOTH SORT AND FILTER: Click sort button first, then the filter button
 
 priceButton.addEventListener('click', (event) => {
   // On click trigger the sortStore function with the below arguments
@@ -263,6 +264,8 @@ function sortStore(toggledOn, sortType) {
   }
   renderStore(sorted)
 }
+
+
 
 // Call render functions
 renderStore(state.items)
