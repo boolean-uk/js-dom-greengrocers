@@ -67,8 +67,8 @@ const state = {
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const totalNumber = document.querySelector('.total-number')
-const vegCheck = document.querySelector('.vegCheck')
-const fruitCheck = document.querySelector('.fruitCheck')
+const vegButton = document.querySelector('.vegButton')
+const fruitButton = document.querySelector('.fruitButton')
 
 // Create function for store items
 function renderStore(items) {
@@ -210,34 +210,26 @@ function checkCartItems() {
 }
 
 // Extension 1
-fruitCheck.addEventListener('click', (event) => {
+fruitButton.addEventListener('click', (event) => {
   //On the click event trigger the filter function 
-  filter(event.target.checked, 'fruit')
-  console.log('fruit clicked')
+  filter(event.target.click, 'fruit')
 })
 
-vegCheck.addEventListener('click', (event) => {
+vegButton.addEventListener('click', (event) => {
   //On the click event trigger the filter function 
-  console.log('veg clicked')
-  console.log(event.target.checked)
-  filter(event.target.checked, 'vegetable')
-  
+  filter(event.target.click, 'vegetable')
 })
 
 function filter(toggledOn, category) {
   let filtered
-  console.log('filter function invoked')
   // Pull the arguments from fruit/vegFilterToggle and check if the
   // category within the object matches vegetable or fruit, and depending upon
   // which is requested hide one or the other
   if (toggledOn) {
     filtered = state.items.filter(item => item.category === category)
-    // console.log(`filtered to ${item.category}`)
     
   } else {
     filtered = state.items
-    console.log('Items not filtered')
-    // console.log(item.category)
   }
   // Render the store again giving the filtered state.items as the argument
   renderStore(filtered)
