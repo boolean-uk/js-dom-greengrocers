@@ -183,4 +183,30 @@ function renderTotal(){
       totalNumber.innerText = `£${Math.round(grandTotal += item * 100) / 100}`
     })
     }
-  
+//
+// extensions
+//
+
+const filters = document.querySelector(".filters")
+const fruits = ['apple', 'apricot', 'bananas', 'berry', 'blueberry']
+const veg = ['beetroot', 'carrot', 'avocado', 'bell-pepper', 'eggplant']
+const all = fruits.concat(veg)
+
+function createFilter (name, type){
+  const newButton = document.createElement('button')
+  filters.appendChild(newButton)
+  newButton.innerText = name
+  newButton.addEventListener('click', () => {
+    shopItems.innerHTML = ''
+    itemData.forEach((item) => {
+      if (type.includes(item.name)){
+      shopItems.appendChild(createShopItem(item))
+    }})
+  })
+}
+createFilter('fruits', fruits)
+createFilter('veg', veg)
+createFilter('all', all)
+
+
+
