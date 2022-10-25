@@ -90,6 +90,7 @@ function renderStoreItems() {
 
 }
 
+// This function renders all the store items onto the page
 function renderCart (){
   cart.innerHTML= ""
 
@@ -122,14 +123,20 @@ function renderCart (){
     cartLi.appendChild(span)
     cartLi.appendChild(minusButton)
 
+    // The plus button increases quantity by one everytime it is pressed + re-renders cart each time
+    // The cart total function is also called every time this button is pressed to ensure total is kept up to date
     plusButton.addEventListener("click",(event)=>{
       cartItem.quantity += 1
       renderCart()
       cartTotal()
     })
-
+    
+    // The minus button decreases quantity by one everytime it is pressed + re-renders cart each time
+    // The cart total function is also called every time this button is pressed to ensure total is kept up to date
     minusButton.addEventListener("click",(event)=>{
       cartItem.quantity -= 1
+
+      // This if statement ensures that once the quantity of an item in the cart is 0, it is removed from the cart entirely
       if(cartItem.quantity === 0){
         const index = state.cart.indexOf(cartItem)
         state.cart.splice(index, 1)
@@ -141,19 +148,21 @@ function renderCart (){
   })
 }
 
+// This function ensures an item only displays once regardless of how many times the 'add to cart' button is pressed
 function addItemToCart(item){
-
-   console.log(state.cart)
-
+  // This if statement adds 1 item into the cart if it does not detect it already in there
    if( state.cart.find((produce) => produce.name === item.name ) === undefined){
     item.quantity = 1
     state.cart.push(item)
    } else {
+    // This else statment catches everything else,it updates the quantity by 1 each time  the 'add to cart' is pressed
     item.quantity += 1
    }
  
   }
 
+
+  // This function updates the total of the items each time either the plus, minus or add to cart buttons are pressed
   function cartTotal (){
     const total = document.querySelector(".total-number")
 
@@ -163,6 +172,7 @@ function addItemToCart(item){
      totalPrice +=  item.price * item.quantity
 
     })
+    // The formatting of the total in GBP is done using this const and is recalled whne stating the inner text of the total span
     const formatCurrency = new Intl.NumberFormat('en-GB', {
       style: 'currency',
       currency: 'GBP',
@@ -170,8 +180,7 @@ function addItemToCart(item){
     
     total.innerText= formatCurrency.format(totalPrice)
 
-    // direct coorelation with quantity and times the 
-    // state.cart.items.price 
+
   }
  
 
