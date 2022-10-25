@@ -55,9 +55,6 @@ const state = {
   displayCart: [],
 };
 
-// Render function that loops through the data and adds HTML for each item to store
-// Function to create page item (called in forEach/ first function)
-
 // Selections
 const store = document.querySelector(".store--item-list");
 const cart = document.querySelector(".cart--item-list");
@@ -75,6 +72,15 @@ function createStoreItem(product) {
 
   const button = document.createElement("button");
   button.innerText = "Add to cart";
+  button.addEventListener("click", () => {
+    state.cart.push(product);
+
+    createCartDisplay();
+    renderCart();
+
+    console.log(state.cart);
+    console.log(state.displayCart);
+  });
 
   div.appendChild(img);
   li.appendChild(div);
@@ -89,22 +95,33 @@ state.items.forEach((product) => {
   // add products to store
   store.append(item);
 
-  const cartBtn = item.querySelector("button");
-  cartBtn.addEventListener("click", function () {
-    state.cart.push(product);
+  // const cartBtn = item.querySelector("button");
+  // cartBtn.addEventListener("click", function () {
+  //   createCartDisplay();
+  //   renderCart();
 
-    createCartDisplay();
-
-    renderCart();
-  });
+  //   console.log(state.cart);
+  //   console.log(state.displayCart);
+  // });
 });
 
 // function to render the cart items
 function renderCart() {
   clearCart();
+
   state.displayCart.forEach((cartItem) => {
     const cartItemDOM = createCartItem(cartItem);
-    cart.appendChild(cartItemDOM);
+
+    const removeBtn = cartItemDOM.querySelector(".remove-btn");
+    const addBtn = cartItemDOM.querySelector(".add-btn");
+
+    removeBtn.addEventListener("click", () => {
+      removeFromCart(cartItem);
+    });
+
+    addBtn.addEventListener("click", () => {
+      addToCart(cartItem);
+    });
   });
   createTotal();
 }
@@ -125,19 +142,22 @@ function createCartItem(product) {
   const addBtn = document.createElement("button");
   removeBtn.classList.add("quantity-btn", "remove-btn", "center");
   removeBtn.innerText = "-";
-  removeBtn.addEventListener("click", () => {
-    removeFromCart(product);
-  });
   addBtn.classList.add("quantity-btn", "add-btn", "center");
   addBtn.innerText = "+";
-  addBtn.addEventListener("click", () => {
-    addToCart(product);
-  });
+
+  // removeBtn.addEventListener("click", () => {
+  //   removeFromCart(product);
+  // });
+
+  // addBtn.addEventListener("click", () => {
+  //   addToCart(product);
+  // });
 
   const span = document.createElement("span");
   span.classList.add("quantity-text", "center");
   span.innerText = product.quantity;
 
+  cart.appendChild(li);
   li.appendChild(img);
   li.appendChild(p);
   li.appendChild(removeBtn);
@@ -175,8 +195,11 @@ function removeFromCart(product) {
   product.quantity--;
   if (product.quantity < 1) {
     const found = state.displayCart.find((item) => item.id === product.id);
+    const found2 = state.cart.find((item) => item.id === product.id);
     const index = state.displayCart.indexOf(found);
+    const index2 = state.cart.indexOf(found2);
     state.displayCart.splice(index, 1);
+    state.cart.splice(index2, 1);
   }
   renderCart();
 }
