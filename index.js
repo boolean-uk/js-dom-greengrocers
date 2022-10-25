@@ -78,8 +78,9 @@ function renderStoreItems() {
     li.appendChild(button)
 
     button.addEventListener("click", (event)=>{
-      renderCart()
       addItemToCart(item)
+      renderCart()
+      cartTotal()
     
     }
     )
@@ -114,20 +115,64 @@ function renderCart (){
     plusButton.setAttribute("class","quantity-btn add-btn center")
 
     plusButton.innerText="+"
-    span.innerText="1"
+    span.innerText=`${cartItem.quantity}`
     minusButton.innerText="-"
 
     cartLi.appendChild(plusButton)
     cartLi.appendChild(span)
     cartLi.appendChild(minusButton)
 
+    plusButton.addEventListener("click",(event)=>{
+      cartItem.quantity += 1
+      renderCart()
+      cartTotal()
+    })
+
+    minusButton.addEventListener("click",(event)=>{
+      cartItem.quantity -= 1
+      if(cartItem.quantity === 0){
+        const index = state.cart.indexOf(cartItem)
+        state.cart.splice(index, 1)
+      }
+      renderCart()
+      cartTotal()
+    })
+
   })
 }
 
 function addItemToCart(item){
+
+   console.log(state.cart)
+
+   if( state.cart.find((produce) => produce.name === item.name ) === undefined){
     item.quantity = 1
     state.cart.push(item)
-  
-}
+   } else {
+    item.quantity += 1
+   }
+ 
+  }
+
+  function cartTotal (){
+    const total = document.querySelector(".total-number")
+
+    let totalPrice = 0
+
+    state.cart.forEach((item)=>{
+     totalPrice +=  item.price * item.quantity
+
+    })
+    const formatCurrency = new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: 'GBP',
+   })
+    
+    total.innerText= formatCurrency.format(totalPrice)
+
+    // direct coorelation with quantity and times the 
+    // state.cart.items.price 
+  }
+ 
 
 renderStoreItems()
