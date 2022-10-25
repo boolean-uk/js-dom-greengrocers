@@ -62,25 +62,27 @@ function renderStoreItems() {
 
   state.items.forEach((item) => {
     const li = document.createElement("li")
-  store.appendChild(li)
+    store.appendChild(li)
 
-  const div = document.createElement("div")
-  div.setAttribute("class","store--item-icon")
-  li.appendChild(div)
+    const div = document.createElement("div")
+    div.setAttribute("class","store--item-icon")
+    li.appendChild(div)
 
-  const image = document.createElement("img")
-  image.src = `assets/icons/${item.id}.svg`
-  image.alt = `${item.id}`
-  div.appendChild(image)
+    const image = document.createElement("img")
+    image.src = `assets/icons/${item.id}.svg`
+    image.alt = `${item.id}`
+    div.appendChild(image)
 
-  const button = document.createElement("button")
-  button.innerText = "Add to cart";
-  li.appendChild(button)
+    const button = document.createElement("button")
+    button.innerText = "Add to cart";
+    li.appendChild(button)
 
-  button.addEventListener("click", (event)=>{
-    renderCart()
-  }
-  )
+    button.addEventListener("click", (event)=>{
+      renderCart()
+      addItemToCart(item)
+    
+    }
+    )
 
   })
 
@@ -90,7 +92,7 @@ function renderStoreItems() {
 function renderCart (){
   cart.innerHTML= ""
 
-  state.items.forEach((cartItem) => {
+  state.cart.forEach((cartItem) => {
     const cartLi = document.createElement("li")
     cart.appendChild(cartLi)
 
@@ -104,18 +106,28 @@ function renderCart (){
     cartLi.appendChild(itemName)
 
     const plusButton = document.createElement("button")
+    const span = document.createElement("span")
     const minusButton = document.createElement("button")
 
     minusButton.setAttribute("class","quantity-btn remove-btn center")
+    span.setAttribute("class","quantity-text center")
     plusButton.setAttribute("class","quantity-btn add-btn center")
 
     plusButton.innerText="+"
+    span.innerText="1"
     minusButton.innerText="-"
 
     cartLi.appendChild(plusButton)
+    cartLi.appendChild(span)
     cartLi.appendChild(minusButton)
 
-})
+  })
+}
+
+function addItemToCart(item){
+    item.quantity = 1
+    state.cart.push(item)
+  
 }
 
 renderStoreItems()
