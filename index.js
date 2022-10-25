@@ -54,8 +54,8 @@ const state = {
   cart: []
 };
 
-fruitIsAlreadyInCart = false
-index = 0
+let fruitIsAlreadyInCart = false
+let index = 0
 
 function renderStoreIcons() {
   const storeItemList = document.querySelector('.store--item-list');
@@ -78,14 +78,14 @@ function renderStoreIcons() {
     li.appendChild(button);
 
     button.addEventListener("click", function() {
-      addFruitToCartState(item)
+      addFruitToCartInState(item)
       renderUserCart()
       renderTotalPrice()
     })
   }
 }
 
-function addFruitToCartState(item) {
+function addFruitToCartInState(item) {
   const newCartItem = {
     name: item.name,
     price: item.price,
@@ -98,7 +98,6 @@ function addFruitToCartState(item) {
   } else {
     state.cart.push(newCartItem)
   }
-  console.log(state.cart)
 }
 
 function checkIfFruitIsAlreadyInCart(newFruit) {
