@@ -64,11 +64,14 @@ const state = {
   cart: []
 };
 
+// Variables for targeting html elements
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const totalNumber = document.querySelector('.total-number')
 const vegButton = document.querySelector('.vegButton')
 const fruitButton = document.querySelector('.fruitButton')
+const priceButton = document.querySelector('.priceButton')
+const alphaButton = document.querySelector('.alphaButton')
 
 // Create function for store items
 function renderStore(items) {
@@ -172,8 +175,8 @@ function renderCart() {
   // Function end
 }
 
+// Create function for displaying total
 function renderTotal() {
-  // Create function for displaying total
   // Create sum of the cart item price * cart item quantity
   let total = state.cart.reduce(
     (sum, cartItem) => sum + cartItem.price, 0
@@ -185,9 +188,8 @@ function renderTotal() {
 // Function end
 }
 
+// Create a function for checking items that have been pushed into state.cart
 function checkCartItems() {
-  // Create a function for checking items that have been pushed into state.cart
-
   let display = []
 
   state.cart.forEach(item => {
@@ -236,8 +238,24 @@ function filter(toggledOn, category) {
 }
 
 // Extension 2
-function sort() {
 
+priceButton.addEventListener('click', (event) => {
+  sortStore(event.target.click, 'price')
+})
+
+alphaButton.addEventListener('click', (event) => {
+  sortStore(event.target.click, 'alphabetically')
+})
+
+function sortStore(toggledOn, sortType) {
+  let sorted
+  if (sortType === 'price') {
+    sorted = state.items.sort(state.items.price)
+  } else if (sortType === 'alphabetically') {
+    sorted = state.items.sort(state.items.name)
+  }
+
+  renderStore(sorted)
 }
 
 // Call render functions
