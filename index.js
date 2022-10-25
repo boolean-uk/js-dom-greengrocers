@@ -88,17 +88,15 @@ let itemCopy = {}
     itemCopy.quantity = 0
 
   addToCart.addEventListener('click', () => {
-    
+    console.log(itemCopy)
     if(itemCopy.quantity === 0){
     itemCopy.quantity += 1
-    if (itemCopy.quantity === 1){
     cartData.push(itemCopy)
-    // subTotals()
 // render cart function
     renderCart()
     renderTotal()
 // console.log(cartData)
-    }
+    
   }
   })
   shopItem.appendChild(shopIconCon)
@@ -107,6 +105,7 @@ let itemCopy = {}
 
   return shopItem
 }
+
 // function to create shop cart item
 function createShopCartItem (item){
 
@@ -129,24 +128,29 @@ function createShopCartItem (item){
   addButton.innerText = '+'
 // add button event listeners
   removeButton.addEventListener('click', () =>{
+    item.quantity -= 1
+    renderTotal()
 
+  
+  console.log(cartData)
     if (item.quantity === 0){
       for (i = 0; i < cartData.length; i++){
         if (cartData[i].name === item.name){
           cartData.splice(i, 1)
           renderCart()
-          renderTotal()  
         }       
       }
     }
     else {
-      item.quantity -= 1
+      // item.quantity -= 1
       renderCart()  
       renderTotal()
     }
     } )
 
     addButton.addEventListener('click', () => {
+      console.log(cartData)
+
       item.quantity += 1
       renderCart()  
       renderTotal()
