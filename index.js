@@ -86,37 +86,30 @@ function fruitAndVeg() {
     image.src = `assets/icons/${item.id}.svg`
     image.alt = `${item.id}`
     div.appendChild(image)
-
+    // 2: From the store, a user can add an item to their cart
     const buttonAddToCart = document.createElement('button')
     buttonAddToCart.innerText = 'Add to Cart'
     li.appendChild(buttonAddToCart)
     buttonAddToCart.setAttribute('style', 'color: blue')
+    buttonAddToCart.addEventListener('click', (event) => {
+      cartItemsToBuy()
+      itemsInTheCart(item)
+      fruitAndVeg()
+      total()
+      // calling this function here in the addToCartListener tell the addToCartListener to run the fucntion when the click event is taking place.
+    })
 
-    addToCartListener(buttonAddToCart, item)
     cartItemsToBuy(item)
   })
 }
 
-fruitAndVeg()
-
-// 2: From the store, a user can add an item to their cart
 // 2.1: add on click even to add the item and move from store data array to cart data array.
-function addToCartListener(buttonAddToCart, item) {
-  buttonAddToCart.addEventListener('click', (event) => {
-    const objectThatHoldsGrocers = {
-      quatity: 1,
-      image: `assets/icons/${item.id}.svg`,
-      name: item.name
-    }
-    state.cart.push(objectThatHoldsGrocers) // items that will be pushed need to be declared in
-    console.log(state.cart)
-  })
-}
+
 // below i am trying to copy the format given to me from the car-item.html
 //
 // the cartItemsToBuy is the function that holds the items that a user would purchase.
 
-function cartItemsToBuy(item) {
+function cartItemsToBuy() {
   cartItemList.innerText = ''
 
   state.cart.forEach((item) => {
@@ -127,11 +120,13 @@ function cartItemsToBuy(item) {
     const imageCart = document.createElement('img')
     imageCart.src = `assets/icons/${item.id}.svg`
     imageCart.alt = `${item.id}`
+    console.log(item) // helps me gain the visibility needed
 
     imageCart.setAttribute('class', 'cart--item-icon')
     li.appendChild(imageCart)
 
     const p = document.createElement('p')
+    p.innerText = item.name
     li.appendChild(p)
 
     const removeButton = document.createElement('button')
@@ -142,18 +137,63 @@ function cartItemsToBuy(item) {
     span.setAttribute('class', 'quantity-text center')
     removeButton.setAttribute('class', 'quantity-btn remove-btn center')
     removeButton.innerText = '-'
-    span.innerText = '1'
+    span.innerText = `${item.quantity}`
     addButton.innerText = '+'
     li.appendChild(addButton)
     li.appendChild(span)
     li.appendChild(removeButton)
+
+    // below i am trying to write the fucntion that will help me change the quantity of the item in the cart
+
+    //   3:If the item is already in the cart, increase the item's quantity in the cart or decrease
+
+    //   4: From the cart, a user can view and adjust the number of items in their cart
+    addButton.addEventListener('click', (event) => {
+      item.quantity += 1
+      cartItemsToBuy()
+      total()
+    })
+
+    removeButton.addEventListener('click', (event) => {
+      item.quantity -= 1
+      cartItemsToBuy()
+      // 5.1: for loop and an onclick event -> if data index = 0 then remove from cart data array
+      if (item.quantity === 0) {
+        const i = state.cart.indexOf(item)
+        state.cart.splice(i, 1)
+      }
+      cartItemsToBuy()
+      total()
+    })
   })
 }
 
-//   3:If the item is already in the cart, increase the item's quantity in the cart
+function itemsInTheCart(item) {
+  console.log(state.cart)
+  //   5: If an item's quantity equals zero it is removed from the cart
+  if (state.cart.find((product) => product.name === item.name) === undefined) {
+    item.quantity = 1
+    state.cart.push(item)
+  } else {
+    item.quantity += 1
+  }
+  console.log(item)
+}
 
-//   4: From the cart, a user can view and adjust the number of items in their cart
-
-//   5: If an item's quantity equals zero it is removed from the cart
-// 5.1: for loop and an onclick event -> if data index = 0 then remove from cart data array
 // 6: A user can view the current total in their cart
+function total() {
+  const cartTotal = document.querySelector('.total-number')
+
+  let price = 0
+
+  state.cart.forEach((item) => {
+    price += item.price * item.quantity
+  })
+
+  cartTotal.innerText = `£${price}`
+
+  // direct coorelation with quantity and times the
+  // state.cart.items.price
+}
+
+fruitAndVeg()
