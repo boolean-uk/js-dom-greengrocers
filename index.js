@@ -213,12 +213,12 @@ function checkCartItems() {
 
 // Extension 1
 fruitButton.addEventListener('click', (event) => {
-  //On the click event trigger the filter function 
+  // On the click event trigger the filter function with the below arguments
   filter(event.target.click, 'fruit')
 })
 
 vegButton.addEventListener('click', (event) => {
-  //On the click event trigger the filter function 
+  // On the click event trigger the filter function with the below arguments
   filter(event.target.click, 'vegetable')
 })
 
@@ -240,21 +240,27 @@ function filter(toggledOn, category) {
 // Extension 2
 
 priceButton.addEventListener('click', (event) => {
+  // On click trigger the sortStore function with the below arguments
   sortStore(event.target.click, 'price')
 })
 
 alphaButton.addEventListener('click', (event) => {
+  // On click trigger the sortStore function with the below arguments
   sortStore(event.target.click, 'alphabetically')
 })
 
 function sortStore(toggledOn, sortType) {
+  // Pull the arguments from the above event listeners
   let sorted
+  // Change the sort order to either alphabetical or price
+  // based on the sortType parameter
   if (sortType === 'price') {
-    sorted = state.items.sort(state.items.price)
+    sorted = state.items.sort(
+      (a,b) => a.price.toString().localeCompare(b.price)
+    )
   } else if (sortType === 'alphabetically') {
-    sorted = state.items.sort(state.items.name)
+    sorted = state.items.sort((a,b) => a.name.localeCompare(b.name))
   }
-
   renderStore(sorted)
 }
 
