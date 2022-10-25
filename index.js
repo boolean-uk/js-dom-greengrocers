@@ -57,6 +57,7 @@ const state = {
 const store = document.querySelector(".store--item-list")
 const cart = document.querySelector(".cart--item-list")
 
+// This function renders all the store items onto the page
 function renderStoreItems() {
   store.innerHTML= ""
 
@@ -90,7 +91,7 @@ function renderStoreItems() {
 
 }
 
-// This function renders all the store items onto the page
+// This function renders all the cart items onto the page
 function renderCart (){
   cart.innerHTML= ""
 
@@ -148,9 +149,9 @@ function renderCart (){
   })
 }
 
-// This function ensures an item only displays once regardless of how many times the 'add to cart' button is pressed
+// This function ensures an item only displays once, regardless of how many times the 'add to cart' button is pressed
 function addItemToCart(item){
-  // This if statement adds 1 item into the cart if it does not detect it already in there
+  // This if statement adds 1 item into the cart,if it does not detect it already in there
    if( state.cart.find((produce) => produce.name === item.name ) === undefined){
     item.quantity = 1
     state.cart.push(item)
@@ -172,7 +173,7 @@ function addItemToCart(item){
      totalPrice +=  item.price * item.quantity
 
     })
-    // The formatting of the total in GBP is done using this const and is recalled whne stating the inner text of the total span
+    // The formatting of the total in GBP is done using this const and is recalled when stating the inner text of the total span
     const formatCurrency = new Intl.NumberFormat('en-GB', {
       style: 'currency',
       currency: 'GBP',
