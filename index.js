@@ -3,52 +3,62 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.95,
+      category: 'vegetable'
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.45,
+      category: 'vegetable'
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 1.70,
+      category: 'fruit'
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 1.00,
+      category: 'fruit'
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.80,
+      category: 'fruit'
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 1.35,
+      category: 'fruit'
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 1.50,
+      category: 'vegetable'
     },
     {
-      id: "008-berry",
-      name: "berry",
-      price: 0.35
+      id: "008-cherry",
+      name: "cherry",
+      price: 2.00,
+      category: 'fruit'
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 2.30,
+      category: 'fruit'
     },
     {
-      id: "010-eggplant",
-      name: "eggplant",
-      price: 0.35
+      id: "010-aubergine",
+      name: "aubergine",
+      price: 0.75,
+      category: 'fruit'
     }
   ],
   cart: []
@@ -57,6 +67,8 @@ const state = {
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const totalNumber = document.querySelector('.total-number')
+const vegCheck = document.querySelector('.vegCheck')
+const fruitCheck = document.querySelector('.fruitCheck')
 
 // Create function for store items
 function renderStore(items) {
@@ -195,6 +207,45 @@ function checkCartItems() {
   return display
 
   // Function end
+}
+
+// Extension 1
+fruitCheck.addEventListener('click', (event) => {
+  //On the click event trigger the filter function 
+  filter(event.target.checked, 'fruit')
+  console.log('fruit clicked')
+})
+
+vegCheck.addEventListener('click', (event) => {
+  //On the click event trigger the filter function 
+  console.log('veg clicked')
+  console.log(event.target.checked)
+  filter(event.target.checked, 'vegetable')
+  
+})
+
+function filter(toggledOn, category) {
+  let filtered
+  console.log('filter function invoked')
+  // Pull the arguments from fruit/vegFilterToggle and check if the
+  // category within the object matches vegetable or fruit, and depending upon
+  // which is requested hide one or the other
+  if (toggledOn) {
+    filtered = state.items.filter(item => item.category === category)
+    // console.log(`filtered to ${item.category}`)
+    
+  } else {
+    filtered = state.items
+    console.log('Items not filtered')
+    // console.log(item.category)
+  }
+  // Render the store again giving the filtered state.items as the argument
+  renderStore(filtered)
+}
+
+// Extension 2
+function sort() {
+
 }
 
 // Call render functions

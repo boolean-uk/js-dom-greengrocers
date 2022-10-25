@@ -31,6 +31,7 @@ button {
   overflow-y: scroll;
 
   background-color: #567517;
+  
 }
 
 #store h1 {
@@ -53,6 +54,19 @@ button {
 .store--item-icon {
   width: 125px;
   height: 125px;
+}
+
+.sorting {
+  display: flex;
+  gap: 20px;
+}
+
+.checkbox-bg {
+  background: #0C0F10;
+  padding: 10px;
+  border: solid 2px #757575;
+  border-radius: 10px;
+  height: fit-content;
 }
 
 @media only screen and (max-width: 600px) {
@@ -78,7 +92,7 @@ button {
   grid-gap: 1rem;
   justify-content: center;
 
-  border-top: 2px solid #e7f4ea;
+  border-top: 2px solid #757575;
 }
 
 #cart h2 {
