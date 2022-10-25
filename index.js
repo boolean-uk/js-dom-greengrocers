@@ -120,8 +120,8 @@ Create function for the total
 // }
 
 const ItemsInStore = document.querySelector('.store--item-list');
-const ItemsInCart = document.querySelector(".cart--item-list");
-const addButton = document.querySelector(".butt");
+const ItemsInCart = document.querySelector('.cart--item-list');
+const addButton = document.querySelector('.butt');
 
 
 
