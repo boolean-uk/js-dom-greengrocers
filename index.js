@@ -70,6 +70,7 @@ const state = {
 
 const itemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
+
 function fruitAndVeg() {
   itemList.innerHTML = ''
 
@@ -92,6 +93,7 @@ function fruitAndVeg() {
     buttonAddToCart.setAttribute('style', 'color: blue')
 
     addToCartListener(buttonAddToCart, item)
+    cartItemsToBuy(item)
   })
 }
 
@@ -99,7 +101,6 @@ fruitAndVeg()
 
 // 2: From the store, a user can add an item to their cart
 // 2.1: add on click even to add the item and move from store data array to cart data array.
-
 function addToCartListener(buttonAddToCart, item) {
   buttonAddToCart.addEventListener('click', (event) => {
     const objectThatHoldsGrocers = {
@@ -111,15 +112,43 @@ function addToCartListener(buttonAddToCart, item) {
     console.log(state.cart)
   })
 }
+// below i am trying to copy the format given to me from the car-item.html
+//
+// the cartItemsToBuy is the function that holds the items that a user would purchase.
 
-// 2.2: create a li in the cart area to push the slected items to.
-const cartItems = document.createElement('li')
+function cartItemsToBuy(item) {
+  cartItemList.innerText = ''
 
-// eslint-disable-next-line no-unused-vars
-const cartListOfPickedItems = document.querySelector('.cart--item-list')
-cartItemList.appendChild(cartItems)
-cartItems.setAttribute('class', 'cart--item-list')
-cartItems.innerText = state[item]
+  state.cart.forEach((item) => {
+    // 2.2: create a li in the cart area to push the slected items to.
+    const li = document.createElement('li')
+    cartItemList.appendChild(li)
+
+    const imageCart = document.createElement('img')
+    imageCart.src = `assets/icons/${item.id}.svg`
+    imageCart.alt = `${item.id}`
+
+    imageCart.setAttribute('class', 'cart--item-icon')
+    li.appendChild(imageCart)
+
+    const p = document.createElement('p')
+    li.appendChild(p)
+
+    const removeButton = document.createElement('button')
+    const span = document.createElement('span')
+    const addButton = document.createElement('button')
+
+    addButton.setAttribute('class', 'quantity-btn add-btn center')
+    span.setAttribute('class', 'quantity-text center')
+    removeButton.setAttribute('class', 'quantity-btn remove-btn center')
+    removeButton.innerText = '-'
+    span.innerText = '1'
+    addButton.innerText = '+'
+    li.appendChild(addButton)
+    li.appendChild(span)
+    li.appendChild(removeButton)
+  })
+}
 
 //   3:If the item is already in the cart, increase the item's quantity in the cart
 
