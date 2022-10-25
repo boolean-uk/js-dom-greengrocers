@@ -165,7 +165,7 @@ function renderUserCart(){
 }
 
 function renderTotalPrice() {
-  totalPrice = 0
+  let totalPrice = 0
 
   for (item of state.cart) {
     totalPrice += item.price * item.quantity
@@ -176,7 +176,7 @@ function renderTotalPrice() {
     currency: 'GBP',
   });
 
-  totalPriceContainer = document.querySelector('.total-number')
+  const totalPriceContainer = document.querySelector('.total-number')
   totalPriceContainer.innerText = currencyFormatter.format(totalPrice)
 }
 
