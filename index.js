@@ -82,6 +82,34 @@ const fruitsFilter = document.createElement("button");
 fruitsFilter.innerText = "Fruits";
 h1.appendChild(fruitsFilter);
 
+const priceFilter = document.createElement("form");
+
+const select = document.createElement("select");
+select.setAttribute("name", "Sort by price");
+select.setAttribute("value", "Sort by price");
+select.setAttribute("id", "sort_by_price");
+
+const option = document.createElement("option");
+option.setAttribute("id", "default");
+option.setAttribute("value", "default");
+option.innerText = "Sort by price";
+
+const increment = document.createElement("option");
+increment.setAttribute("id", "incrementing");
+increment.setAttribute("value", "incrementing");
+increment.innerText = "Lowest first";
+
+const decrement = document.createElement("option");
+decrement.setAttribute("id", "decrementing");
+decrement.setAttribute("value", "decrementing");
+decrement.innerText = "Highest first";
+
+h1.appendChild(priceFilter);
+priceFilter.appendChild(select);
+select.appendChild(option);
+select.appendChild(increment);
+select.appendChild(decrement);
+
 function addStoreItem(item) {
   const li = document.createElement("li");
   const div = document.createElement("div");
@@ -117,6 +145,28 @@ fruitsFilter.addEventListener("click", () => {
     return item.type === "fruits";
   });
   render(fruitsFilterArray);
+});
+
+select.addEventListener("change", () => {
+  console.log(select.value);
+  let sortedArray = [...state.items];
+  if (select.value === "incrementing") {
+    sortedArray.sort(
+      (item1, item2) => Number(item1.price) - Number(item2.price)
+    );
+  } else if (select.value === "decrementing") {
+    sortedArray.sort(
+      (item1, item2) => Number(item2.price) - Number(item1.price)
+    );
+  }
+  // select.value !== "decrementing" &&
+  // select.value !== "decrementing"
+  // select.value === "default"
+  // else {
+  //   console.log("its default");
+  //   sortedArray = state.items;
+  // }
+  render(sortedArray);
 });
 
 function render(renderItems) {
@@ -209,26 +259,10 @@ function addToCart(item) {
 function calculateTotal() {
   let total = 0;
   state.cart.forEach((item) => {
-    total = total + item.price * item.quantity;
+    total += item.price * item.quantity;
   });
   const span = document.querySelector(".total-number");
   span.innerText = "£" + Math.round(total * 100) / 100;
 }
-// let totalPricePerItem = 0;
-// for (let i = 0; i < state.cart.length; i++) {
-//   totalPricePerItem += state.items.price[i].count;
-//   return totalPricePerItem;
-//   console.log(price[i]);
-// }
 
-// function total() {
-//   let total = 0;
-//   state.cart.reduce((previusValue, currentValue) => {
-//     total = previusValue + currentValue;
-//     return total;
-//   }, 0);
-// }
-// console.log(calculateTotal());
-
-// console.log(state.cart);
 render(state.items);
