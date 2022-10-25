@@ -52,6 +52,7 @@ const state = {
     },
   ],
   cart: [],
+  displayCart: [],
 };
 
 // Render function that loops through the data and adds HTML for each item to store
@@ -60,6 +61,7 @@ const state = {
 // Selections
 const store = document.querySelector(".store--item-list");
 const cart = document.querySelector(".cart--item-list");
+const total = document.querySelector(".total-number");
 
 function createStoreItem(product) {
   const li = document.createElement("li");
@@ -89,21 +91,22 @@ state.items.forEach((product) => {
 
   const cartBtn = item.querySelector("button");
   cartBtn.addEventListener("click", function () {
-    // perhaps I should be passing in the cart data instead
-    addToCart(product);
+    state.cart.push(product);
+
+    createCartDisplay();
+
     renderCart();
   });
 });
 
-// function to select the button and add the event listener which will listen for click event
-
 // function to render the cart items
 function renderCart() {
   clearCart();
-  state.cart.forEach((cartItem) => {
+  state.displayCart.forEach((cartItem) => {
     const cartItemDOM = createCartItem(cartItem);
     cart.appendChild(cartItemDOM);
   });
+  createTotal();
 }
 
 // function to add item to cart
@@ -122,8 +125,14 @@ function createCartItem(product) {
   const addBtn = document.createElement("button");
   removeBtn.classList.add("quantity-btn", "remove-btn", "center");
   removeBtn.innerText = "-";
+  removeBtn.addEventListener("click", () => {
+    removeFromCart(product);
+  });
   addBtn.classList.add("quantity-btn", "add-btn", "center");
   addBtn.innerText = "+";
+  addBtn.addEventListener("click", () => {
+    addToCart(product);
+  });
 
   const span = document.createElement("span");
   span.classList.add("quantity-text", "center");
@@ -139,12 +148,43 @@ function createCartItem(product) {
 }
 
 // updates state.cart
-function addToCart(product) {
-  product.quantity = 1;
-  state.cart.push(product);
+function createCartDisplay() {
+  state.cart.forEach((item) => {
+    const match = state.displayCart.find(
+      (product) => item.name === product.name
+    );
+    if (!match) {
+      state.displayCart.push({ ...item, quantity: 1 });
+    } else {
+      match.quantity++;
+    }
+  });
 }
 
 // function to clear the cart list
 function clearCart() {
   cart.innerHTML = "";
+}
+
+function addToCart(product) {
+  product.quantity++;
+  renderCart();
+}
+
+function removeFromCart(product) {
+  product.quantity--;
+  if (product.quantity < 1) {
+    const found = state.displayCart.find((item) => item.id === product.id);
+    const index = state.displayCart.indexOf(found);
+    state.displayCart.splice(index, 1);
+  }
+  renderCart();
+}
+
+function createTotal() {
+  const totalAmount = state.displayCart.reduce((total, product) => {
+    return (total + product.price) * product.quantity;
+  }, 0);
+  const totalDOM = `£${totalAmount.toFixed(2)}`;
+  total.innerText = totalDOM;
 }
