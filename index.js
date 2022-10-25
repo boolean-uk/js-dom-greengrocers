@@ -88,10 +88,123 @@ Create function for the total
   
   */
 
-const storeitems = document.querySelector(".store--item-list");
+// const storeitems = document.querySelector(".store--item-list");
+// const addButton = document.querySelector('.butt');
 
-function addItemsToStore(item) {
-  const li = document.createElement("li");
-  const div = document.createElement("div");
-  div.setAttribute("class", "store--item-icon");
+// function addItemsToStore(item) {
+//   const li = document.createElement("li");
+//   const div = document.createElement("div");
+//   div.setAttribute("class", "store--item-icon");
+//   li.appendChild(div);
+
+//   const addButton = document.createElement('button');
+//   addButton.setAttribute('class', '.butt');
+//   addButton.innerText = 'Add to Cart';
+//   li.appendChild(addButton);
+
+//   const img = document.createElement('img');
+//   img.setAttribute('src', item.image);
+//   img.setAttribute('alt', item.name);
+//   div.appendChild(img);
+
+//   storeitems.appendChild(li);
+// }
+
+// function addItemstoCart (item) {
+//   if (state.cart.includes(item)) {
+//     return;
+//   }
+
+//   const li = document.createElement('li');
+
+// }
+
+const ItemsInStore = document.querySelector('.store--item-list');
+const ItemsInCart = document.querySelector(".cart--item-list");
+const addButton = document.querySelector(".butt");
+
+
+
+function addItems(item) {
+  const li = document.createElement('li');
+  const div = document.createElement('div');
+  div.setAttribute('class', 'store--item-icon');
+  li.appendChild(div);
+
+  const addButton = document.createElement('button');
+  addButton.setAttribute('class', '.butt');
+  addButton.innerText = 'Add to Cart';
+  li.appendChild(addButton);
+
+  const img = document.createElement('img');
+  img.setAttribute('alt', item.name);
+  img.setAttribute('src', item.image);
+  div.appendChild(img);
+
+  ItemsInStore.appendChild(li);
+
+  addButton.addEventListener('click', () => {
+    addItemsToCart(item);
+  });
 }
+
+function render() {
+  state.items.forEach((item) => {
+    item.number = 1;
+    item.image = `assets/icons/${item.id}.svg`;
+    addItems(item);
+  });
+}
+
+function addItemsToCart(item) {
+  if (state.cart.includes(item)) {
+    return;
+    /* else statement*/
+  }
+
+  const li = document.createElement('li');
+
+  const p = document.createElement('p');
+  p.innerText = item.name;
+
+  const img = document.createElement('img');
+  img.setAttribute('class', 'cart--item-icon');
+  img.setAttribute('src', item.image);
+  img.setAttribute('alt', item.name);
+  li.appendChild(img);
+  
+  li.appendChild(p);
+
+  const minusButton = document.createElement('button');
+  minusButton.setAttribute('class', 'remove-btn');
+  minusButton.innerText = '-';
+  li.appendChild(minusButton);
+
+  const div = document.createElement('div');
+  div.innerText = '1';
+  li.appendChild(div);
+    
+  const plusButton = document.createElement('button');
+  plusButton.setAttribute('class', 'add-btn');
+  plusButton.innerText = '+';
+  li.appendChild(plusButton);
+
+  ItemsInCart.appendChild(li);
+  state.cart.push(item);
+  plusButton.addEventListener('click', () => {
+    item.number += 1;
+    div.innerText = item.number;
+    
+
+  });
+  
+  minusButton.addEventListener('click', () => {
+    item.number -= 1;
+    if (item.number < 1) {
+      li.remove();
+    }
+    div.innerText = item.number;
+  });
+}
+
+render();
