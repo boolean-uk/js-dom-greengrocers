@@ -166,15 +166,17 @@ function renderUserCart(){
 }
 
 function renderTotalPrice() {
+  totalPrice = 0
+
+  for (item of state.cart) {
+    totalPrice += item.price * item.quantity
+  }
+
   const currencyFormatter = new Intl.NumberFormat('en-GB', {
     style: 'currency',
     currency: 'GBP',
   });
 
-  totalPrice = 0
-  for (item of state.cart) {
-    totalPrice += item.price * item.quantity
-  }
   totalPriceContainer = document.querySelector('.total-number')
   totalPriceContainer.innerText = currencyFormatter.format(totalPrice)
 }
