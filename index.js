@@ -80,6 +80,7 @@ function renderItems(){
     addToCart.addEventListener('click', () =>{
       addItem(item)
       showSelectedItem(item)
+      
     })
     
   }); 
@@ -173,6 +174,12 @@ function addItem(item){
         cartObj.price = item.price;
         cartObj.amount = product.amount + 1; 
         cartList[index] = cartObj;
+      }
+      else if(!Object.values(product).includes(item.name)){
+        cartObj.name = item.name;
+        cartObj.price = item.price;
+        cartObj.amount = 1; 
+        cartList.push(cartObj);
       }
     });
   }
