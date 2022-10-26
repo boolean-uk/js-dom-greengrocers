@@ -1,3 +1,4 @@
+
 const state = {
   items: [
     {
@@ -76,42 +77,67 @@ function renderItems(){
     gorcersList.appendChild(gorcersItem);
 
     addToCart.addEventListener('click', () =>{
-            showSelectedItem(item);
-    })
-    
-    gorceryItemImage.addEventListener('click', () =>{
       showSelectedItem(item)
     })
     
+    gorceryItemImage.addEventListener('click', () =>{
+      // showSelectedItem(item)
+    })
+
   }); 
 }
 
 renderItems();
 
+const list = [];
+const obj = {}
+
 function showSelectedItem(item){
-  const itemCart = document.createElement('li');
-  const itemCartImg = document.createElement('img');
-  itemCartImg.setAttribute('src', 'assets/icons/' + item.id + '.svg')
-  const itemCartName = document.createElement('p');
-  itemCartName.innerText = item.name;
-  const reduceItem = document.createElement('button');
-  reduceItem.innerText = "-";
-  const quntityCartItem = document.createElement('span');
-  quntityCartItem.innerText = 1;
-  const increaseCartItem = document.createElement('button');
-  increaseCartItem.innerText = "+";  
-  itemCart.appendChild(itemCartImg);
-  itemCart.appendChild(itemCartName);
-  itemCart.appendChild(reduceItem);
-  itemCart.appendChild(quntityCartItem);
-  itemCart.appendChild(increaseCartItem);
-  itemCartList.appendChild(itemCart);
+      if(list.length === 0){
+        obj.name = item.name;
+        obj.amount = 1;
+        list.push(obj);
+      }
+
+      else{
+        list.forEach(element => {
+          if(element.name === item.name){
+            let index = list.indexOf(element);
+            obj.name = element.name;
+            obj.amount = element.amount + 1;
+            list[index] = obj;
+          }
+          
+      
+        });
+      }
+
+      list.forEach(element => {
+        console.log(element.name)
+      });
+    
+     
+      
+      const itemCart = document.createElement('li');
+      const itemCartImg = document.createElement('img');
+      itemCartImg.setAttribute('src', 'assets/icons/' + item.id + '.svg')
+      const itemCartName = document.createElement('p');
+      itemCartName.innerText = item.name;
+      const reduceItem = document.createElement('button');
+      reduceItem.innerText = "-";
+      const quntityCartItem = document.createElement('span');
+      quntityCartItem.innerText = 1;
+      const increaseCartItem = document.createElement('button');
+      increaseCartItem.innerText = "+";
+      itemCart.appendChild(itemCartImg);
+      itemCart.appendChild(itemCartName);
+      itemCart.appendChild(reduceItem);
+      itemCart.appendChild(quntityCartItem);
+      itemCart.appendChild(increaseCartItem);
+      itemCartList.appendChild(itemCart);
+  
 }
 
-// js
-// first create function to render the image of the item to the header putting it in div as defined in the store.html
-// insert button called "add cart" with the image in div, it is clickable, by setting the addEventlistner.
-// to add the image to the cart and calculate the total price based on the number of added items.
-// Once added to the cart, - and + button should be added along side the image of the item.
-// to decrease and increase the number of items in the cart and calculate the amount and price of
-// the total added items. 
+ 
+  console.log(groceries.length);
+ 
