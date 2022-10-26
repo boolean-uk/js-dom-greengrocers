@@ -57,49 +57,57 @@ const shop = document.querySelector(".store--item-list");
 const cart = document.querySelector(".cart--item-list");
 const totalNumber = document.querySelector(".total-number");
 
-
-state.items.forEach((item) => {
-  // console.log("eachOne", item)
-  const li = document.createElement("li");
-  const div = document.createElement("div");
-  div.setAttribute("class", "store--item-icon");
-  const img = document.createElement("img");
-  img.src = `assets/icons/${item.id}.svg`;
-  img.alt = `${item.name}`;
-  const addButton = document.createElement("button");
-  addButton.innerText = "add to cart";
-  addButton.addEventListener("click", function (e) {
-    e.preventDefault();
-    // state.cart.push(item)
-    console.log("here is the id", item.id);
-    // if (cartItem.id === item.id){
-    //   // quantity =+1
+function renderShop(){
+  shop.innerHTML = ""
+  state.items.forEach((item) => {
+    // console.log("eachOne", item)
+    const li = document.createElement("li");
+    const div = document.createElement("div");
+    div.setAttribute("class", "store--item-icon");
+    const img = document.createElement("img");
+    img.src = `assets/icons/${item.id}.svg`;
+    img.alt = `${item.name}`;
+    const addButton = document.createElement("button");
+    addButton.innerText = "add to cart";
+    addButton.addEventListener("click", function (e) {
+      // e.preventDefault();
+      // state.cart.push(item)
+      console.log("here is the id", item.id);
+      // if (cartItem.id === item.id){
+      //   // quantity =+1
     //   return true;
     //   // console.log("Quantity", quantity)
     // }else{
     //   return false
     // state.cart.push(item)
     // }
+    
     if (!item.quantity) {
       console.log("which boolean", !item.quantity);
       console.log("quantity", item.quantity);
       item.quantity = 0;
+      console.log("here", item.quantity)
     }
 
     item.quantity += 1;
 
-    if (!state.cart.find(({ id }) => id === item.id)) {
+    if (!state.cart.find(({id}) => id === item.id)) {
+      
       console.log("it must be from here", !state.cart);
       state.cart.push(item);
-    }
+      // state.cart.unshift(item);
 
+    }
+  
     cartItem();
-    console.log("what is that", state.cart);
+    // console.log("what is that", state.cart);
   });
   li.append(div, addButton);
   div.append(img);
   shop.append(li);
-});
+  });
+}
+renderShop()
 // const items = state.items
 // console.log("shop is:", items[1].id)
 // function fromShop (shopItem){
@@ -107,14 +115,14 @@ state.items.forEach((item) => {
 // console.log("branch", li)
 // const div = document.createElement("div")
 // const img = `src="assets/icons/001-beetroot.svg"`
-
+// find()
 //   return li
 // }
 // fromShop()
 
 function cartItem() {
-  cart.innerHTML = "";
   let totalPrice = 0;
+  cart.innerText = "";
   state.cart.forEach((item) => {
     const li = document.createElement("li");
     const img = document.createElement("img");
@@ -129,12 +137,17 @@ function cartItem() {
     totalPrice += item.quantity * 0.35;
     removeButton.addEventListener("click", () => {
       item.quantity--;
+      
+      
       if (item.quantity <= 0) {
         // arr = arr.filter(item => item !== value)
-        state.cart = state.cart.filter(
-          (decreasingItem) => decreasingItem.id !== item.id
+        
+        state.cart = state.cart.filter((decreasingItem) => decreasingItem.id !== item.id
           );
         }
+      // if (state.cart.includes(item)) {
+      //     return ;
+      //   }
         cartItem();
       });
       // removeButton.addEventListener("click", () => )
@@ -147,6 +160,7 @@ function cartItem() {
       addButton.innerText = "+";
       addButton.addEventListener("click", () => {
         item.quantity++;
+        console.log("add button", item.quantity)
         cartItem();
       });
       
@@ -162,3 +176,25 @@ function cartItem() {
   function calculate(totalPrice) {
     totalNumber.innerText = "£" + totalPrice.toFixed(2);
   }
+  function filter (){
+    // const alphabet = document.querySelector("#store")
+    // const ol = document.createElement("ol")
+    // const li = document.createElement("li")
+    
+    
+    state.items.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    console.log(state)
+    // alphabet.append(ol)
+    // ol.append(li)
+    renderShop()
+  }
+  filter ()
