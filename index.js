@@ -98,9 +98,11 @@ let itemCopy = {}
 // console.log(cartData)
     
   }
-  itemCopy.quantity += 1
+  else {
+    itemCopy.quantity += 1
   renderCart()
     renderTotal()
+  }
   })
   shopItem.appendChild(shopIconCon)
   shopIconCon.appendChild(shopIcon)
@@ -205,6 +207,7 @@ function createFilter (name, type){
       if (type.includes(item.name)){
       shopItems.appendChild(createShopItem(item))
     }})
+    // console.log(cartData)
   })
 }
 createFilter('fruits', fruits)
