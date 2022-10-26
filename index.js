@@ -56,16 +56,8 @@ const state = {
 
 // for all the items in const state, render it as a li to replicates store-item.html in header (#id=store)
 // all the items should contain appropriate image and a button "add to cart" inside li
-const itemList = document.querySelector(".store--item-list");
-console.log(itemList);
-function calculateTotal() {
-  // this function should calculate total of the cart
-  let cartTotal = 0;
-  // calculate total
 
-  // display total
-  return cartTotal;
-}
+const itemList = document.querySelector(".store--item-list");
 
 createItemList();
 function createItemList() {
@@ -103,7 +95,7 @@ function createItemList() {
       // if i have then increase the quantity>
 
       if (itemFound) {
-        itemFound.quantity++;
+        // itemFound.quantity +=1;
       } else {
         // if dont have it then run the following code
         const addTocartItem = {};
@@ -111,13 +103,14 @@ function createItemList() {
         addTocartItem.name = item.name;
         addTocartItem.img = `assets/icons/${item.id}.svg`;
         addTocartItem.quantity = 1;
+        addTocartItem.price = item.price;
         state.cart.push(addTocartItem);
 
         // rendering list of item in the cart
         const li = document.createElement("li");
         cartItem.appendChild(li);
         state.items.push(li);
-
+        calculateTotal();
         // rendering img in the cart
         const img = document.createElement("img");
         img.setAttribute("class", "cart--item-icon");
@@ -154,6 +147,7 @@ function createItemList() {
         addButton.addEventListener("click", () => {
           addTocartItem.quantity += 1;
           span.innerText = addTocartItem.quantity;
+          calculateTotal();
         });
 
         //  removing the item quantity in the cart with - sign and when it is 0
@@ -172,13 +166,20 @@ function createItemList() {
             state.cart.splice(itemindex, 1);
           }
           span.innerText = addTocartItem.quantity;
+          calculateTotal();
         });
 
         // create a function to display total by sum of cart-item price * quantity
         // display the total in span
-        const totalPrice = calculateTotal();
-        console.log("total price", totalPrice);
-        // display 0 if no item in cart
+
+        function calculateTotal() {
+          let total = 0;
+          state.cart.forEach((item) => {
+            total += item.price * item.quantity;
+          });
+          const span = document.querySelector(".total-number");
+          span.innerText = "£" + Math.round(total * 100) / 100;
+        }
       }
     });
   });
