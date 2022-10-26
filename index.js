@@ -98,6 +98,9 @@ let itemCopy = {}
 // console.log(cartData)
     
   }
+  itemCopy.quantity += 1
+  renderCart()
+    renderTotal()
   })
   shopItem.appendChild(shopIconCon)
   shopIconCon.appendChild(shopIcon)
