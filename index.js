@@ -57,7 +57,8 @@ const state = {
 const groceries = state.items;
 
 const gorcersList = document.querySelector('.store--item-list');
-const itemCartList = document.querySelector('.cart--item-list')
+const itemCartList = document.querySelector('.cart--item-list');
+const total = document.querySelector('.total-number');
 
 // Rendering items function
 
@@ -77,58 +78,53 @@ function renderItems(){
     gorcersList.appendChild(gorcersItem);
 
     addToCart.addEventListener('click', () =>{
+      addItem(item)
       showSelectedItem(item)
     })
     
-    gorceryItemImage.addEventListener('click', () =>{
-      // showSelectedItem(item)
-    })
-
   }); 
 }
 
 renderItems();
 
-const list = [];
-const obj = {}
-
 function showSelectedItem(item){
-      if(list.length === 0){
-        obj.name = item.name;
-        obj.amount = 1;
-        list.push(obj);
-      }
-
-      else{
-        list.forEach(element => {
-          if(element.name === item.name){
-            let index = list.indexOf(element);
-            obj.name = element.name;
-            obj.amount = element.amount + 1;
-            list[index] = obj;
-          }
-          
-      
-        });
-      }
-
-      list.forEach(element => {
-        console.log(element.name)
-      });
-    
-     
-      
       const itemCart = document.createElement('li');
       const itemCartImg = document.createElement('img');
-      itemCartImg.setAttribute('src', 'assets/icons/' + item.id + '.svg')
+      cartList.forEach(element => {
+        if(element.name === item.name){
+          itemCartImg.setAttribute('src', 'assets/icons/' + item.id + '.svg')
+        }
+      });
+
       const itemCartName = document.createElement('p');
-      itemCartName.innerText = item.name;
+      cartList.forEach(element => {
+        if(element.name === item.name){
+          itemCartName.innerText = item.name;
+        }
+      });
       const reduceItem = document.createElement('button');
-      reduceItem.innerText = "-";
+
+      cartList.forEach(element => {
+        if(element.name === item.name){
+          reduceItem.innerText = "-";
+        }
+      });
+
       const quntityCartItem = document.createElement('span');
-      quntityCartItem.innerText = 1;
+      cartList.forEach(element => {
+        if(element.name === item.name){
+          quntityCartItem.innerText = element.amount;
+        }
+      });
+      
       const increaseCartItem = document.createElement('button');
-      increaseCartItem.innerText = "+";
+      cartList.forEach(element => {
+        if(element.name === item.name){
+          
+          increaseCartItem.innerText = "+";
+        }
+      });
+      
       itemCart.appendChild(itemCartImg);
       itemCart.appendChild(itemCartName);
       itemCart.appendChild(reduceItem);
@@ -136,8 +132,64 @@ function showSelectedItem(item){
       itemCart.appendChild(increaseCartItem);
       itemCartList.appendChild(itemCart);
   
+      increaseCartItem.addEventListener('click', () => {
+        addItem(item);
+        cartList.forEach(element => {
+          if(element.name === item.name){
+            quntityCartItem.innerText = element.amount;
+          }
+        });
+      })
+
+      reduceItem.addEventListener('click', () => {
+        removeItem(item)
+        cartList.forEach(element => {
+          if(element.name === item.name){
+            quntityCartItem.innerText = element.amount;
+          }
+        });
+      })
+
+      calculateTotal(item)
 }
 
  
-  console.log(groceries.length);
+// adding selected items
+const cartList = [];
+const cartObj = {};
+function addItem(item){
+  if(cartList.length ==0){
+    cartObj.name = item.name;
+    cartObj.price = item.price;
+    cartObj.amount = 1; 
+    cartList.push(cartObj);
+  }
+
+  else {
+    cartList.forEach( product => {
+      if(product.name === item.name){
+        let index = cartList.indexOf(product);
+        cartObj.name = item.name;
+        cartObj.price = item.price;
+        cartObj.amount = product.amount + 1; 
+        cartList[index] = cartObj;
+      }
+    });
+  }
+}
  
+ function removeItem(item){
+  cartList.forEach(element => {
+    if(element.name === item.name && element.amount > 0){
+      element.amount -= 1;
+    }
+  });
+ }
+
+ function calculateTotal(item){
+  cartList.forEach(element => {
+    if(element.name == item.name){
+      total.innerText = element.amount* element.price;
+    }
+  });
+ }
