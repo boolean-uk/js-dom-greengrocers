@@ -11,10 +11,30 @@
   </head>
   <body>
     <header id="store">
-      <h1>Greengrocers</h1>
-      <ul class="item-list store--item-list">
+      <div class="header-filters-type">
+        <label>
+          Vegetables <br>
+          <!--create buttons for alphabetising and sorting fruits from veg-->
+          <button id="Vegetables" onclick="vegFilter()">Click</button>
+        </label> <br>
+        <label>
+          Fruits <br>
+          <button id="Fruits" onclick="fruitFilter()">Click</button>
+        </label>
+      </div>
+      <div class="header-main"> 
+        <h1>Greengrocers</h1>
+        <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
-      </ul>
+        </ul>
+      </div>
+      <div class="header-filters-sort">
+        <label>
+          Alphabetical Order <br>
+          <button id="Alphabetically" onclick="sortAlphabetically()">Click</button>
+        </label> 
+      
+      </div>
     </header>
 
     <main id="cart">
