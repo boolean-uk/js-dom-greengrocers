@@ -96,16 +96,16 @@ function renderCart(cartToRender) {
   cartToRender.forEach((cartItem) => {
     const cartItemDOM = createCartItem(cartItem);
 
-    // const removeBtn = cartItemDOM.querySelector(".remove-btn");
-    // const addBtn = cartItemDOM.querySelector(".add-btn");
+    const removeBtn = cartItemDOM.querySelector(".remove-btn");
+    const addBtn = cartItemDOM.querySelector(".add-btn");
 
-    // removeBtn.addEventListener("click", () => {
-    //   removeFromCart(cartItem);
-    // });
+    removeBtn.addEventListener("click", () => {
+      editCartItem(cartItem, "decrement");
+    });
 
-    // addBtn.addEventListener("click", () => {
-    //   addToCart(cartItem);
-    // });
+    addBtn.addEventListener("click", () => {
+      editCartItem(cartItem, "increment");
+    });
   });
 
   createTotal();
@@ -164,7 +164,32 @@ function addToCart(product) {
   renderCart(state.cart);
 }
 
-function editCartItem(product) {}
+function editCartItem(product, operation) {
+  let updatedCart;
+
+  if (operation === "decrement") {
+    updatedCart = state.cart.map((item) => {
+      if (item.name === product.name) {
+        const copy = { ...item, quantity: --item.quantity };
+        if (copy.quantity === 0) return null;
+        return copy;
+      }
+      return item;
+    });
+  } else if (operation === "increment") {
+    updatedCart = state.cart.map((item) => {
+      if (item.name === product.name) {
+        return { ...item, quantity: ++item.quantity };
+      } else {
+        return item;
+      }
+    });
+  }
+
+  state.cart = updatedCart.filter((item) => item !== null);
+
+  renderCart(state.cart);
+}
 
 // function to clear the cart list
 function clearCartDisplay() {
