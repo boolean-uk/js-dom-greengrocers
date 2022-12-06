@@ -52,7 +52,6 @@ const state = {
     },
   ],
   cart: [],
-  displayCart: [],
 };
 
 // Selections
@@ -73,13 +72,7 @@ function createStoreItem(product) {
   const button = document.createElement("button");
   button.innerText = "Add to cart";
   button.addEventListener("click", () => {
-    state.cart.push(product);
-
-    createCartDisplay();
-    renderCart();
-
-    console.log(state.cart);
-    console.log(state.displayCart);
+    addToCart(product);
   });
 
   div.appendChild(img);
@@ -94,39 +87,31 @@ state.items.forEach((product) => {
 
   // add products to store
   store.append(item);
-
-  // const cartBtn = item.querySelector("button");
-  // cartBtn.addEventListener("click", function () {
-  //   createCartDisplay();
-  //   renderCart();
-
-  //   console.log(state.cart);
-  //   console.log(state.displayCart);
-  // });
 });
 
 // function to render the cart items
-function renderCart() {
-  clearCart();
+function renderCart(cartToRender) {
+  clearCartDisplay();
 
-  state.displayCart.forEach((cartItem) => {
+  cartToRender.forEach((cartItem) => {
     const cartItemDOM = createCartItem(cartItem);
 
-    const removeBtn = cartItemDOM.querySelector(".remove-btn");
-    const addBtn = cartItemDOM.querySelector(".add-btn");
+    // const removeBtn = cartItemDOM.querySelector(".remove-btn");
+    // const addBtn = cartItemDOM.querySelector(".add-btn");
 
-    removeBtn.addEventListener("click", () => {
-      removeFromCart(cartItem);
-    });
+    // removeBtn.addEventListener("click", () => {
+    //   removeFromCart(cartItem);
+    // });
 
-    addBtn.addEventListener("click", () => {
-      addToCart(cartItem);
-    });
+    // addBtn.addEventListener("click", () => {
+    //   addToCart(cartItem);
+    // });
   });
+
   createTotal();
 }
 
-// function to add item to cart
+// function to create cart item
 function createCartItem(product) {
   const li = document.createElement("li");
 
@@ -145,14 +130,6 @@ function createCartItem(product) {
   addBtn.classList.add("quantity-btn", "add-btn", "center");
   addBtn.innerText = "+";
 
-  // removeBtn.addEventListener("click", () => {
-  //   removeFromCart(product);
-  // });
-
-  // addBtn.addEventListener("click", () => {
-  //   addToCart(product);
-  // });
-
   const span = document.createElement("span");
   span.classList.add("quantity-text", "center");
   span.innerText = product.quantity;
@@ -167,46 +144,36 @@ function createCartItem(product) {
   return li;
 }
 
-// updates state.cart
-function createCartDisplay() {
-  state.cart.forEach((item) => {
-    const match = state.displayCart.find(
-      (product) => item.name === product.name
-    );
-    if (!match) {
-      state.displayCart.push({ ...item, quantity: 1 });
-    } else {
-      match.quantity++;
-    }
-  });
+function addToCart(product) {
+  const found = state.cart.find((cartItem) => cartItem.id === product.id);
+
+  if (found) {
+    const updatedCart = state.cart.map((item) => {
+      if (item.name === product.name) {
+        return { ...item, quantity: ++item.quantity };
+      } else {
+        return item;
+      }
+    });
+    renderCart(updatedCart);
+    return;
+  }
+
+  const newCartItem = { ...product, quantity: 1 };
+  state.cart.push(newCartItem);
+  renderCart(state.cart);
 }
 
+function editCartItem(product) {}
+
 // function to clear the cart list
-function clearCart() {
+function clearCartDisplay() {
   cart.innerHTML = "";
 }
 
-function addToCart(product) {
-  product.quantity++;
-  renderCart();
-}
-
-function removeFromCart(product) {
-  product.quantity--;
-  if (product.quantity < 1) {
-    const found = state.displayCart.find((item) => item.id === product.id);
-    const found2 = state.cart.find((item) => item.id === product.id);
-    const index = state.displayCart.indexOf(found);
-    const index2 = state.cart.indexOf(found2);
-    state.displayCart.splice(index, 1);
-    state.cart.splice(index2, 1);
-  }
-  renderCart();
-}
-
 function createTotal() {
-  const totalAmount = state.displayCart.reduce((total, product) => {
-    return (total + product.price) * product.quantity;
+  const totalAmount = state.cart.reduce((total, product) => {
+    return total + product.price * product.quantity;
   }, 0);
   const totalDOM = `£${totalAmount.toFixed(2)}`;
   total.innerText = totalDOM;
