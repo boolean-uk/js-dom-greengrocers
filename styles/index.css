@@ -1,5 +1,3 @@
-/* Typography */
-
 body {
   font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif;
   display: grid;
@@ -8,8 +6,8 @@ body {
     "main aside" 1fr
     "footer aside" auto /
     auto auto;
-
-  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
 }
 
 h1,
@@ -18,7 +16,6 @@ h2 {
 }
 
 /* Buttons */
-
 button {
   padding: 0.5rem 1rem;
 
@@ -127,14 +124,10 @@ button:active {
 }
 
 /* Store */
-
 #store {
   grid-area: main;
-
   padding: 1rem;
-
-  overflow-y: scroll;
-
+  overflow-y: auto;
   background-color: #e7f4ea;
 }
 
@@ -169,11 +162,10 @@ button:active {
 }
 
 /* Cart */
-
 #cart {
   grid-area: aside;
 
-  height: 60vh;
+  height: 100%;
   width: auto;
   margin: 0 auto;
   padding: 1rem;
