@@ -6,8 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/reset.css" />
     <link rel="stylesheet" href="styles/index.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/icons/shopping_trolley.png"
+      type="image/x-icon"
+    />
     <title>Greengrocers</title>
     <script defer src="index.js"></script>
   </head>
@@ -18,18 +25,36 @@
         <div class="dropdown">
           <button class="dropbtn material-symbols-outlined">filter_alt</button>
           <div class="dropdown-content">
-            <a class="filter-content-btn" onclick="filterPressed('fruit', this)">Fruits</a>
-            <a class="filter-content-btn" onclick="filterPressed('vegetable', this)">Vegetables</a>
-            <a class="activeBtn filter-content-btn" onclick="filterPressed('all', this)">All</a>
+            <a class="filter-content-btn" onclick="filterPressed('fruit', this)"
+              >Fruits</a
+            >
+            <a
+              class="filter-content-btn"
+              onclick="filterPressed('vegetable', this)"
+              >Vegetables</a
+            >
+            <a
+              class="activeBtn filter-content-btn"
+              onclick="filterPressed('all', this)"
+              >All</a
+            >
           </div>
         </div>
 
         <div class="dropdown">
           <button class="dropbtn material-symbols-outlined">sort</button>
           <div class="dropdown-content">
-            <a class="sort-content-btn" onclick="sortPressed('price', this)">Price</a>
-            <a class="sort-content-btn" onclick="sortPressed('alpha', this)">Alphabetically</a>
-            <a class="activeBtn sort-content-btn" onclick="sortPressed('none', this)">None</a>
+            <a class="sort-content-btn" onclick="sortPressed('price', this)"
+              >Price</a
+            >
+            <a class="sort-content-btn" onclick="sortPressed('alpha', this)"
+              >Alphabetically</a
+            >
+            <a
+              class="activeBtn sort-content-btn"
+              onclick="sortPressed('none', this)"
+              >None</a
+            >
           </div>
         </div>
       </div>
@@ -61,7 +86,7 @@
         </div>
       </div>
     </aside>
-    
+
     <!-- Footer -->
     <footer id="footer">
       Icons made by

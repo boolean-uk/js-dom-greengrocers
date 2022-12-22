@@ -1,13 +1,13 @@
 /* Typography */
 
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif;
   display: grid;
   grid-template:
-  "header aside" auto
-  "main aside" 1fr
-  "footer aside" auto /
-  auto auto;
+    "header aside" auto
+    "main aside" 1fr
+    "footer aside" auto /
+    auto auto;
 
   overflow: hidden;
 }
@@ -58,7 +58,9 @@ button:active {
   padding: 8px;
 }
 
-#header h1 { margin: 0; }
+#header h1 {
+  margin: 0;
+}
 
 #header .right-side {
   display: grid;
@@ -67,23 +69,26 @@ button:active {
   width: fit-content;
   gap: 32px;
   margin-right: 8px;
-  
+
   justify-self: right;
   align-content: center;
 }
 
-.dropdown { /* Main Container <div>*/
+.dropdown {
+  /* Main Container <div>*/
   position: relative;
   display: inline-block;
 }
-.dropbtn { /* Drop button */
+.dropbtn {
+  /* Drop button */
   border: none;
   background-color: white;
   box-shadow: none;
 
   scale: 1.5;
 }
-.dropdown-content { /* dropdown-content */
+.dropdown-content {
+  /* dropdown-content */
   display: none;
   position: absolute;
   top: 50px;
@@ -93,10 +98,11 @@ button:active {
   overflow: hidden; /* Hide children border */
 
   border-radius: 8px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
-.dropdown-content a { /* Links of dropdown */
+.dropdown-content a {
+  /* Links of dropdown */
   color: black;
   background-color: white;
   text-decoration: none;
@@ -108,11 +114,17 @@ button:active {
   filter: brightness(92%);
   cursor: pointer;
 }
-.dropdown-content a:active { filter: brightness(88%); }
+.dropdown-content a:active {
+  filter: brightness(88%);
+}
 /* Show on hover */
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 /* Change btn on hover*/
-.dropdown:hover .dropbtn {filter: brightness(88%)}
+.dropdown:hover .dropbtn {
+  filter: brightness(88%);
+}
 
 /* Store */
 
