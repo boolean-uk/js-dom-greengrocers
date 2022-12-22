@@ -141,13 +141,13 @@ function createStore(item) {
   const li = document.createElement("li");
 
   const div = document.createElement("div");
-  div.setAttribute("class", "store--item-icon");
+  div.setAttribute("class", "store--item-icon noselect");
 
   const img = document.createElement("img");
   img.setAttribute("src", `assets/icons/${item.id}.svg`);
 
   const name = document.createElement("span");
-  name.setAttribute("class", "store--item-name");
+  name.setAttribute("class", "store--item-name ");
   name.innerText = item.name;
 
   const price = document.createElement("span");
@@ -156,6 +156,7 @@ function createStore(item) {
 
   const button = document.createElement("button");
   button.innerText = "ADD TO CART";
+  button.setAttribute("class", "noselect");
   button.addEventListener("click", () => {
     addToCart(item);
   });
@@ -173,7 +174,7 @@ function createCart(item) {
   const li = document.createElement("li");
 
   const img = document.createElement("img");
-  img.setAttribute("class", "cart--item-icon");
+  img.setAttribute("class", "cart--item-icon noselect");
   img.setAttribute("src", `assets/icons/${item.id}.svg`);
   img.setAttribute("alt", item.name);
 
@@ -181,16 +182,16 @@ function createCart(item) {
   p.innerText = item.name;
 
   const span = document.createElement("span");
-  span.setAttribute("class", "quantity-text center");
+  span.setAttribute("class", "quantity-text center noselect");
   span.innerText = item.quantity;
 
   const buttonRemove = document.createElement("button");
-  buttonRemove.setAttribute("class", "quantity-btn remove-btn center");
+  buttonRemove.setAttribute("class", "quantity-btn remove-btn center noselect");
   buttonRemove.innerText = "-";
   buttonRemove.addEventListener("click", () => removeFromCart(item));
 
   const buttonAdd = document.createElement("button");
-  buttonAdd.setAttribute("class", "quantity-btn add-btn center");
+  buttonAdd.setAttribute("class", "quantity-btn add-btn center noselect");
   buttonAdd.innerText = "+";
   buttonAdd.addEventListener("click", () => addToCart(item));
 

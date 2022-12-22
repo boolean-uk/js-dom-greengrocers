@@ -20,21 +20,23 @@
   </head>
   <body>
     <header id="header">
-      <h1>Greengrocers</h1>
+      <h1 class="noselect">Greengrocers</h1>
       <div class="right-side">
         <div class="dropdown">
           <button class="dropbtn material-symbols-outlined">filter_alt</button>
           <div class="dropdown-content">
-            <a class="filter-content-btn" onclick="filterPressed('fruit', this)"
+            <a
+              class="filter-content-btn noselect"
+              onclick="filterPressed('fruit', this)"
               >Fruits</a
             >
             <a
-              class="filter-content-btn"
+              class="filter-content-btn noselect"
               onclick="filterPressed('vegetable', this)"
               >Vegetables</a
             >
             <a
-              class="activeBtn filter-content-btn"
+              class="activeBtn filter-content-btn noselect"
               onclick="filterPressed('all', this)"
               >All</a
             >
@@ -44,14 +46,18 @@
         <div class="dropdown">
           <button class="dropbtn material-symbols-outlined">sort</button>
           <div class="dropdown-content">
-            <a class="sort-content-btn" onclick="sortPressed('price', this)"
+            <a
+              class="sort-content-btn noselect"
+              onclick="sortPressed('price', this)"
               >Price</a
             >
-            <a class="sort-content-btn" onclick="sortPressed('alpha', this)"
+            <a
+              class="sort-content-btn noselect"
+              onclick="sortPressed('alpha', this)"
               >Alphabetically</a
             >
             <a
-              class="activeBtn sort-content-btn"
+              class="activeBtn sort-content-btn noselect"
               onclick="sortPressed('none', this)"
               >None</a
             >
@@ -65,7 +71,7 @@
     </main>
 
     <aside id="cart">
-      <h2>Your Cart</h2>
+      <h2 class="noselect">Your Cart</h2>
 
       <div class="cart--item-list-container">
         <ul class="item-list cart--item-list"></ul>
@@ -73,7 +79,7 @@
 
       <div class="total-section">
         <div>
-          <h3>Total</h3>
+          <h3 class="noselect">Total</h3>
         </div>
 
         <div>
