@@ -23,7 +23,7 @@ button {
 /* Store */
 
 #store {
-  height: 40vh;
+  height: 42vh;
   padding: 1rem;
 
   overflow-y: scroll;
@@ -50,7 +50,9 @@ button {
 
 .store--item-icon {
   width: 125px;
-  height: 125px;
+  height: 180px;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 @media only screen and (max-width: 600px) {
@@ -68,7 +70,7 @@ button {
 /* Cart */
 
 #cart {
-  height: 60vh;
+  height: 40vh;
   padding: 1rem;
 
   display: grid;
@@ -85,14 +87,15 @@ button {
 }
 
 .cart--item-list-container {
-  min-width: 320px;
+  min-width: 600px;
   height: 100%;
   padding: 0 1rem;
 
   overflow-y: scroll;
 
   border-radius: 0.5rem;
-  border: 2px solid #757575;
+  border: 1px solid lightgray;
+  background-color: #f9f9f9
 }
 
 @media only screen and (max-width: 450px) {
@@ -149,19 +152,6 @@ button {
   color: #388e3c;
 }
 
-.quantity-text {
-  width: 24px;
-  height: 24px;
-
-  border-radius: 0.25rem;
-  border: 2px solid #757575;
-  color: #757575;
-
-  text-align: center;
-  font-size: 0.75rem;
-  font-weight: bold;
-}
-
 /* Total */
 
 .total-section {
@@ -181,4 +171,47 @@ button {
     border-top: 2px solid #00675b;
     border-bottom: 2px solid #00675b;
   }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.itemNamePrice {
+  font-size: small;
+}
+
+.cart-amount {
+  padding: 0.2rem;
+  border: 1px solid lightgray;
+  border-radius: 0.3rem;
+  text-align: center;
+  width: 3rem;
+}
+
+.filter-controls, .sort-controls {
+  text-align: center;
+  background-color:aliceblue
+}
+
+#filterStatus, #sortStatus {
+  height: 1rem;
+  color: darkgrey;
+  font-size: small;
+}
+
+.totalsPriceEachItemInCart, .inStock, .outOfStock {
+  color: gray;
+  font-size: small;
+}
+
+.outOfStock {
+  padding-left: 0.4rem;
+  color: red;
 }
