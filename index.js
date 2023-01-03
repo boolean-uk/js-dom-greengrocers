@@ -178,8 +178,8 @@ const currencyConvert = (x) => {
   return Number.parseFloat(x).toFixed(2);
 }
 
-let total = 0
 const sumOfCart = () => {
+  let total = 0
   for (let i = 0; i < state.cart.length; i++) {
     const cartItem = state.cart[i]
     total += cartItem.price * cartItem.quantity
