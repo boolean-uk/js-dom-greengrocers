@@ -74,7 +74,7 @@ const createStoreItem = (item) => {
   const li = document.createElement('li')
 
   const div = document.createElement('div')
-  div.class = 'store--item-icon'
+  div.className = 'store--item-icon'
 
   const img = document.createElement('img')
   img.src = `assets/icons/${item.id}.svg`
@@ -119,7 +119,7 @@ const updateCart = () => {
       const li = document.createElement('li')
 
       const img = document.createElement('img')
-      img.class = 'cart--item-icon'
+      img.className = 'cart--item-icon'
       img.src = `assets/icons/${item.id}.svg`
       img.alt = item.name
 
@@ -127,16 +127,16 @@ const updateCart = () => {
       p.innerText = item.name
 
       const minusButton = document.createElement('button')
-      minusButton.class = 'quantity-btn remove-btn center'
+      minusButton.className = 'quantity-btn remove-btn center'
       minusButton.innerText = '-'
       minusButton.addEventListener('click', () => changeQuantity(item, 'decrease'))
 
       const span = document.createElement('span')
-      span.class = 'quantity-text center'
+      span.className = 'quantity-text center'
       span.innerText = item.quantity
 
       const plusButton = document.createElement('button')
-      plusButton.class = 'quantity-btn add-btn center'
+      plusButton.className = 'quantity-btn add-btn center'
       plusButton.innerText = '+'
       plusButton.addEventListener('click', () => changeQuantity(item, 'increase'))
 
