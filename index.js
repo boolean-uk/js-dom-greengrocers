@@ -55,17 +55,35 @@ const state = {
   cart: []
 };
 
+
+//Setting up the starting state for the filter
+state.selectedFilters = []
+const filters = {
+  vegtables: ['beetroot', 'carrot'],
+  fruits: ['apple', 'apricot', 'avocado', 'bannanas', 'bell-pepper', 'berry', 'blueberry', 'eggplant']
+}
+
 // Element selection 
 
 const storeList = document.querySelector('.store--item-list')
 const cartList = document.querySelector('.cart--item-list')
 const totalSpan = document.querySelector('.total-number')
+const filterButton = document.querySelector('.filter-button')
+const filterWindow = document.querySelector('.filter-window')
 
 
 // Display stores invetory
 const displayInvetory = () => {
+  //resets the store list (this is needed for the filter to update the store and show only the selected type)
+  storeList.innerHTML = ''
+
   state.items.forEach(item => {
-    createStoreItem(item)
+    //checks if no filters a applied if so draw all items (this is the default behavior)
+    if (state.selectedFilters.length === 0) createStoreItem(item)
+    //if a filter is applied it will check which ones and only display the correspondig items
+    state.selectedFilters.forEach(filter => {
+      if (filter.includes(item.name)) createStoreItem(item)
+    })
   })
 }
 
@@ -171,6 +189,43 @@ const changeQuantity = (item, operation) => {
   updateCart()
 }
 
+//Show/Hide the filter window
+filterButton.addEventListener('click', () => {
+  filterWindow.style.display = filterWindow.style.display === 'none' ? '' : 'none'
+})
+
+// Create the filter list
+const createFilterList = () => {
+  //Set the filter window to none by default
+  filterWindow.style.display = 'none'
+
+  //create and append the ul to the filter window
+  const ul = document.createElement('ul')
+  ul.className = 'filter-list'
+
+  filterWindow.append(ul)
+
+  //creates and li and checkbox for each possible filter
+  for (const [key] of Object.entries(filters)) {
+    const li = document.createElement('li')
+
+    const checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'
+    //event that adds or removes a filter to the selected filter array
+    checkbox.addEventListener('change', () => {
+      if (state.selectedFilters.includes(filters[key])) state.selectedFilters = state.selectedFilters.filter(e => e !== filters[key])
+      else state.selectedFilters.push(filters[key])
+      //calls displayInventory to refresh the list of items acording to the new filter settings 
+      displayInvetory()
+    })
+
+    li.append(checkbox)
+    li.append(key)
+    ul.append(li)
+  }
+}
+
 
 // Inital function call
 displayInvetory()
+createFilterList()
