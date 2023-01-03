@@ -118,9 +118,7 @@ const addItemToCart = (product) => {
     quantity: 1
   }
   checkIfItemIsInCart(product)
-  if (alreadyInCart) {
-    return
-  } else {
+  if (!alreadyInCart) {
     state.cart.push(newItemObj)
   }
 }
