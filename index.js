@@ -58,12 +58,8 @@ console.log(state)
 const groceryItems = state.items
 const grocerStock = document.querySelector('.store--item-list')
 const groceryItemLi = groceryItems
-// hint for cart: make a copy of a store item, add a property called
-// quantity
 
-//CREATING STORE UL- STOCK --> turn into function
-
-
+//CREATING STORE UL- STOCK
 function renderStoreItems() {
   for (let i = 0; i < groceryItems.length; i++) {
     const groceryItem = groceryItems[i]
@@ -81,46 +77,74 @@ function renderStoreItems() {
     //add svg to div
     const stockImgSvg = document.createElement('img');
     stockImgSvg.setAttribute('src', `assets/icons/${groceryItems[i].id}.svg`)
-    stockImgSvg.setAttribute('alt', `${groceryItems[i].name}`) //how to select from here without manually typing
+    stockImgSvg.setAttribute('alt', `${groceryItems[i].name}`)
     stockDiv.append(stockImgSvg)
-    
+
     //trying to add buttons through a function so that I can call the button for a click event 
     const addToCartButton = document.createElement('button')
     addToCartButton.innerText = 'Add to cart'
     stockList.append(addToCartButton)
+
+    //add clickevent
+    addToCartButton.addEventListener('click', function (event) {
+      console.log('You clicked!')
+      addGroceryItem()
+    })
   }
 }
-
-
 
 renderStoreItems()
 
 
-//ADD TO SHOPPING CART
-//clickevent
-const groceryButton = document.querySelector('.add-to-cart') //--> this? 
 
-document.addEventListener('click', function (event) {
-  console.log('You clicked!')
-})
-
-function addGroceryItem() {
-  //  queryselect stock ul in header(grocerStock) --> add click event to the li in the stock ul
-  //Maybe can go back and add id to the buttons? 
-  addEventListener
-
+//Create shopping cart array with added quantity key
+const cartArray = Object.assign(groceryItems)
+for (let i = 0; i < cartArray.length; i++) {
+  cartArray[i].quantity = 0
 }
+// console.log('inside new cart arrsat', cartArray)
 
-//then design groceries inside teh click event ? 
+//SHOPPING CART
+const inYourCart = document.querySelector('#cart') //aka "main"
+const shopingBag = document.querySelector('.cart--item-list') //aka the ul
 
+//ADD TO SHOPPING CART
+function addGroceryItem() {
+const foodItem = document.createElement('li')
+shopingBag.append(foodItem)
 
+// //image into li
+const foodImg = document.createElement('img')
+foodImg.setAttribute('class', '.cart--item-icon')
+foodImg.setAttribute('src', `assets/icons/${cartArray[i].id}.svg`) //or 'cartArray'
+foodImg.setAttribute('alt', `${groceryItems.name}`)
+// //maybe do need to give the button an id to link which button is pressed to which list gets created
 
+//create p 
+const foodName = document.createElement('p')
+foodName.innerText = 'food' //`${cartArray[i].name}`
+foodItem.append(foodName)
 
+//- button
+const removeButton = document.createElement('button')
+removeButton.setAttribute('class', 'quantity-btn')
+removeButton.setAttribute('class', 'remove-btn')
+removeButton.setAttribute('class', 'center')
+removeButton.innerText = '-'
+foodName.append(removeButton)
 
+//quantity
+const quantityTracker = document.createElement('span')
+quantityTracker.setAttribute('class', 'quantity-text')
+quantityTracker.setAttribute('class', 'center')
+quantityTracker.innerText = '1' //make dynamic later so that quantity= #times clicked or have quantity = let 0.... smth
+removeButton.append(quantityTracker)
 
-// function createAddToCartButton() {
-//   const addToCartButton = document.createElement('button')
-//   addToCartButton.innerText = 'Add to cart'
-//   console.log('button pls')
-//   // addToCartButton.setAttribute('class', 'add-to-cart')
-// }
+//add button
+const addButton = document.createElement('button')
+addButton.setAttribute('class', 'quantity-btn')
+addButton.setAttribute('class', 'remove-btn')
+addButton.setAttribute('class', 'center')
+addButton.innerText ='+'
+quantityTracker.append(addButton)
+}
