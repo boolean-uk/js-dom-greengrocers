@@ -63,6 +63,9 @@ const filters = {
   fruits: ['apple', 'apricot', 'avocado', 'bannanas', 'bell-pepper', 'berry', 'blueberry', 'eggplant']
 }
 
+//Setting up the default list style(needs to be map to create a seperate copy)
+const defaultList = state.items.map(e => e)
+
 // Element selection 
 
 const storeList = document.querySelector('.store--item-list')
@@ -70,6 +73,7 @@ const cartList = document.querySelector('.cart--item-list')
 const totalSpan = document.querySelector('.total-number')
 const filterButton = document.querySelector('.filter-button')
 const filterWindow = document.querySelector('.filter-window')
+const listStyle = document.querySelector('#list-style')
 
 
 // Display stores invetory
@@ -225,7 +229,32 @@ const createFilterList = () => {
   }
 }
 
+//changes the items list to the corresponding list style and updates the Store inventory(explaination of the sort function at the bottom line:251)
+const updateListStyle = () => {
+  if (listStyle.value === 'default') {
+    state.items = defaultList
+  } else if (listStyle.value === 'AtoZ') {
+    state.items.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0)
+  } else if (listStyle.value === 'ZtoA') {
+    state.items.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0).reverse()
+  }
+  displayInvetory()
+}
+
+//Add an event that triggers when a change in the selected list style happens 
+listStyle.addEventListener('change', updateListStyle)
 
 // Inital function call
 displayInvetory()
 createFilterList()
+
+// state.items.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0) is the same as
+// state.items.sort((a, b) => {
+//   if (a.name < b.name) {
+//     return -1
+//   } else if (a.name > b.name) {
+//     return 1
+//   } else {
+//     return 0
+//   }
+// })
