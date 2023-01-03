@@ -73,27 +73,22 @@ const renderAllTheItemsInTheStore = () => {
   clearStorePage()
   for (let i = 0; i < state.items.length; i++) {
     const currentItem = state.items[i]
-    // Create new list item
     const newItem = document.createElement('li')
     storeItemList.append(newItem)
 
-    // Create new div for icon
     const iconDiv = document.createElement('div')
     iconDiv.setAttribute('class', 'store--item-icon')
     storeItemList.append(iconDiv)
 
-    // Add image of fruit/veg into div
     const img = document.createElement('img')
     img.setAttribute('src', `assets/icons/${currentItem.id}.svg`)
     img.setAttribute('alt', currentItem.name)
     iconDiv.append(img)
 
-    // Add button to each item
     const addToCartButton = document.createElement('button')
     addToCartButton.innerText = 'Add to cart'
     newItem.append(addToCartButton)
 
-    // Listener for add to cart click
     addToCartButton.addEventListener('click', () => {
       addItemToCart(currentItem)
       renderAllTheItemsInTheCart()
@@ -134,29 +129,24 @@ const renderAllTheItemsInTheCart = () => {
   clearCart()
   for (let i = 0; i < state.cart.length; i++) {
     const cartItem = state.cart[i]
-    // Create new list item for product in cart
     const newCartItem = document.createElement('li')
     cartItemList.append(newCartItem)
 
-    // Add image of fruit/veg
     const img = document.createElement('img')
     img.setAttribute('class', 'cart--item-icon')
     img.setAttribute('src', cartItem.img)
     img.setAttribute('alt', cartItem.name)
     newCartItem.append(img)
 
-    // Add product name
     const name = document.createElement('p')
     name.innerText = cartItem.name
     newCartItem.append(name)
 
-    // Add button for decreasing and removing the item
     const removeAndDecreaseButton = document.createElement('button')
     removeAndDecreaseButton.setAttribute('class', 'quantity-btn remove-btn center')
     removeAndDecreaseButton.innerText = "-"
     newCartItem.append(removeAndDecreaseButton)
 
-    // Listener for decrease button
     removeAndDecreaseButton.addEventListener('click', () => {
       indexOfTheItemToRemove = state.cart.indexOf(cartItem)
       if (cartItem.quantity === 1) {
@@ -168,19 +158,16 @@ const renderAllTheItemsInTheCart = () => {
       sumOfCart()
     })
 
-    // Add span as a counter for the quantity
     const quantityCounter = document.createElement('span')
     quantityCounter.setAttribute('class', 'quantity-text center')
     quantityCounter.innerText = cartItem.quantity
     newCartItem.append(quantityCounter)
 
-    // Add button for increasing and removing the item
     const addAndIncreaseButton = document.createElement('button')
     addAndIncreaseButton.setAttribute('class', 'quantity-btn add-btn center')
     addAndIncreaseButton.innerText = "+"
     newCartItem.append(addAndIncreaseButton)
 
-    // Listener for increase button
     addAndIncreaseButton.addEventListener('click', () => {
       cartItem.quantity++
       renderAllTheItemsInTheCart()
