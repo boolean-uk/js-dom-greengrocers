@@ -6,37 +6,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/reset.css" />
     <link rel="stylesheet" href="styles/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/icons/shopping_trolley.png"
+      type="image/x-icon"
+    />
     <title>Greengrocers</title>
     <script defer src="index.js"></script>
   </head>
   <body>
-    <header id="store">
-      <h1>Greengrocers</h1>
-      <ul class="item-list store--item-list">
-        <!-- Take a look at store-item.html -->
-      </ul>
+    <header id="header">
+      <h1 class="noselect">Greengrocers</h1>
+      <div class="right-side">
+        <div class="dropdown">
+          <button class="dropbtn material-symbols-outlined">filter_alt</button>
+          <div class="dropdown-content">
+            <a
+              class="filter-content-btn noselect"
+              onclick="filterPressed('fruit', this)"
+              >Fruits</a
+            >
+            <a
+              class="filter-content-btn noselect"
+              onclick="filterPressed('vegetable', this)"
+              >Vegetables</a
+            >
+            <a
+              class="activeBtn filter-content-btn noselect"
+              onclick="filterPressed('all', this)"
+              >All</a
+            >
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbtn material-symbols-outlined">sort</button>
+          <div class="dropdown-content">
+            <a
+              class="sort-content-btn noselect"
+              onclick="sortPressed('price', this)"
+              >Price</a
+            >
+            <a
+              class="sort-content-btn noselect"
+              onclick="sortPressed('alpha', this)"
+              >Alphabetically</a
+            >
+            <a
+              class="activeBtn sort-content-btn noselect"
+              onclick="sortPressed('none', this)"
+              >None</a
+            >
+          </div>
+        </div>
+      </div>
     </header>
 
-    <main id="cart">
-      <h2>Your Cart</h2>
+    <main id="store">
+      <ul class="item-list store--item-list"></ul>
+    </main>
+
+    <aside id="cart">
+      <h2 class="noselect">Your Cart</h2>
 
       <div class="cart--item-list-container">
-        <ul class="item-list cart--item-list">
-          <!-- Take a look at cart-item.html -->
-        </ul>
+        <ul class="item-list cart--item-list"></ul>
       </div>
 
       <div class="total-section">
         <div>
-          <h3>Total</h3>
+          <h3 class="noselect">Total</h3>
         </div>
 
         <div>
           <span class="total-number">£0.00</span>
         </div>
       </div>
-    </main>
-    <div>
+    </aside>
+
+    <footer id="footer">
       Icons made by
       <a href="https://www.flaticon.com/authors/icongeek26" title="Icongeek26">
         Icongeek26
@@ -45,6 +97,15 @@
       <a href="https://www.flaticon.com/" title="Flaticon">
         www.flaticon.com
       </a>
-    </div>
+    </footer>
+
+    <span id="website-info"
+      >Simple add and remove from Cart App using JS -
+      <a
+        target="_blank"
+        href="https://github.com/lucianosimoni/js-dom-greengrocers"
+        >Luciano Simoni</a
+      >
+    </span>
   </body>
 </html>
