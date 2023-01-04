@@ -89,37 +89,66 @@ function renderStoreItems() {
   });
 }
 
+// Make an array to store the item
+
 function addToCart(storeItem) {
+  // Create a copy of the store item object
+  const storeItemCopy = { ...storeItem };
+
+  // Check if the cart already contains the item
+  // Increment the quantity if it contains the item
+  for (let i = 0; i < state.cart.length; i++) {
+    if (storeItemCopy.id === state.cart[i].id) {
+      console.log("Cart item before: ", state.cart[i]);
+      state.cart[i].quantity++;
+      console.log("Cart item after: ", state.cart[i]);
+      renderCartItems();
+      return null;
+    }
+  }
+  // If the item isn't already in cart, then add to cart array
+  storeItemCopy.quantity = 1;
+  state.cart.push(storeItemCopy);
+  renderCartItems();
+}
+
+function renderCartItems() {
+  cartUL.innerHTML = ""; // Throw away the HTML so that I can update the cart
   // Create the necessary HTML elements & set attributes
-  const cartLI = document.createElement("li");
 
-  const cartImage = document.createElement("img");
-  cartImage.setAttribute("class", "cart--item-icon");
-  cartImage.setAttribute("src", `assets/icons/${storeItem.id}.svg`);
-  cartImage.setAttribute("alt", `${storeItem.name}`);
+  console.log("Rendering: ", state.cart);
 
-  const cartText = document.createElement("p");
-  cartText.innerText = `${storeItem.name}`;
+  state.cart.forEach((cartItem) => {
+    const cartLI = document.createElement("li");
 
-  const decreaseQuantity = document.createElement("button");
-  decreaseQuantity.setAttribute("class", "quantity-btn remove-btn center");
-  decreaseQuantity.innerText = "-";
+    const cartImage = document.createElement("img");
+    cartImage.setAttribute("class", "cart--item-icon");
+    cartImage.setAttribute("src", `assets/icons/${cartItem.id}.svg`);
+    cartImage.setAttribute("alt", `${cartItem.name}`);
 
-  const quantityAmount = document.createElement("span");
-  quantityAmount.setAttribute("class", "quantity-text center");
-  quantityAmount.innerText = "1"; // Change to the actual quantity amount!
+    const cartText = document.createElement("p");
+    cartText.innerText = `${cartItem.name}`;
 
-  const increaseQuantity = document.createElement("button");
-  increaseQuantity.setAttribute("class", "quantity-btn add-btn center");
-  increaseQuantity.innerText = "+";
+    const decreaseQuantity = document.createElement("button");
+    decreaseQuantity.setAttribute("class", "quantity-btn remove-btn center");
+    decreaseQuantity.innerText = "-";
 
-  // Append the elements
-  cartUL.append(cartLI);
-  cartLI.append(cartImage);
-  cartLI.append(cartText);
-  cartLI.append(decreaseQuantity);
-  cartLI.append(quantityAmount);
-  cartLI.append(increaseQuantity);
+    const quantityAmount = document.createElement("span");
+    quantityAmount.setAttribute("class", "quantity-text center");
+    quantityAmount.innerText = `${cartItem.quantity}`; // Change to the actual quantity amount!
+
+    const increaseQuantity = document.createElement("button");
+    increaseQuantity.setAttribute("class", "quantity-btn add-btn center");
+    increaseQuantity.innerText = "+";
+
+    // Append the elements
+    cartUL.append(cartLI);
+    cartLI.append(cartImage);
+    cartLI.append(cartText);
+    cartLI.append(decreaseQuantity);
+    cartLI.append(quantityAmount);
+    cartLI.append(increaseQuantity);
+  });
 }
 
 // Function to call when the page is loaded
