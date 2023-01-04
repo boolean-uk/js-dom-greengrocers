@@ -4,17 +4,17 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.45
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.25
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.15
     },
     {
       id: "004-apricot",
@@ -24,32 +24,32 @@ const state = {
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.85
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.34
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.56
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.43
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.17
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 4.79
     }
   ],
   cart: []
@@ -60,7 +60,7 @@ const state = {
 state.selectedFilters = []
 const filters = {
   vegtables: ['beetroot', 'carrot'],
-  fruits: ['apple', 'apricot', 'avocado', 'bannanas', 'bell-pepper', 'berry', 'blueberry', 'eggplant']
+  fruits: ['apple', 'apricot', 'avocado', 'bananas', 'bell pepper', 'berry', 'blueberry', 'eggplant']
 }
 
 //Setting up the default list style(needs to be map to create a seperate copy)
@@ -237,6 +237,10 @@ const updateListStyle = () => {
     state.items.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0)
   } else if (listStyle.value === 'ZtoA') {
     state.items.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0).reverse()
+  } else if (listStyle.value === 'lowToHigh') {
+    state.items.sort((a, b) => (a.price - b.price < 0) ? -1 : (a.price - b.price > 0) ? 1 : 0)
+  } else if (listStyle.value === 'highToLow') {
+    state.items.sort((a, b) => (a.price - b.price < 0) ? -1 : (a.price - b.price > 0) ? 1 : 0).reverse()
   }
   displayInvetory()
 }
@@ -247,14 +251,3 @@ listStyle.addEventListener('change', updateListStyle)
 // Inital function call
 displayInvetory()
 createFilterList()
-
-// state.items.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0) is the same as
-// state.items.sort((a, b) => {
-//   if (a.name < b.name) {
-//     return -1
-//   } else if (a.name > b.name) {
-//     return 1
-//   } else {
-//     return 0
-//   }
-// })
