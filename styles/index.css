@@ -182,3 +182,25 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+
+/* Added CSS for filter funciton */
+
+.filter-button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+
+.filter-window {
+position: absolute;
+top: 40px;
+right: 20px;
+padding: 10px;
+
+background-color: #ddd;
+}
+
+.filter-window ul {
+  list-style: none;
+}
