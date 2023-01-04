@@ -58,22 +58,22 @@ const state = {
 
 const shopItemList = document.querySelector(".store--item-list");
 const cartItemList = document.querySelector(".cart--item-list");
-const totalPrice = document.querySelector('.total-number')
+const totalPrice = document.querySelector('.total-number');
 
 // Program Logic
 
 function addItemToCart(item) {
   if (!state.cart.includes(item)) {
     item.quantity = 1;
-    state.cart.push(item)
-    UpdateTotal()
+    state.cart.push(item);
+    UpdateTotal();
     // console.log(item.quantity)
   }  else {
-    item.quantity++
-    UpdateTotal()
+    item.quantity++;
+    UpdateTotal();
   }
   // console.log(item.quantity)
-  renderCart()  
+  renderCart(); 
 }
 
 // Rendering
@@ -90,8 +90,8 @@ function renderShop () {
     img.alt = item.name;
     
     const addToCart = document.createElement('button');
-    addToCart.innerHTML = 'Add to cart'
-    addToCart.addEventListener('click', () => addItemToCart(item))
+    addToCart.innerHTML = 'Add to cart';
+    addToCart.addEventListener('click', () => addItemToCart(item));
 
     div.append(img);
     li.append(div);
@@ -114,18 +114,18 @@ function renderCart () {
       const img = document.createElement('img');
       img.setAttribute('class', 'cart--item-icon');
       img.src = 'assets/icons/' + item.id + '.svg';
-      img.alt = item.name
+      img.alt = item.name;
 
       const text = document.createElement('p');
-      text.innerHTML = item.name
+      text.innerHTML = item.name;
       
       const removeButt = document.createElement('button');
       removeButt.setAttribute('class', 'remove-btn');
       removeButt.innerHTML = '-';
       removeButt.addEventListener('click', () => {
-        item.quantity--
-        renderCart()
-        UpdateTotal()
+        item.quantity--;
+        renderCart();
+        UpdateTotal();
       })
 
       const span = document.createElement('span');
@@ -135,9 +135,9 @@ function renderCart () {
       addButt.setAttribute('class', 'add-btn');
       addButt.innerHTML = '+';
       addButt.addEventListener('click', () => {
-        item.quantity++
-        renderCart()
-        UpdateTotal()
+        item.quantity++;
+        renderCart();
+        UpdateTotal();
       })
 
       li.append(img);
@@ -151,19 +151,18 @@ function renderCart () {
 }
 
 function UpdateTotal() {
-  let total = 0
+  let total = 0;
   state.cart.forEach((item) => {
-    let cost = item.price * item.quantity
-    total += cost
+    let cost = item.price * item.quantity;
+    total += cost;
   })
 
-  totalPrice.innerHTML = total
+  total = total.toFixed(2);
+
+  totalPrice.innerHTML = `£ ${total}`;
 
 }
 
+renderShop();
 
-
-
-renderShop()
-
-renderCart()
+renderCart();
