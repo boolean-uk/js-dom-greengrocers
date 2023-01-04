@@ -87,6 +87,7 @@ function renderStoreItems() {
 
     //add clickevent
     addToCartButton.addEventListener('click', function (event) {
+      
       console.log('You clicked!')
       addGroceryItem()
     })
@@ -94,8 +95,6 @@ function renderStoreItems() {
 }
 
 renderStoreItems()
-
-
 
 //Create shopping cart array with added quantity key
 const cartArray = Object.assign(groceryItems)
@@ -115,36 +114,46 @@ shopingBag.append(foodItem)
 
 // //image into li
 const foodImg = document.createElement('img')
-foodImg.setAttribute('class', '.cart--item-icon')
-foodImg.setAttribute('src', `assets/icons/${cartArray[i].id}.svg`) //or 'cartArray'
-foodImg.setAttribute('alt', `${groceryItems.name}`)
-// //maybe do need to give the button an id to link which button is pressed to which list gets created
+foodImg.setAttribute('class', 'cart--item-icon')
+foodImg.setAttribute('src', `assets/icons/${groceryItems.id}.svg`) //or 'cartArray'
+foodImg.setAttribute('alt', '*name')
+foodItem.append(foodImg)
 
 //create p 
 const foodName = document.createElement('p')
+const food = `${groceryItems.name}`
 foodName.innerText = 'food' //`${cartArray[i].name}`
 foodItem.append(foodName)
 
 //- button
 const removeButton = document.createElement('button')
-removeButton.setAttribute('class', 'quantity-btn')
-removeButton.setAttribute('class', 'remove-btn')
-removeButton.setAttribute('class', 'center')
+removeButton.classList.add('quantity-btn', 'remove-btn','center')
 removeButton.innerText = '-'
-foodName.append(removeButton)
+foodItem.append(removeButton)
+   //add clickevent for - button
+   removeButton.addEventListener('click', (event) => {
+   console.log('You clicked!')
+   itemQuantity -=1
+})
+
 
 //quantity
+let itemQuantity = cartArray.quantity
 const quantityTracker = document.createElement('span')
-quantityTracker.setAttribute('class', 'quantity-text')
-quantityTracker.setAttribute('class', 'center')
-quantityTracker.innerText = '1' //make dynamic later so that quantity= #times clicked or have quantity = let 0.... smth
-removeButton.append(quantityTracker)
+quantityTracker.classList.add('quantity-text','center')
+quantityTracker.innerText = itemQuantity //make dynamic later so that quantity= #times clicked or have quantity = let 0.... smth
+foodItem.append(quantityTracker)
 
 //add button
 const addButton = document.createElement('button')
-addButton.setAttribute('class', 'quantity-btn')
-addButton.setAttribute('class', 'remove-btn')
-addButton.setAttribute('class', 'center')
+addButton.classList.add('quantity-btn', 'add-btn','center')
 addButton.innerText ='+'
-quantityTracker.append(addButton)
+foodItem.append(addButton)
+//add clickevent
+addButton.addEventListener('click', (event) => {
+  let modifiedQuantityTracker = quantityTracker
+  console.log('You clicked add button!')
+  itemQuantity += 1
+
+})
 }
