@@ -71,8 +71,7 @@ const clearCart = () => {
 
 const renderAllTheItemsInTheStore = () => {
   clearStorePage()
-  for (let i = 0; i < state.items.length; i++) {
-    const currentItem = state.items[i]
+  state.items.forEach(currentItem => {
     const newItem = document.createElement('li')
     storeItemList.append(newItem)
 
@@ -94,7 +93,7 @@ const renderAllTheItemsInTheStore = () => {
       renderAllTheItemsInTheCart()
       sumOfCart()
     })
-  }
+  })
 }
 
 let alreadyInCart = false
@@ -125,8 +124,7 @@ const addItemToCart = (product) => {
 
 const renderAllTheItemsInTheCart = () => {
   clearCart()
-  for (let i = 0; i < state.cart.length; i++) {
-    const cartItem = state.cart[i]
+  state.cart.forEach(cartItem => {
     const newCartItem = document.createElement('li')
     cartItemList.append(newCartItem)
 
@@ -171,7 +169,7 @@ const renderAllTheItemsInTheCart = () => {
       renderAllTheItemsInTheCart()
       sumOfCart()
     })
-  }
+  })
 }
 
 const currencyConvert = (x) => {
@@ -180,10 +178,9 @@ const currencyConvert = (x) => {
 
 const sumOfCart = () => {
   let total = 0
-  for (let i = 0; i < state.cart.length; i++) {
-    const cartItem = state.cart[i]
+  state.cart.forEach(cartItem => {
     total += cartItem.price * cartItem.quantity
-  }
+  })
   totalNumber.innerText = `£${currencyConvert(total)}`
 }
 
