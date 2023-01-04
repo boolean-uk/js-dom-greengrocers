@@ -5,52 +5,62 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     }
   ],
   cart: []
@@ -62,6 +72,7 @@ const state = {
 const storeUL = document.querySelector(".store--item-list")
 const cartUL = document.querySelector(".cart--item-list")
 const totalSpan = document.querySelector(".total-number")
+const sortDiv = document.querySelector(".filterAndSort")
 
 // PROGRAM LOGIC
 
@@ -83,11 +94,45 @@ function basketChecker(item) {
 }
 
 // RENDERING
+function renderButtons() {
+    sortDiv.innerHTML = "";
 
-function renderItems() {
+    const fruitButton = document.createElement("button")
+    fruitButton.innerText = "Fruit"
+
+    fruitButton.addEventListener("click", () => {
+        const fruitArray = state.items.filter((item) => item.type === "fruit")
+        console.log(`fruit array`, fruitArray)
+        console.log(`og array`, state.items)
+        renderItems(fruitArray)
+    })
+
+    const vegButton = document.createElement("button")
+    vegButton.innerText = "Vegetables"
+
+    vegButton.addEventListener("click", () => {
+        const vegArray = state.items.filter((item) => item.type === "vegetable")
+        console.log(`veg array`, vegArray)
+        console.log(`og array`, state.items)
+        renderItems(vegArray)
+    })
+
+    const allButton = document.createElement("button")
+    allButton.innerText = "All"
+
+    allButton.addEventListener("click", () => {
+        renderItems(state.items)
+    })
+
+    sortDiv.append(fruitButton, vegButton, allButton)
+}
+
+
+
+function renderItems(groceries) {
     storeUL.innerHTML = "";
 
-    const foodItemsArray = state.items
+    const foodItemsArray = groceries
     foodItemsArray.forEach((item) => {
         const li = document.createElement("li");
         
@@ -111,6 +156,7 @@ function renderItems() {
         storeUL.append(li)
     
     })
+    renderButtons()
 }
 
 function renderCartItems() {
@@ -177,4 +223,4 @@ function renderTotalValue() {
     totalSpan.innerText = `£${totalPrice}`
 }
 
-renderItems()
+renderItems(state.items)
