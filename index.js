@@ -54,7 +54,7 @@ const state = {
   cart: []
 };
 
-console.log(state)
+console.log('og state', state)
 const groceryItems = state.items
 const grocerStock = document.querySelector('.store--item-list')
 const groceryItemLi = groceryItems
@@ -87,73 +87,86 @@ function renderStoreItems() {
 
     //add clickevent
     addToCartButton.addEventListener('click', function (event) {
-      
       console.log('You clicked!')
+      //Create shopping cart array with added quantity key
+      const cartObject = {
+        id: state.items[i].id,
+        name: state.items[i].name,
+        price: state.items[i].price,
+        quantity: 1
+      }
+      state.cart.push(cartObject)
+      console.log('new Cart Object', cartObject)
+
       addGroceryItem()
     })
   }
 }
-
 renderStoreItems()
 
-//Create shopping cart array with added quantity key
-const cartArray = Object.assign(groceryItems)
-for (let i = 0; i < cartArray.length; i++) {
-  cartArray[i].quantity = 0
-}
-// console.log('inside new cart arrsat', cartArray)
+console.log(state.cart)
 
-//SHOPPING CART
-const inYourCart = document.querySelector('#cart') //aka "main"
-const shopingBag = document.querySelector('.cart--item-list') //aka the ul
 
 //ADD TO SHOPPING CART
 function addGroceryItem() {
-const foodItem = document.createElement('li')
-shopingBag.append(foodItem)
+  //SHOPPING CART CONSTS
+  const cart = document.querySelector('#cart') //aka "main"
+  const shopingBag = document.querySelector('.cart--item-list') //aka the ul
+  
+  //find cart object either by object or id in the state.cart array: will need somehow to find the item in the array of items (state.cart)
+  const cartItemsArray = state.cart
+  console.log(cartItemsArray)
 
-// //image into li
-const foodImg = document.createElement('img')
-foodImg.setAttribute('class', 'cart--item-icon')
-foodImg.setAttribute('src', `assets/icons/${groceryItems.id}.svg`) //or 'cartArray'
-foodImg.setAttribute('alt', '*name')
-foodItem.append(foodImg)
+  // do the population of the UI with the values from that item  
+ let i = cartItemsArray.length - 1
 
-//create p 
-const foodName = document.createElement('p')
-const food = `${groceryItems.name}`
-foodName.innerText = 'food' //`${cartArray[i].name}`
-foodItem.append(foodName)
+  const foodItem = document.createElement('li');
+  shopingBag.append(foodItem);
 
-//- button
-const removeButton = document.createElement('button')
-removeButton.classList.add('quantity-btn', 'remove-btn','center')
-removeButton.innerText = '-'
-foodItem.append(removeButton)
-   //add clickevent for - button
-   removeButton.addEventListener('click', (event) => {
-   console.log('You clicked!')
-   itemQuantity -=1
-})
+  // //image into li
+  const foodImg = document.createElement('img');
+  foodImg.setAttribute('class', 'cart--item-icon');
+  foodImg.setAttribute('src', 'assets/icons/' + cartItemsArray[i].id + '.svg');
+  foodImg.setAttribute('alt', '*name');
+  foodItem.append(foodImg);
 
+  //create p 
+  const foodName = document.createElement('p');
+  const food = cartItemsArray[i].name;
+  foodName.innerText = food;
+  foodItem.append(foodName);
 
-//quantity
-let itemQuantity = cartArray.quantity
-const quantityTracker = document.createElement('span')
-quantityTracker.classList.add('quantity-text','center')
-quantityTracker.innerText = itemQuantity //make dynamic later so that quantity= #times clicked or have quantity = let 0.... smth
-foodItem.append(quantityTracker)
+  //- button
+  const removeButton = document.createElement('button');
+  removeButton.classList.add('quantity-btn', 'remove-btn', 'center');
+  removeButton.innerText = '-';
+  foodItem.append(removeButton);
+  //add clickevent for - button
+  removeButton.addEventListener('click', (eventObj) => {
+    console.log('You clicked - !')
+    quantityTracker.innerText -= 1
 
-//add button
-const addButton = document.createElement('button')
-addButton.classList.add('quantity-btn', 'add-btn','center')
-addButton.innerText ='+'
-foodItem.append(addButton)
-//add clickevent
-addButton.addEventListener('click', (event) => {
-  let modifiedQuantityTracker = quantityTracker
-  console.log('You clicked add button!')
-  itemQuantity += 1
+    //  //need to somehow make li dissapear at value === 0 --> am i missing a for loop??? #stuck
+    //  if (quantityTracker.innerText === 0) {
+    //   shopingBag.innerHTML ='' }
+  });
 
-})
+  //quantity
+  const quantityTracker = document.createElement('span');
+  quantityTracker.classList.add('quantity-text', 'center');
+  quantityTracker.innerText = 1
+  foodItem.append(quantityTracker);
+
+  //add button
+  const addButton = document.createElement('button');
+  addButton.classList.add('quantity-btn', 'add-btn', 'center');
+  addButton.innerText = '+';
+  foodItem.append(addButton);
+
+  //add clickevent
+  addButton.addEventListener('click', (eventObj) => {
+    console.log('You clicked add button!')
+    quantityTracker.innerText ++ 
+  });
+  
 }
