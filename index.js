@@ -61,6 +61,7 @@ const storeItemsUL = document.querySelector(".item-list.store--item-list");
 const cartUL = document.querySelector(".item-list.cart--item-list");
 
 // Render the store items in a for each
+// Anytime the user does something, then this is called
 function renderStoreItems() {
   state.items.forEach((storeItem) => {
     // Create the necessary HTML elements & set attributes
@@ -99,9 +100,8 @@ function addToCart(storeItem) {
   // Increment the quantity if it contains the item
   for (let i = 0; i < state.cart.length; i++) {
     if (storeItemCopy.id === state.cart[i].id) {
-      console.log("Cart item before: ", state.cart[i]);
       state.cart[i].quantity++;
-      console.log("Cart item after: ", state.cart[i]);
+      console.log("addToCart() same item: ", state.cart[i]);
       renderCartItems();
       return null;
     }
@@ -145,8 +145,8 @@ function renderCartItems() {
     decreaseQuantity.addEventListener("click", (event) => {
       cartItem.quantity--;
       if (cartItem.quantity === 0) {
-        const cartCopy = state.cart;
-        delete state.cart[cartCopy.indexOf(cartItem)];
+        // const cartCopy = state.cart;
+        state.cart.splice(state.cart.indexOf(cartItem), 1);
       }
       renderCartItems();
       // decrementCartQuantity(cartItem);
