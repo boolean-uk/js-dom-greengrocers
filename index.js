@@ -103,6 +103,7 @@ const RenderShop = () => {
 
 const RenderCart = () => {
   CartItemList.innerHTML=``;
+  let cartValue = 0;
   state.cart.forEach(item => {
     console.log(`Render cart item ${item}`);
     const LiElement = document.createElement(`li`);
@@ -129,7 +130,10 @@ const RenderCart = () => {
     LiElement.append(MinusButtonElement);
     LiElement.append(SpanElement);
     LiElement.append(PlusButtonElement);
+
+    cartValue += item.quantity * item.price;
   })
+  TotalNumber.innerText = `€ ${cartValue.toFixed(2)}`;
 }
 
 RenderShop();
