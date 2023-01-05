@@ -55,19 +55,20 @@ const state = {
 };
 
 console.log('og state', state)
-const groceryItems = state.items
-const grocerStock = document.querySelector('.store--item-list')
-const groceryItemLi = groceryItems
+const storeList = document.querySelector('.store--item-list')
+const totalNumber = document.querySelector('.total-number')
+const shopingBag = document.querySelector('.cart--item-list') //aka the ul
 
+const groceryItems = state.items
+const groceryItemLi = groceryItems
 //CREATING STORE UL- STOCK
 function renderStoreItems() {
   for (let i = 0; i < groceryItems.length; i++) {
     const groceryItem = groceryItems[i]
-
     //add li to ul
     const stockList = document.createElement('li')
     stockList.style.listStyle = `none`
-    grocerStock.append(stockList)
+    storeList.append(stockList)
 
     //add div to li 
     const stockDiv = document.createElement('div')
@@ -80,37 +81,54 @@ function renderStoreItems() {
     stockImgSvg.setAttribute('alt', `${groceryItems[i].name}`)
     stockDiv.append(stockImgSvg)
 
-    //trying to add buttons through a function so that I can call the button for a click event 
+    //create button
     const addToCartButton = document.createElement('button')
     addToCartButton.innerText = 'Add to cart'
     stockList.append(addToCartButton)
 
     //add clickevent
-    addToCartButton.addEventListener('click', function (event) {
-      console.log('You clicked!')
-      //Create shopping cart array with added quantity key
-      let cartObject = {
-        id: state.items[i].id,
-        name: state.items[i].name,
-        price: state.items[i].price,
-        quantity: 1
+    addToCartButton.addEventListener('click', (event) => {
+      console.log('You clicked! cart size:', state.cart.length)
+      let existingCartItem = undefined
+      for (let i = 0; i < state.cart.length; i++) {
+        const cartItem = state.cart[i]
+        console.log('before if to fill undefined  statement')
+        if (cartItem.id === groceryItem.id) {
+          existingCartItem = cartItem
+          break
+        }
       }
 
-      state.cart.push(cartObject)
-      addGroceryItem()
-      console.log('new Cart Object', cartObject)
+      if (existingCartItem !== undefined) {
+        console.log('You clicked on existing item! cart size:', state.cart.length)
+        // cart already has groceryItem in it!
+        // increment
+        existingCartItem.quantity += 1
+        console.log('You clicked on existing item! item quantity:', existingCartItem.quantity)
 
-      //trying to not add a new object when clicking the same item
-      // state.cart.forEach((element, index) => {
-      //   // console.log('element:', element.name)
-      //   if (element.name !== 'beetroot') {
-      //     state.cart.push(cartObject)
-      //   } else if (element.name === 'beetroot') {
-      //     element.quantity += 1
-      //   } else {
-      //     console.log('yes')
-      //   }
-      // })
+        // rerender
+        //clear the li befor it so that we don't end up with x3 clicks = bananas(1), bananas(2), bananas (3)
+        shopingBag.innerHTML = ""; //not quite right though--> it clears the next item when you click on a new fruit (but the old 
+        //friut item stays in the cary array)
+
+        //call up new item and let it +=1
+        addCartItem()
+        //  state.cart.splice(cartDisplay[i-1]) --> trued this but it also didnt work
+      }
+      else {
+        console.log('test test create object')
+        let cartObject = {
+          id: state.items[i].id,
+          name: state.items[i].name,
+          price: state.items[i].price,
+          quantity: 1
+        }
+
+        state.cart.push(cartObject)
+        addCartItem()
+        console.log('new Cart Object', cartObject)
+      }
+      console.log('check cart length', state.cart.length)
     })
   }
 }
@@ -118,12 +136,8 @@ function renderStoreItems() {
 renderStoreItems()
 console.log(state.cart)
 
-//SHOPPING CART CONSTS
-const cartDisplay = document.querySelector('#cart') //aka "main"
-const shopingBag = document.querySelector('.cart--item-list') //aka the ul
-
 //ADD TO SHOPPING CART
-function addGroceryItem() {
+function addCartItem() {
   //find cart object
   const cartItemsArray = state.cart
   console.log(cartItemsArray)
@@ -157,14 +171,18 @@ function addGroceryItem() {
   //add clickevent for - button
   removeButton.addEventListener('click', (eventObj) => {
     console.log('You clicked - !')
-    quantityTracker.innerText--
+    cartItemQuantity -= 1
+    quantityTracker.innerText = cartItemQuantity
+    console.log('check cart length', state.cart.length)
+    console.log('updated cartquantity:', cartItemQuantity)
+    console.log('updated cart length:', state.cart.length)
 
     //need to somehow make li dissapear at value === 0 --> am i missing a for loop???
-    if (quantityTracker.innerText === 0) {
-      deleteCartItem()
-    };
-  })
+    //  if (cartItemQuantity === 0){
+    //   delete.cartItem()
+    //  }
 
+  })
 
   //quantity
   const quantityTracker = document.createElement('span');
@@ -180,16 +198,13 @@ function addGroceryItem() {
   foodItem.append(addButton);
   //add-button's clickevent
   addButton.addEventListener('click', (eventObj) => {
+    cartItemQuantity += 1
     console.log('You clicked add button! new quantity:', cartItemQuantity)
-    quantityTracker.innerText++
+    quantityTracker.innerText = cartItemQuantity
   });
 
   const newCartLength = state.cart
 
-  //trying to chane the item quantity key inside the new cart
-  Object.keys(newCartLength.element).forEach((quantity) => {
-    newCartLength.element[quantity]++ //? insert/link something needed
-  })
   console.log('newCartLength:', newCartLength)
 
   // console.log('newCartLength:', newCartLength)
@@ -198,13 +213,6 @@ function addGroceryItem() {
 
 
 // function deleteCartItem() {
-//   const itemsToKeep = []
-//   for (let i = 0; i < newCartLength.length; i++)
-//     if (newCartLength[i].id !== 0) {
-//       itemsToKeep.push(newCartLength[i])
-//     }
-//   newCartLength = itemsToKeep
-//   // state.cartObject = state.cartObject.filter
 // }
 
 
