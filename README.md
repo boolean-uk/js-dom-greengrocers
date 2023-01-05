@@ -12,12 +12,12 @@ In this exercise we explore a common scenario in eCommerce, adding and removing 
 - Images for each item are in the assets folder
 - The HTML required for the items in the list and the cart items are provided in the `templates folder`
 - Implement the following requirements
-  - A user can view a selection of items in the store
-  - From the store, a user can add an item to their cart
-    - If the item is already in the cart, increase the item's quantity in the cart
-  - From the cart, a user can view and adjust the number of items in their cart
-      - If an item's quantity equals zero it is removed from the cart
-  - A user can view the current total in their cart
+  :) - A user can view a selection of items in the store
+  :) - From the store, a user can add an item to their cart
+    :(- If the item is already in the cart, increase the item's quantity in the cart
+  :)- From the cart, a user can view and adjust the number of items in their cart
+     :( - If an item's quantity equals zero it is removed from the cart
+  :(- A user can view the current total in their cart
 
 ## Extended 1
 - Add filters to the store ie. filter by item type; when a user clicks a filter they will only see items of that type

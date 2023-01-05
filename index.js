@@ -89,36 +89,47 @@ function renderStoreItems() {
     addToCartButton.addEventListener('click', function (event) {
       console.log('You clicked!')
       //Create shopping cart array with added quantity key
-      const cartObject = {
+      let cartObject = {
         id: state.items[i].id,
         name: state.items[i].name,
         price: state.items[i].price,
         quantity: 1
       }
+
       state.cart.push(cartObject)
+      addGroceryItem()
       console.log('new Cart Object', cartObject)
 
-      addGroceryItem()
+      //trying to not add a new object when clicking the same item
+      // state.cart.forEach((element, index) => {
+      //   // console.log('element:', element.name)
+      //   if (element.name !== 'beetroot') {
+      //     state.cart.push(cartObject)
+      //   } else if (element.name === 'beetroot') {
+      //     element.quantity += 1
+      //   } else {
+      //     console.log('yes')
+      //   }
+      // })
     })
   }
 }
-renderStoreItems()
 
+renderStoreItems()
 console.log(state.cart)
 
+//SHOPPING CART CONSTS
+const cartDisplay = document.querySelector('#cart') //aka "main"
+const shopingBag = document.querySelector('.cart--item-list') //aka the ul
 
 //ADD TO SHOPPING CART
 function addGroceryItem() {
-  //SHOPPING CART CONSTS
-  const cart = document.querySelector('#cart') //aka "main"
-  const shopingBag = document.querySelector('.cart--item-list') //aka the ul
-  
-  //find cart object either by object or id in the state.cart array: will need somehow to find the item in the array of items (state.cart)
+  //find cart object
   const cartItemsArray = state.cart
   console.log(cartItemsArray)
 
   // do the population of the UI with the values from that item  
- let i = cartItemsArray.length - 1
+  let i = cartItemsArray.length - 1
 
   const foodItem = document.createElement('li');
   shopingBag.append(foodItem);
@@ -127,7 +138,7 @@ function addGroceryItem() {
   const foodImg = document.createElement('img');
   foodImg.setAttribute('class', 'cart--item-icon');
   foodImg.setAttribute('src', 'assets/icons/' + cartItemsArray[i].id + '.svg');
-  foodImg.setAttribute('alt', '*name');
+  foodImg.setAttribute('alt', cartItemsArray[i].name);
   foodItem.append(foodImg);
 
   //create p 
@@ -135,6 +146,8 @@ function addGroceryItem() {
   const food = cartItemsArray[i].name;
   foodName.innerText = food;
   foodItem.append(foodName);
+
+  let cartItemQuantity = cartItemsArray[i].quantity
 
   //- button
   const removeButton = document.createElement('button');
@@ -144,17 +157,20 @@ function addGroceryItem() {
   //add clickevent for - button
   removeButton.addEventListener('click', (eventObj) => {
     console.log('You clicked - !')
-    quantityTracker.innerText -= 1
+    quantityTracker.innerText--
 
-    //  //need to somehow make li dissapear at value === 0 --> am i missing a for loop??? #stuck
-    //  if (quantityTracker.innerText === 0) {
-    //   shopingBag.innerHTML ='' }
-  });
+    //need to somehow make li dissapear at value === 0 --> am i missing a for loop???
+    if (quantityTracker.innerText === 0) {
+      deleteCartItem()
+    };
+  })
+
 
   //quantity
   const quantityTracker = document.createElement('span');
   quantityTracker.classList.add('quantity-text', 'center');
-  quantityTracker.innerText = 1
+  quantityTracker.innerText = cartItemQuantity
+  // console.log('updated quantity:',cartItemsArray[i].quantity )
   foodItem.append(quantityTracker);
 
   //add button
@@ -162,11 +178,43 @@ function addGroceryItem() {
   addButton.classList.add('quantity-btn', 'add-btn', 'center');
   addButton.innerText = '+';
   foodItem.append(addButton);
-
-  //add clickevent
+  //add-button's clickevent
   addButton.addEventListener('click', (eventObj) => {
-    console.log('You clicked add button!')
-    quantityTracker.innerText ++ 
+    console.log('You clicked add button! new quantity:', cartItemQuantity)
+    quantityTracker.innerText++
   });
-  
+
+  const newCartLength = state.cart
+
+  //trying to chane the item quantity key inside the new cart
+  Object.keys(newCartLength.element).forEach((quantity) => {
+    newCartLength.element[quantity]++ //? insert/link something needed
+  })
+  console.log('newCartLength:', newCartLength)
+
+  // console.log('newCartLength:', newCartLength)
 }
+
+
+
+// function deleteCartItem() {
+//   const itemsToKeep = []
+//   for (let i = 0; i < newCartLength.length; i++)
+//     if (newCartLength[i].id !== 0) {
+//       itemsToKeep.push(newCartLength[i])
+//     }
+//   newCartLength = itemsToKeep
+//   // state.cartObject = state.cartObject.filter
+// }
+
+
+// const totalDisplayed = document.querySelector('total-number')
+// totalDisplayed.innerText =
+// function calculateTotal(cartItemsArray) {
+//   let totalValue
+//   for (let i = 0; i < newCartLength.length; i++) {
+//     let multiples = newCartLength.price * newCartLength.quantity //some  selection issue happening here
+//     totalValue = multiples
+//   }
+// }
+
