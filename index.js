@@ -106,7 +106,7 @@ function addToCart(storeItem) {
       return null;
     }
   }
-  // If the item isn't already in cart, then add to cart array
+  // If the item is not already in cart, then add to cart array
   storeItemCopy.quantity = 1;
   state.cart.push(storeItemCopy);
   renderCartItems();
@@ -141,6 +141,23 @@ function renderCartItems() {
     increaseQuantity.setAttribute("class", "quantity-btn add-btn center");
     increaseQuantity.innerText = "+";
 
+    // Click event to decrement quantity
+    decreaseQuantity.addEventListener("click", (event) => {
+      cartItem.quantity--;
+      if (cartItem.quantity === 0) {
+        const cartCopy = state.cart;
+        delete state.cart[cartCopy.indexOf(cartItem)];
+      }
+      renderCartItems();
+      // decrementCartQuantity(cartItem);
+    });
+
+    // Click event to increment quantity
+    increaseQuantity.addEventListener("click", (event) => {
+      cartItem.quantity++;
+      renderCartItems();
+    });
+
     // Append the elements
     cartUL.append(cartLI);
     cartLI.append(cartImage);
@@ -150,6 +167,18 @@ function renderCartItems() {
     cartLI.append(increaseQuantity);
   });
 }
+
+/* function decrementCartQuantity(cartItem) {
+  if (cartItem.quantity === 0) {
+    for (let i = 0; i < state.cart.length; i++) {
+      if (state.cart[i].id === cartItem.id) {
+        delete state.cart[i];
+      }
+    }
+  } else {
+    cartItem.quantity--;
+  }
+} */
 
 // Function to call when the page is loaded
 renderStoreItems();
