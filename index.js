@@ -59,13 +59,31 @@ const CartItemList = document.querySelector(`.cart--item-list`);
 const TotalNumber = document.querySelector(`.total-number`);
 
 const UpdateCart = (item, isPlus) => {
-  
+  const ItemFoundID = state.cart.indexOf(item);
+  if(ItemFoundID != -1)
+  {
+    if(isPlus)
+      state.cart[ItemFoundID].quantity ++;
+    else if(state.cart[ItemFoundID].quantity > 0)
+      state.cart[ItemFoundID].quantity --;
+    else
+      state.cart.splice(ItemFoundID, 1);
+  }
+  else
+  {
+    if(isPlus)
+    {
+      state.cart.push(item);
+      state.cart[state.cart.length-1].quantity = 1;
+    }
+  }
   RenderCart();
 }
 
 const RenderShop = () => {
   ShopItemList.innerHTML=``;
   state.items.forEach(item => {
+    console.log(item);
     const LiElement = document.createElement(`li`);
     const divElement = document.createElement(`div`);
     const ImgElement = document.createElement(`img`);
@@ -88,7 +106,7 @@ const RenderCart = () => {
     const ImgElement = document.createElement(`img`);
     const PElement = document.createElement(`p`);
     const MinusButtonElement = document.createElement(`button`);
-    const spanElement = document.createElement(`span`);
+    const SpanElement = document.createElement(`span`);
     const PlusButtonElement = document.createElement(`button`);
     ImgElement.setAttribute(`class`, `cart--item--icon`);
     ImgElement.src = `assets/icons/${item.id}.svg`;
