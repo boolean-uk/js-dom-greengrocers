@@ -59,7 +59,7 @@ const CartItemList = document.querySelector(`.cart--item-list`);
 const TotalNumber = document.querySelector(`.total-number`);
 
 const UpdateCart = (item, isPlus) => {
-  const ItemFoundID = state.cart.indexOf(item);
+  const ItemFoundID = state.cart.findIndex((cartItem) => cartItem.name === item.name)
   if(ItemFoundID != -1)
   {
     if(isPlus)
