@@ -53,3 +53,59 @@ const state = {
   ],
   cart: []
 };
+
+const ShopItemList = document.querySelector(`.store--item-list`);
+const CartItemList = document.querySelector(`.cart--item-list`);
+const TotalNumber = document.querySelector(`.total-number`);
+
+const UpdateCart = (item, isPlus) => {
+  
+  RenderCart();
+}
+
+const RenderShop = () => {
+  ShopItemList.innerHTML=``;
+  state.items.forEach(item => {
+    const LiElement = document.createElement(`li`);
+    const divElement = document.createElement(`div`);
+    const ImgElement = document.createElement(`img`);
+    const ButtonElement = document.createElement(`button`);
+    divElement.setAttribute(`class`, `store--item-icon`);
+    ImgElement.src=`assets/icons/${item.id}.svg`;
+    ImgElement.alt=item.name;
+    ButtonElement.innerHTML = `Add to cart`;
+    ButtonElement.addEventListener(`click`, UpdateCart(item, true));
+    ShopItemList.append(LiElement);
+    LiElement.append(divElement);
+    divElement.append(ImgElement, ButtonElement);
+  });
+}
+
+const RenderCart = () => {
+  CartItemList.innerHTML=``;
+  state.cart.forEach(item => {
+    const LiElement = document.createElement(`li`);
+    const ImgElement = document.createElement(`img`);
+    const PElement = document.createElement(`p`);
+    const MinusButtonElement = document.createElement(`button`);
+    const spanElement = document.createElement(`span`);
+    const PlusButtonElement = document.createElement(`button`);
+    ImgElement.setAttribute(`class`, `cart--item--icon`);
+    ImgElement.src = `assets/icons/${item.id}.svg`;
+    ImgElement.alt=item.name;
+    PElement.innerText=item.name;
+    MinusButtonElement.setAttribute(`class`, `quantity-btn remove-btn center`);
+    SpanElement.setAttribute(`class`, `quantity-text center`);
+    PlusButtonElement.setAttribute(`class`, `quantity-btn add-btn center`);
+    MinusButtonElement.addEventListener(`click`, UpdateCart(item, false));
+    MinusButtonElement.addEventListener(`click`, UpdateCart(item, true));
+    CartItemList.append(LiElement);
+    LiElement.append(ImgElement);
+    LiElement.append(PElement);
+    LiElement.append(MinusButtonElement);
+    LiElement.append(SpanElement);
+    LiElement.append(PlusButtonElement);
+  })
+}
+
+RenderShop();
