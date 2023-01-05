@@ -59,6 +59,7 @@ const state = {
 // This query selector has a global scope, i.e. it is not defined inside a function
 const storeItemsUL = document.querySelector(".item-list.store--item-list");
 const cartUL = document.querySelector(".item-list.cart--item-list");
+const totalNumber = document.querySelector(".total-number");
 
 // Render the store items in a for each
 // Anytime the user does something, then this is called
@@ -102,6 +103,7 @@ function addToCart(storeItem) {
     if (storeItemCopy.id === state.cart[i].id) {
       state.cart[i].quantity++;
       console.log("addToCart() same item: ", state.cart[i]);
+      updatePrice();
       renderCartItems();
       return null;
     }
@@ -109,6 +111,7 @@ function addToCart(storeItem) {
   // If the item is not already in cart, then add to cart array
   storeItemCopy.quantity = 1;
   state.cart.push(storeItemCopy);
+  updatePrice();
   renderCartItems();
 }
 
@@ -145,16 +148,16 @@ function renderCartItems() {
     decreaseQuantity.addEventListener("click", (event) => {
       cartItem.quantity--;
       if (cartItem.quantity === 0) {
-        // const cartCopy = state.cart;
         state.cart.splice(state.cart.indexOf(cartItem), 1);
       }
+      updatePrice();
       renderCartItems();
-      // decrementCartQuantity(cartItem);
     });
 
     // Click event to increment quantity
     increaseQuantity.addEventListener("click", (event) => {
       cartItem.quantity++;
+      updatePrice();
       renderCartItems();
     });
 
@@ -168,17 +171,19 @@ function renderCartItems() {
   });
 }
 
-/* function decrementCartQuantity(cartItem) {
-  if (cartItem.quantity === 0) {
-    for (let i = 0; i < state.cart.length; i++) {
-      if (state.cart[i].id === cartItem.id) {
-        delete state.cart[i];
-      }
-    }
-  } else {
-    cartItem.quantity--;
-  }
-} */
+// function that updates the price
+function updatePrice() {
+  // Throw away the HTML first and declare a counter variable
+  totalNumber.innerHTML = "";
+  let total = 0;
+
+  // Recalculate the total by going through the entire cart and render it
+  state.cart.forEach((cartItem) => {
+    total += cartItem.price * cartItem.quantity;
+  });
+  const total2DecmimalPlaces = total.toFixed(2);
+  totalNumber.innerHTML = `£${total2DecmimalPlaces}`;
+}
 
 // Function to call when the page is loaded
 renderStoreItems();
