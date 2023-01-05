@@ -64,7 +64,7 @@ const UpdateCart = (item, isPlus) => {
   {
     if(isPlus)
       state.cart[ItemFoundID].quantity ++;
-    else if(state.cart[ItemFoundID].quantity > 0)
+    else if(state.cart[ItemFoundID].quantity > 1)
       state.cart[ItemFoundID].quantity --;
     else
       state.cart.splice(ItemFoundID, 1);
@@ -73,7 +73,8 @@ const UpdateCart = (item, isPlus) => {
   {
     if(isPlus)
     {
-      state.cart.push(item);
+      const CartItem = Object.assign({}, item);
+      state.cart.push(CartItem);
       state.cart[state.cart.length-1].quantity = 1;
     }
   }
@@ -83,7 +84,7 @@ const UpdateCart = (item, isPlus) => {
 const RenderShop = () => {
   ShopItemList.innerHTML=``;
   state.items.forEach(item => {
-    console.log(item);
+    console.log(`Render shop item ${item.name}`);
     const LiElement = document.createElement(`li`);
     const divElement = document.createElement(`div`);
     const ImgElement = document.createElement(`img`);
@@ -92,16 +93,18 @@ const RenderShop = () => {
     ImgElement.src=`assets/icons/${item.id}.svg`;
     ImgElement.alt=item.name;
     ButtonElement.innerHTML = `Add to cart`;
-    ButtonElement.addEventListener(`click`, UpdateCart(item, true));
+    ButtonElement.addEventListener("click", function (){UpdateCart(item, true);});
     ShopItemList.append(LiElement);
     LiElement.append(divElement);
     divElement.append(ImgElement, ButtonElement);
   });
+  console.log(state.cart)
 }
 
 const RenderCart = () => {
   CartItemList.innerHTML=``;
   state.cart.forEach(item => {
+    console.log(`Render cart item ${item}`);
     const LiElement = document.createElement(`li`);
     const ImgElement = document.createElement(`img`);
     const PElement = document.createElement(`p`);
@@ -115,8 +118,11 @@ const RenderCart = () => {
     MinusButtonElement.setAttribute(`class`, `quantity-btn remove-btn center`);
     SpanElement.setAttribute(`class`, `quantity-text center`);
     PlusButtonElement.setAttribute(`class`, `quantity-btn add-btn center`);
-    MinusButtonElement.addEventListener(`click`, UpdateCart(item, false));
-    MinusButtonElement.addEventListener(`click`, UpdateCart(item, true));
+    MinusButtonElement.innerText = `-`;
+    PlusButtonElement.innerText = `+`;
+    SpanElement.innerText = item.quantity;
+    MinusButtonElement.addEventListener("click", function (){UpdateCart(item, false);});
+    PlusButtonElement.addEventListener("click", function (){UpdateCart(item, true);});
     CartItemList.append(LiElement);
     LiElement.append(ImgElement);
     LiElement.append(PElement);
