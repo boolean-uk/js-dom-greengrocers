@@ -61,6 +61,7 @@ const state = {
 
 const storeUl = document.querySelector('ul')
 const cartUl = document.querySelector('.cart--item-list-container ul')
+const totalSection = document.querySelector ('.total-section')
 
 //Items in the shop
 function renderStoreItems() {
@@ -80,17 +81,16 @@ function renderStoreItems() {
   addToCartButton.addEventListener('click', function(event){
     event.preventDefault()
     addingToCartArray(item)
-    addingItemsToCart()
   })
  });
 };
 
 // When button is clicked, pass the item object into this function
-// Create new Object with all exsisting details + quantity key/value
 // Is the item already in the array? If yes, increase quantity
-// Add this object into array
+// If not add object into array
 function addingToCartArray(item){
   const index = state.cart.findIndex((element) => element.id === item.id)
+  // If Element.id (id of the item in the cart array) does not match item.id will return -1 
   if(index === -1){
     const cartObject = {
       id: item.id,
@@ -99,60 +99,101 @@ function addingToCartArray(item){
       quantity: 1
     }
     state.cart.push(cartObject)
+    addingItemsToCart()
     return
   }
   state.cart[index].quantity += 1
+  addingItemsToCart()
+
 }  
 
 
 // render Items to Cart from function above
 function addingItemsToCart() {
+  cartUl.innerHTML = ''
   // Create For Each loop to cycle through array and add them to the list
-  state.cart.forEach((cart) => {
-    // Create List Item  
-    const itemsInCart = document.createElement('li')
-    // Create list item in UL 
-    cartUl.append(itemsInCart)
-    // Create image and save to list item
-    const cartItemImage = document.createElement('img')
-    cartItemImage.setAttribute ("class", "cart--item-icon")
-    cartItemImage.setAttribute("src", "assets/icons/" + cart.id + ".svg")
-    
-    // Create p tag and add to list
-    const cartItemName = document.createElement('p')
-    cartItemName.innerText = cart.name
-    itemsInCart.append(cartItemImage, cartItemName,)
-    
-    // Create - button
-    const removeFromCartButton = document.createElement('button')
-    removeFromCartButton.setAttribute('class', 'quantity-btn remove-btn center')
-    removeFromCartButton.innerText = "-"
-    itemsInCart.append(removeFromCartButton)
-    // - Button Click
-    removeFromCartButton.addEventListener('click', function(event){
-      cart.quantity -= 1
-      quantityInCart.innerText = cart.quantity
-    })
-    
-    // Create quantity
-    let quantityInCart = document.createElement('span')
-    quantityInCart.setAttribute('class', 'quantity-text center')
-    quantityInCart.innerText = cart.quantity
-    itemsInCart.append(quantityInCart)
-    
-    // Create + button
-    const addMoreToCartButton = document.createElement('button')
-    addMoreToCartButton.setAttribute('class', 'quantity-btn add-btn center')
-    addMoreToCartButton.innerText = "+"
-    itemsInCart.append(addMoreToCartButton)
-    // + Button Click
-    addMoreToCartButton.addEventListener('click', function(event){
-      cart.quantity +=1
-      quantityInCart.innerText = cart.quantity
+  // const index = state.cart.find((element) => element.id)
+  state.cart.forEach((element) => {
+    // console.log(element.name)
+    if (element.quantity === 0) {
+    } else if (element.quantity >= 1) {
+      // If the item hasn't already been rendered - render everything
+      // Create List Item  
+      const itemsInCart = document.createElement('li')
+      cartUl.append(itemsInCart)
+      // Create image and save to list item
+      const cartItemImage = document.createElement('img')
+      cartItemImage.setAttribute ("class", "cart--item-icon")
+      cartItemImage.setAttribute("src", "assets/icons/" + element.id + ".svg")
       
+      // Create p tag and add to list
+      const cartItemName = document.createElement('p')
+      cartItemName.innerText = element.name
+      itemsInCart.append(cartItemImage, cartItemName,)
+      
+      // Create - button
+      const removeFromCartButton = document.createElement('button')
+      removeFromCartButton.setAttribute('class', 'quantity-btn remove-btn center')
+      removeFromCartButton.innerText = "-"
+      itemsInCart.append(removeFromCartButton)
+      // - Button Click
+      removeFromCartButton.addEventListener('click', function(event){
+        if (element.quantity === 1) {
+          element.quantity -= 1
+          itemsInCart.remove()
+          addingItemsToCart()
+          total()
+        } else {
+          element.quantity -= 1
+        quantityInCart.innerText = element.quantity
+        total()
+        }
+    })
+      // Create quantity
+      let quantityInCart = document.createElement('span')
+      quantityInCart.setAttribute('class', 'quantity-text center')
+      quantityInCart.innerText = element.quantity
+      itemsInCart.append(quantityInCart)
+      
+      // Create + button
+      const addMoreToCartButton = document.createElement('button')
+      addMoreToCartButton.setAttribute('class', 'quantity-btn add-btn center')
+      addMoreToCartButton.innerText = "+"
+      itemsInCart.append(addMoreToCartButton)
+      // + Button Click
+      addMoreToCartButton.addEventListener('click', function(event){
+        element.quantity +=1
+        quantityInCart.innerText = element.quantity
+        total()
+        
+      })
+
+  }
   })
-  
+  total()
+
+}
+
+
+
+function total() {
+  console.log("Function running")
+  let totalOfCart = 0
+  state.cart.forEach((element) => {
+    console.log(element.quantity)
+    const totalPerItem = element.quantity * element.price
+    totalOfCart += totalPerItem
   })
+  console.log(totalOfCart)
+  totalSection.innerHTML
+
+  const displayTotal = document.querySelector('.total-section span')
+  displayTotal.innerText = `£${totalOfCart}`
+  displayTotal.append()
+
+  // Go through cart items array (for each)
+  // item quantity * item price
+  // save sum to variable
 
 }
 
