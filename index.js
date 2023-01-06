@@ -54,38 +54,33 @@ const state = {
   cart: []
 };
 
-console.log('og state', state)
 const storeList = document.querySelector('.store--item-list')
-const totalNumber = document.querySelector('.total-number')
-const shopingBag = document.querySelector('.cart--item-list') //aka the ul
+const cartList = document.querySelector('.cart--item-list') //aka the ul
+const totalDisplayed = document.querySelector('total-number')
 
-const groceryItems = state.items
-const groceryItemLi = groceryItems
+
 //CREATING STORE UL- STOCK
 function renderStoreItems() {
+  const groceryItems = state.items
+
   for (let i = 0; i < groceryItems.length; i++) {
     const groceryItem = groceryItems[i]
     //add li to ul
     const stockList = document.createElement('li')
     stockList.style.listStyle = `none`
-    storeList.append(stockList)
 
     //add div to li 
-    const stockDiv = document.createElement('div')
-    stockDiv.setAttribute('class', 'store--item-icon')
-    stockList.append(stockDiv)
+    const div = document.createElement('div')
+    div.setAttribute('class', 'store--item-icon')
 
     //add svg to div
-    const stockImgSvg = document.createElement('img');
-    stockImgSvg.setAttribute('src', `assets/icons/${groceryItems[i].id}.svg`)
-    stockImgSvg.setAttribute('alt', `${groceryItems[i].name}`)
-    stockDiv.append(stockImgSvg)
+    const img = document.createElement('img');
+    img.setAttribute('src', `assets/icons/${groceryItem.id}.svg`)
+    img.setAttribute('alt', `${groceryItem.name}`)
 
     //create button
     const addToCartButton = document.createElement('button')
     addToCartButton.innerText = 'Add to cart'
-    stockList.append(addToCartButton)
-
     //add clickevent
     addToCartButton.addEventListener('click', (event) => {
       console.log('You clicked! cart size:', state.cart.length)
@@ -107,13 +102,9 @@ function renderStoreItems() {
         console.log('You clicked on existing item! item quantity:', existingCartItem.quantity)
 
         // rerender
-        //clear the li befor it so that we don't end up with x3 clicks = bananas(1), bananas(2), bananas (3)
-        shopingBag.innerHTML = ""; //not quite right though--> it clears the next item when you click on a new fruit (but the old 
-        //friut item stays in the cary array)
-
-        //call up new item and let it +=1
+        cartList.innerHTML = "";
         addCartItem()
-        //  state.cart.splice(cartDisplay[i-1]) --> trued this but it also didnt work
+        // renderTotal()
       }
       else {
         console.log('test test create object')
@@ -126,10 +117,18 @@ function renderStoreItems() {
 
         state.cart.push(cartObject)
         addCartItem()
+        // renderTotal()
         console.log('new Cart Object', cartObject)
       }
       console.log('check cart length', state.cart.length)
     })
+
+    //Appending
+    storeList.append(stockList)
+    stockList.append(div)
+    div.append(img)
+    stockList.append(addToCartButton)
+
   }
 }
 
@@ -138,91 +137,86 @@ console.log(state.cart)
 
 //ADD TO SHOPPING CART
 function addCartItem() {
+  cartList.innerHTML = ''
+
   //find cart object
   const cartItemsArray = state.cart
-  console.log(cartItemsArray)
+  console.log(state.cart)
 
-  // do the population of the UI with the values from that item  
-  let i = cartItemsArray.length - 1
+  for (let i = 0; i < state.cart.length; i++) {
 
-  const foodItem = document.createElement('li');
-  shopingBag.append(foodItem);
+    //li 
+    const foodItem = document.createElement('li');
 
-  // //image into li
-  const foodImg = document.createElement('img');
-  foodImg.setAttribute('class', 'cart--item-icon');
-  foodImg.setAttribute('src', 'assets/icons/' + cartItemsArray[i].id + '.svg');
-  foodImg.setAttribute('alt', cartItemsArray[i].name);
-  foodItem.append(foodImg);
+    //image into li
+    const foodImg = document.createElement('img');
+    foodImg.setAttribute('class', 'cart--item-icon');
+    foodImg.setAttribute('src', 'assets/icons/' + cartItemsArray[i].id + '.svg');
+    foodImg.setAttribute('alt', cartItemsArray[i].name);
 
-  //create p 
-  const foodName = document.createElement('p');
-  const food = cartItemsArray[i].name;
-  foodName.innerText = food;
-  foodItem.append(foodName);
+    //create p 
+    const foodName = document.createElement('p');
+    const food = cartItemsArray[i].name;
+    foodName.innerText = food;
 
-  let cartItemQuantity = cartItemsArray[i].quantity
+    //- button
+    let cartItemQuantity = state.cart[i].quantity
+    const removeButton = document.createElement('button');
+    removeButton.classList.add('quantity-btn', 'remove-btn', 'center');
+    removeButton.innerText = '-';
+    //add clickevent for - button
+    removeButton.addEventListener('click', () => {
+      console.log('You clicked - !')
+      state.cart[i].quantity -= 1
+      addCartItem()
+      if (state.cart[i].quantity === 0) {
+        console.log('There are 0', state.cart[i].name, 'left')
+        const reducedCart = state.cart.filter(item => item.quantity !== 0);
+        console.log('cart should not have item with quantity 0', reducedCart)
+        return reducedCart
+      }
+    })
 
-  //- button
-  const removeButton = document.createElement('button');
-  removeButton.classList.add('quantity-btn', 'remove-btn', 'center');
-  removeButton.innerText = '-';
-  foodItem.append(removeButton);
-  //add clickevent for - button
-  removeButton.addEventListener('click', (eventObj) => {
-    console.log('You clicked - !')
-    cartItemQuantity -= 1
+    //quantity
+    const quantityTracker = document.createElement('span');
+    quantityTracker.classList.add('quantity-text', 'center');
     quantityTracker.innerText = cartItemQuantity
-    console.log('check cart length', state.cart.length)
-    console.log('updated cartquantity:', cartItemQuantity)
-    console.log('updated cart length:', state.cart.length)
+    // console.log('updated quantity:',cartItemsArray[i].quantity )
 
-    //need to somehow make li dissapear at value === 0 --> am i missing a for loop???
-    //  if (cartItemQuantity === 0){
-    //   delete.cartItem()
-    //  }
+    //add button
+    const addButton = document.createElement('button');
+    addButton.classList.add('quantity-btn', 'add-btn', 'center');
+    addButton.innerText = '+';
+    // event listener
+    addButton.addEventListener('click', () => {
+      state.cart[i].quantity += 1
+      console.log('You clicked add button! new quantity:', cartItemQuantity)
+      console.log(state.cart[i].quantity)
+      addCartItem()
+      //can remove when everything is working
+      const newCartLength = state.cart
+      console.log('newCartLength:', newCartLength)
+    });
 
-  })
 
-  //quantity
-  const quantityTracker = document.createElement('span');
-  quantityTracker.classList.add('quantity-text', 'center');
-  quantityTracker.innerText = cartItemQuantity
-  // console.log('updated quantity:',cartItemsArray[i].quantity )
-  foodItem.append(quantityTracker);
+    //appends
+    cartList.append(foodItem);
+    foodItem.append(foodImg);
+    foodItem.append(foodName);
+    foodItem.append(removeButton);
+    foodItem.append(quantityTracker);
+    foodItem.append(addButton);
+  }
 
-  //add button
-  const addButton = document.createElement('button');
-  addButton.classList.add('quantity-btn', 'add-btn', 'center');
-  addButton.innerText = '+';
-  foodItem.append(addButton);
-  //add-button's clickevent
-  addButton.addEventListener('click', (eventObj) => {
-    cartItemQuantity += 1
-    console.log('You clicked add button! new quantity:', cartItemQuantity)
-    quantityTracker.innerText = cartItemQuantity
-  });
-
-  const newCartLength = state.cart
-
-  console.log('newCartLength:', newCartLength)
-
-  // console.log('newCartLength:', newCartLength)
+  // renderTotal()
 }
 
 
+// function renderTotal(){
+//   // totalDisplayed.innerHTML = '';
+//   let total = 0;
 
-// function deleteCartItem() {
+//   state.cart.forEach((cartItem)  => {
+//     total += cartItem.quantity * cartItem.price
+//   })
 // }
-
-
-// const totalDisplayed = document.querySelector('total-number')
-// totalDisplayed.innerText =
-// function calculateTotal(cartItemsArray) {
-//   let totalValue
-//   for (let i = 0; i < newCartLength.length; i++) {
-//     let multiples = newCartLength.price * newCartLength.quantity //some  selection issue happening here
-//     totalValue = multiples
-//   }
-// }
-
