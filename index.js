@@ -56,7 +56,7 @@ const state = {
 
 const storeList = document.querySelector('.store--item-list')
 const cartList = document.querySelector('.cart--item-list') //aka the ul
-const totalDisplayed = document.querySelector('total-number')
+const totalDisplayed = document.querySelector('.total-number')
 
 
 //CREATING STORE UL- STOCK
@@ -92,6 +92,7 @@ function renderStoreItems() {
           existingCartItem = cartItem
           break
         }
+
       }
 
       if (existingCartItem !== undefined) {
@@ -104,7 +105,6 @@ function renderStoreItems() {
         // rerender
         cartList.innerHTML = "";
         addCartItem()
-        // renderTotal()
       }
       else {
         console.log('test test create object')
@@ -117,9 +117,9 @@ function renderStoreItems() {
 
         state.cart.push(cartObject)
         addCartItem()
-        // renderTotal()
         console.log('new Cart Object', cartObject)
       }
+      renderTotal()
       console.log('check cart length', state.cart.length)
     })
 
@@ -130,9 +130,9 @@ function renderStoreItems() {
     stockList.append(addToCartButton)
 
   }
+  renderTotal()
 }
 
-renderStoreItems()
 console.log(state.cart)
 
 //ADD TO SHOPPING CART
@@ -173,8 +173,10 @@ function addCartItem() {
         console.log('There are 0', state.cart[i].name, 'left')
         const reducedCart = state.cart.filter(item => item.quantity !== 0);
         console.log('cart should not have item with quantity 0', reducedCart)
+
         return reducedCart
       }
+      renderTotal()
     })
 
     //quantity
@@ -193,11 +195,11 @@ function addCartItem() {
       console.log('You clicked add button! new quantity:', cartItemQuantity)
       console.log(state.cart[i].quantity)
       addCartItem()
+      renderTotal()
       //can remove when everything is working
       const newCartLength = state.cart
       console.log('newCartLength:', newCartLength)
     });
-
 
     //appends
     cartList.append(foodItem);
@@ -208,15 +210,26 @@ function addCartItem() {
     foodItem.append(addButton);
   }
 
-  // renderTotal()
+  renderTotal()
 }
 
 
-// function renderTotal(){
-//   // totalDisplayed.innerHTML = '';
-//   let total = 0;
+function renderTotal() {
+  let total = 0;
 
-//   state.cart.forEach((cartItem)  => {
-//     total += cartItem.quantity * cartItem.price
-//   })
-// }
+  state.cart.forEach((item) => {
+    const price = item.price
+    const quantity = item.quantity
+    const totalItemPrice = price * quantity
+    total += totalItemPrice
+  })
+  finalTotal = total.toFixed(2)
+  console.log(finalTotal)
+  totalDisplayed.innerText = `£${finalTotal}`
+}
+
+
+
+
+renderStoreItems()
+renderTotal()
