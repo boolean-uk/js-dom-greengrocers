@@ -186,6 +186,7 @@ function total() {
   })
   console.log(totalOfCart)
   totalSection.innerHTML
+  totalOfCart = totalOfCart.toFixed(2)
 
   const displayTotal = document.querySelector('.total-section span')
   displayTotal.innerText = `£${totalOfCart}`
