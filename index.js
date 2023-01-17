@@ -149,14 +149,38 @@ function renderCart() {
     li.append(plusButton);
     cartList.append(li);
   });
+
+  //let totalPrice = 0;
+  //totalPrice += element.price * elementr.quantity;
+  //}
+
+  //function renderTotal() {
   let totalPrice = 0;
-  totalPrice += element.price * element.quantity;
+  totalPrice += state.cart.price * state.cart.quantity;
+
+  const total = state.cart.reduce((a, b) => a + b.price, 0);
+  totalStr = `£${total.toFixed(2)}`;
+  totalNum.innerText = totalStr;
 }
+renderTotal();
 
 function reduceItem(item) {
   item.quantity--;
   renderCart();
 }
+
+const currencyConvert = (x) => {
+  return Number.parseFloat(x).toFixed(2);
+};
+
+const sumOfCart = () => {
+  let total = 0;
+  state.cart.forEach((cartItem) => {
+    total += cartItem.price * cartItem.quantity;
+  });
+  totalNum.innerText = `£${currencyConvert(total)}`;
+};
+
 //call render function
 
 //let btns = document.querySelectorAll(".products button");
