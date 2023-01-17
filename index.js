@@ -149,19 +149,30 @@ function renderCart() {
     li.append(plusButton);
     cartList.append(li);
   });
-
-  //let totalPrice = 0;
-  //totalPrice += element.price * elementr.quantity;
-  //}
-
-  //function renderTotal() {
-  let totalPrice = 0;
-  totalPrice += state.cart.price * state.cart.quantity;
-
-  const total = state.cart.reduce((a, b) => a + b.price, 0);
-  totalStr = `£${total.toFixed(2)}`;
-  totalNum.innerText = totalStr;
+  renderTotal();
 }
+
+//let totalPrice = 0;
+//totalPrice += element.price * element.quantity;
+//}
+
+function renderTotal() {
+  let total = 0;
+  state.cart.forEach((item) => {
+    const price = item.price;
+    const quantity = item.quantity;
+    const totalItemPrice = price * quantity;
+    total += totalItemPrice;
+  });
+  //totalPrice += state.cart.price * state.cart.quantity;
+
+  //const total = state.cart.reduce((a, b) => a + b.price, 0);
+  finalTotal = `£${total.toFixed(2)}`;
+
+  totalNum.innerText = `£${finalTotal}`;
+  //renderTotal();
+}
+
 renderTotal();
 
 function reduceItem(item) {
