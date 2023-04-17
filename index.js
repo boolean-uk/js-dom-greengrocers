@@ -52,12 +52,18 @@ const state = {
     },
   ],
   cart: [],
-  test: 20,
+
 };
+
+// Created functions to display items in Greengrocers section
+
+// Questa funzione renderà visibile gli elementi al caricamento della pagina.
 
 function load() {
   displayItems();
 }
+
+// The function will go through each item in the objct and display each one of them.
 
 function displayItems() {
   state.items.forEach((item) => {
@@ -66,10 +72,14 @@ function displayItems() {
   });
 }
 
+// This function creates the actual items we need to display.
+// The parameter allows us to go through each image and display it. (Instead of displaying the same one)
+
 function createItem(itemId) {
   const ul = document.querySelector(".item-list");
   const li = document.createElement("li");
   ul.append(li);
+  // appendChild -------------------
 
   const div = document.createElement("div");
   div.className = "store--item-icon";
