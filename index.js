@@ -53,3 +53,33 @@ const state = {
   ],
   cart: []
 };
+
+const storeList = document.querySelector('ul')
+const cartList = document.querySelector('cart--item-list')
+
+function renderShopList(state) {
+
+
+  for (i = 0; i < state.items.length; i++) {
+
+    const shopItem = document.createElement('li')
+    const itemImage = document.createElement('img')
+    itemImage.setAttribute('src', `/assets/icons/${state.items[i].id}.svg`)
+    console.log(state.items)
+    itemImage.setAttribute('alt', '')
+    itemImage.setAttribute('height', '100')
+    itemImage.style.objectFit = 'cover'
+
+
+    const purchaseButton = document.createElement('button')
+    purchaseButton.innerText = "Add to Cart"
+
+
+
+    shopItem.append(itemImage, purchaseButton)
+    storeList.append(shopItem)
+
+  }
+
+}
+renderShopList(state)
