@@ -66,14 +66,14 @@ function load() {
 
 function displayItems() {
   state.items.forEach((item) => {
-    createItem(item.id);
+    createItem(item);
   });
 }
 
 // This function creates the actual items we need to display.
 // The parameter allows us to go through each image and display it. (Instead of displaying the same one)
 
-function createItem(itemId) {
+function createItem(item) {
   const ul = document.querySelector(".item-list");
   const li = document.createElement("li");
   ul.append(li);
@@ -82,22 +82,29 @@ function createItem(itemId) {
   div.className = "store--item-icon";
   li.append(div);
 
-  const img = createImg(itemId);
+  const img = createImg(item.id);
   div.append(img);
 
   const button = document.createElement("button");
   button.innerText = "Add to cart";
   li.append(button);
 
-  button.addEventListener("click", function () {});
+  button.addEventListener("click", () => {
+    addItemToCart(item);
+  });
 }
 
 function createImg(itemId) {
   const newImg = document.createElement("img");
   newImg.src = `assets/icons/${itemId}.svg`;
-  return newImg
+  return newImg;
 }
 
 // CART SECTION
+function addItemToCart(item) {
+  state.cart.push(item);
+
+  console.log(state.cart);
+}
 
 load();
