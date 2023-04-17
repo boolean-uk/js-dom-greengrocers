@@ -14,9 +14,17 @@ const state = {
   cart: [],
 };
 
-const storeItemsList = document.querySelector('.store--item-list');
-const cartItemsList = document.querySelector('.cart--item-list');
-const cartTotal = document.querySelector('.total-number');
+function getElements() {
+  const storeList = document.querySelector('.store--item-list');
+  const cartList = document.querySelector('.cart--item-list');
+  const totalPrice = document.querySelector('.total-number');
+
+  return {
+    storeList,
+    cartList,
+    totalPrice,
+  };
+}
 
 // ID Maps
 function mapItemIds() {
@@ -25,11 +33,11 @@ function mapItemIds() {
 
 // Store Items
 function renderStoreItems() {
-  const storeItemsList = document.querySelector('.store--item-list');
+  const { storeList } = getElements();
   state.items.forEach(item => {
     const listItem = createListItem(item);
     addButtonClickListener(listItem, item);
-    storeItemsList.appendChild(listItem);
+    storeList.appendChild(listItem);
   });
 }
 
@@ -62,11 +70,12 @@ function addOrUpdateCartItem(item) {
 }
 
 function renderCartItems() {
+  const { cartList } = getElements();
   state.cart.forEach(cartItem => {
     const listItem = createCartItem(cartItem);
     addRemoveButtonClickListener(listItem, cartItem);
     addAddButtonClickListener(listItem, cartItem);
-    cartItemsList.appendChild(listItem);
+    cartList.appendChild(listItem);
   });
 }
 
@@ -109,27 +118,31 @@ function increaseCartItemQuantity(cartItem) {
 
 // Cart Total & Render Cart Function
 function renderCart() {
-  const cartItemsList = document.querySelector('.cart--item-list');
-  const cartTotal = document.querySelector('.total-number');
+  const { cartList, totalPrice } = getElements();
 
-  clearCartItems(cartItemsList);
-  renderCartItems(cartItemsList);
-  updateCartTotal(cartTotal);
+  clearCartItems(cartList);
+  renderCartItems(cartList);
+  updateCartTotal(totalPrice);
 }
 
-function clearCartItems(cartItemsList) {
-  cartItemsList.innerHTML = '';
+// Clear Cart Items
+function clearCartItems(cartList) {
+  cartList.innerHTML = '';
 }
 
-function updateCartTotal(cartTotal) {
+function updateCartTotal(totalPrice) {
   const total = calculateCartTotal();
-  cartTotal.textContent = `$${total.toFixed(2)}`;
+   totalPrice.textContent = `$${total.toFixed(2)}`;
 }
 
 function calculateCartTotal() {
   return state.cart.reduce((acc, cartItem) => acc + cartItem.price * cartItem.quantity, 0);
 }
-// Call Functions 
-mapItemIds();
-renderStoreItems();
-renderCart();
+
+// Calling Functions
+function App() {
+  mapItemIds(); renderStoreItems(); renderCart();
+}
+// Iinitialize Function.
+
+App();
