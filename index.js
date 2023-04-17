@@ -1,6 +1,6 @@
 // A4. Select the ul from the dom with the class item-list
-const itemsUL = document.querySelector(".item-list");
-const cartUL = document.querySelector(".item-list");
+const itemsUL = document.querySelector(".store--item-list");
+const cartUL = document.querySelector(".cart--item-list");
 
 const state = {
   items: [
@@ -58,8 +58,6 @@ const state = {
   cart: [],
 };
 
-// REQUIREMENT BREAKDOWN
-
 // Create the store item list function.
 const storeList = (index) => {
   // Create variable and store the image url and the alt name.
@@ -85,10 +83,7 @@ const storeList = (index) => {
   const button = document.createElement("button");
   button.innerText = "Add to cart";
 
-  // Add an event listener to the button.
-  // button.addEventListener("click", () => {
-  //   console.log(`Button ${index} was clicked!`);
-  // });
+  // Call the buttonAction function with button and index arguments.
   buttonAction(button, index);
 
   // Append the div and button to the list.
@@ -98,7 +93,7 @@ const storeList = (index) => {
 };
 
 // Create the cart item function
-const cartItem = (index) => {
+const cartList = (index) => {
   // Create variable and store the image url and the alt name.
   const imageUrl = `assets/icons/${state.items[index].id}.svg`;
   const altName = state.items[index].name;
@@ -114,7 +109,8 @@ const cartItem = (index) => {
 
   // Create the paragraph tag and set its innerText.
   const p = document.createElement("p");
-  p.innerText = cart[index].item[index].name;
+  // p.innerText = state.cart[index].item[index].name;
+  p.innerText = state.items[index].name;
 
   // Create the add button and set its class attributes
   const addButton = document.createElement("button");
@@ -134,8 +130,7 @@ const cartItem = (index) => {
   // Append the image, p, button, span and button to the li.
   cartLI.append(image, p, addButton, span, minusButton);
 
-  // Append the list to the ul.
-  cartUL.append(cartLI);
+  return cartLI;
 };
 
 // Create the render function()
@@ -144,7 +139,6 @@ const render = () => {
   for (let index = 0; index < state.items.length; index++) {
     // Invoke the storeList() function and store the result in a variable.
     const listResult = storeList(index);
-    console.log(listResult);
     // Append the list returned to the ul.
     itemsUL.append(listResult);
   }
@@ -153,18 +147,16 @@ const render = () => {
 // Create a button event function to add item to the cart.
 const buttonAction = (button, index) => {
   button.addEventListener("click", () => {
-    console.log(`Button ${index} was clicked!`);
+
+    const cartItem = cartList(index);
+    cartUL.appendChild(cartItem);
+    return cartUL;
   });
 };
 
 render();
 
 // B. From the store, a user can add an item to their cart
-
-// B2. Create a function for the listener's callback
-// B3. In the function, create a new list
-// B4. Set the inner html value of the list
-// B. append the list to the ul with the cart--item-list class
 
 // C. If the item is already in the cart, increase the item's quantity in the cart
 // D. From the cart, a user can view and adjust the number of items in their cart
