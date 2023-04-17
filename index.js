@@ -51,26 +51,7 @@ const state = {
       price: 0.35
     }
   ],
-  cart: [
-    {
-      id: "007-bell-pepper",
-      name: "bell pepper",
-      price: 0.35,
-      quantity: 1
-    },
-    {
-      id: "009-blueberry",
-      name: "blueberry",
-      price: 0.35,
-      quantity: 3
-    },
-    {
-    id: "010-eggplant",
-    name: "eggplant",
-    price: 0.35,
-    quantity: 2
-    }
-  ]
+  cart: []
 };
 
 function renderAvailableProducts() {
@@ -90,6 +71,18 @@ function renderAvailableProducts() {
     imgEl.src = imgSource
 
     const buttonEl = document.createElement('button')
+    buttonEl.addEventListener('click', () => {
+      let productItemIsInCart = state.cart.find(({id}) => id === productItem.id)
+      
+      if (productItemIsInCart !== undefined){
+        productItemIsInCart.quantity++
+      } else {
+        const itemToAddToCart = Object.assign(productItem)
+        itemToAddToCart.quantity = 1
+        state.cart.push(itemToAddToCart)
+      }
+        renderCartItems()
+    })
     buttonEl.innerText = 'Add to cart'
 
     divEl.append(imgEl)
@@ -99,13 +92,25 @@ function renderAvailableProducts() {
   }
 }
 
+function removeZeroQuantityItemsFromCart() {
+  for (let i = 0; i < state.cart.length; i++){
+    const cartItem = state.cart[i]
+    if (cartItem.quantity < 1) {
+      state.cart.splice(i, 1)
+    }
+  }
+}
+
 
 function renderCartItems() {
   const cartItemListEl = document.querySelector('.cart--item-list')
+  cartItemListEl.innerHTML = ''
   let cartTotal = 0
+  removeZeroQuantityItemsFromCart()
 
   for (let i = 0; i < state.cart.length; i++) {
     const cartItem = state.cart[i]
+    cartTotal += cartItem.price * cartItem.quantity
     const liEl = document.createElement('li')
 
     const imgEl = document.createElement('img')
@@ -120,8 +125,12 @@ function renderCartItems() {
     buttonMinusEl.classList.add('center')
     buttonMinusEl.classList.add('remove-btn')
     buttonMinusEl.innerText = '-'
+    buttonMinusEl.addEventListener('click', () => {
+      cartItem.quantity--
+      renderCartItems()
+    })
 
-    const spanEl = document.createElement('span')
+    let spanEl = document.createElement('span')
     spanEl.innerText = cartItem.quantity
 
     const buttonPlusEl = document.createElement('button')
@@ -130,22 +139,27 @@ function renderCartItems() {
     buttonPlusEl.classList.add('add-btn')
     buttonPlusEl.innerText = '+'
     buttonPlusEl.addEventListener('click', () => {
-
+      cartItem.quantity++
+      renderCartItems()
     })
 
     liEl.append(imgEl, pEl, buttonMinusEl, spanEl, buttonPlusEl)
     cartItemListEl.append(liEl)
-
-    cartTotal += cartItem.price * cartItem.quantity
-
   }
+
   let totalNumber = document.querySelector('.total-number')
+
   const formatter = new Intl.NumberFormat('en-UK', {
     style: 'currency',
     currency: 'GBP',
   });
+
   totalNumber.innerText = `${formatter.format(cartTotal)}`
 }
 
-renderAvailableProducts()
-renderCartItems()
+function pageInit() {
+  renderAvailableProducts()
+  renderCartItems()
+}
+
+pageInit()
