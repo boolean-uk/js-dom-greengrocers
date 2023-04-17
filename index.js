@@ -3,53 +3,90 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
-    }
+      price: 0.35,
+    },
   ],
-  cart: []
+  cart: [],
+};
+
+// A4. Select the ul from the dom with the class item-list
+const itemsUL = document.querySelector(".store--item-list");
+const cartUL = document.querySelector(".cart--item-list");
+const totalNo = document.querySelector(".total-number");
+
+// Create the store item list function.
+const storeList = () => {
+  itemsUL.innerHTML = "";
+
+  state.items.forEach((item) => {
+    // Create a new list element
+    const itemList = document.createElement("li");
+
+    // Create a new div element and set a class attribute.
+    const div = document.createElement("div");
+    div.setAttribute("class", "store--item-icon");
+
+    // Create a new image element and set the src and alt attributes.
+    const image = document.createElement("img");
+    image.setAttribute("src", `assets/icons/${item.id}.svg`);
+    image.setAttribute("alt", `${item.name}`);
+
+    // Create a new button element and set it's inner text.
+    const button = document.createElement("button");
+    button.innerText = "Add to cart";
+
+    // Append the div and button to the list.
+    div.append(image);
+    itemList.append(div, button);
+    itemsUL.append(itemList);
+
+    button.addEventListener("click", (event) => {
+      addToCart(item);
+    });
+  });
 };
