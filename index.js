@@ -180,7 +180,7 @@ const priceUpdate = () => {
     style: "currency",
     currency: "GBP",
   });
-
+  // Format the currency. 
   totalNo.innerText = formatCurrency.format(total);
 };
 
