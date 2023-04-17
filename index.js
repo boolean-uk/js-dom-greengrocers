@@ -52,10 +52,9 @@ const state = {
     },
   ],
   cart: [],
-
 };
 
-// Created functions to display items in Greengrocers section
+// GREENGROCERS SECTION
 
 // Questa funzione renderà visibile gli elementi al caricamento della pagina.
 
@@ -67,7 +66,6 @@ function load() {
 
 function displayItems() {
   state.items.forEach((item) => {
-    console.log(item.id);
     createItem(item.id);
   });
 }
@@ -79,21 +77,27 @@ function createItem(itemId) {
   const ul = document.querySelector(".item-list");
   const li = document.createElement("li");
   ul.append(li);
-  // appendChild -------------------
 
   const div = document.createElement("div");
   div.className = "store--item-icon";
   li.append(div);
 
-  const img = document.createElement("img");
-  img.src = `assets/icons/${itemId}.svg`;
+  const img = createImg(itemId);
   div.append(img);
 
   const button = document.createElement("button");
   button.innerText = "Add to cart";
   li.append(button);
 
-  console.log(li);
+  button.addEventListener("click", function () {});
 }
+
+function createImg(itemId) {
+  const newImg = document.createElement("img");
+  newImg.src = `assets/icons/${itemId}.svg`;
+  return newImg
+}
+
+// CART SECTION
 
 load();
