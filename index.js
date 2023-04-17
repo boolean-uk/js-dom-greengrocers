@@ -93,8 +93,6 @@ const storeList = () => {
 
 // Create the add to cart function. 
 const addToCart = (item) => {
-  // Save a copy of state.items
-  // const copyStore = { ...item };
   const copyStore = Object.assign({}, item);
 
   // First, check if the item exist in the cart.
