@@ -169,3 +169,19 @@ const addToCart = (item) => {
   priceUpdate();
   cartList();
 };
+
+const priceUpdate = () => {
+  const total = state.cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  const formatCurrency = new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+  });
+
+  totalNo.innerText = formatCurrency.format(total);
+};
+
+storeList();
