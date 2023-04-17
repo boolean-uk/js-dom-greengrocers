@@ -1,6 +1,7 @@
 // A4. Select the ul from the dom with the class item-list
 const itemsUL = document.querySelector(".store--item-list");
 const cartUL = document.querySelector(".cart--item-list");
+const totalNo = document.querySelector(".total-number");
 
 const state = {
   items: [
@@ -59,112 +60,128 @@ const state = {
 };
 
 // Create the store item list function.
-const storeList = (index) => {
-  // Create variable and store the image url and the alt name.
-  const imageUrl = `assets/icons/${state.items[index].id}.svg`;
-  const altName = state.items[index].name;
+const storeList = () => {
+  itemsUL.innerHTML = "";
 
-  // Create a new list element
-  const itemList = document.createElement("li");
+  state.items.forEach((item) => {
+    // Create a new list element
+    const itemList = document.createElement("li");
 
-  // Create a new div element and set a class attribute.
-  const div = document.createElement("div");
-  div.setAttribute("class", "store--item-icon");
+    // Create a new div element and set a class attribute.
+    const div = document.createElement("div");
+    div.setAttribute("class", "store--item-icon");
 
-  // Create a new image element and set the src and alt attributes.
-  const image = document.createElement("img");
-  image.setAttribute("src", imageUrl);
-  image.setAttribute("alt", altName);
+    // Create a new image element and set the src and alt attributes.
+    const image = document.createElement("img");
+    image.setAttribute("src", `assets/icons/${item.id}.svg`);
+    image.setAttribute("alt", `${item.name}`);
 
-  // Append the image to the div element.
-  div.append(image);
+    // Create a new button element and set it's inner text.
+    const button = document.createElement("button");
+    button.innerText = "Add to cart";
 
-  // Create a new button element and set it's inner text.
-  const button = document.createElement("button");
-  button.innerText = "Add to cart";
+    // Append the div and button to the list.
+    div.append(image);
+    itemList.append(div, button);
+    itemsUL.append(itemList);
 
-  // Call the buttonAction function with button and index arguments.
-  buttonAction(button, index);
-
-  // Append the div and button to the list.
-  itemList.append(div, button);
-
-  return itemList;
-};
-
-// Create the cart item function
-const cartList = (index) => {
-  // Create variable and store the image url and the alt name.
-  const imageUrl = `assets/icons/${state.items[index].id}.svg`;
-  const altName = state.items[index].name;
-
-  // Create a new list for the cart item display
-  const cartLI = document.createElement("li");
-
-  // Create an image element and set its attributes.
-  const image = document.createElement("img");
-  image.setAttribute("class", "cart--item-icon");
-  image.setAttribute("src", imageUrl);
-  image.setAttribute("alt", altName);
-
-  // Create the paragraph tag and set its innerText.
-  const p = document.createElement("p");
-  // p.innerText = state.cart[index].item[index].name;
-  p.innerText = state.items[index].name;
-
-  // Create the add button and set its class attributes
-  const addButton = document.createElement("button");
-  addButton.setAttribute("class", "quantity-btn remove-btn center");
-  addButton.innerText = "+";
-
-  // Create the span element and set its class and text value dynamically.
-  const span = document.createElement("span");
-  span.setAttribute("class", "quantity-text center");
-  span.innerText = 1;
-
-  // Create the minus button and set its class attributes
-  const minusButton = document.createElement("button");
-  minusButton.setAttribute("class", "quantity-btn remove-btn center");
-  minusButton.innerText = "-";
-
-  // Append the image, p, button, span and button to the li.
-  cartLI.append(image, p, addButton, span, minusButton);
-
-  return cartLI;
-};
-
-// Create the render function()
-const render = () => {
-  // Loo through the store items using a for loop.
-  for (let index = 0; index < state.items.length; index++) {
-    // Invoke the storeList() function and store the result in a variable.
-    const listResult = storeList(index);
-    // Append the list returned to the ul.
-    itemsUL.append(listResult);
-  }
-};
-
-// Create a button event function to add item to the cart.
-const buttonAction = (button, index) => {
-  button.addEventListener("click", () => {
-
-    const cartItem = cartList(index);
-    cartUL.appendChild(cartItem);
-    return cartUL;
+    button.addEventListener("click", (event) => {
+      addToCart(item);
+    });
   });
 };
 
-render();
+const addToCart = (item) => {
+  // Save a copy of state.items
+  const copyStore = { ...item };
 
-// B. From the store, a user can add an item to their cart
+  // First, check if the item exist in the cart.
+  for (let i = 0; i < state.cart.length; i++) {
+    if (copyStore.id === state.cart[i].id) {
+      // If the item exist, then increase it by 1.
+      state.cart[i].quantity++;
+      priceUpdate();
+      cartList();
+      return null;
+    }
+  }
+  // If the item is not in the cart, then add it.
+  copyStore.quantity = 1;
+  state.cart.push(copyStore);
+  priceUpdate();
+  cartList();
+};
 
-// C. If the item is already in the cart, increase the item's quantity in the cart
-// D. From the cart, a user can view and adjust the number of items in their cart
-// E. If an item's quantity equals zero it is removed from the cart
-// F. A user can view the current total in their cart
+// Create the cart item function
+const cartList = () => {
+  cartUL.innerHTML = "";
 
-// Extended 1
-// Add filters to the store ie. filter by item type; when a user clicks a filter they will only see items of that type
+  state.cart.forEach((item) => {
+    const imageUrl = `assets/icons/${item.id}.svg`;
+    const altName = item.name;
 
-// Extended 2
-// Add sorting to the store ie. sort by price or sort alphabetically; when a user clicks sort they will see a sorted list of items
+    // Create a new list for the cart item display
+    const cartLI = document.createElement("li");
+
+    // Create an image element and set its attributes.
+    const image = document.createElement("img");
+    image.setAttribute("class", "cart--item-icon");
+    image.setAttribute("src", imageUrl);
+    image.setAttribute("alt", altName);
+
+    // Create the paragraph tag and set its innerText.
+    const p = document.createElement("p");
+    // p.innerText = state.cart[index].item[index].name;
+    p.innerText = item.name;
+
+    // Create the add button and set its class attributes
+    const addButton = document.createElement("button");
+    addButton.setAttribute("class", "quantity-btn remove-btn center");
+    addButton.innerText = "+";
+
+    // Create the span element and set its class and text value dynamically.
+    const span = document.createElement("span");
+    span.setAttribute("class", "quantity-text center");
+    span.innerText = item.quantity;
+
+    // Create the minus button and set its class attributes
+    const minusButton = document.createElement("button");
+    minusButton.setAttribute("class", "quantity-btn remove-btn center");
+    minusButton.innerText = "-";
+
+    // Append the image, p, button, span and button to the li.
+    cartLI.append(image, p, addButton, span, minusButton);
+    cartUL.append(cartLI);
+
+    addButton.addEventListener("click", () => {
+      item.quantity++;
+      priceUpdate();
+      cartList();
+    });
+
+    minusButton.addEventListener("click", () => {
+      item.quantity--;
+      if (item.quantity === 0) {
+        state.cart.splice(state.cart.indexOf(item), 1);
+      }
+      priceUpdate();
+      cartList();
+    });
+  });
+};
+
+const priceUpdate = () => {
+  const total = state.cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  const formatCurrency = new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+  });
+
+  totalNo.innerText = formatCurrency.format(total);
+};
+
+storeList();
