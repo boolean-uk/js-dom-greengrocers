@@ -1,0 +1,10 @@
+.filter-button {
+  margin: 5px;
+}
+
+.filter-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 10px;
+}

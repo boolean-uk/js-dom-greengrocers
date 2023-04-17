@@ -3,56 +3,70 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     }
   ],
-  cart: []
+  cart: [],
+  showFruits: true,
+  showVegetables: true
 };
+
+const bodyEl = document.querySelector('body')
 
 function renderAvailableProducts() {
   const storeItemListEl = document.querySelector('.store--item-list')
@@ -90,6 +104,7 @@ function renderAvailableProducts() {
     storeItemListEl.append(liEl)
 
   }
+
 }
 
 function removeZeroQuantityItemsFromCart() {
@@ -157,9 +172,43 @@ function renderCartItems() {
   totalNumber.innerText = `${formatter.format(cartTotal)}`
 }
 
+function toggleFruitFilter() {
+  state.showFruits = !state.showFruits
+  renderFilters()
+}
+
+function toggleVegetableFilter() {
+  state.showVegetables = !state.showVegetables
+  renderFilters()
+}
+
+function renderFilters() {
+  const prevFilter = document.querySelector('.filter-container')
+  if (prevFilter !== null) prevFilter.remove()
+
+  const filterDivEl = document.createElement('div')
+  filterDivEl.classList.add('filter-container')
+
+  const fruitFilterButtonEl = document.createElement('button')
+  fruitFilterButtonEl.classList.add('filter-button')
+  fruitFilterButtonEl.innerText = 'Show fruits'
+  fruitFilterButtonEl.addEventListener('click', toggleFruitFilter)
+  if (!state.showFruits) fruitFilterButtonEl.style.color = 'grey'
+
+  const vegetableFilterButtonEl = document.createElement('button')
+  vegetableFilterButtonEl.classList.add('filter-button')
+  vegetableFilterButtonEl.innerText = 'Show vegetables'
+  vegetableFilterButtonEl.addEventListener('click', toggleVegetableFilter)
+  if (!state.showVegetables) vegetableFilterButtonEl.style.color = 'grey'
+
+  filterDivEl.append(fruitFilterButtonEl, vegetableFilterButtonEl)
+  bodyEl.append(filterDivEl)
+}
+
 function pageInit() {
   renderAvailableProducts()
   renderCartItems()
+  renderFilters()
 }
 
 pageInit()
