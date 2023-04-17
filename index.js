@@ -90,3 +90,26 @@ const storeList = () => {
     });
   });
 };
+
+// Create the add to cart function. 
+const addToCart = (item) => {
+  // Save a copy of state.items
+  // const copyStore = { ...item };
+  const copyStore = Object.assign({}, item);
+
+  // First, check if the item exist in the cart.
+  for (let i = 0; i < state.cart.length; i++) {
+    if (copyStore.id === state.cart[i].id) {
+      // If the item exist, then increase it by 1.
+      state.cart[i].quantity++;
+      priceUpdate();
+      cartList();
+      return null;
+    }
+  }
+  // If the item is not in the cart, then add it.
+  copyStore.quantity = 1;
+  state.cart.push(copyStore);
+  priceUpdate();
+  cartList();
+};
