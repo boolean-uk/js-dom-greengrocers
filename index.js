@@ -34,11 +34,13 @@ function mapItemIds() {
 // Store Items
 function renderStoreItems() {
   const { storeList } = getElements();
-  state.items.forEach(item => {
-    const listItem = createListItem(item);
-    addButtonClickListener(listItem, item);
+  let i = 0;
+  while (i < state.items.length) {
+    const listItem = createListItem(state.items[i]);
+    addButtonClickListener(listItem, state.items[i]);
     storeList.appendChild(listItem);
-  });
+    i++;
+  }
 }
 
 function createListItem(item) {
@@ -61,7 +63,13 @@ function addButtonClickListener(listItem, item) {
 
 // Cart Items Update Function
 function addOrUpdateCartItem(item) {
-  const cartItem = state.cart.find(cartItem => cartItem.id === item.id);
+  let cartItem;
+  for (let i = 0; i < state.cart.length; i++) {
+    if (state.cart[i].id === item.id) {
+      cartItem = state.cart[i];
+      break;
+    }
+  }
   if (cartItem) {
     cartItem.quantity++;
   } else {
@@ -71,12 +79,14 @@ function addOrUpdateCartItem(item) {
 
 function renderCartItems() {
   const { cartList } = getElements();
-  state.cart.forEach(cartItem => {
-    const listItem = createCartItem(cartItem);
-    addRemoveButtonClickListener(listItem, cartItem);
-    addAddButtonClickListener(listItem, cartItem);
+  let i = 0;
+  while (i < state.cart.length) {
+    const listItem = createCartItem(state.cart[i]);
+    addRemoveButtonClickListener(listItem, state.cart[i]);
+    addAddButtonClickListener(listItem, state.cart[i]);
     cartList.appendChild(listItem);
-  });
+    i++;
+  }
 }
 
 function createCartItem(cartItem) {
