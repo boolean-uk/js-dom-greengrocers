@@ -53,3 +53,50 @@ const state = {
   ],
   cart: []
 };
+
+// Requirement One - a user can view a selection of items in the store
+
+// we want loop through and generate several items
+function store() {
+
+
+  function productSelection() {
+
+    for (let i = 0; i <= state.items.length; i++) {
+
+     
+      const productInfo = state.items[i]
+    
+    
+      const header = document.querySelector('header')
+      const productList = document.querySelector('.item-list.store--item-list');
+      header.append(productList)
+      // create the li
+      const productItem = document.createElement('li');
+      // appen the li to the UL
+      productList.append(productItem);
+      // create the div and set the class
+      const productDiv = document.createElement('div');
+      productDiv.setAttribute('class', 'store--item-icon')
+      // create the img 
+      const productImage = document.createElement('img');
+      productImage.src = `assets/icons/${productInfo.id}.svg`
+
+      const ProductName = productInfo.name
+      productImage.setAttribute('alt', `${ProductName}`);
+      // append the image to the div
+      productDiv.append(productImage);
+      // create a button
+      const buttonAddtoCart = document.createElement('button');
+      buttonAddtoCart.innerText = "Add to cart";
+      //  append productDiv and button to li or productItem
+      productItem.append(productDiv, buttonAddtoCart);
+
+    }
+
+  }
+
+  productSelection()
+  
+}
+store()
