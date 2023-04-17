@@ -54,7 +54,7 @@ const state = {
   cart: [],
 };
 
-// A4. Select the ul from the dom with the class item-list
+// Select the ul from the dom with the class item-list
 const itemsUL = document.querySelector(".store--item-list");
 const cartUL = document.querySelector(".cart--item-list");
 const totalNo = document.querySelector(".total-number");
