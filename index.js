@@ -91,7 +91,65 @@ const storeList = () => {
   });
 };
 
-// Create the add to cart function. 
+// Create the cart item function
+const cartList = () => {
+  cartUL.innerHTML = "";
+
+  state.cart.forEach((item) => {
+    const imageUrl = `assets/icons/${item.id}.svg`;
+    const altName = item.name;
+
+    // Create a new list for the cart item display
+    const cartLI = document.createElement("li");
+
+    // Create an image element and set its attributes.
+    const image = document.createElement("img");
+    image.setAttribute("class", "cart--item-icon");
+    image.setAttribute("src", imageUrl);
+    image.setAttribute("alt", altName);
+
+    // Create the paragraph tag and set its innerText.
+    const p = document.createElement("p");
+    // p.innerText = state.cart[index].item[index].name;
+    p.innerText = item.name;
+
+    // Create the add button and set its class attributes
+    const addButton = document.createElement("button");
+    addButton.setAttribute("class", "quantity-btn remove-btn center");
+    addButton.innerText = "+";
+
+    // Create the span element and set its class and text value dynamically.
+    const span = document.createElement("span");
+    span.setAttribute("class", "quantity-text center");
+    span.innerText = item.quantity;
+
+    // Create the minus button and set its class attributes
+    const minusButton = document.createElement("button");
+    minusButton.setAttribute("class", "quantity-btn remove-btn center");
+    minusButton.innerText = "-";
+
+    // Append the image, p, button, span and button to the li.
+    cartLI.append(image, p, addButton, span, minusButton);
+    cartUL.append(cartLI);
+
+    addButton.addEventListener("click", () => {
+      item.quantity++;
+      priceUpdate();
+      cartList();
+    });
+
+    minusButton.addEventListener("click", () => {
+      item.quantity--;
+      if (item.quantity === 0) {
+        state.cart.splice(state.cart.indexOf(item), 1);
+      }
+      priceUpdate();
+      cartList();
+    });
+  });
+};
+
+// Create the add to cart function.
 const addToCart = (item) => {
   const copyStore = Object.assign({}, item);
 
