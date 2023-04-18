@@ -87,17 +87,20 @@ function listenForAdd() {
   allAddButtons.forEach((allAddButtons) => {
   allAddButtons.addEventListener('click', (e) => {
 // identify which button
-    const whichAddButton = e.target.id
-    console.log('button clicked:', whichAddButton)
+    const whichItem = e.target.id
+    console.log('button clicked:', whichItem)
+// call function to add to cart
+    addToCart(whichItem)
+    })
   })
-})
+}
 
-  
-  // push that info to cart
-    // cart location = state.cart = []
-
-
-
+// push that info to cart
+function addToCart(addToCartItem) {
+  console.log('called: addToCart')
+  // cart location = state.cart = []
+  state.cart.push(addToCartItem)
+  console.log('updated state', state)
 }
 
 
