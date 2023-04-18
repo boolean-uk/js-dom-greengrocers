@@ -110,16 +110,24 @@ function addItemToCart(item) {
     addCartRow(item);
   }
   state.cart.push(item);
-  console.log(state.cart);
 
   // updating quantity box of cart item clicked
   updateQuantity(item);
+  console.log(state.cart);
 }
 
-function updateQuantity(item) {
-  // 1. find quantity in the cart of the item clicked
+function updateQuantity(quantityItem) {
+  // 1. find quantity in the cart of the items clicked
+  const quantityItems = state.cart.filter(
+    (cartItem) => cartItem.name === quantityItem.name
+  );
+  const numOfItems = quantityItems.length;
+
   // 2. display quantity on screen for cartRow item that was clicked
-  
+
+  // change code so it doesn't update if element no longer exsist
+  document.querySelector(`#${quantityItem.name} span.quantity-text`).innerText =
+    numOfItems.toString();
 }
 // la funzione riceve il paramentro itemName che controlla(con filter) nella lista
 // con cartItem se il nome dell'elemento che è gia nel 'cart'
@@ -141,6 +149,7 @@ function isItemInCart(itemName) {
 function addCartRow(item) {
   const ulEl = document.querySelector(".cart--item-list");
   const liEl = document.createElement("li");
+  liEl.id = item.name;
   ulEl.append(liEl);
 
   const productImg = itemImage(item.id);
@@ -162,10 +171,9 @@ function addCartRow(item) {
 
   const quantity = document.createElement("span");
   quantity.className = "quantity-text";
-  quantity.innerText = 0;
-  liEl.append(quantity);
+  quantity.innerText = 1;
 
-  console.log(quantity);
+  liEl.append(quantity);
 
   const addButton = document.createElement("button");
   addButton.className = "add-btn";
@@ -178,7 +186,23 @@ function addCartRow(item) {
 }
 
 function removeItem(item) {
-  console.log("Removing item", item);
+  // 1. Find item in state.cart that matched item to remove
+  const index = state.cart.findIndex((cartItem) => cartItem.name === item.name);
+  console.log(index);
+  // 2. Remove item that we found
+  state.cart.splice(index, 1);
+  // 3. if quantity < 1 remove row
+  if (!isItemInCart(item.name)) {
+    removeRow(item);
+  }
+
+  // 4. update texbox
+  updateQuantity(item);
+}
+
+function removeRow(item) {
+  // Find and Remove Row
+  document.querySelector(`#${item.name}`).remove();
 }
 
 // This function gets each images and displays it when clicked the corresponding item
@@ -194,5 +218,6 @@ function itemImage(itemId) {
 //   const totalPrice = document.querySelector(".total-number");
 //   totalPrice.innerText = item.price;
 // }
+
 
 load();
