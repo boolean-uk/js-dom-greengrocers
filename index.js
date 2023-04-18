@@ -62,6 +62,7 @@ const state = {
 
 function listOfItems(){
   for (let i = 0; i < state.items.length; i++) {
+    const item = state.items[i];
 const header = document.querySelector("#store")
 const ul = document.querySelector('.item-list')
 console.log(ul)
@@ -77,12 +78,19 @@ ul.append(li)
 // 5 . Set attribute - icons
 // 6. Append the image to the div
 
+
+
   const div = document.createElement("div")
   div.setAttribute("class", "store--item-icon")
   li.append(div)
+
+  // Image creation
+
   const img = document.createElement('img')
-  img.setAttribute('src','assets/icons/001-beetroot.svg')
+  img.setAttribute('src',`assets/icons/${item.id}.svg`)
   div.append(img)
+
+
 
   // Button - Add to cart
   // 1. Create an element call button - this is within li
@@ -94,7 +102,30 @@ ul.append(li)
   li.append(button)
 
  
-
 }
 }
 listOfItems()
+
+
+// Add event listener to add to cart button
+
+
+
+// Adding items into the cart
+// 1. Create a const for the main
+// function cartItems()
+// for (let i = 0; i < cart-items.length; i++) {
+
+
+const main = document.querySelector("#cart")
+const divCartItem = document.querySelector(".cart--item-list-container")
+const ulCartItem = document.querySelector('.item-list')
+console.log(ulCartItem)
+const liCartItem = document.createElement('li')
+
+ulCartItem.append(liCartItem)
+
+
+// }
+
+// cartItems()
