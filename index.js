@@ -74,7 +74,6 @@ const state = {
 
 // From the store, a user can add an item to their cart
 
-
 function test() {
   console.log('test')
 }
@@ -95,25 +94,14 @@ function listenForAdd() {
   })
 }
 
-// push that info to cart
+// push item clicked info to cart
 function addToCart(addToCartItem) {
   console.log('called: addToCart')
   // cart location = state.cart = []
   state.cart.push(addToCartItem)
   console.log('updated state', state)
+  renderCart(addToCartItem)
 }
-
-
-
-
-
-
-
-  // identify which button has been clicked
-  // use that info to copy the relevant item into the cart
-
-
-
 
 
 
@@ -124,9 +112,9 @@ function addToCart(addToCartItem) {
   // display state items in greengrocers section
 
 // RENDER STORE
-// make var to select array in state
+// make var to select store array in state
 const stateItems = state.items
-console.log('stateItems', stateItems)
+// console.log('stateItems', stateItems)
 
 // function to render list of items in store
 function renderStore() {
@@ -153,14 +141,14 @@ function renderStore() {
       const makeStoreImg = document.createElement('img')
       const storeImgSrc = storeItem.id
       makeStoreImg.setAttribute('src', `assets/icons/${storeImgSrc}.svg`)
-      const storeImgAlt = storeItem.name
-      makeStoreImg.setAttribute('alt', `${storeImgAlt}`)
+      const storeImgName = storeItem.name
+      makeStoreImg.setAttribute('alt', `${storeImgName}`)
       makeStoreDiv.appendChild(makeStoreImg)
 
     // create a button, set button text, append to li
     const storeButton = document.createElement('button')
     storeButton.setAttribute('class', 'store-button')
-    storeButton.setAttribute('id', `${storeImgAlt}`)
+    storeButton.setAttribute('id', `${storeImgName}`)
     storeButton.innerText = 'Add to cart'
     makeStoreLi.append(storeButton)
   }
@@ -170,27 +158,76 @@ function renderStore() {
 
 
 // RENDER CART
-    // find where added item should go (cart--item-list)
+
+// make var to select cart array in state
+const stateCart = state.cart
+
+// function to render cart
+function renderCart(itemToRender) {
+  console.log('called: renderCart')
+  console.log('item to render:', itemToRender)
+
+// find the itemToRender in the state
+  // var for the found object 
+  let cartItemToRender
+  // search through stateItems list
+  stateItems.forEach(element =>  {
+  // for each one - compare to itemToRender    
+    if (element.name === itemToRender) {
+    cartItemToRender = element
+    console.log('cartItemToRender:', cartItemToRender)
+  // when matched, save that object to var   
+    return cartItemToRender
+  }
+  })
+
+// use the found object to set for the new elements
+  console.log('is this right?', cartItemToRender)
+
+// find where added item should go (cart--item-list)
+  // make, edit, append cart Li 
+  const makeCartLi = document.createElement('li')
+  selectCartUl.appendChild(makeCartLi) 
+
+    // make, edit, append cart img to li
+    const makeCartImg = document.createElement('img')
+    makeCartImg.setAttribute('class', 'cart--item-icon')
+    cartImgSrc = cartItemToRender.id
+    makeCartImg.setAttribute('src', `assets/icons/${cartImgSrc}.svg`)
+    makeCartLi.appendChild(makeCartImg)
+    const cartImgName = cartItemtoRender.name
+    makeStoreImg.setAttribute('alt', `${cartImgName}`)
+
+  // make, edit append p to li
+  const makeCartP = document.createElement('p')
+  makeCartP.innerText = `${cartImgName}`
+  makeCartLi.appendChild(makeCartP)
+}
+
+    // gets called once item addToCart is called
+  
+
+
+
 
 // Cart template:
 
 {/* <li>
-  <img
-    class="cart--item-icon"
-    src="assets/icons/001-beetroot.svg"
-    alt="beetroot"
-  />
-  <p>beetroot</p>
-  <button class="quantity-btn remove-btn center">-</button>
-  <span class="quantity-text center">1</span>
-  <button class="quantity-btn add-btn center">+</button>
-</li> */}
+      <img
+        class="cart--item-icon"
+        src="assets/icons/001-beetroot.svg"
+        alt="beetroot"
+      />
+      <p>beetroot</p>
+      <button class="quantity-btn remove-btn center">-</button>
+      <span class="quantity-text center">1</span>
+      <button class="quantity-btn add-btn center">+</button>
+    </li> */}
 
 
 
 // FIRST PAGE LOAD LOGIC
 function init() {
   renderStore()
- 
 }
 init()
