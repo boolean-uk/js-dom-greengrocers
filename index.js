@@ -1,3 +1,4 @@
+
 const state = {
   items: [
     {
@@ -57,6 +58,7 @@ const state = {
 
 const cartList = document.querySelector('.item-list.cart--item-list');
 
+
 for (let i = 0; i < state.items.length; i++) {
   const productInfo = state.items[i];
   const productName = productInfo.name;
@@ -79,11 +81,13 @@ for (let i = 0; i < state.items.length; i++) {
   productItem.append(productDiv, buttonAddtoCart);
 
   buttonAddtoCart.addEventListener('click', function (event) {
-    const selectedItem = state.cart.find(item => item.name === productName);
+    const selectedItem = state.cart.find(productInfo => productInfo.name === productName);
 
     if (selectedItem) {
       selectedItem.quantity++;
       selectedItem.element.querySelector('.cart--item-quantity').innerText = selectedItem.quantity;
+
+      calTotal()
     } else {
       const selectedListItem = document.createElement('li');
       selectedListItem.setAttribute('class', 'cart--item');
@@ -117,34 +121,40 @@ for (let i = 0; i < state.items.length; i++) {
         quantity: 1
       };
 
-      var clicks = 1;
-      function incrementQuatity() {
-        selectedButtonAdd.addEventListener('click', function (event) {
-          if (selectedItemQuantity.innerText >= 1) {
-            return selectedItemQuantity.innerText = ++clicks;
-          }
-  
-        })}
-      incrementQuatity()
+      selectedButtonAdd.addEventListener('click', function (event) {
+        cartItem.quantity++;
+        selectedItemQuantity.innerText = cartItem.quantity;
+        calTotal()
+       
+      });
       
-  
-      function decrementQuantity() {
-        selectedButtonRemove.addEventListener('click', function (event) {
-          if (clicks > 1) {
-            selectedItemQuantity.innerText = --clicks;
-          } else {
-            const cartItemId = selectedItemQuantity.dataset.itemId;
-            state.cart = state.cart.filter(cartItem => cartItem.id !== cartItemId);
-            // Remove item from UI
-            selectedListItem.style.display = 'none'
-          }
-        });
-        
-      }
-  decrementQuantity()
+      selectedButtonRemove.addEventListener('click', function (event) {
+        cartItem.quantity--;
+        selectedItemQuantity.innerText = cartItem.quantity;
+        if (cartItem.quantity === 0) {
+          selectedListItem.remove();
+          state.cart = state.cart.filter(item => item !== cartItem);
+        }
+        calTotal()
+      });
+
       state.cart.push(cartItem);
+
+      calTotal()
     }
 
   });
 }
 
+      //calculate total
+function calTotal() {
+  const myCurrentTotal = document.querySelector('.total-number');
+  let total = 0;
+  state.cart.forEach(myItem => {
+    const itemPrice = state.items.find(productInfo => productInfo.name === myItem.name).price;
+    total += itemPrice * myItem.quantity;
+  });
+  myCurrentTotal.innerText = `£ ${total.toFixed(2)}`
+}
+
+ 
