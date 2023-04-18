@@ -111,35 +111,37 @@ function addItemToCart(item) {
   const productImg = itemImage(item.id);
   liEl.append(productImg);
 
-  const paragraph = itemName(item.name);
+ 
+  const paragraph = document.createElement("p");
+  paragraph.innerText = item.name;
   liEl.append(paragraph);
 
   const removeButton = document.createElement("button");
   removeButton.className = "remove-btn";
   removeButton.innerText = "-";
   liEl.append(removeButton);
+  removeButton.addEventListener("click", () => {
+    addItemToCart;
+  });
 
   const quantity = document.createElement("span");
   quantity.className = "quantity-text";
-  quantity.innerText = "2"
+  quantity.innerText = "3";
   liEl.append(quantity);
 
   const addButton = document.createElement("button");
-  addButton.className = "add-btn"
-  addButton.innerText = "+"
-  liEl.append(addButton)
+  addButton.className = "add-btn";
+  addButton.innerText = "+";
+  liEl.append(addButton);
 }
 
+// This function gets each images and displays it when clicked the corresponding item
 function itemImage(itemId) {
   const itemImg = document.createElement("img");
   itemImg.src = `assets/icons/${itemId}.svg`;
   return itemImg;
 }
 
-function itemName(itemName) {
-  const parag = document.createElement("p");
-  parag.innerHTML = `This is a ${itemName}`;
-  console.log(itemName);
-}
+
 
 load();
