@@ -55,6 +55,8 @@ const state = {
 };
 
 const storeList = document.querySelector('.store--item-list');
+const cartList = document.querySelector('.cart--item-list')
+const cartItems = state.cart
 
 function renderStoreList() {
   const storeItems = state.items
@@ -75,8 +77,86 @@ function renderStoreList() {
 
     const storeButton = document.createElement('button');
     storeButton.innerText = 'Add to cart'
+    storeButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      
+      const notContainItem = !cartItems.includes(item)
+      const doesContainItem = cartItems.includes(item)
+
+      if(notContainItem){
+        cartItems.push(item)
+        const cartItemIndex = cartItems.length - 1
+        cartItems[cartItemIndex].quantity = 1
+        renderCartList()
+        console.log('added cart item!')          
+        } else if (doesContainItem){
+          for (let j = 0; j < cartItems.length; j++) {
+            if (item.id === cartItems[j].id) {
+              cartItems[j].quantity += 1
+              renderCartList()
+            }
+          }
+        }
+    })
+    
     storeListItem.append(storeButton)
+    }
   }
+
+
+// Render the cart
+// Create a function to render the cart similar to the store
+// Need an if statement to remove the item from the cart if quantity <= 0
+
+function renderCartList() {
+  cartList.innerHTML = ""
+  for (let i = 0; i < cartItems.length; i++) {
+      let item = cartItems[i]
+      if(item.quantity > 0){
+      const cartListItem = document.createElement('li')
+      cartList.append(cartListItem)
+
+      const cartIcon = document.createElement('img')
+      cartIcon.setAttribute('class', 'cart--item-icon')
+      cartIcon.setAttribute('src', `assets/icons/${item.id}.svg`)
+      cartListItem.append(cartIcon)
+
+      const name = document.createElement('p')
+      name.innerText = item.name
+      cartListItem.append(name)
+
+      const removeButton = document.createElement('button')
+      removeButton.setAttribute('class', 'quantity-btn remove-btn center')
+      removeButton.innerText = '-'
+      removeButton.addEventListener("click", () => {
+        item.quantity = item.quantity - 1
+        if(item.quantity <= 0) {
+          item.quantity = 0
+        } 
+        renderCartList()
+      })
+      cartListItem.append(removeButton)
+
+      const itemQuantity = document.createElement('span')
+      itemQuantity.setAttribute('class', 'quantity-text center')
+      itemQuantity.innerText = `${item.quantity}`
+      cartListItem.append(itemQuantity)
+      
+      const addButton = document.createElement('button')
+      addButton.setAttribute('class', 'quantity-btn add-btn center')
+      addButton.innerText = '+'
+      addButton.addEventListener("click", () => {
+        item.quantity = item.quantity + 1
+        renderCartList()
+      })
+      cartListItem.append(addButton)
+
+    }
+
+    
+
+  }
+
 }
 
 renderStoreList()
