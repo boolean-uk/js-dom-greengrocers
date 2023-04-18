@@ -102,8 +102,43 @@ function createImg(itemId) {
 // CART SECTION
 
 function addItemToCart(item) {
-  state.cart.push(item);
+  // ! returns the opposite
+  // adding cartRow if is not on the screen but we flip it
+  //  (turn 1 into 0 or true into false etc)
 
+  if (!isItemInCart(item.name)) {
+    addCartRow(item);
+  }
+  state.cart.push(item);
+  console.log(state.cart);
+
+  // updating quantity box of cart item clicked
+  updateQuantity(item);
+}
+
+function updateQuantity(item) {
+  // 1. find quantity in the cart of the item clicked
+  // 2. display quantity on screen for cartRow item that was clicked
+  
+}
+// la funzione riceve il paramentro itemName che controlla(con filter) nella lista
+// con cartItem se il nome dell'elemento che è gia nel 'cart'
+// corrisponde a quello che stiamo 'aggiungendo'
+
+function isItemInCart(itemName) {
+  const itemsInCart = state.cart.filter(
+    (cartItem) => cartItem.name === itemName
+  );
+  if (itemsInCart.length > 0) {
+    // return itemsInCart.length - same as doing if statement
+    // because 0 is false and the other numbers are true
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function addCartRow(item) {
   const ulEl = document.querySelector(".cart--item-list");
   const liEl = document.createElement("li");
   ulEl.append(liEl);
@@ -115,23 +150,19 @@ function addItemToCart(item) {
   paragraph.innerText = item.name;
   liEl.append(paragraph);
 
-  // let count = 0;
-
   const removeButton = document.createElement("button");
   removeButton.className = "remove-btn";
   removeButton.innerText = "-";
 
   removeButton.addEventListener("click", () => {
-    quantity--;
+    removeItem(item);
   });
 
   liEl.append(removeButton);
 
-  // if statement ? if quantity === 0 .remove() / innerText="" /.splice()
-
   const quantity = document.createElement("span");
   quantity.className = "quantity-text";
-  quantity.innerText = ""; // to be changed
+  quantity.innerText = 0;
   liEl.append(quantity);
 
   console.log(quantity);
@@ -140,21 +171,15 @@ function addItemToCart(item) {
   addButton.className = "add-btn";
   addButton.innerText = "+";
   addButton.addEventListener("click", () => {
-    quantity++;
+    addItemToCart(item);
   });
-
-  // addButton.addEventListener("click", () => {
-  //   item.quantity++;
-  // });
 
   liEl.append(addButton);
 }
 
-// const handleIncrement = () => {
-//   count++
-// }
-
-// new function?
+function removeItem(item) {
+  console.log("Removing item", item);
+}
 
 // This function gets each images and displays it when clicked the corresponding item
 function itemImage(itemId) {
