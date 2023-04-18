@@ -56,6 +56,7 @@ const state = {
 
 const storeList = document.querySelector('.store--item-list');
 const cartList = document.querySelector('.cart--item-list')
+const total = document.querySelector('.total-number')
 const cartItems = state.cart
 
 function renderStoreList() {
@@ -88,12 +89,16 @@ function renderStoreList() {
         const cartItemIndex = cartItems.length - 1
         cartItems[cartItemIndex].quantity = 1
         renderCartList()
+        calcTotal()
+
         console.log('added cart item!')          
         } else if (doesContainItem){
-          for (let j = 0; j < cartItems.length; j++) {
-            if (item.id === cartItems[j].id) {
-              cartItems[j].quantity += 1
-              renderCartList()
+        for (let j = 0; j < cartItems.length; j++) {
+          if (item.id === cartItems[j].id) {
+            cartItems[j].quantity += 1
+            renderCartList()
+            calcTotal()
+
             }
           }
         }
@@ -134,6 +139,8 @@ function renderCartList() {
           item.quantity = 0
         } 
         renderCartList()
+        calcTotal()
+
       })
       cartListItem.append(removeButton)
 
@@ -148,15 +155,29 @@ function renderCartList() {
       addButton.addEventListener("click", () => {
         item.quantity = item.quantity + 1
         renderCartList()
+        calcTotal()
+
       })
       cartListItem.append(addButton)
 
     }
+  }
+}
 
-    
+// Now for the easy part
+// Render the total 
+
+function calcTotal() {
+  let totalCost = 0
+  for (let i = 0; i < cartItems.length; i++) {
+    const itemPrice = cartItems[i].price
+    const itemCount = cartItems[i].quantity
+    const sum = itemCount * itemPrice
+    totalCost += sum
 
   }
-
+  totalCost = totalCost.toFixed(2)
+  total.innerText = `£${totalCost}`
 }
 
 renderStoreList()
