@@ -4,51 +4,61 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
+      fruit: false,
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
+      fruit: false,
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
+      fruit: true,
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
+      fruit: true,
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
+      fruit: false,
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
+      fruit: true,
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
+      fruit: false,
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
+      fruit: true,
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
+      fruit: true,
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
+      fruit: false,
     },
   ],
   cart: [],
@@ -69,12 +79,13 @@ function elementConstants() {
 // Renders the store
 function renderStore() {
   const { storeList } = elementConstants();
+  storeList.innerHTML = ``
   for (let i = 0; i < state.items.length; i++) {
     const storeItem = createStoreItem(i);
     storeEventListener(storeItem, i);
     storeList.append(storeItem);
+    }
   }
-}
 
 // Creates a store item
 function createStoreItem(i) {
@@ -136,9 +147,11 @@ function renderBasket() {
   updatePrice()
 }
 
-// Creates the basket items
+// Creates the basket items & calculates total price of each item
 function createBasketItem(i) {
   const currentItem = state.cart[i]
+  let totalPrice = currentItem.price * currentItem.quantity
+  currentItem.total = totalPrice.toFixed(2)
   const basketItem = document.createElement(`li`)
   basketItem.innerHTML = `
   <img
@@ -150,6 +163,7 @@ function createBasketItem(i) {
   <button class="quantity-btn remove-btn center">-</button>
   <span class="quantity-text center">${currentItem.quantity}</span>
   <button class="quantity-btn add-btn center">+</button>
+  <h3>£${currentItem.total}</h3>
   `
   return basketItem
 }
@@ -182,9 +196,116 @@ function updatePrice() {
   totalPrice.innerText = `£${runningTotal.toFixed(2)}`
 }
 
+// Store Filter Section
+function filterButtons() {
+  const fruitFilter = document.querySelector(`.fruit-filter`)
+  const vegFilter = document.querySelector(`.veg-filter`)
+  const clearFilter = document.querySelector(`.clear-filter`)
+  
+  fruitFilter.addEventListener(`click`, () => {
+    renderFruitFilter()
+  })
+
+  vegFilter.addEventListener(`click`, () => {
+    renderVegFilter()
+  })
+
+  clearFilter.addEventListener(`click`, () => {
+    renderStore()
+  })
+}
+
+// Renders fruit only
+function renderFruitFilter() {
+  const { storeList } = elementConstants();
+  storeList.innerHTML = ``
+    for (let i = 0; i < state.items.length; i++) {
+        if (state.items[i].fruit === true) {
+        const storeItem = createStoreItem(i);
+        storeEventListener(storeItem, i);
+        storeList.append(storeItem);
+      } 
+    }
+}
+
+// Renders veg only
+function renderVegFilter() {
+  const { storeList } = elementConstants();
+  storeList.innerHTML = ``
+    for (let i = 0; i < state.items.length; i++) {
+        if (state.items[i].fruit === false) {
+        const storeItem = createStoreItem(i);
+        storeEventListener(storeItem, i);
+        storeList.append(storeItem);
+      } 
+    }
+}
+
+// Basket Sorting
+function sortButtons() {
+  const priceSort = document.querySelector(`.price-sort`)
+  const alphabetSort = document.querySelector(`.alphabet-sort`)
+  const noSort = document.querySelector(`.no-sort`)
+
+  priceSort.addEventListener(`click`, () => {
+    priceBasket()
+  })
+
+  alphabetSort.addEventListener(`click`, () => {
+    alphabetBasket()
+  })
+}
+
+//Sorts by price, highest to lowest
+function priceBasket() {
+  let priceItems = state.cart.sort(function (a,b) {
+    if (a.total > b.total) {
+      return -1
+    }
+    if (a.total < b.total) {
+      return 1
+    }
+    return 0
+  })
+  sortedBasket(priceItems)
+}
+
+// Sorts alphabetically, A-Z
+function alphabetBasket() {
+  let alphabetItems = state.cart.sort(function (a, b) {
+    if (a.name < b.name) {
+      return -1
+    }
+    if (a.name > b.name) {
+      return 1
+    }
+    return 0
+  })
+sortedBasket(alphabetItems)
+}
+
+// Displays the basket in its sorted order
+function sortedBasket(arr) {
+  const { basketList } = elementConstants();
+  basketList.innerHTML = ``
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].quantity > 0) {
+    const basketItem = createBasketItem(i);
+    addButtonEventListener(basketItem, i)
+    removeButtonEventListener(basketItem, i)
+    basketList.append(basketItem)
+    }
+  }
+  updatePrice()
+}
+
+// Functions run to set up the page
 function load() {
   renderStore();
   renderBasket();
+  filterButtons();
+  sortButtons();
 }
 
+// Triggers the above functions to run
 load();
