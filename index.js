@@ -54,13 +54,12 @@ const state = {
   cart: [],
 };
 
-// GREENGROCERS SECTION
-
 // Questa funzione renderà visibile gli elementi al caricamento della pagina.
 
 function load() {
   displayItems();
 }
+// GREENGROCERS SECTION
 
 // The function will go through each item in the objct and display each one of them.
 
@@ -101,6 +100,7 @@ function createImg(itemId) {
 }
 
 // CART SECTION
+
 function addItemToCart(item) {
   state.cart.push(item);
 
@@ -111,29 +111,50 @@ function addItemToCart(item) {
   const productImg = itemImage(item.id);
   liEl.append(productImg);
 
- 
   const paragraph = document.createElement("p");
   paragraph.innerText = item.name;
   liEl.append(paragraph);
 
+  // let count = 0;
+
   const removeButton = document.createElement("button");
   removeButton.className = "remove-btn";
   removeButton.innerText = "-";
-  liEl.append(removeButton);
+
   removeButton.addEventListener("click", () => {
-    addItemToCart;
+    quantity--;
   });
+
+  liEl.append(removeButton);
+
+  // if statement ? if quantity === 0 .remove() / innerText="" /.splice()
 
   const quantity = document.createElement("span");
   quantity.className = "quantity-text";
-  quantity.innerText = "3";
+  quantity.innerText = ""; // to be changed
   liEl.append(quantity);
+
+  console.log(quantity);
 
   const addButton = document.createElement("button");
   addButton.className = "add-btn";
   addButton.innerText = "+";
+  addButton.addEventListener("click", () => {
+    quantity++;
+  });
+
+  // addButton.addEventListener("click", () => {
+  //   item.quantity++;
+  // });
+
   liEl.append(addButton);
 }
+
+// const handleIncrement = () => {
+//   count++
+// }
+
+// new function?
 
 // This function gets each images and displays it when clicked the corresponding item
 function itemImage(itemId) {
@@ -142,6 +163,11 @@ function itemImage(itemId) {
   return itemImg;
 }
 
+// TOTAL PRICE
 
+// function itemsTotalPrice(item) {
+//   const totalPrice = document.querySelector(".total-number");
+//   totalPrice.innerText = item.price;
+// }
 
 load();
