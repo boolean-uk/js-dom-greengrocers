@@ -53,3 +53,62 @@ const state = {
   ],
   cart: []
 };
+
+function listItems(){
+  for (let i = 0; i < state.items.length; i++) {
+const header = document.querySelector("#store")
+const ul = document.querySelector('.item-list')
+console.log(ul)
+const li = document.createElement('li')
+ul.append(li)
+
+
+// creating div to insert inside li
+
+  const div = document.createElement("div")
+  div.setAttribute("class", "store--item-icon")
+  li.append(div)
+  const img = document.createElement('img')
+  img.setAttribute('src','assets/icons/001-beetroot.svg')
+  div.append(img)
+  
+
+  // const div = document.createElement("div")
+  // div.setAttribute("class", "store--item-icon")
+  // li.append(div)
+  // const imgOne = document.createElement('img')
+  // imgOne.setAttribute('src','assets/icons/002-carrot.svg')
+  // div.append(imgOne)
+
+  const button = document.createElement("button")
+  button.innerText = "add to cart"
+  li.append(button)
+
+  // const divOne = document.createElement("div")
+  // divOne.setAttribute("class", "store--item-icon")
+  // li.append(divOne)
+  // const imgOne = document.createElement('img')
+  // imgOne.setAttribute('src', 'assets/icons/002-carrot.svg')
+  // div.append(imgOne)
+
+  // const imgTwo = document.createElement('img')
+  // imgTwo.setAttribute('src', 'assets/icons/003-apple.svg')
+  // div.append(imgTwo)
+
+}
+}
+listItems()
+
+
+// console.log(li)
+
+
+
+// const div = document.createElement('.store--item-icon')
+// console.log(div)
+// const img = document.createElement('img')
+// img.setAttribute('src', 'assets/icons/001-beetroot.svg')
+// document.header.append(img)
+// const button = document.createElement('button')
+// button.setAttribute('button', "add to cart")
+// document.header
