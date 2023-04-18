@@ -106,7 +106,6 @@ function renderAllStoreItems() {
 
 renderAllStoreItems();
 
-console.log(state.cart)
 
 function renderCart(){
   cartUl.innerHTML = ''
@@ -137,7 +136,7 @@ function renderCart(){
        if(state.cart[i].quantity > 0){
         state.cart[i].quantity --
         renderCart()
-      } else {
+      } if(state.cart[i].quantity === 0) {
         state.cart.splice(i, 1)
         renderCart()
       }
