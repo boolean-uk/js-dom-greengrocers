@@ -1,21 +1,42 @@
 //Create store items
 function create_store_items() {
   for (let i = 0; i < state.items.length; i++) {
-    const itemlist_store = document.querySelector(".store--item-list");
-    const add_store_item = document.createElement("li");
-    itemlist_store.append(add_store_item);
+    let id = state.items[i].id;
+    let name = state.items[i].name;
+    let price = state.items[i].price;
+    let imgpath = `assets/icons/${id}.svg`;
+
+    const itemList_store = document.querySelector(".store--item-list");
+    const storeItem = document.createElement("li");
+    itemList_store.append(storeItem);
     const div = document.createElement("div");
     div.setAttribute("class", "store--item-icon");
-    add_store_item.appendChild(div);
+    storeItem.appendChild(div);
     const img = document.createElement("img");
-    img.setAttribute("src", `assets/icons/${state.items[i].id}.svg`);
-    img.setAttribute("alt", `${state.items[i].name}`);
+    img.setAttribute("src", `${imgpath}`);
+    img.setAttribute("alt", `${name}`);
     div.append(img);
     const button = document.createElement("button");
     button.innerText = "Add to cart";
-    add_store_item.append(button);
+    storeItem.append(button);
+
+    button.setAttribute("id", `${id}`);
+    button.addEventListener("click", function () {
+      addtocart(id, name, price, imgpath);
+    });
   }
 }
-create_store_items();
 
-//Add event listener to the button
+function addtocart(id, name, price, imgpath) {
+  console.log(`${name} costs ${price} ${id} ${imgpath}`);
+  /*  const itemlist_cart = document.querySelector(".cart--item-list");
+  const add_item_cart = document.createElement("li");
+  itemlist_cart.append(add_item_cart);
+  const img = document.createElement("img");
+  add_item_cart.append(img);
+  img.setAttribute("class", "cart--item-icon");
+  img.setAttribute("src", "assets/icons/001-beetroot.svg");
+  img.setAttribute("alt", "beetroot"); */
+}
+
+create_store_items();
