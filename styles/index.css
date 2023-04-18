@@ -182,3 +182,19 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+#fruit {
+  width: 200px;
+  height: 80px;
+  font-size: 26px;
+  position: absolute;
+}
+
+form {
+  position: absolute;
+  right: 100px;
+  top: 200px;
+  width: 200px;
+  height: 80px;
+  font-size: 26px;
+}

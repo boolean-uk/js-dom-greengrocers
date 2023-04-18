@@ -12,9 +12,24 @@
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
+      <select name="fruit" id="fruit">
+          <option value="All">All</option>
+          <option value="Fruit">Fruit</option>
+          <option value="Veg">Veg</option>
+          <option value="Fake">Fake Fruits</option>
+      </select>
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
+      <form action="">
+        <label for="order">Order list: </label>
+        <select name="order" id="order">
+          <option value="a_z">A to Z</option>
+          <option value="z_a">Z to A</option>
+          <option value="lowToHigh">Low to High</option>
+          <option value="highToLow">High to Low</option>
+        </select>
+      </form>
     </header>
 
     <main id="cart">
