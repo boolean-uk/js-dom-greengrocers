@@ -54,121 +54,97 @@ const state = {
   cart: []
 };
 
-// Requirement One - a user can view a selection of items in the store
 
-// we want loop through and generate several items
+const cartList = document.querySelector('.item-list.cart--item-list');
 
+for (let i = 0; i < state.items.length; i++) {
+  const productInfo = state.items[i];
+  const productName = productInfo.name;
 
-for (let i = 0; i <= state.items.length; i++) {
-
-     
-  let productInfo = state.items[i];
-    
-  const header = document.querySelector('header')
   const productList = document.querySelector('.item-list.store--item-list');
-  header.append(productList)
-  // create the li
   const productItem = document.createElement('li');
-  // appen the li to the UL
   productList.append(productItem);
-  // create the div and set the class
-  const productDiv = document.createElement('div');
-  productDiv.setAttribute('class', 'store--item-icon')
-  // create the img 
-  const productImage = document.createElement('img');
-  productImage.src = `assets/icons/${productInfo.id}.svg`
 
-  const ProductName = productInfo.name
-  productImage.setAttribute('alt', `${ProductName}`);
-  // append the image to the div
+  const productDiv = document.createElement('div');
+  productDiv.setAttribute('class', 'store--item-icon');
+
+  const productImage = document.createElement('img');
+  productImage.src = `assets/icons/${productInfo.id}.svg`;
+  productImage.setAttribute('alt', `${productName}`);
+
   productDiv.append(productImage);
-  // create a button
+
   const buttonAddtoCart = document.createElement('button');
   buttonAddtoCart.innerText = "Add to cart";
-  //  append productDiv and button to li or productItem
   productItem.append(productDiv, buttonAddtoCart);
 
-      
-      
-    
-  const currentCartList = []
-
   buttonAddtoCart.addEventListener('click', function (event) {
-    // create the outer structure
-    // select the ul 
-    const cartList = document.querySelector('.item-list.cart--item-list')
-    const selectedItem = document.createElement('li');
-    cartList.append(selectedItem);
-    // create elements inside li
-    // image icon
-    const productIcon = document.createElement('img');
-    productIcon.src = `assets/icons/${productInfo.id}.svg`;
-    productIcon.className = 'cart--item-icon';
-    productIcon.alt = `${ProductName}`;
-    // p tag
-    const itemName = document.createElement('p');
-    itemName.innerText = ProductName;
-    //  button
-    const buttonRemove = document.createElement('button');
-    buttonRemove.setAttribute('class', 'quantity-btn remove-btn center');
-    buttonRemove.innerText = '-'
-    //  span
-    const itemQuatity = document.createElement('span');
-    itemQuatity.innerText = "1"
-    // need a clicl event for changing quantity
-    const buttonAdd = document.createElement('button');
-    buttonAdd.setAttribute('class', 'quantity-btn add-btn center')
-    buttonAdd.innerText = '+'
-    // append
-    selectedItem.append(productIcon, itemName, buttonRemove, itemQuatity, buttonAdd)
+    const selectedItem = state.cart.find(item => item.name === productName);
 
-    const listItem = {
-      icon: productIcon,
-      name: itemName.innerText,
-      quantity: 1
+    if (selectedItem) {
+      selectedItem.quantity++;
+      selectedItem.element.querySelector('.cart--item-quantity').innerText = selectedItem.quantity;
+    } else {
+      const selectedListItem = document.createElement('li');
+      selectedListItem.setAttribute('class', 'cart--item');
+      
+      const selectedProductIcon = document.createElement('img');
+      selectedProductIcon.src = `assets/icons/${productInfo.id}.svg`;
+      selectedProductIcon.className = 'cart--item-icon';
+      selectedProductIcon.alt = `${productName}`;
+
+      const selectedProductName = document.createElement('p');
+      selectedProductName.innerText = productName;
+      
+      const selectedButtonRemove = document.createElement('button');
+      selectedButtonRemove.setAttribute('class', 'quantity-btn remove-btn center');
+      selectedButtonRemove.innerText = '-';
+      
+      const selectedItemQuantity = document.createElement('span');
+      selectedItemQuantity.setAttribute('class', 'cart--item-quantity');
+      selectedItemQuantity.innerText = '1';
+      
+      const selectedButtonAdd = document.createElement('button');
+      selectedButtonAdd.setAttribute('class', 'quantity-btn add-btn center')
+      selectedButtonAdd.innerText = '+'
+
+      selectedListItem.append(selectedProductIcon, selectedProductName, selectedButtonRemove, selectedItemQuantity, selectedButtonAdd);
+      cartList.append(selectedListItem);
+
+      const cartItem = {
+        element: selectedListItem,
+        name: productName,
+        quantity: 1
+      };
+
+      var clicks = 1;
+      function incrementQuatity() {
+        selectedButtonAdd.addEventListener('click', function (event) {
+          if (selectedItemQuantity.innerText >= 1) {
+            return selectedItemQuantity.innerText = ++clicks;
+          }
+  
+        })}
+      incrementQuatity()
+      
+  
+      function decrementQuantity() {
+        selectedButtonRemove.addEventListener('click', function (event) {
+          if (clicks > 1) {
+            selectedItemQuantity.innerText = --clicks;
+          } else {
+            const cartItemId = selectedItemQuantity.dataset.itemId;
+            state.cart = state.cart.filter(cartItem => cartItem.id !== cartItemId);
+            // Remove item from UI
+            selectedListItem.style.display = 'none'
+          }
+        });
+        
+      }
+  decrementQuantity()
+      state.cart.push(cartItem);
     }
 
-    currentCartList.push(listItem)
-
-    console.log('my item', listItem);
-           
-    
-           
-
- 
-   var clicks = 0;
-                function incrementQuatity() {
-                  buttonAdd.addEventListener('click', function (event) {
-                    return itemQuatity.innerText = ++clicks;
-            
-                  })}
-    incrementQuatity()
-
-    function decrementQuantity() {
-      buttonRemove.addEventListener('click', function (event) {
-        return itemQuatity.innerText = --clicks;
-
-      })}
-decrementQuantity()
-     
-    // second click
-
-             
-    buttonAddtoCart.addEventListener('click', function (handleEvent) {
-                
-      if (ProductName === itemName.innerText) {
-        console.log('this is only logged if I touch twice');
-        cartList.innerHTML = ''
-    
-      }
-                
-    
-    
-        
-      console.log('updated quant', newQuatity);
-             
-    })
-  }
-  )
+  });
 }
-       
+
