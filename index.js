@@ -104,7 +104,42 @@ function createImg(itemId) {
 function addItemToCart(item) {
   state.cart.push(item);
 
-  console.log(state.cart);
+  const ulEl = document.querySelector(".cart--item-list");
+  const liEl = document.createElement("li");
+  ulEl.append(liEl);
+
+  const productImg = itemImage(item.id);
+  liEl.append(productImg);
+
+  const paragraph = itemName(item.name);
+  liEl.append(paragraph);
+
+  const removeButton = document.createElement("button");
+  removeButton.className = "remove-btn";
+  removeButton.innerText = "-";
+  liEl.append(removeButton);
+
+  const quantity = document.createElement("span");
+  quantity.className = "quantity-text";
+  quantity.innerText = "2"
+  liEl.append(quantity);
+
+  const addButton = document.createElement("button");
+  addButton.className = "add-btn"
+  addButton.innerText = "+"
+  liEl.append(addButton)
+}
+
+function itemImage(itemId) {
+  const itemImg = document.createElement("img");
+  itemImg.src = `assets/icons/${itemId}.svg`;
+  return itemImg;
+}
+
+function itemName(itemName) {
+  const parag = document.createElement("p");
+  parag.innerHTML = `This is a ${itemName}`;
+  console.log(itemName);
 }
 
 load();
