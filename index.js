@@ -53,3 +53,95 @@ const state = {
   ],
   cart: []
 };
+
+// Create
+
+function createStoreListItem(item) {
+  const ul = document.querySelector('.store--item-list')
+  const li = document.createElement('li')
+  const div = document.createElement('div')
+  const img = document.createElement('img')
+  const button = document.createElement('button')
+
+  div.setAttribute('class', 'store--item-icon')
+  img.setAttribute('src', `assets/icons/${item.id}.svg`)
+  img.setAttribute('alt', `${item.name}`)
+  button.innerText = 'Add to Cart'
+  button.addEventListener('click', () => {
+    if(state.cart.includes(item)) {
+      item.quantity++
+      render()
+      return
+    } 
+    item.quantity++
+    state.cart.push(item)
+    render()
+  })
+
+  div.append(img)
+  li.append(div, button)
+  ul.append(li)
+}
+
+function createCartListItem(item) {
+  const ul = document.querySelector('.cart--item-list')
+  const li = document.createElement('li')
+  const img = document.createElement('img')
+  const p = document.createElement('p')
+  const removeButton = document.createElement('button')
+  const span = document.createElement('span')
+  const addButton = document.createElement('button')
+  
+  img.setAttribute('class', 'cart--item-icon')
+  img.setAttribute('src', `assets/icons/${item.id}.svg`)
+  img.setAttribute('alt', `${item.name}`)
+
+  p.innerText = item.name
+
+  removeButton.setAttribute('class', 'quantity-btn remove-btn center')
+  removeButton.innerText = '-'
+  removeButton.addEventListener('click', () => {
+    item.quantity--
+    render()
+    })
+  span.setAttribute('class', 'quantity-text center')
+  span.innerText = item.quantity
+  
+  addButton.setAttribute('class', 'quantity-btn add-btn center')
+  addButton.innerText = '+'
+  addButton.addEventListener('click', () => {
+    item.quantity++
+    render()
+    })
+  li.append(img, p, removeButton, span, addButton)
+  ul.append(li)
+}
+
+function render() {
+  const storeList = document.querySelector('.store--item-list')
+  const cartList = document.querySelector('.cart--item-list')
+  const total = document.querySelector('.total-section > div > .total-number')
+
+  total.innerText = '0.00'
+  storeList.innerHTML = ''
+  cartList.innerHTML = ''
+  state.items.forEach(item => {
+    createStoreListItem(item)
+  });
+  state.cart.forEach(item => {
+    console.log('quantity of', item.name, '=', item.quantity)
+    total.innerText = (parseFloat(total.innerText) + (item.price * item.quantity)).toFixed(2)
+    if(item.quantity <= 0) {
+      return
+    }
+    createCartListItem(item)
+  })
+  
+}
+
+function init() {
+  state.items.forEach(item => item.quantity = 0)
+  render()
+}
+
+init()
