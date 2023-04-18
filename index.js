@@ -64,15 +64,13 @@ const state = {
   cart: [],
 };
 
-
-
 // rendering store items
 const storeUl = document.querySelector(".store--item-list");
 const cartUl = document.querySelector(".cart--item-list");
 
 function renderAllStoreItems() {
   for (let i = 0; i < state.items.length; i++) {
-    
+    let item = state.items[i]
 
     const storeLi = document.createElement("li");
     storeUl.appendChild(storeLi);
@@ -91,8 +89,15 @@ function renderAllStoreItems() {
     storeLi.append(storeLiBtn);
 
     storeLiBtn.addEventListener('click', ()=>{
-      state.cart.push(state.items[i])
+      item.quantity++
+      // for(let i = 0; i < state.cart.length; i++){
+        if(state.cart.includes(state.items[i])){
+          // state.cart[i].quantity ++
+          // state.cart.splice(i, 1)
+          renderCart()
+        } else state.cart.push(item)
       renderCart()
+      
     })
   }
  
@@ -129,9 +134,15 @@ function renderCart(){
 
       // adding event listener to -
       removeBtn.addEventListener('click',()=>{
+       if(state.cart[i].quantity > 0){
         state.cart[i].quantity --
         renderCart()
-      } )
+      } else {
+        state.cart.splice(i, 1)
+        renderCart()
+      }
+    }
+      )
 
       
       const qntSpan = document.createElement("span");
@@ -149,6 +160,7 @@ function renderCart(){
         state.cart[i].quantity ++
         renderCart()
       } )
+
   }
 }
 
