@@ -74,6 +74,9 @@ function renderAvailableProducts() {
 
   for (let i = 0; i < state.items.length; i++) {
     const productItem = state.items[i]
+    console.log(productItem.type === 'fruit' && !state.showFruits)
+    if (productItem.type === 'fruit' && !state.showFruits) continue
+    if (productItem.type === 'vegetable' && !state.showVegetables) continue
 
     const liEl = document.createElement('li')
 
@@ -95,7 +98,8 @@ function renderAvailableProducts() {
         itemToAddToCart.quantity = 1
         state.cart.push(itemToAddToCart)
       }
-        renderCartItems()
+      renderCartItems()
+      renderAvailableProducts()
     })
     buttonEl.innerText = 'Add to cart'
 
@@ -175,11 +179,13 @@ function renderCartItems() {
 function toggleFruitFilter() {
   state.showFruits = !state.showFruits
   renderFilters()
+  renderAvailableProducts()
 }
 
 function toggleVegetableFilter() {
   state.showVegetables = !state.showVegetables
   renderFilters()
+  renderAvailableProducts()
 }
 
 function renderFilters() {
@@ -191,15 +197,17 @@ function renderFilters() {
 
   const fruitFilterButtonEl = document.createElement('button')
   fruitFilterButtonEl.classList.add('filter-button')
-  fruitFilterButtonEl.innerText = 'Show fruits'
+  fruitFilterButtonEl.innerText = 'hide fruits'
   fruitFilterButtonEl.addEventListener('click', toggleFruitFilter)
   if (!state.showFruits) fruitFilterButtonEl.style.color = 'grey'
+  if (!state.showFruits) fruitFilterButtonEl.innerText = 'show fruits'
 
   const vegetableFilterButtonEl = document.createElement('button')
   vegetableFilterButtonEl.classList.add('filter-button')
-  vegetableFilterButtonEl.innerText = 'Show vegetables'
+  vegetableFilterButtonEl.innerText = 'hide vegetables'
   vegetableFilterButtonEl.addEventListener('click', toggleVegetableFilter)
   if (!state.showVegetables) vegetableFilterButtonEl.style.color = 'grey'
+  if (!state.showVegetables) vegetableFilterButtonEl.innerText = 'show vegetables'
 
   filterDivEl.append(fruitFilterButtonEl, vegetableFilterButtonEl)
   bodyEl.append(filterDivEl)
