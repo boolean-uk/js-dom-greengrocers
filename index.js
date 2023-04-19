@@ -54,8 +54,6 @@ const state = {
   cart: []
 };
 
-// Create
-
 function createStoreListItem(item) {
   const ul = document.querySelector('.store--item-list')
   const li = document.createElement('li')
@@ -68,12 +66,11 @@ function createStoreListItem(item) {
   img.setAttribute('alt', `${item.name}`)
   button.innerText = 'Add to Cart'
   button.addEventListener('click', () => {
+    item.quantity++
     if(state.cart.includes(item)) {
-      item.quantity++
       render()
       return
     } 
-    item.quantity++
     state.cart.push(item)
     render()
   })
@@ -117,6 +114,9 @@ function createCartListItem(item) {
   ul.append(li)
 }
 
+function createFilterButtons() {
+  
+}
 function render() {
   const storeList = document.querySelector('.store--item-list')
   const cartList = document.querySelector('.cart--item-list')
@@ -139,6 +139,9 @@ function render() {
   
 }
 
+function sortAtoZ() {
+  state.items.sort()
+}
 function init() {
   state.items.forEach(item => item.quantity = 0)
   render()
