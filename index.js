@@ -36,15 +36,16 @@ click add to cart button
 
 
 // * SELECTING EXISTING ELEMENTS
+
   // store ul - class=store--item-list
 const selectStoreUl = document.querySelector('.store--item-list')
   // cart ul - cart--item-list
 const selectCartUl = document.querySelector('.cart--item-list')
+  // select filters
+const selectFilters = document.querySelector('#store')
+
 
 // * STATE
-
-
-
 
 const state = {
   items: [
@@ -188,22 +189,24 @@ function addToStateCart(addToStateCart) {
 // make var to select store array in state
 const stateItems = state.items
 
+
+
+
 // function to render list of items in store
 function renderStore() {
-  console.log(state)
   console.log('called: renderStore')
   selectStoreUl.innerHTML = ''
   
   // create all li based on state
   for (let i = 0; i < stateItems.length; i++) {
-
-  // logic to check if should be displayed based on type
-      // check if should show fruit - true && type = fruit
-      if (state.showFruit === true && stateItems[i].type === 'fruit') continue
-      // check if should show veg - true && type = veg
-      if (state.showVeg === true && stateItems[i].type === 'veg') continue
-
     const storeItem = stateItems[i]
+
+  // logic to check if should be displayed based on state.show & type
+    // check if should show fruit - true && type = fruit
+    if (!state.showFruit === true && stateItems[i].type === 'fruit') continue
+    // check if should show veg - true && type = veg
+    if (!state.showVeg === true && stateItems[i].type === 'veg') continue
+    console.log('showFruit?', state.showFruit, 'showVeg?', state.showVeg)
     const makeStoreLi = document.createElement('li')
     selectStoreUl.appendChild(makeStoreLi)
 
@@ -228,7 +231,6 @@ function renderStore() {
     makeStoreLi.append(cartRemoveButton)
   
     }
-      console.log(state)
   listenForAdd()
 }
 
@@ -318,52 +320,72 @@ function cartTotal() {
     currentQuantity = stateCart[i].quantity
     currentItemTotal = currentQuantity * currentPrice
     currentTotal += currentItemTotal
+     // format for currency
+    currentTotalFormatted = Intl.NumberFormat('en-UK').format(currentTotal) 
   // render the total on the page
     findTotal = document.querySelector('.total-number')
     findTotal.innerHTML = ''
-    findTotal.innerText = `£${currentTotal}`
+  // format for currency
+    findTotal.innerText = `£${currentTotalFormatted}`
     console.log('whats the currentTotal?', currentTotal)
   }
 }
 
 // * FILTERS
 
-
-// select filters
-const selectFilters = document.querySelector('#store')
-
 // RENDER FILTERS
 
 function renderFilters() {
   console.log('called: renderFilters')
+
+  // ALL div
+  const allFilter = document.createElement('div')
+  allFilter.setAttribute('class', 'all-filter filter')
+  selectFilters.insertBefore(allFilter, selectStoreUl)
+  // all filter button
+  const allFilterButton = document.createElement('button')
+  allFilterButton.innerText = 'Show All'
+  allFilter.appendChild(allFilterButton)
+  // listen for fruit click
+  allFilterButton.addEventListener('click', () => {
+    console.log('fruit filter clicked')
+    state.showFruit = true
+    state.showVeg = true
+    renderStore()
+  })
+
   // FRUIT div
   const fruitFilter = document.createElement('div')
-  fruitFilter.setAttribute('class', 'fruit-filter')
+  fruitFilter.setAttribute('class', 'fruit-filter filter')
   selectFilters.insertBefore(fruitFilter, selectStoreUl)
   // fruit filter button
   const fruitFilterButton = document.createElement('button')
   fruitFilterButton.innerText = 'Show only fruit'
   fruitFilter.appendChild(fruitFilterButton)
-
   // listen for fruit click
   fruitFilterButton.addEventListener('click', () => {
     console.log('fruit filter clicked')
+    state.showFruit = true
     state.showVeg = false
     renderStore()
   })
+
+  // VEG div
+  const vegFilter = document.createElement('div')
+  vegFilter.setAttribute('class', 'veg-filter filter')
+  selectFilters.insertBefore(vegFilter, selectStoreUl)
+  // veg filter button
+  const vegFilterButton = document.createElement('button')
+  vegFilterButton.innerText = 'Show only veg'
+  vegFilter.appendChild(vegFilterButton)
+  // listen for veg click
+  vegFilterButton.addEventListener('click', () => {
+    console.log('veg filter clicked')
+    state.showFruit = false
+    state.showVeg = true
+    renderStore()
+  })
 }
-  // change state showVeg = false
-
-
-//   // veg filter
-//   const vegFilter = document.createElement('div')
-//   vegFilter.setAttribute('class', 'veg-filter')
-//   selectFilters.insertBefore(vegFilter, selectStoreUl)
-
-// }
-
-
-
 
 // * FIRST PAGE LOAD LOGIC
 function init() {
