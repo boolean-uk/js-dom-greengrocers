@@ -1,49 +1,40 @@
 // *** PLAN ***
+  /*
+Layout of code:
+    STATE
+    SELECTING EXISTING ELEMENTS
+    EVENT LISTENERS
+      CONDITIONS LOGIC
+    RENDER LOGIC
+      STORE
+      CART
+      TOTAL
+      FILTERS
+    FIRST PAGE LOAD LOGIC
 
-// OVERALL Layout of code
-    // SELECTING EXISTING ELEMENTS
-    // STATE
-    // EVENT LISTENERS
-      // CONDITIONS LOGIC
-    // RENDER LOGIC
-    // FIRST PAGE LOAD LOGIC
 
-
-/*
 Process flow:
 click add to cart button
 --> check if in cart
     --YES-> update state
     --NO--> add to state
                         --BOTH--> Render Cart
+
+## Extended 1
+
+- Add filters to the store ie. filter by item type; 
+when a user clicks a filter they will only see items of that type
+
+store state - add type
+  two options - fruit or veg
+filter checkbox
+  veg - checked
+    render only veg type in store
+  fruit - checked
+    render only fruit type in store
 */
 
-// ## Extended 1
-
-// - Add filters to the store ie. filter by item type; 
-// when a user clicks a filter they will only see items of that type
-
-// store state - add type
-  // two options - fruit or veg
-// filter checkbox
-  // veg - checked
-    // render only veg type in store
-  // fruit - checked
-    // render only fruit type in store
-
-
 // *** CODE ***
-
-
-// * SELECTING EXISTING ELEMENTS
-
-  // store ul - class=store--item-list
-const selectStoreUl = document.querySelector('.store--item-list')
-  // cart ul - cart--item-list
-const selectCartUl = document.querySelector('.cart--item-list')
-  // select filters
-const selectFilters = document.querySelector('#store')
-
 
 // * STATE
 
@@ -116,27 +107,31 @@ const state = {
   showVeg: true,
 };
 
+// * SELECTING EXISTING ELEMENTS
+
+const selectStoreUl = document.querySelector('.store--item-list')
+const selectCartUl = document.querySelector('.cart--item-list')
+const selectFilters = document.querySelector('#store')
+const stateItems = state.items
+const stateCart = state.cart
 
 // * EVENT LISTENERS
 
-// listen for when add to cart button is clicked
-function listenForAdd() {
-  console.log('called: listenForAdd')
-  const allAddButtons = document.querySelectorAll('.store-button')
-  allAddButtons.forEach((allAddButtons) => {
-  allAddButtons.addEventListener('click', (e) => {
-  const whichItemName = e.target.id
-  console.log('button clicked:', whichItemName)
-  // check if already in cart
-  checkCart(whichItemName)
+  // listen for when add to cart button is clicked
+  function listenForAdd() {
+    console.log('called: listenForAdd')
+    const allAddButtons = document.querySelectorAll('.store-button')
+    allAddButtons.forEach((allAddButtons) => {
+    allAddButtons.addEventListener('click', (e) => {
+    const whichItemName = e.target.id
+    console.log('button clicked:', whichItemName)
+    // check if already in cart
+    checkCart(whichItemName)
+      })
     })
-  })
-}
+  }
 
 // * CONDITIONS LOGIC
-
-// If the item is already in the cart, increase the item's quantity in the cart
-// BEFORE adding to state cart - check if already there
 
 // CHECK CART
 function checkCart(checkedForItemName) {
@@ -154,7 +149,6 @@ function checkCart(checkedForItemName) {
     addToStateCart(checkedForItemName)
   }
 }
-
 // increase quantity in stateCart for selected item
 function increaseCartQuantity(itemToIncrease) {
   console.log('called: increaseCartQuantity')
@@ -164,40 +158,24 @@ function increaseCartQuantity(itemToIncrease) {
   }
 renderCart()
 }
-
-// updating stateCart with item clicked's info
-
-// add the corresponding item's info to the stateCart
+// push the corresponding item's info to the stateCart
 function addToStateCart(addToStateCart) {
   console.log('called: addToStateCart')
-  //find the object with associated id 
   const found = stateItems.find(e => e.name === addToStateCart)
-  console.log('what is found?', found)
   // add quantity to object
   found.quantity = 1
-  // push into the stateCartArray
   state.cart.push(found)
-  console.log('updated state cart', stateCart)
-   // call to render the cart 
-   renderCart(addToStateCart)
+  renderCart(addToStateCart)
 }
 
-// * RENDER LOGIC
+// * RENDER STORE
 
-// RENDER STORE
-
-// make var to select store array in state
-const stateItems = state.items
-
-
-
-
-// function to render list of items in store
+// render list of items in store
 function renderStore() {
   console.log('called: renderStore')
   selectStoreUl.innerHTML = ''
   
-  // create all li based on state
+  // create all li based on state items array
   for (let i = 0; i < stateItems.length; i++) {
     const storeItem = stateItems[i]
 
@@ -206,7 +184,6 @@ function renderStore() {
     if (!state.showFruit === true && stateItems[i].type === 'fruit') continue
     // check if should show veg - true && type = veg
     if (!state.showVeg === true && stateItems[i].type === 'veg') continue
-    console.log('showFruit?', state.showFruit, 'showVeg?', state.showVeg)
     const makeStoreLi = document.createElement('li')
     selectStoreUl.appendChild(makeStoreLi)
 
@@ -229,36 +206,32 @@ function renderStore() {
     cartRemoveButton.setAttribute('id', `${storeImgName}`)
     cartRemoveButton.innerText = 'Add to cart'
     makeStoreLi.append(cartRemoveButton)
-  
     }
   listenForAdd()
 }
 
-// RENDER CART
+// * RENDER CART
 
-// var to select cart array in state
-const stateCart = state.cart
-
-// function to render cart
+// render cart based on state cart contents
 function renderCart() {
   console.log('called: renderCart')
 // ZERO in cart logic
     for (let i = 0; i < stateCart.length; i++) {
       const checkZeroQuantity = stateCart[i]
-    // if quantity in basket = 0
+    // if quantity in basket = 0, remove from cart
       if (checkZeroQuantity.quantity < 1) {
-        // remove from cart
         stateCart.splice(i, 1)
       }
     }
+
 // clear the cart
   selectCartUl.innerHTML = ''
 
-// LOOP stateCart
+// loop stateCart
   for(let i = 0; i < stateCart.length; i++) {
   const cartItemToRender = stateCart[i]
 
-// CREATE ELEMENTS
+// CREATE & APPEND ELEMENTS
   // make, edit, append cart LI 
   const makeCartLi = document.createElement('li')
   selectCartUl.appendChild(makeCartLi) 
@@ -267,53 +240,54 @@ function renderCart() {
     const makeCartImg = document.createElement('img')
     makeCartImg.setAttribute('class', 'cart--item-icon')
     cartImgSrc = cartItemToRender.id
-    console.log('********', cartImgSrc)
     makeCartImg.setAttribute('src', `assets/icons/${cartImgSrc}.svg`)
     cartImgName = cartItemToRender.name
     makeCartImg.setAttribute('alt', `${cartImgName}`)
     makeCartLi.appendChild(makeCartImg)
 
-    // make, edit append P to li
+    // make, edit, append P to li
     const makeCartP = document.createElement('p')
     makeCartP.innerText = `${cartImgName}`
     makeCartLi.appendChild(makeCartP)
 
-    // make, edit append BUTTON REMOVE to li
+    // make, edit, append, listen - BUTTON REMOVE
     const cartRemoveButton = document.createElement('button')
     cartRemoveButton.setAttribute('class', 'quantity-btn remove-btn center')
     cartRemoveButton.innerText = '-'
     cartRemoveButton.addEventListener('click', () => {
+      // decrease quantity
       cartItemToRender.quantity--
       renderCart(cartItemToRender)
     })
     makeCartLi.append(cartRemoveButton)
 
-    // make, edit append SPAN to li
+    // make, edit, append SPAN to li
     const cartSpan = document.createElement('span')
     cartSpan.setAttribute('class', 'quantity-text center')
     cartSpan.innerHTML = `${cartItemToRender.quantity}`
     makeCartLi.append(cartSpan)
 
-    // make, edit append BUTTON ADD to li
+    // make, edit, append, listen - BUTTON ADD
     const cartAddButton = document.createElement('button')
     cartAddButton.setAttribute('class', 'quantity-btn add-btn center')
     cartAddButton.innerText = '+'
     cartAddButton.addEventListener('click', () => {
+      // increase quantity
       cartItemToRender.quantity++
       renderCart(cartItemToRender)
     })
     makeCartLi.append(cartAddButton)
-
-    console.log('*** UPDATED STATE CART ***', stateCart)
 }
+console.log('*** UPDATED STATE CART ***', stateCart)
 cartTotal()
 }
 
-// RENDER TOTAL
+// * RENDER TOTAL
 
+// calculate cart total from item quantities and prices
 function cartTotal() {
   console.log('called: cartTotal')
-  let currentTotal = 0.00
+  let currentTotal = 0
   for (let i = 0; i < stateCart.length; i++) {
     let currentItemTotal
     currentPrice = stateCart[i].price
@@ -325,16 +299,14 @@ function cartTotal() {
   // render the total on the page
     findTotal = document.querySelector('.total-number')
     findTotal.innerHTML = ''
-  // format for currency
     findTotal.innerText = `£${currentTotalFormatted}`
-    console.log('whats the currentTotal?', currentTotal)
   }
+  console.log('__________________')
 }
 
-// * FILTERS
+// * RENDER FILTERS
 
-// RENDER FILTERS
-
+// display filter buttons for - all, fruit and veg
 function renderFilters() {
   console.log('called: renderFilters')
 
@@ -388,10 +360,12 @@ function renderFilters() {
 }
 
 // * FIRST PAGE LOAD LOGIC
+
+// run when page first loads
 function init() {
+  console.log(state)
   renderStore()
   renderFilters()
   cartTotal()
-  console.log(state)
 }
 init()
