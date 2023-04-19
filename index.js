@@ -55,12 +55,11 @@ const state = {
 };
 const shop = document.querySelector(".store--item-list");
 const cart = document.querySelector(".cart--item-list");
-const addedPrice = document.querySelector(".added-price");
+const totalNumber = document.querySelector(".total-number");
 
-function showShop(){
+function renderShop(){
   shop.innerHTML = ""
   state.items.forEach((item) => {
-    // console.log("eachOne", item)
     const li = document.createElement("li");
     const div = document.createElement("div");
     div.setAttribute("class", "store--item-icon");
@@ -70,20 +69,16 @@ function showShop(){
     const addButton = document.createElement("button");
     addButton.innerText = "add to cart";
     addButton.addEventListener("click", function (e) {
-      console.log("here is the id", item.id);
+
 
     if (!item.quantity) {
-      console.log("which boolean", !item.quantity);
-      console.log("quantity", item.quantity);
       item.quantity = 0;
-      console.log("here", item.quantity)
     }
-
     item.quantity += 1;
+
 
     if (!state.cart.find(({id}) => id === item.id)) {
     
-      console.log("it must be from here", !state.cart);
       state.cart.push(item);
 
     }
@@ -96,7 +91,7 @@ function showShop(){
   shop.append(li);
   });
 }
-showShop()
+renderShop()
 
 function cartItem() {
   let totalPrice = 0;
@@ -121,6 +116,7 @@ function cartItem() {
         
         state.cart = state.cart.filter((decreasingItem) => decreasingItem.id !== item.id
           );
+
         }
 
         cartItem();
@@ -131,9 +127,11 @@ function cartItem() {
       const addButton = document.createElement("button");
       addButton.setAttribute("class", "quantity-btn add-btn center");
       addButton.innerText = "+";
+
       addButton.addEventListener("click", () => {
+
         item.quantity++;
-        console.log("add button", item.quantity)
+
         cartItem();
       });
       
@@ -147,7 +145,25 @@ function cartItem() {
   cartItem();
   
   function calculate(totalPrice) {
-    addedPrice.innerText = "£" + totalPrice.toFixed(2);
+
+    totalNumber.innerText = "£" + totalPrice.toFixed(2);
+
   }
-  // Gonna add filter
-  
+
+  function filter (){
+
+    state.items.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    console.log(state)
+
+    renderShop()
+  }
+  filter ()
