@@ -16,8 +16,6 @@ click add to cart button
 */
 
 
-
-
 // SELECTING EXISTING ELEMENTS
   // store ul - class=store--item-list
 const selectStoreUl = document.querySelector('.store--item-list')
@@ -88,29 +86,21 @@ const state = {
 
 // listen for when add to cart button is clicked
 function listenForAdd() {
-// when called, waits for click event for any add to cart button
   console.log('called: listenForAdd')
-// listen for add to cart button press
   const allAddButtons = document.querySelectorAll('.store-button')
   allAddButtons.forEach((allAddButtons) => {
   allAddButtons.addEventListener('click', (e) => {
-// identify which button
-    const whichItemName = e.target.id
-    console.log('button clicked:', whichItemName)
-
-    
+  const whichItemName = e.target.id
+  console.log('button clicked:', whichItemName)
   // check if already in cart
-    checkCart(whichItemName)
-
+  checkCart(whichItemName)
     })
   })
 }
 
-
 // CONDITIONS LOGIC
 
 // If the item is already in the cart, increase the item's quantity in the cart
-
 
 // BEFORE adding to state cart - check if already there
 
@@ -120,7 +110,8 @@ function checkCart(checkedForItemName) {
 // does stateCart have the item name in it?
   if (stateCart.filter(e => e.name === checkedForItemName).length > 0) {
     // YES
-    console.log('Already in cart, call XXXX')
+    console.log('Already in cart, call editCartQuantity')
+    increaseCartQuantity(checkedForItemName)
   }
   else {
     // NO
@@ -129,45 +120,29 @@ function checkCart(checkedForItemName) {
   }
 }
 
-// UPDATE the num in cart for +/- or readded to cart
+// cart quantity update logic
 
-// function changeNumInCart(whichToEditNumName) {
-//   console.log('can i see stateCart?', stateCart)
-//   // access the stateCart
-//   console.log('what is whichItemToChange...', whichToEditNumName)
-//   // find the appropriate item in the array
-//   stateCart.find(whichToEditNumName => {
-//     console.log('i found this', whichToEditNumName.numInCart)
-//   // update the numInCart
-//     whichToEditNumName.numInCart = whichToEditNumName.numInCart + 1 
-//   })
-//   // re-render the cart with updated num
-//   renderCart
+// UPDATE the num in cart for + 
+
+// function increaseCartQuantity(incrementItem) {
+//   console.log('incItem?', incrementItem)
+//   // increase quantity by 1
+//   const found = stateItems.find(e => e.name === incrementItem)
+//   console.log('found?', found)
+//   found.quantity++
+//   return
   
 // }
-  // stateItems.forEach(element =>  {
-  //   // for 
-  //   // when matched, save that object to var
-  //     if (element.name === addToCartItemName) {
-  //     addToStateCart = element
-  //     console.log('addToStateCart:', addToStateCart)
-  //     // add the numInCart attribute, default 1
-  //      addToStateCart.numInCart = 1
-  //     return addToStateCart}
+
+// function decreaseCartQuantity(decrementItem) {
+//   // decrease quantity by 1
+//   const found = stateItems.find(e => e.name === decrementItem)
+//   found.quantity--
+//   return
+
+// }
 
 
-  // have numInCart saved in state
-  // add as attribute when putting in state
-  // default to 1
-
-// function to find item by name from state
-function stateFind(lookingFor) {
-  console.log('calling: stateFind')
-  stateItems.find(lookingFor => {
-    console.log('i found this', lookingFor)
-  })
-  return
-}
 
 // *** updating stateCart with item clicked's info ***
 
@@ -175,14 +150,13 @@ function stateFind(lookingFor) {
 function addToStateCart(addToStateCart) {
   console.log('called: addToStateCart')
   //find the object with associated id 
-  console.log('what is addToStateCart', addToStateCart)
-  stateFind(addToStateCart)
-  console.log('what did it find for addToStateCart?',addToStateCart)
-
+  const found = stateItems.find(e => e.name === addToStateCart)
+  console.log('what is found?', found)
+  // add quantity to object
+  found.quantity = 1
   // push into the stateCartArray
-  state.cart.push()
+  state.cart.push(found)
   console.log('updated state cart', stateCart)
-
    // call to render the cart 
    renderCart(addToStateCart)
 }
@@ -200,9 +174,7 @@ const stateItems = state.items
 
 // function to render list of items in store
 function renderStore() {
-  // check if called
   console.log('called: renderStore')
-  // clear the ul 
   selectStoreUl.innerHTML = ''
 
   // create all li based on state
@@ -248,10 +220,9 @@ const stateCart = state.cart
 // function to render cart
 function renderCart(itemToRender) {
   console.log('called: renderCart')
-  console.log('item to render:', itemToRender)
-
+  selectCartUl.innerHTML = ''
 // find the itemToRender in stateItems
-// *** could refactor this to use the id assigned to the add to cart buttons ***
+
   // var for the found object 
   let cartItemToRender
   // search through stateItems list
@@ -274,41 +245,45 @@ function renderCart(itemToRender) {
     const makeCartImg = document.createElement('img')
     makeCartImg.setAttribute('class', 'cart--item-icon')
     cartImgSrc = cartItemToRender.id
+    console.log('********', cartImgSrc)
     makeCartImg.setAttribute('src', `assets/icons/${cartImgSrc}.svg`)
     cartImgName = cartItemToRender.name
     makeCartImg.setAttribute('alt', `${cartImgName}`)
     makeCartLi.appendChild(makeCartImg)
 
-  // make, edit append p to li
-  const makeCartP = document.createElement('p')
-  makeCartP.innerText = `${cartImgName}`
-  makeCartLi.appendChild(makeCartP)
+    // make, edit append p to li
+    const makeCartP = document.createElement('p')
+    makeCartP.innerText = `${cartImgName}`
+    makeCartLi.appendChild(makeCartP)
 
-  // make, edit append button remove to li
-  // <button class="quantity-btn remove-btn center">-</button>
-  const cartRemoveButton = document.createElement('button')
-  cartRemoveButton.setAttribute('class', 'quantity-btn remove-btn center')
-  cartRemoveButton.innerText = '-'
-  makeCartLi.append(cartRemoveButton)
+    // make, edit append button remove to li
+    const cartRemoveButton = document.createElement('button')
+    cartRemoveButton.setAttribute('class', 'quantity-btn remove-btn center')
+    cartRemoveButton.innerText = '-'
+    cartRemoveButton.addEventListener('click', () => {
+      cartItemToRender.quantity--
+      renderCart(itemToRender)
+    })
+    makeCartLi.append(cartRemoveButton)
 
-  // make, edit append span to li
-  // <span class="quantity-text center">1</span>
-  const cartSpan = document.createElement('span')
-  cartSpan.setAttribute('class', 'quantity-text center')
-  cartSpan.innerHTML = `${cartItemToRender.numInCart}`
-  makeCartLi.append(cartSpan)
+    // make, edit append span to li
+    const cartSpan = document.createElement('span')
+    cartSpan.setAttribute('class', 'quantity-text center')
+    cartSpan.innerHTML = `${cartItemToRender.quantity}`
+    makeCartLi.append(cartSpan)
 
-  // make, edit append button add to li
-  // <button class="quantity-btn add-btn center">+</button>
-  const cartAddButton = document.createElement('button')
-  cartAddButton.setAttribute('class', 'quantity-btn add-btn center')
-  cartAddButton.innerText = '+'
-  makeCartLi.append(cartAddButton)
+    // make, edit append button add to li
+    const cartAddButton = document.createElement('button')
+    cartAddButton.setAttribute('class', 'quantity-btn add-btn center')
+    cartAddButton.innerText = '+'
+    cartAddButton.addEventListener('click', () => {
+      cartItemToRender.quantity++
+      renderCart(itemToRender)
+    })
+    makeCartLi.append(cartAddButton)
 
-  console.log('*** UPDATED STATE CART ***', state.cart)
+    console.log('*** UPDATED STATE CART ***', stateCart)
 }
-
-
 
 
 // FIRST PAGE LOAD LOGIC
