@@ -113,7 +113,6 @@ function addItemToCart(item) {
 
   // updating quantity box of cart item clicked
   updateQuantity(item);
-  console.log(state.cart);
 }
 
 function updateQuantity(quantityItem) {
@@ -128,7 +127,10 @@ function updateQuantity(quantityItem) {
   // change code so it doesn't update if element no longer exsist
   document.querySelector(`#${quantityItem.name} span.quantity-text`).innerText =
     numOfItems.toString();
+
+  itemsTotalPrice();
 }
+
 // la funzione riceve il paramentro itemName che controlla(con filter) nella lista
 // con cartItem se il nome dell'elemento che è gia nel 'cart'
 // corrisponde a quello che stiamo 'aggiungendo'
@@ -188,7 +190,7 @@ function addCartRow(item) {
 function removeItem(item) {
   // 1. Find item in state.cart that matched item to remove
   const index = state.cart.findIndex((cartItem) => cartItem.name === item.name);
-  console.log(index);
+
   // 2. Remove item that we found
   state.cart.splice(index, 1);
   // 3. if quantity < 1 remove row
@@ -214,10 +216,24 @@ function itemImage(itemId) {
 
 // TOTAL PRICE
 
-// function itemsTotalPrice(item) {
-//   const totalPrice = document.querySelector(".total-number");
-//   totalPrice.innerText = item.price;
-// }
+function itemsTotalPrice(item) {
+  const totalPrice = document.querySelector(".total-number");
+  let total = 0;
+  state.cart.forEach((item) => {
+    const pricing = state.items.find(
+      (cartItem) => cartItem.name === item.name
+    ).price;
 
+    const sum = (total += pricing * item.price);
+    totalPrice.innerText = `£ ${sum.toFixed(2)}`;
 
+    if (sum === 0) {
+      totalPrice.innerText = "£ 0.00";
+    }
+  });
+}
+
+// const totalPrice = state.map((item) => item.price)
+//   .reduce((acc, curr) => acc + curr);
+// console.log("total", totalPrice)
 load();
