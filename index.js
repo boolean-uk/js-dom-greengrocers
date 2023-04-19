@@ -216,7 +216,7 @@ function itemImage(itemId) {
 
 // TOTAL PRICE
 
-function itemsTotalPrice(item) {
+function itemsTotalPrice() {
   const totalPrice = document.querySelector(".total-number");
   let total = 0;
   state.cart.forEach((item) => {
