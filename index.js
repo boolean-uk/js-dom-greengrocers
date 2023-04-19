@@ -18,6 +18,20 @@ click add to cart button
                         --BOTH--> Render Cart
 */
 
+// ## Extended 1
+
+// - Add filters to the store ie. filter by item type; 
+// when a user clicks a filter they will only see items of that type
+
+// store state - add type
+  // two options - fruit or veg
+// filter checkbox
+  // veg - checked
+    // render only veg type in store
+  // fruit - checked
+    // render only fruit type in store
+
+
 // *** CODE ***
 
 
@@ -28,60 +42,77 @@ const selectStoreUl = document.querySelector('.store--item-list')
 const selectCartUl = document.querySelector('.cart--item-list')
 
 // * STATE
+
+
+
+
 const state = {
   items: [
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: 'veg'
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: 'veg'
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: 'veg'
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: 'veg'
     }
   ],
-  cart: []
+  cart: [],
+  // default to show both fruit and veg
+  showFruit: true,
+  showVeg: true,
 };
 
 
@@ -159,16 +190,21 @@ const stateItems = state.items
 
 // function to render list of items in store
 function renderStore() {
+  console.log(state)
   console.log('called: renderStore')
   selectStoreUl.innerHTML = ''
-
+  
   // create all li based on state
   for (let i = 0; i < stateItems.length; i++) {
-  // var to store the state item being looked at
+
+  // logic to check if should be displayed based on type
+      // check if should show fruit - true && type = fruit
+      if (state.showFruit === true && stateItems[i].type === 'fruit') continue
+      // check if should show veg - true && type = veg
+      if (state.showVeg === true && stateItems[i].type === 'veg') continue
+
     const storeItem = stateItems[i]
-  // make new li
     const makeStoreLi = document.createElement('li')
-  // append li to ul
     selectStoreUl.appendChild(makeStoreLi)
 
   // create a div, set class="store--item-icon", append to li
@@ -190,8 +226,9 @@ function renderStore() {
     cartRemoveButton.setAttribute('id', `${storeImgName}`)
     cartRemoveButton.innerText = 'Add to cart'
     makeStoreLi.append(cartRemoveButton)
-  }
-
+  
+    }
+      console.log(state)
   listenForAdd()
 }
 
@@ -289,9 +326,50 @@ function cartTotal() {
   }
 }
 
+// * FILTERS
+
+
+// select filters
+const selectFilters = document.querySelector('#store')
+
+// RENDER FILTERS
+
+function renderFilters() {
+  console.log('called: renderFilters')
+  // FRUIT div
+  const fruitFilter = document.createElement('div')
+  fruitFilter.setAttribute('class', 'fruit-filter')
+  selectFilters.insertBefore(fruitFilter, selectStoreUl)
+  // fruit filter button
+  const fruitFilterButton = document.createElement('button')
+  fruitFilterButton.innerText = 'Show only fruit'
+  fruitFilter.appendChild(fruitFilterButton)
+
+  // listen for fruit click
+  fruitFilterButton.addEventListener('click', () => {
+    console.log('fruit filter clicked')
+    state.showVeg = false
+    renderStore()
+  })
+}
+  // change state showVeg = false
+
+
+//   // veg filter
+//   const vegFilter = document.createElement('div')
+//   vegFilter.setAttribute('class', 'veg-filter')
+//   selectFilters.insertBefore(vegFilter, selectStoreUl)
+
+// }
+
+
+
+
 // * FIRST PAGE LOAD LOGIC
 function init() {
   renderStore()
+  renderFilters()
   cartTotal()
+  console.log(state)
 }
 init()
