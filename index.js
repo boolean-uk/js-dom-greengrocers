@@ -10,6 +10,7 @@
 
 
 /*
+Process flow:
 click add to cart button
 --> check if in cart
     --YES-> update state
@@ -86,8 +87,6 @@ const state = {
 
 // * EVENT LISTENERS
 
-// From the store, a user can add an item to their cart
-
 // listen for when add to cart button is clicked
 function listenForAdd() {
   console.log('called: listenForAdd')
@@ -151,10 +150,7 @@ function addToStateCart(addToStateCart) {
    renderCart(addToStateCart)
 }
 
-// RENDER LOGIC
-
-// A user can view a selection of items in the store
-  // display state items in greengrocers section
+// * RENDER LOGIC
 
 // RENDER STORE
 
@@ -201,10 +197,8 @@ function renderStore() {
 
 // RENDER CART
 
-// make var to select cart array in state
+// var to select cart array in state
 const stateCart = state.cart
-
-// function to store whole object being added to cart
 
 // function to render cart
 function renderCart() {
@@ -218,7 +212,7 @@ function renderCart() {
         stateCart.splice(i, 1)
       }
     }
-
+// clear the cart
   selectCartUl.innerHTML = ''
 
 // LOOP stateCart
@@ -273,10 +267,31 @@ function renderCart() {
 
     console.log('*** UPDATED STATE CART ***', stateCart)
 }
+cartTotal()
 }
 
-// FIRST PAGE LOAD LOGIC
+// RENDER TOTAL
+
+function cartTotal() {
+  console.log('called: cartTotal')
+  let currentTotal = 0.00
+  for (let i = 0; i < stateCart.length; i++) {
+    let currentItemTotal
+    currentPrice = stateCart[i].price
+    currentQuantity = stateCart[i].quantity
+    currentItemTotal = currentQuantity * currentPrice
+    currentTotal += currentItemTotal
+  // render the total on the page
+    findTotal = document.querySelector('.total-number')
+    findTotal.innerHTML = ''
+    findTotal.innerText = `£${currentTotal}`
+    console.log('whats the currentTotal?', currentTotal)
+  }
+}
+
+// * FIRST PAGE LOAD LOGIC
 function init() {
   renderStore()
+  cartTotal()
 }
 init()
