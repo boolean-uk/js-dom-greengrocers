@@ -126,7 +126,6 @@ const liCartItem = document.createElement('li')
 ulCartItem.append(liCartItem)
     }}
 
-// }
 
 listOfCartItems()
 
