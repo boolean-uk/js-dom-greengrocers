@@ -54,8 +54,10 @@ const state = {
   cart: []
 };
 
+
 function listItems(){
   for (let i = 0; i < state.items.length; i++) {
+const item = state.items[i];
 const header = document.querySelector("#store")
 const ul = document.querySelector('.item-list')
 console.log(ul)
@@ -65,50 +67,41 @@ ul.append(li)
 
 // creating div to insert inside li
 
-  const div = document.createElement("div")
-  div.setAttribute("class", "store--item-icon")
-  li.append(div)
-  const img = document.createElement('img')
-  img.setAttribute('src','assets/icons/001-beetroot.svg')
-  div.append(img)
-  
+const div = document.createElement("div")
+div.setAttribute("class", "store--item-icon")
+li.append(div)
 
-  // const div = document.createElement("div")
-  // div.setAttribute("class", "store--item-icon")
-  // li.append(div)
-  // const imgOne = document.createElement('img')
-  // imgOne.setAttribute('src','assets/icons/002-carrot.svg')
-  // div.append(imgOne)
+const img = document.createElement('img')
+img.setAttribute('src',`assets/icons/${item.id}.svg`)
+div.append(img)
 
-  const button = document.createElement("button")
-  button.innerText = "add to cart"
-  li.append(button)
+const button = document.createElement("button")
+button.innerText = "add to cart"
+li.append(button)
 
-  // const divOne = document.createElement("div")
-  // divOne.setAttribute("class", "store--item-icon")
-  // li.append(divOne)
-  // const imgOne = document.createElement('img')
-  // imgOne.setAttribute('src', 'assets/icons/002-carrot.svg')
-  // div.append(imgOne)
+// add event listener
 
-  // const imgTwo = document.createElement('img')
-  // imgTwo.setAttribute('src', 'assets/icons/003-apple.svg')
-  // div.append(imgTwo)
-
+button.addEventListener("click", function() {
+  addToCart(item);
+});
 }
 }
+
 listItems()
 
-
-// console.log(li)
-
+// adding an item to cart
 
 
-// const div = document.createElement('.store--item-icon')
-// console.log(div)
-// const img = document.createElement('img')
-// img.setAttribute('src', 'assets/icons/001-beetroot.svg')
-// document.header.append(img)
-// const button = document.createElement('button')
-// button.setAttribute('button', "add to cart")
-// document.header
+
+// update items to cart
+
+const main = document.querySelector("#cart")
+const divCartItem = document.querySelector(".cart--item-list-container")
+const ulCartItem = document.querySelector('.item-list')
+console.log(ulCartItem)
+const liCartItem = document.createElement('li')
+
+ulCartItem.append(liCartItem)
+
+
+
