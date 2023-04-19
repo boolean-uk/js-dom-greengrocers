@@ -101,31 +101,32 @@ ul.append(li)
   button.innerText = "add to cart"
   li.append(button)
 
- 
+    // Add event listener to "Add to cart" button
+    // When button is clicked - items should appear in the cart
+    button.addEventListener("click", () => {
+      state.cart.push(item);
+      console.log(state.cart);
+    });
+  }
 }
-}
-listOfItems()
+listOfItems();
 
 
-// Add event listener to add to cart button
+// Function for list of items
 
-
-
-// Adding items into the cart
-// 1. Create a const for the main
-// function cartItems()
-// for (let i = 0; i < cart-items.length; i++) {
-
-
+  function listOfCartItems(){
+    for (let i = 0; i < state.items.length; i++) {
+      const item = state.items[i];
 const main = document.querySelector("#cart")
 const divCartItem = document.querySelector(".cart--item-list-container")
-const ulCartItem = document.querySelector('.item-list')
-console.log(ulCartItem)
+// targeting second class name .cart--item-list
+// space between two classes means two classes
+const ulCartItem = document.querySelector('.cart--item-list')
 const liCartItem = document.createElement('li')
-
 ulCartItem.append(liCartItem)
-
+    }}
 
 // }
 
-// cartItems()
+listOfCartItems()
+
