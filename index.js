@@ -190,14 +190,10 @@ function placeItems_Cart() {
 
 function productTotal() {
   let total = 0;
-  state.cart.forEach((item) => {
-    const price = item.price;
-    const quantity = item.quantity;
-    const itemTotal = price * quantity;
-    total += itemTotal;
+  state.cart.forEach((cartItem) => {
+    total += cartItem.quantity * cartItem.price;
   });
-  let totalPrice = total.toFixed(2);
-  totalNumber.innerText = `£${total}`;
+  totalNumber.innerText = `£${total.toFixed(2)}`;
 }
 
 renderStoreItems();
