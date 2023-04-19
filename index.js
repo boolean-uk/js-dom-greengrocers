@@ -70,143 +70,243 @@ console.log(state)
 
 
 // - A user can view a selection of items in the store
-function renderItems(){
-  for (let i = 0; i < state.items.length; i++){
-    const produceList = document.createElement('li')
-    const storeItem = document.createElement('div')
-    const productImage = document.createElement('img')
-    const addToCartButton = document.createElement('button')
-    addToCartButton.innerText = "Add to Cart"
-    storeItem.setAttribute("class", "store--item-icon")
-    productImage.setAttribute(`src`, `assets/icons/${state.items[i].id}.svg`)
-    productImage.setAttribute(`alt`, `${state.items[i].name}`)
-    produceList.append(storeItem)
-    storeItem.append(productImage)
-    produceList.append(addToCartButton)
-    document.querySelector('.item-list.store--item-list').append(produceList)
-  }
+
+for (let i = 0; i < state.items.length; i++){
+  const produceList = document.createElement('li')
+  const storeItem = document.createElement('div')
+  const productImage = document.createElement('img')
+  const addToCartButton = document.createElement('button')
+  addToCartButton.innerText = "Add to Cart"
+  storeItem.setAttribute("class", "store--item-icon")
+  productImage.setAttribute(`src`, `assets/icons/${state.items[i].id}.svg`)
+  productImage.setAttribute(`alt`, `${state.items[i].name}`)
+  produceList.append(storeItem)
+  storeItem.append(productImage)
+  produceList.append(addToCartButton)
+  document.querySelector('.item-list.store--item-list').append(produceList)
 }
-renderItems()
 
 // - From the store, a user can add an item to their cart
-function addToCart(){
-  const addToCartButton = document.querySelectorAll('button')
-  const unorderedList = document.querySelector('.item-list.cart--item-list')
-  for (let i = 0; i < addToCartButton.length; i++){
-    let quantity = 0
-    addToCartButton[i].addEventListener('click', () => {
+
+const addToCartButton = document.querySelectorAll('button')
+const unorderedList = document.querySelector('.item-list.cart--item-list')
+for (let i = 0; i < addToCartButton.length; i++){
+  let quantity = 0
+  addToCartButton[i].addEventListener('click', () => {
       
       
-      // - If the item is already in the cart, increase the item's quantity in the cart
-      quantity++
+    // - If the item is already in the cart, increase the item's quantity in the cart
+    quantity++
       
-      
+    function stateUpdate(){
       state.cart.push({
         id: state.items[i].id,
         name: state.items[i].name,
         price: 0.35,
         quantity: quantity
       })
+    }
+    stateUpdate()
       
-      const productIcon = document.createElement('img')
-      productIcon.setAttribute("class", "cart--item-icon")
-      const productName = document.createElement('p')
-      const removeQuantityButton = document.createElement('button')
-      removeQuantityButton.setAttribute("class", "quantity-btn remove-btn center")
-      removeQuantityButton.innerText = '-'
-      const addQuantityButton = document.createElement('button')
-      addQuantityButton.setAttribute("class", "quantity-btn add-btn center")
-      addQuantityButton.innerText = '+'
-      const itemQuantity = document.createElement('span')
-      itemQuantity.setAttribute("class", "quantity-text center")
-      itemQuantity.innerText = quantity
+    const productIcon = document.createElement('img')
+    productIcon.setAttribute("class", "cart--item-icon")
+    const productName = document.createElement('p')
+    const removeQuantityButton = document.createElement('button')
+    removeQuantityButton.setAttribute("class", "quantity-btn remove-btn center")
+    removeQuantityButton.innerText = '-'
+    const addQuantityButton = document.createElement('button')
+    addQuantityButton.setAttribute("class", "quantity-btn add-btn center")
+    addQuantityButton.innerText = '+'
+    const itemQuantity = document.createElement('span')
+    itemQuantity.setAttribute("class", "quantity-text center")
+    itemQuantity.innerText = quantity
       
     
 
       
       
+    let name = []
+    let indicies = []
+    for (let j = 0; j < state.cart.length; j++){
+  
+      name.push(state.cart[j].id)
+      let idx = name.indexOf(state.cart[j].id)
+      indicies.push(idx)
+      productIcon.setAttribute(`src`, `assets/icons/${state.cart[j].id}.svg`)
+      productIcon.setAttribute(`alt`, `${state.cart[j].name}`)
+      productName.innerText = `${state.cart[j].name}`
+    }
+      
+    const toFindRepeat = indicies => indicies.filter((item, index) => indicies.indexOf(item) !== index)
+    const duplicateElements = toFindRepeat(indicies)
+    let replaceIndex = []
+    for (let j = 0; j < indicies.length; j++){
+      const repeated = indicies.indexOf(duplicateElements[0], j)
+      replaceIndex.push(repeated)
+    }
+      
+      
+    if (duplicateElements.length === 1){
+      state.cart.splice(duplicateElements[0], 1, state.cart[replaceIndex.pop()])
+      state.cart.splice(replaceIndex.pop(), 1)
+    }
+      
+  
+    
+    if (quantity === 1){
+      const singleListItem = document.createElement('li')
+      unorderedList.append(singleListItem)
+      singleListItem.append(productIcon)
+      singleListItem.append(productName)
+      singleListItem.append(removeQuantityButton)
+      singleListItem.append(itemQuantity)
+      singleListItem.append(addQuantityButton)
+      
+    } else if (quantity > 1){
+      const singleListItem = document.querySelectorAll('li')
+      const forwardListItem = document.createElement('li')
+      forwardListItem.id = "forwardList"
+      forwardListItem.append(productIcon)
+      forwardListItem.append(productName)
+      forwardListItem.append(removeQuantityButton)
+      forwardListItem.append(itemQuantity)
+      forwardListItem.append(addQuantityButton)
+      const replaceListItem = `1${duplicateElements}`
+      unorderedList.replaceChild(forwardListItem, singleListItem[replaceListItem])
+    }
+
+
+    
+    // - From the cart, a user can view and adjust the number of items in their cart
+    removeQuantityButton.addEventListener('click', () => {
+      quantity = quantity - 1
+      itemQuantity.innerText = quantity
+      stateUpdate()
       let name = []
       let indicies = []
+      
       for (let j = 0; j < state.cart.length; j++){
-  
-        const id = name.push(state.cart[j].id)
+    
+        name.push(state.cart[j].id)
         let idx = name.indexOf(state.cart[j].id)
         indicies.push(idx)
         productIcon.setAttribute(`src`, `assets/icons/${state.cart[j].id}.svg`)
         productIcon.setAttribute(`alt`, `${state.cart[j].name}`)
         productName.innerText = `${state.cart[j].name}`
+
       }
-      
+
+
+        
       const toFindRepeat = indicies => indicies.filter((item, index) => indicies.indexOf(item) !== index)
       const duplicateElements = toFindRepeat(indicies)
       let replaceIndex = []
-      for (let j = 0; j < indicies.length; j++){
-        const repeated = indicies.indexOf(duplicateElements[0], j)
+      for (let i = 0; i < indicies.length; i++){
+        const repeated = indicies.indexOf(duplicateElements[0], i)
         replaceIndex.push(repeated)
       }
+        
+        
+      if (duplicateElements.length === 1){
+        state.cart.splice(duplicateElements[0], 1, state.cart[replaceIndex.pop()])
+        state.cart.splice(replaceIndex.pop(), 1)
+      }
+
+      if (quantity === 0){
+        const index = state.cart.findIndex(object => {
+          return object.quantity === 0
+        })
+
+        
+        state.cart.splice(index, 1)
+        const listItem = document.querySelectorAll('li')
+        for (let j = 0; j < listItem.length; j++){
+          const removeIndex = `1${index}`
+          
+          listItem[removeIndex].remove()
+        }
+      }
+
+      totalPrice()
+    })
+
+    addQuantityButton.addEventListener('click', () => {
+      quantity = quantity + 1
+      itemQuantity.innerText = quantity
+      stateUpdate()
+
+      let name = []
+      let indicies = []
       
-      
+      for (let j = 0; j < state.cart.length; j++){
+    
+        name.push(state.cart[j].id)
+        let idx = name.indexOf(state.cart[j].id)
+        indicies.push(idx)
+        productIcon.setAttribute(`src`, `assets/icons/${state.cart[j].id}.svg`)
+        productIcon.setAttribute(`alt`, `${state.cart[j].name}`)
+        productName.innerText = `${state.cart[j].name}`
+
+      }
+
+
+        
+      const toFindRepeat = indicies => indicies.filter((item, index) => indicies.indexOf(item) !== index)
+      const duplicateElements = toFindRepeat(indicies)
+      let replaceIndex = []
+      for (let i = 0; i < indicies.length; i++){
+        const repeated = indicies.indexOf(duplicateElements[0], i)
+        replaceIndex.push(repeated)
+      }
+        
+        
       if (duplicateElements.length === 1){
         state.cart.splice(duplicateElements[0], 1, state.cart[replaceIndex.pop()])
         state.cart.splice(replaceIndex.pop(), 1)
       }
       
+      totalPrice()
+
+    })
+
+    function totalPrice(){
+
+      let priceArr = []
+      let quantityArr = []
+      for (let i = 0; i < state.cart.length; i++){
+        priceArr.push(Object.values(state.cart[i])[2])
+        quantityArr.push(Object.values(state.cart[i])[3])
+      }
   
-      if (quantity === 1){
-        
-        const singleListItem = document.createElement('li')
-        unorderedList.append(singleListItem)
-        singleListItem.append(productIcon)
-        singleListItem.append(productName)
-        singleListItem.append(removeQuantityButton)
-        singleListItem.append(itemQuantity)
-        singleListItem.append(addQuantityButton)
-      } else if (quantity > 1){
-        const singleListItem = document.querySelectorAll('li')
-        const forwardListItem = document.createElement('li')
-        forwardListItem.id = "forwardList"
-        forwardListItem.append(productIcon)
-        forwardListItem.append(productName)
-        forwardListItem.append(removeQuantityButton)
-        forwardListItem.append(itemQuantity)
-        forwardListItem.append(addQuantityButton)
-        const replaceListItem = `1${duplicateElements}`
-        unorderedList.replaceChild(forwardListItem, singleListItem[replaceListItem])
-        
       
+      let product = []
+      for (let i = 0; i < priceArr.length; i++){
+        product.push(priceArr[i] * quantityArr[i])
+      }
+      
+      const total = document.querySelector('.total-number')
+      const listCount = document.querySelectorAll('li')
+      
+      if (listCount.length === 10){
+        product = [0, 0]
       }
 
+      let sum = product.reduce(function(a, b){
+        return a + b;
+      })
       
 
-        
-    })
-  }
-
-  
-}
-addToCart()
-
-// - From the cart, a user can view and adjust the number of items in their cart
-function adjustQuantity(){
-
-  // const removeQuantityButton = document.querySelectorAll('.quantity-btn.remove-btn.center')
-  // console.log(removeQuantityButton)
-  // const addQuantityButton = document.querySelector('.add-btn')
-  // const itemQuantity = document.querySelectorAll('.quantity-text.center')
-  // for (let i = 0; i < itemQuantity.length; i++){
-  //   let minusQuantity = itemQuantity[i].innerText
-  //   console.log(minusQuantity)
-  //   console.log(itemQuantity)
-  //   removeQuantityButton[i].addEventListener('click', () => {
-  //     minusQuantity--
+      total.innerText = `£${sum.toFixed(2)}`
       
-  //     itemQuantity[i].innerText = minusQuantity
-  
-  //   })
 
-  // }
-  
-  
-  
+      
+    }
+    totalPrice()
 
+    
+    
+    
+  })
 }
+
+
