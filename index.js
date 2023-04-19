@@ -1,3 +1,5 @@
+// *** PLAN ***
+
 // OVERALL Layout of code
     // SELECTING EXISTING ELEMENTS
     // STATE
@@ -15,14 +17,16 @@ click add to cart button
                         --BOTH--> Render Cart
 */
 
+// *** CODE ***
 
-// SELECTING EXISTING ELEMENTS
+
+// * SELECTING EXISTING ELEMENTS
   // store ul - class=store--item-list
 const selectStoreUl = document.querySelector('.store--item-list')
   // cart ul - cart--item-list
 const selectCartUl = document.querySelector('.cart--item-list')
 
-// STATE
+// * STATE
 const state = {
   items: [
     {
@@ -80,7 +84,7 @@ const state = {
 };
 
 
-// EVENT LISTENERS
+// * EVENT LISTENERS
 
 // From the store, a user can add an item to their cart
 
@@ -98,55 +102,41 @@ function listenForAdd() {
   })
 }
 
-// CONDITIONS LOGIC
+// * CONDITIONS LOGIC
 
 // If the item is already in the cart, increase the item's quantity in the cart
-
 // BEFORE adding to state cart - check if already there
 
-// check cart 
+// CHECK CART
 function checkCart(checkedForItemName) {
   console.log('called: checkCart')
-// does stateCart have the item name in it?
+// does stateCart have the item in it already?
   if (stateCart.filter(e => e.name === checkedForItemName).length > 0) {
-    // YES
-    console.log('Already in cart, call editCartQuantity')
+    // YES - increase quantity in state
+    console.log('Already in cart, call increaseCartQuantity')
+    console.log('what is chk itm name', checkedForItemName)
     increaseCartQuantity(checkedForItemName)
   }
   else {
-    // NO
+    // NO - add to state
     console.log('not there, call addToStateCart')
     addToStateCart(checkedForItemName)
   }
 }
 
-// cart quantity update logic
+// increase quantity in stateCart for selected item
+function increaseCartQuantity(itemToIncrease) {
+  console.log('called: increaseCartQuantity')
+  for (let i = 0; i < stateCart.length; i++) {
+    if (stateCart[i].name === itemToIncrease)
+  stateCart[i].quantity++
+  }
+renderCart()
+}
 
-// UPDATE the num in cart for + 
+// updating stateCart with item clicked's info
 
-// function increaseCartQuantity(incrementItem) {
-//   console.log('incItem?', incrementItem)
-//   // increase quantity by 1
-//   const found = stateItems.find(e => e.name === incrementItem)
-//   console.log('found?', found)
-//   found.quantity++
-//   return
-  
-// }
-
-// function decreaseCartQuantity(decrementItem) {
-//   // decrease quantity by 1
-//   const found = stateItems.find(e => e.name === decrementItem)
-//   found.quantity--
-//   return
-
-// }
-
-
-
-// *** updating stateCart with item clicked's info ***
-
-// add the corresponding item's info to the cart
+// add the corresponding item's info to the stateCart
 function addToStateCart(addToStateCart) {
   console.log('called: addToStateCart')
   //find the object with associated id 
@@ -160,7 +150,6 @@ function addToStateCart(addToStateCart) {
    // call to render the cart 
    renderCart(addToStateCart)
 }
-
 
 // RENDER LOGIC
 
@@ -218,30 +207,30 @@ const stateCart = state.cart
 // function to store whole object being added to cart
 
 // function to render cart
-function renderCart(itemToRender) {
+function renderCart() {
   console.log('called: renderCart')
+// ZERO in cart logic
+    for (let i = 0; i < stateCart.length; i++) {
+      const checkZeroQuantity = stateCart[i]
+    // if quantity in basket = 0
+      if (checkZeroQuantity.quantity < 1) {
+        // remove from cart
+        stateCart.splice(i, 1)
+      }
+    }
+
   selectCartUl.innerHTML = ''
-// find the itemToRender in stateItems
 
-  // var for the found object 
-  let cartItemToRender
-  // search through stateItems list
-  stateItems.forEach(element =>  {
-  // for each one - compare to itemToRender
-    if (element.name === itemToRender) {
-    cartItemToRender = element
-    console.log('cartItemToRender:', cartItemToRender)
-  // when matched, save that object to var
-    return cartItemToRender
-  }
-  })
+// LOOP stateCart
+  for(let i = 0; i < stateCart.length; i++) {
+  const cartItemToRender = stateCart[i]
 
-// use the found object to set for the new elements
-  // make, edit, append cart Li 
+// CREATE ELEMENTS
+  // make, edit, append cart LI 
   const makeCartLi = document.createElement('li')
   selectCartUl.appendChild(makeCartLi) 
 
-    // make, edit, append cart img to li
+    // make, edit, append cart IMG to li
     const makeCartImg = document.createElement('img')
     makeCartImg.setAttribute('class', 'cart--item-icon')
     cartImgSrc = cartItemToRender.id
@@ -251,40 +240,40 @@ function renderCart(itemToRender) {
     makeCartImg.setAttribute('alt', `${cartImgName}`)
     makeCartLi.appendChild(makeCartImg)
 
-    // make, edit append p to li
+    // make, edit append P to li
     const makeCartP = document.createElement('p')
     makeCartP.innerText = `${cartImgName}`
     makeCartLi.appendChild(makeCartP)
 
-    // make, edit append button remove to li
+    // make, edit append BUTTON REMOVE to li
     const cartRemoveButton = document.createElement('button')
     cartRemoveButton.setAttribute('class', 'quantity-btn remove-btn center')
     cartRemoveButton.innerText = '-'
     cartRemoveButton.addEventListener('click', () => {
       cartItemToRender.quantity--
-      renderCart(itemToRender)
+      renderCart(cartItemToRender)
     })
     makeCartLi.append(cartRemoveButton)
 
-    // make, edit append span to li
+    // make, edit append SPAN to li
     const cartSpan = document.createElement('span')
     cartSpan.setAttribute('class', 'quantity-text center')
     cartSpan.innerHTML = `${cartItemToRender.quantity}`
     makeCartLi.append(cartSpan)
 
-    // make, edit append button add to li
+    // make, edit append BUTTON ADD to li
     const cartAddButton = document.createElement('button')
     cartAddButton.setAttribute('class', 'quantity-btn add-btn center')
     cartAddButton.innerText = '+'
     cartAddButton.addEventListener('click', () => {
       cartItemToRender.quantity++
-      renderCart(itemToRender)
+      renderCart(cartItemToRender)
     })
     makeCartLi.append(cartAddButton)
 
     console.log('*** UPDATED STATE CART ***', stateCart)
 }
-
+}
 
 // FIRST PAGE LOAD LOGIC
 function init() {
