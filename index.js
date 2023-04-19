@@ -4,51 +4,61 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
+      quantity: 0,
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
+      quantity: 0,
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
+      quantity: 0,
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
+      quantity: 0,
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
+      quantity: 0,
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
+      quantity: 0,
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
+      quantity: 0,
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
+      quantity: 0,
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
+      quantity: 0,
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
+      quantity: 0,
     },
   ],
   cart: [],
@@ -67,6 +77,8 @@ const totalNumber = document.querySelector(".total-number");
 // I will also be using the images from the asset folder
 
 function renderStoreItems() {
+  storeItemList.innerHTML = " ";
+
   state.items.forEach((item) => {
     const Storeli = document.createElement("li");
     storeItemList.append(Storeli);
@@ -92,18 +104,37 @@ function renderStoreItems() {
     storeAddButton.addEventListener("click", (e) => {
       console.log("Item has been selected!");
       item.quantity += 1;
+      addItem(item);
+      placeItems_Cart;
+      productTotal;
     });
   });
 }
+
+function addItem(item) {
+  if (state.cart.find((produce) => produce.name === item.name) === undefined) {
+    item.quantity = 1;
+    state.cart.push(item);
+    placeItems_Cart();
+  } else {
+    item.quantity++;
+    placeItems_Cart();
+  }
+}
+
 //Now I will be focusing on adding the items to their cart
 // If the item is already in the cart, increase the quantity, of items in the cart
 
 function placeItems_Cart() {
-  cartIItemList.innerHTML = "";
+  cartIItemList.innerHTML = " ";
 
   state.cart.forEach((item) => {
+    //List element
+
     const cartItemli = document.createElement("li");
     cartIItemList.append(cartItemli);
+
+    //Image Element
 
     const cartItemImg = document.createElement("img");
     cartItemImg.setAttribute("class", "cart--item-icon");
@@ -117,17 +148,58 @@ function placeItems_Cart() {
     itemName.innerText = `${item.name}`;
     cartItemli.append(itemName);
 
-    const minusButton = document.createElement("button");
-    minusButton.setAttribute("class", "quantity-btn remove-btn center");
-    minusButton.innerText("-");
-    cartItemli.append(minusButton);
+    const takeAwayButton = document.createElement("button");
+    takeAwayButton.setAttribute("class", "quantity-btn remove-btn center");
+    takeAwayButton.innerText = "-";
+    cartItemli.append(takeAwayButton);
 
-    //The Event Listener will be placed here
+    //The Event Listener will be placed here for the decriment button
 
-    minusButton.addEventListener("click", (e) => {
+    takeAwayButton.addEventListener("click", (e) => {
       item.quantity -= 1;
+
+      if (item.quantity === 0) {
+        const index = state.cart.indexOf(item);
+        state.cart.splice(index, 1);
+      }
+      placeItems_Cart();
+      productTotal();
+    });
+
+    //Here I will be creating the quantity of items
+
+    const quantityText = document.createElement("span");
+    quantityText.setAttribute("class", "quantity-text center");
+    quantityText.innerText = `${item.quantity}`;
+    cartItemli.append(quantityText);
+
+    const plusButton = document.createElement("button");
+    plusButton.setAttribute("class", "quantity-btn add-btn center");
+    plusButton.innerText = "+";
+    cartItemli.append(plusButton);
+
+    plusButton.addEventListener("click", (e) => {
+      item.quantity++;
+      placeItems_Cart();
+      productTotal();
     });
   });
 }
 
+//Here I will create the total of the price of the product
+
+function productTotal() {
+  let total = 0;
+  state.cart.forEach((item) => {
+    const price = item.price;
+    const quantity = item.quantity;
+    const itemTotal = price * quantity;
+    total += itemTotal;
+  });
+  let totalPrice = total.toFixed(2);
+  totalNumber.innerText = `£${total}`;
+}
+
 renderStoreItems();
+placeItems_Cart();
+productTotal();
