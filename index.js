@@ -142,7 +142,7 @@ function clearCartItems(cartList) {
 
 function updateCartTotal(totalPrice) {
   const total = calculateCartTotal();
-   totalPrice.textContent = `$${total.toFixed(2)}`;
+  totalPrice.textContent = `£${total.toFixed(2)}`;
 }
 
 function calculateCartTotal() {
