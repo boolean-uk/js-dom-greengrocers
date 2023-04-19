@@ -125,8 +125,13 @@ function updateQuantity(quantityItem) {
   // 2. display quantity on screen for cartRow item that was clicked
 
   // change code so it doesn't update if element no longer exsist
-  document.querySelector(`#${quantityItem.name} span.quantity-text`).innerText =
-    numOfItems.toString();
+  const element = document.querySelector(
+    `#${quantityItem.name} span.quantity-text`
+  );
+
+  if (element) {
+    element.innerText = numOfItems.toString();
+  }
 
   itemsTotalPrice();
 }
@@ -220,17 +225,18 @@ function itemsTotalPrice() {
   const totalPrice = document.querySelector(".total-number");
   let total = 0;
   state.cart.forEach((item) => {
-    const pricing = state.items.find(
-      (cartItem) => cartItem.name === item.name
-    ).price;
+    const price = item.price;
+    // const pricing = state.items.find(
+    //   (cartItem) => cartItem.name === item.name
+    // ).price;
 
-    const sum = (total += pricing * item.price);
-    totalPrice.innerText = `£ ${sum.toFixed(2)}`;
-
-    if (sum === 0) {
-      totalPrice.innerText = "£ 0.00";
-    }
+    total += price;
   });
+  if (total == 0) {
+    totalPrice.innerText = "£ 0.00";
+  } else {
+    totalPrice.innerText = `£ ${total.toFixed(2).toString()}`;
+  }
 }
 
 // const totalPrice = state.map((item) => item.price)
