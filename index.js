@@ -295,11 +295,11 @@ function cartTotal() {
     currentItemTotal = currentQuantity * currentPrice
     currentTotal += currentItemTotal
      // format for currency
-    currentTotalFormatted = Intl.NumberFormat('en-UK').format(currentTotal) 
+    currentTotalFormatted = Intl.NumberFormat('en-UK', {style: 'currency', currency: "GBP"}).format(currentTotal) 
   // render the total on the page
     findTotal = document.querySelector('.total-number')
     findTotal.innerHTML = ''
-    findTotal.innerText = `£${currentTotalFormatted}`
+    findTotal.innerText = `${currentTotalFormatted}`
   }
   console.log('__________________')
 }
