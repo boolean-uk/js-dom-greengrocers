@@ -68,13 +68,25 @@ const state = {
 
 const bodyEl = document.querySelector('body')
 
+function sortAlphabetically(itema, itemb) {
+  const nameA = itema.name.toUpperCase();
+  const nameB = itemb.name.toUpperCase();
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+  return 0;
+}
+
 function renderAvailableProducts() {
   const storeItemListEl = document.querySelector('.store--item-list')
   storeItemListEl.innerHTML = ''
 
+  if (state.sort === 'alphabetical') sortedProducts = state.items.sort(sortAlphabetically);
   for (let i = 0; i < state.items.length; i++) {
     const productItem = state.items[i]
-    console.log(productItem.type === 'fruit' && !state.showFruits)
     if (productItem.type === 'fruit' && !state.showFruits) continue
     if (productItem.type === 'vegetable' && !state.showVegetables) continue
 
