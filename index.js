@@ -124,10 +124,11 @@ function updateQuantity(quantityItem) {
 
   // 2. display quantity on screen for cartRow item that was clicked
 
+  // escape special characters in the item name using CSS.escape()
+  const escapedName = CSS.escape(quantityItem.name);
+
   // change code so it doesn't update if element no longer exsist
-  const element = document.querySelector(
-    `#${quantityItem.name} span.quantity-text`
-  );
+  const element = document.querySelector(`#${escapedName} span.quantity-text`);
 
   if (element) {
     element.innerText = numOfItems.toString();
