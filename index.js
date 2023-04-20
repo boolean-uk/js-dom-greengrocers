@@ -287,14 +287,28 @@ cartTotal()
 // calculate cart total from item quantities and prices
 function cartTotal() {
   console.log('called: cartTotal')
+  
   let currentTotal = 0
+
+  // if cart is empty, reset total to £0.00
+  if (stateCart.length < 1 ) {
+    console.log('cart is empty')
+    currentTotalFormatted = Intl.NumberFormat('en-UK', {style: 'currency', currency: "GBP"}).format(currentTotal) 
+    findTotal = document.querySelector('.total-number')
+    findTotal.innerHTML = ''
+    findTotal.innerText = `${currentTotalFormatted}`
+  }
+
+  // calculate the total based on state cart
   for (let i = 0; i < stateCart.length; i++) {
     let currentItemTotal
     currentPrice = stateCart[i].price
     currentQuantity = stateCart[i].quantity
     currentItemTotal = currentQuantity * currentPrice
     currentTotal += currentItemTotal
-     // format for currency
+    console.log(currentTotal)
+    console.log(currentItemTotal)
+    // format for currency
     currentTotalFormatted = Intl.NumberFormat('en-UK', {style: 'currency', currency: "GBP"}).format(currentTotal) 
   // render the total on the page
     findTotal = document.querySelector('.total-number')
