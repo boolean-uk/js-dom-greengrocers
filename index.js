@@ -317,10 +317,16 @@ function renderFilters() {
   // all filter button
   const allFilterButton = document.createElement('button')
   allFilterButton.innerText = 'Show All'
+  allFilterButton.style.position = 'absolute'
+  allFilterButton.style.top = '10px'
+  allFilterButton.style.backgroundColor = 'seagreen'
   allFilter.appendChild(allFilterButton)
   // listen for fruit click
   allFilterButton.addEventListener('click', () => {
     console.log('fruit filter clicked')
+    allFilterButton.style.backgroundColor = 'seagreen'
+    fruitFilterButton.style.backgroundColor = 'lightgrey'
+    vegFilterButton.style.backgroundColor = 'lightgrey'
     state.showFruit = true
     state.showVeg = true
     renderStore()
@@ -333,10 +339,16 @@ function renderFilters() {
   // fruit filter button
   const fruitFilterButton = document.createElement('button')
   fruitFilterButton.innerText = 'Show only fruit'
+  fruitFilterButton.style.position = 'absolute'
+  fruitFilterButton.style.top = '40px'
+  fruitFilterButton.style.backgroundColor = 'lightgrey'
   fruitFilter.appendChild(fruitFilterButton)
   // listen for fruit click
   fruitFilterButton.addEventListener('click', () => {
     console.log('fruit filter clicked')
+    allFilterButton.style.backgroundColor = 'lightgrey'
+    fruitFilterButton.style.backgroundColor = 'seagreen'
+    vegFilterButton.style.backgroundColor = 'lightgrey'
     state.showFruit = true
     state.showVeg = false
     renderStore()
@@ -349,10 +361,16 @@ function renderFilters() {
   // veg filter button
   const vegFilterButton = document.createElement('button')
   vegFilterButton.innerText = 'Show only veg'
+  vegFilterButton.style.position = 'absolute'
+  vegFilterButton.style.top = '70px'
+  vegFilterButton.style.backgroundColor = 'lightgrey'
   vegFilter.appendChild(vegFilterButton)
   // listen for veg click
   vegFilterButton.addEventListener('click', () => {
     console.log('veg filter clicked')
+    allFilterButton.style.backgroundColor = 'lightgrey'
+    fruitFilterButton.style.backgroundColor = 'lightgrey'
+    vegFilterButton.style.backgroundColor = 'seagreen'
     state.showFruit = false
     state.showVeg = true
     renderStore()
