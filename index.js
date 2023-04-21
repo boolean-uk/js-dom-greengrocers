@@ -86,7 +86,7 @@ function renderStore() {
     storeList.append(storeItem);
     }
   }
-
+ 
 // Creates a store item
 function createStoreItem(i) {
   const currentItem = state.items[i];

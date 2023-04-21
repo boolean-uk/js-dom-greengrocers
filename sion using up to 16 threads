@@ -1,0 +1,35 @@
+[33mcommit 41906d246260f9f563452d4d90b46d2df7c472de[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Alex Shaw <alexjshaw@gmail.com>
+Date:   Fri Apr 21 15:19:08 2023 +0100
+
+    add button adds the new item to the ToDo list
+
+[33mcommit b95413b9463fd054ffba7323421bffeaf45760d8[m
+Author: Alex Shaw <alexjshaw@gmail.com>
+Date:   Tue Apr 18 16:09:22 2023 +0100
+
+    core and extensions all completed
+
+[33mcommit 2181df800c200e42a0ef18ddc57a6828f25e94c8[m
+Author: Alex Shaw <alexjshaw@gmail.com>
+Date:   Tue Apr 18 12:35:00 2023 +0100
+
+    core exercises completed
+
+[33mcommit df8cc2ac5596ad15e67051da386ca97fb51bc294[m
+Author: Carlo M <carlo992@gmail.com>
+Date:   Tue Oct 4 15:22:08 2022 +0000
+
+    Clarified "Add item to cart" requirement
+
+[33mcommit 5212c409d64335d3116310ae2bdad614b61781a2[m
+Author: Edward Withers <dearshrewdwit@gmail.com>
+Date:   Tue Feb 8 11:27:40 2022 +0000
+
+    Update README.md
+
+[33mcommit 53e0394c930273586c97734c65be3bfbda827349[m
+Author: Mike <mike.m.herron@googlemail.com>
+Date:   Sun Feb 6 12:18:24 2022 +0000
+
+    Exercise init
