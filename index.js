@@ -3,52 +3,62 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      quantity: 0,    
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      quantity: 0,
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      quantity: 0,
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      quantity: 0,
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      quantity: 0,
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      quantity: 0,
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      quantity: 0,
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      quantity: 0,
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      quantity: 0,
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      quantity: 0,
     }
   ],
   cart: []
@@ -56,52 +66,53 @@ const state = {
 
 // ---------------CORE REQUIREMENTS PLAN ----------//
 // - Implement the following requirements
-  "A user can view a selection of items in the store"
+"A user can view a selection of items in the store"
+
+// ------List of Initial Constants ------//
+
+
+const store = document.querySelector("#store")
+const ulGrocery = document.querySelector(".store--item-list")
+const cartItems = document.querySelector("#cart")
+const cartContainer = document.querySelector(".cart--item-list-container")
+const ulCart = document.querySelector(".cart--item-list")
+const totalPrice = document.querySelector(".total-number")  
+
+
+// create some array of items
+// create function to select item 
+// append item to store
+// create loop to add new items
+// make new items into a list
+
+
+for (let i = 0; i < state.items.length; i++) {
   
-  // ------List of Initial Constants ------//
-
-
-  const store = document.querySelector("#store")
-  const ulGrocery = document.querySelector(".store--item-list")
-  const cartItems = document.querySelector("#cart")
-  const cartContainer = document.querySelector(".cart--item-list-container")
-  const ulCart = document.querySelector(".cart--item-list")
-  const totalPrice = document.querySelector(".total-number")  
+  const liGrocery = document.createElement("li")
+  const imgGrocery = document.createElement("img")   
+  const btnGrocery = document.createElement("button")
   
-
-  // create some array of items
-  // create function to select item 
-  // append item to store
-  // create loop to add new items
-  // make new items into a list
-
-
-  for (let i = 0; i < state.items.length; i++) {
-
-    const liGrocery = document.createElement("li")
-    const imgGrocery = document.createElement("img")   
-    const btnGrocery = document.createElement("button")
-
-    imgGrocery.setAttribute("src", `assets/icons/${state.items[i].id}.svg`)
-    imgGrocery.setAttribute("class", '.store--item-icon')
-    imgGrocery.setAttribute("alt", `${state.items[i].name}`)
+  imgGrocery.setAttribute("src", `assets/icons/${state.items[i].id}.svg`)
+  imgGrocery.setAttribute("class", '.store--item-icon')
+  imgGrocery.setAttribute("alt", `${state.items[i].name}`)
+  
+  btnGrocery.innerText = "Add to cart"
+  
+  btnGrocery.addEventListener("click", () => {      
+    if (!state.cart.includes(state.items[i])) {
+      state.items[i].quantity = 1
+      state.cart.push(state.items[i])
+    } 
     
-    btnGrocery.innerText = "Add to cart"
-
-    btnGrocery.addEventListener("click", () => {      
-        if (!state.cart.includes(state.items[i])) {
-          state.items[i].quantity = 1
-          state.cart.push(state.items[i])
-        } 
-        
-        else {
-        state.items[i].quantity++
-        }
-        createCart() 
-      }
-    )
-    liGrocery.append(imgGrocery, btnGrocery)
-    ulGrocery.append(liGrocery);
+    else {
+      state.items[i].quantity++
+    }
+    createCart() 
+    
+  }
+  )
+  liGrocery.append(imgGrocery, btnGrocery)
+  ulGrocery.append(liGrocery);
     }
     
 
@@ -201,14 +212,16 @@ const state = {
     let total = 0;
     state.cart.forEach((cartItem) => {
       total += cartItem.quantity * cartItem.price;
+      }
+    );
+  
 
-    });
+    const finalPrice = totalPrice.innerText = `£${total.toFixed(2)}`;
 
-    totalNumber.innerText = `£${total.toFixed(2)}`;
-
-    cartPrice.append (totalPrice);
-
-  }
+    cartPrice.append(finalPrice);
+    
+}
+  
 
   priceCalc ()
 
