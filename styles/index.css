@@ -16,8 +16,14 @@ button {
 
   text-transform: uppercase;
   font-size: 0.725rem;
-
   cursor: pointer;
+}
+.add-to-cart{
+  border-radius: 9%;
+  background-color: rgb(162 143 231);
+}
+.add-to-cart:hover{
+  background-color: rgb(199, 190, 235);
 }
 
 /* Store */
@@ -119,6 +125,7 @@ button {
 }
 
 .cart--item-icon {
+  display: inline;
   width: 24px;
 }
 
@@ -181,4 +188,30 @@ button {
     border-top: 2px solid #00675b;
     border-bottom: 2px solid #00675b;
   }
+}
+
+/* Newly Added Stylesheet */
+
+.cart--item-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.cart--item-details {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.remove-from-cart {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.cart-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px;
 }
