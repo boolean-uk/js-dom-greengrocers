@@ -112,7 +112,7 @@ function renderStoreItems() {
         price: state.items[i].price
       }
       state.cart.push(itemObjectInCart)
-      console.log('cart items', state.cart[i], 'state items', state.items[i], 'value of i', i)
+      console.log('cart items', state.cart[i], 'state items', state.items[i])
       // - If the item is already in the cart, increase the item's quantity in the cart
       // if (state.items[i] === state.cart[i]) {
       //   increaseQuantity
@@ -126,6 +126,7 @@ function renderStoreItems() {
         if (state.items[i].id === state.cart[j].id) {
           increaseQuantity()
         } else {
+          cartItemUl.innerText = ''
           cartItemUl.append(cartItemLi)
           cartItemLi.append(cartItemImg, cartItemP, cartDecreaseButton, cartQuantityText, cartIncreaseButton)
         }
