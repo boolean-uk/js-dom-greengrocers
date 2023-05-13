@@ -54,15 +54,10 @@ const state = {
     cart: []
 };
 
+
 const cartItemUl = document.querySelector('.cart--item-list')
-const cartItemLi = document.createElement('li')
-const cartIncreaseButton = document.createElement('button')
-const cartQuantityText = document.createElement('span')
-const cartDecreaseButton = document.createElement('button')
-const cartItemImg = document.createElement('img')
-const cartItemP = document.createElement('p')
+
 const totalPrice = document.querySelector('.total-number')
-let cartPrice = 0
 let cartQuantityCounter = 1
 
 function renderStoreItems() {
@@ -94,34 +89,38 @@ function renderStoreItems() {
             const itemObjectInCart = {
                 id: state.items[i].id,
                 name: state.items[i].name,
-                price: state.items[i].price
+                price: state.items[i].price,
+                quantity: 1
             }
-            state.cart.push(itemObjectInCart)
 
             // 1) check if the item is in the cart, if so increase quantity otherwise it will be added to cart
 
             if (foundItem === undefined) {
-                cartQuantityCounter = 1
-                console.log('first')
-                cartItemUl.append(cartItemLi)
-                cartItemLi.append(cartItemImg, cartItemP, cartDecreaseButton, cartQuantityText, cartIncreaseButton)
-                renderCartItems()
-
+                state.cart.push(itemObjectInCart)
+                updatePrice()
             } else {
-                console.log('second')
-                increaseQuantity()
+                increaseQuantity(foundItem)
+                updatePrice()
+
             }
             renderCartItems()
-            console.log(state.cart)
+            console.log('cart', state.cart)
 
         })
     }
 }
 
-
 function renderCartItems() {
+    cartItemUl.innerHTML = ''
 
     for (let i = 0; i < state.cart.length; i++) {
+
+        const cartItemLi = document.createElement('li')
+        const cartQuantityText = document.createElement('span')
+        const cartIncreaseButton = document.createElement('button')
+        const cartDecreaseButton = document.createElement('button')
+        const cartItemImg = document.createElement('img')
+        const cartItemP = document.createElement('p')
 
         cartItemImg.setAttribute('class', 'cart--item-icon')
         const eachIconPic = state.cart[i].id
@@ -134,21 +133,54 @@ function renderCartItems() {
         cartDecreaseButton.innerText = '-'
 
         cartQuantityText.setAttribute('class', 'quantity-text')
-        cartQuantityText.innerText = cartQuantityCounter
+        cartQuantityText.innerText = state.cart[i].quantity
 
         cartIncreaseButton.setAttribute('class', 'add-btn')
         cartIncreaseButton.innerText = '+'
+
+        cartItemUl.append(cartItemLi)
+        cartItemLi.append(cartItemImg, cartItemP, cartDecreaseButton, cartQuantityText, cartIncreaseButton)
+
+
+        cartIncreaseButton.addEventListener('click', () => {
+            increaseQuantity(state.cart[i])
+            renderCartItems()
+        })
+
+        cartDecreaseButton.addEventListener('click', () => {
+            decreaseQuantity(state.cart[i])
+            renderCartItems()
+            console.log('inside', state.cart)
+
+        })
     }
 }
 
-function increaseQuantity() {
-    cartQuantityCounter++
-    cartQuantityText.innerText = cartQuantityCounter
-}
-function updatePrice () {
-    cartPrice = 
-    totalPrice.innerText = cartPrice
+//- If an item's quantity equals zero it is removed from the cart
 
+function decreaseQuantity(item) {
+    item.quantity--
+    updatePrice()
+    if (item.quantity === 0) {
+        const deletedItem = state.cart.indexOf(item)
+        console.log('item', item)
+        state.cart.splice(deletedItem, deletedItem)
+    }
+}
+
+function increaseQuantity(item) {
+    item.quantity++
+    updatePrice()
+}
+
+function updatePrice() {
+    let cartPrice = 0
+    for (let i = 0; i < state.cart.length; i++) {
+        const item = state.cart[i]
+        const addingUp = item.quantity * item.price
+        cartPrice += addingUp
+    }
+    totalPrice.innerText = cartPrice.toFixed(2)
 }
 
 // appending
