@@ -89,7 +89,7 @@ function updateCart(fruit, flag) {
   //Check if fruit exists in cart already
   let exists = false
   for (let i = 0; i< state.cart.length; i++) {
-    if (state.cart[i] === fruit.name){
+    if (state.cart[i].name === fruit.name){
       exists = true
       break
     }
@@ -97,7 +97,7 @@ function updateCart(fruit, flag) {
   //If fruit not in cart
   if (!exists && flag) {
     //Add fruit to cart
-    state.cart.push(fruit.name)
+    state.cart.push({ name: fruit.name, quantity: 1, price: fruit.price })
     addToCart(fruit)
   } else {
     //Find fruit in cart
@@ -108,10 +108,12 @@ function updateCart(fruit, flag) {
       if (nameCollection[i].innerText === fruit.name){
         //If flag is true increase quantity by 1
         if (increaseValue) {
+          state.cart[i].quantity++
           quantityCollection[i].innerText++
           break
         } else {
           //If flag is false decrease quantity by 1
+          state.cart[i].quantity--
           quantityCollection[i].innerText--
           //If quantity reaches 0 remove from cart
           if (quantityCollection[i].innerText === '0') {
@@ -123,6 +125,13 @@ function updateCart(fruit, flag) {
       }
     }
   }
+  //Update the Total Price
+  let priceBox = document.getElementsByClassName("total-number")[0]
+  let totalPrice = 0.0
+  for (let i = 0; i < state.cart.length; i++) {
+    totalPrice += state.cart[i].quantity * state.cart[i].price
+  }
+  priceBox.innerText = priceBox.innerText.slice(0,1) + totalPrice.toFixed(2)
 }
 
 function addToCart(fruit) {
