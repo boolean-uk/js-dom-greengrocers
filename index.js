@@ -55,6 +55,7 @@ const state = {
 };
 
 const groceries = document.querySelector('.store--item-list')
+const cart = document.querySelector('.cart--item-list')
 
 function displayStore() {
   const storeItems = state.items
@@ -71,15 +72,92 @@ function displayStore() {
     const button = document.createElement('button')
     button.innerText = 'Add to cart'
     button.addEventListener('click', function() {
-      console.log(storeItems[i].name)
+      updateCart(storeItems[i],true)
     })
 
-    //Append Elements to the page
+    //Append Elements to the Store Page section
     vegetable.append(img)
     storeItem.append(vegetable)
     storeItem.append(button)
     groceries.append(storeItem)
   }
+}
+
+function updateCart(fruit, flag) {
+  //If flag = true increase value, if flag = false decrease value
+  const increaseValue = flag
+  //Check if fruit exists in cart already
+  let exists = false
+  for (let i = 0; i< state.cart.length; i++) {
+    if (state.cart[i] === fruit.name){
+      exists = true
+      break
+    }
+  }
+  //If fruit not in cart
+  if (!exists && flag) {
+    //Add fruit to cart
+    state.cart.push(fruit.name)
+    addToCart(fruit)
+  } else {
+    //Find fruit in cart
+    const nameCollection = document.getElementsByTagName('p')
+    const quantityCollection = document.getElementsByClassName('quantity-text')
+    const itemsCollection = document.getElementsByClassName('cart--item-list')
+    for (let i = 0; i < nameCollection.length; i++) {
+      if (nameCollection[i].innerText === fruit.name){
+        //If flag is true increase quantity by 1
+        if (increaseValue) {
+          quantityCollection[i].innerText++
+          break
+        } else {
+          //If flag is false decrease quantity by 1
+          quantityCollection[i].innerText--
+          //If quantity reaches 0 remove from cart
+          if (quantityCollection[i].innerText === '0') {
+            state.cart.splice(i,1)
+            itemsCollection[0].getElementsByTagName('li')[i].remove()
+          }
+          break
+        }
+      }
+    }
+  }
+}
+
+function addToCart(fruit) {
+  //Create the Entry of selected Vegetable in Cart
+  const entry = document.createElement('li')
+  const img = document.createElement('img')
+  img.classList.add('cart--item-icon')
+  img.src = 'assets/icons/' + fruit.id + '.svg'
+  img.alt = fruit.name
+  const name = document.createElement('p')
+  name.innerText = fruit.name
+  const rmButton = document.createElement('button')
+  rmButton.classList.add('remove-btn')
+  rmButton.innerText = '-'
+  rmButton.addEventListener('click', function() {
+    updateCart(fruit,false)
+  })
+  const span = document.createElement('span')
+  span.classList.add('quantity-text')
+  span.innerText = 1
+  const addButton = document.createElement('button')
+  addButton.classList.add('add-btn')
+  addButton.innerText = '+'
+  addButton.addEventListener('click', function() {
+    updateCart(fruit,true)
+  })
+
+
+  //Append Elements to the Cart Page section
+  entry.append(img)
+  entry.append(name)
+  entry.append(rmButton)
+  entry.append(span)
+  entry.append(addButton)
+  cart.append(entry)
 }
 
 displayStore()
