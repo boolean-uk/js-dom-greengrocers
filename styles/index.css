@@ -182,3 +182,18 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+/* Add Hover animation for Filter/Sort buttons */
+.utility--img:hover {
+  transform: scale(1.15);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* Added Class to create a grid for Filter/Sort buttons */
+.utility--grid {
+  display: grid;
+  grid-column: 1;
+  grid-row: 2;
+  row-gap: 1ch;
+  float: right;
+}
