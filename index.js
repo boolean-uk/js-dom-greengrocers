@@ -1,54 +1,65 @@
+//Added type to state.items objects
 const state = {
   items: [
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: 'vegetable'
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: 'vegetable'
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: 'vegetable'
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit'
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: 'vegetable'
     }
   ],
   cart: []
@@ -58,9 +69,10 @@ const groceries = document.querySelector('.store--item-list')
 const cart = document.querySelector('.cart--item-list')
 //Keep a variable for Sorting Order
 let ascending = true
+//Create an array to store Filtering Options
+const filterOption = [null, 'vegetable', 'fruit']
 
-function displayStore() {
-  const storeItems = state.items
+function displayStore(storeItems) {
   for (let i = 0; i < storeItems.length; i++){
     //Create Vegetable Icon in the Store Section
     const storeItem = document.createElement('li')
@@ -83,6 +95,7 @@ function displayStore() {
     storeItem.append(button)
     groceries.append(storeItem)
   }
+
   //Create Filter Button
   const utilityArea = document.createElement('div')
   utilityArea.classList.add('utility--grid')
@@ -90,16 +103,32 @@ function displayStore() {
   filterButton.classList.add('utility--img')
   filterButton.src = 'https://cdn2.iconfinder.com/data/icons/font-awesome/1792/filter-512.png'
   filterButton.width = 50
+  //Add Filter Functionality
   filterButton.addEventListener('click', function() {
-    console.log('Filter pressed.')
+    filterOption.unshift(filterOption.pop())
+    const newDisplayItems = []
+    groceries.innerHTML = ''
+    utilityArea.innerHTML = ''
+    if (filterOption[0] == null){
+      displayStore(state.items)
+    } else {
+      state.items.forEach((elem) => {
+        if (elem.type == filterOption[0]) {
+          newDisplayItems.push(elem)
+        }
+      })
+      displayStore(newDisplayItems)
+    }
   })
+
   //Create Sort Button
   const sortButton = document.createElement('img')
   sortButton.classList.add('utility--img')
   sortButton.src = 'https://icon-library.com/images/sort-icon-png/sort-icon-png-18.jpg'
   sortButton.width = 50
+  //Add Sort Functionality
   sortButton.addEventListener('click', function() {
-    state.items.sort((elem1,elem2) => {
+    storeItems.sort((elem1,elem2) => {
       if (elem1.name < elem2.name) {
         if (ascending){
           return -1
@@ -124,7 +153,7 @@ function displayStore() {
     }
     groceries.innerHTML = ''
     utilityArea.innerHTML = ''
-    displayStore()
+    displayStore(storeItems)
   })
 
   //Append Buttons to the Store Page section
@@ -219,4 +248,4 @@ function addToCart(fruit) {
   cart.append(entry)
 }
 
-displayStore()
+displayStore(state.items)
