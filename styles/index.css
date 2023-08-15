@@ -182,3 +182,11 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+/* Added Class to create a grid for Filter/Sort buttons */
+.utility--grid {
+  display: grid;
+  grid-column: 1;
+  grid-row: 2;
+  float: right;
+}

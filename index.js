@@ -81,6 +81,20 @@ function displayStore() {
     storeItem.append(button)
     groceries.append(storeItem)
   }
+  //Create Filter & Sort Buttons
+  const utilityArea = document.createElement('div')
+  utilityArea.classList.add('utility--grid')
+  const filterButton = document.createElement('img')
+  filterButton.src = 'https://cdn2.iconfinder.com/data/icons/font-awesome/1792/filter-512.png'
+  filterButton.width = 50
+  const sortButton = document.createElement('img')
+  sortButton.src = 'https://icon-library.com/images/sort-icon-png/sort-icon-png-18.jpg'
+  sortButton.width = 50
+
+  //Append Buttons to the Store Page section
+  utilityArea.append(sortButton)
+  utilityArea.append(filterButton)
+  groceries.before(utilityArea)
 }
 
 function updateCart(fruit, flag) {
