@@ -182,3 +182,63 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+.my-fruit-button{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  padding: 10px 20px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #007BFF;
+  border: none;
+  color: #FFF;
+  border-radius: 5px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+}
+
+.my-fruit-button:hover {
+  background-color: #0056b3;
+}
+
+.my-vegetable-button{
+  position: fixed;
+  right: 20px;
+  bottom: 80px;
+  padding: 10px 20px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #007BFF;
+  border: none;
+  color: #FFF;
+  border-radius: 5px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+}
+
+.my-vegetable-button:hover {
+  background-color: #0056b3;
+}
+
+.sort-by-price-button{
+  position: fixed;
+  left: 20px;
+  bottom: 80px;
+  padding: 10px 20px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #007BFF;
+  border: none;
+  color: #FFF;
+  border-radius: 5px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+}
+
+.sort-by-price-button:hover {
+  background-color: #0056b3;
+}
