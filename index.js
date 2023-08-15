@@ -85,11 +85,19 @@ function displayStore() {
   const utilityArea = document.createElement('div')
   utilityArea.classList.add('utility--grid')
   const filterButton = document.createElement('img')
+  filterButton.classList.add('utility--img')
   filterButton.src = 'https://cdn2.iconfinder.com/data/icons/font-awesome/1792/filter-512.png'
   filterButton.width = 50
+  filterButton.addEventListener('click', function() {
+    console.log('Filter pressed.')
+  })
   const sortButton = document.createElement('img')
+  sortButton.classList.add('utility--img')
   sortButton.src = 'https://icon-library.com/images/sort-icon-png/sort-icon-png-18.jpg'
   sortButton.width = 50
+  sortButton.addEventListener('click', function() {
+    console.log('Sort pressed.')
+  })
 
   //Append Buttons to the Store Page section
   utilityArea.append(sortButton)
