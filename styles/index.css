@@ -38,7 +38,7 @@ button {
 .store--item-list {
   display: grid;
   grid-template-columns: repeat(4, 125px);
-  grid-gap: 1rem;
+  grid-gap: 2.75rem;
   justify-content: center;
 }
 

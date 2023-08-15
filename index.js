@@ -53,3 +53,29 @@ const state = {
   ],
   cart: []
 };
+
+function drawStoreItem(item) {
+  // get to unordered list of store items
+  const container = document.getElementsByClassName('store--item-list')[0]
+  const listItem = document.createElement('li')
+  const itemDiv = document.createElement('div')
+  itemDiv.classList.add('store--item-icon')
+  // create image element
+  const itemName = item.name
+  const itemImg = document.createElement('img')
+  itemImg.src = `./assets/icons/${item.id}.svg`
+  itemImg.alt = itemName
+  itemDiv.append(itemImg)
+  // create button
+  const button = document.createElement('button')
+  button.innerHTML = 'Add to cart'
+  itemDiv.append(button)
+  listItem.append(itemDiv)
+  container.append(listItem)
+}
+
+function drawStoreItems(items) {
+  items.forEach(item => drawStoreItem(item))
+}
+
+drawStoreItems(state.items)
