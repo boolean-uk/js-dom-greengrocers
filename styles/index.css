@@ -20,6 +20,15 @@ button {
   cursor: pointer;
 }
 
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.filter-buttons > button {
+  margin: 10px;
+}
+
 /* Store */
 
 #store {
@@ -72,7 +81,7 @@ button {
   padding: 1rem;
 
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto;
   grid-gap: 1rem;
   justify-content: center;
 
@@ -105,13 +114,17 @@ button {
   padding: 1rem 0;
 
   display: grid;
-  grid-template-columns: 24px minmax(150px, 1fr) repeat(3, auto);
+  grid-template-columns: 24px minmax(150px, 1fr) repeat(4, auto);
   grid-gap: 0.5rem;
   align-items: center;
 
   border-bottom: 1px dotted #000000;
 
   font-size: 1.25rem;
+}
+
+.cart--item-list h3 {
+  font-size: 14px;
 }
 
 .cart--item-list li:last-child {
@@ -170,6 +183,10 @@ button {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
+}
+
+.sort-buttons {
+  justify-self: center;
 }
 
 .total-number {
