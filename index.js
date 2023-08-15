@@ -51,7 +51,8 @@ const state = {
       price: 0.35
     }
   ],
-  cart: []
+  cart: [],
+  total: 0.00
 };
 
 function drawStoreItem(item) {
@@ -80,32 +81,26 @@ function drawStoreItems(items) {
 }
 
 function addToCart(item) {
-  /** item = 
-   {
-      id: "001-beetroot",
-      name: "beetroot",
-      price: 0.35
-    }
-   */
-
+  const itemId = item.id
   if (state.cart.length === 0) {
     state.cart.push([])  // list of item ids
     state.cart.push([])  // list of quantities of items
   }
-  const itemIndex = state.cart[0].indexOf(item.id)
+  const itemIndex = state.cart[0].indexOf(itemId)
   if (itemIndex === -1) {
     // add item to the cart
-    state.cart[0].push(item.id)
+    state.cart[0].push(itemId)
     state.cart[1].push(1)
     drawCardItem(item, 1)
+    updateTotal(itemId, 1)
   } else {
     // increment item's quantity in the cart
-    state.cart[1][itemIndex]++
-    // drawCardItem(item)
+    incrementCardItem(itemId)
   }
 }
 
 function drawCardItem(item, quantity) {
+  const itemId = item.id
   const container = document.querySelector('.cart--item-list')
   // console.log(container)
   const listItem = document.createElement('li')
@@ -113,7 +108,7 @@ function drawCardItem(item, quantity) {
   const itemName = item.name
   const itemImg = document.createElement('img')
   itemImg.classList.add('cart--item-icon')
-  itemImg.src = `./assets/icons/${item.id}.svg`
+  itemImg.src = `./assets/icons/${itemId}.svg`
   itemImg.alt = itemName
   listItem.append(itemImg)
   // create paragraph element
@@ -125,8 +120,10 @@ function drawCardItem(item, quantity) {
   button.innerHTML = '-'
   button.classList.add('quantity-btn', 'remove-btn', 'center')
   listItem.append(button)
+  // TODO: button.onclick = () => decrementCardItem(...)
   // create span element
   const span = document.createElement('span')
+  span.id = `${itemId}-quantity`
   span.classList.add('quantity-text', 'center')
   span.innerHTML = quantity
   listItem.append(span)
@@ -134,16 +131,31 @@ function drawCardItem(item, quantity) {
   button = document.createElement('button')
   button.innerHTML = '+'
   button.classList.add('quantity-btn', 'add-btn', 'center')
+  button.onclick = () => incrementCardItem(itemId)
   listItem.append(button)
   container.append(listItem)
 }
 
-function incrementCardItem(item) {
-  
+function incrementCardItem(itemId) {
+  const quantity = document.getElementById(`${itemId}-quantity`)
+  const itemIndex = state.cart[0].indexOf(itemId)
+  quantity.innerHTML = ++(state.cart[1][itemIndex])
+  updateTotal(itemId, 1)
 }
 
 function decrementCardItem(item) {
+  // TODO: decrement quantity of item
+  // TODO: if new quantity is 0, then remove item from cart
   
+}
+
+function updateTotal(itemId, quantity) {
+  // NOTE: keep track of the current total in the cart
+  // retrieve price of item with itemId
+  const item = state.items.find(item => item.id === itemId)
+  state.total += quantity * item.price
+  const totalElem = document.querySelector('.total-number')
+  totalElem.innerHTML = `£${state.total.toFixed(2)}`
 }
 
 // display the selection of items in the store
