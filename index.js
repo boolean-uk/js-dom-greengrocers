@@ -102,7 +102,6 @@ function addToCart(item) {
 function drawCardItem(item, quantity) {
   const itemId = item.id
   const container = document.querySelector('.cart--item-list')
-  // console.log(container)
   const listItem = document.createElement('li')
   // create image element
   const itemName = item.name
@@ -120,7 +119,7 @@ function drawCardItem(item, quantity) {
   button.innerHTML = '-'
   button.classList.add('quantity-btn', 'remove-btn', 'center')
   listItem.append(button)
-  // TODO: button.onclick = () => decrementCardItem(...)
+  button.onclick = () => decrementCardItem(itemId)
   // create span element
   const span = document.createElement('span')
   span.id = `${itemId}-quantity`
@@ -143,14 +142,25 @@ function incrementCardItem(itemId) {
   updateTotal(itemId, 1)
 }
 
-function decrementCardItem(item) {
-  // TODO: decrement quantity of item
-  // TODO: if new quantity is 0, then remove item from cart
-  
+function decrementCardItem(itemId) {
+  const itemIndex = state.cart[0].indexOf(itemId)
+  const newQuantity = --(state.cart[1][itemIndex])
+
+  if (newQuantity === 0) {
+    // remove item from the cart
+    state.cart[0].splice(itemIndex, 1)
+    state.cart[1].splice(itemIndex, 1)
+    const cartList = document.querySelectorAll('.cart--item-list li')
+    cartList[itemIndex].remove()
+  } else {
+    const quantity = document.getElementById(`${itemId}-quantity`)
+    quantity.innerHTML = newQuantity
+  }
+  updateTotal(itemId, -1)
 }
 
 function updateTotal(itemId, quantity) {
-  // NOTE: keep track of the current total in the cart
+  // keep track of the current total in the cart
   // retrieve price of item with itemId
   const item = state.items.find(item => item.id === itemId)
   state.total += quantity * item.price
