@@ -56,6 +56,8 @@ const state = {
 
 const groceries = document.querySelector('.store--item-list')
 const cart = document.querySelector('.cart--item-list')
+//Keep a variable for Sorting Order
+let ascending = true
 
 function displayStore() {
   const storeItems = state.items
@@ -81,7 +83,7 @@ function displayStore() {
     storeItem.append(button)
     groceries.append(storeItem)
   }
-  //Create Filter & Sort Buttons
+  //Create Filter Button
   const utilityArea = document.createElement('div')
   utilityArea.classList.add('utility--grid')
   const filterButton = document.createElement('img')
@@ -91,12 +93,38 @@ function displayStore() {
   filterButton.addEventListener('click', function() {
     console.log('Filter pressed.')
   })
+  //Create Sort Button
   const sortButton = document.createElement('img')
   sortButton.classList.add('utility--img')
   sortButton.src = 'https://icon-library.com/images/sort-icon-png/sort-icon-png-18.jpg'
   sortButton.width = 50
   sortButton.addEventListener('click', function() {
-    console.log('Sort pressed.')
+    state.items.sort((elem1,elem2) => {
+      if (elem1.name < elem2.name) {
+        if (ascending){
+          return -1
+        }
+        else {
+          return 1
+        }
+      } else if (elem1.name > elem2.name) {
+        if (ascending){
+          return 1
+        } else {
+          return -1
+        }
+      } else {
+        return 0
+      }
+    })
+    if (ascending) {
+      ascending = false
+    } else {
+      ascending = true
+    }
+    groceries.innerHTML = ''
+    utilityArea.innerHTML = ''
+    displayStore()
   })
 
   //Append Buttons to the Store Page section
