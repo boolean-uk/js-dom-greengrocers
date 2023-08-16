@@ -51,5 +51,122 @@ const state = {
       price: 0.35
     }
   ],
-  cart: []
+  cart: [],
+  total: 0.00
 };
+
+function drawStoreItem(item) {
+  // get to unordered list of store items
+  const container = document.querySelector('.store--item-list')
+  const listItem = document.createElement('li')
+  const itemDiv = document.createElement('div')
+  itemDiv.classList.add('store--item-icon')
+  // create image element
+  const itemName = item.name
+  const itemImg = document.createElement('img')
+  itemImg.src = `./assets/icons/${item.id}.svg`
+  itemImg.alt = itemName
+  itemDiv.append(itemImg)
+  // create button
+  const button = document.createElement('button')
+  button.innerHTML = 'Add to cart'
+  button.onclick = () => addToCart(item)
+  itemDiv.append(button)
+  listItem.append(itemDiv)
+  container.append(listItem)
+}
+
+function drawStoreItems(items) {
+  items.forEach(item => drawStoreItem(item))
+}
+
+function addToCart(item) {
+  const itemId = item.id
+  if (state.cart.length === 0) {
+    state.cart.push([])  // list of item ids
+    state.cart.push([])  // list of quantities of items
+  }
+  const itemIndex = state.cart[0].indexOf(itemId)
+  if (itemIndex === -1) {
+    // add item to the cart
+    state.cart[0].push(itemId)
+    state.cart[1].push(1)
+    drawCardItem(item, 1)
+    updateTotal(itemId, 1)
+  } else {
+    // increment item's quantity in the cart
+    incrementCardItem(itemId)
+  }
+}
+
+function drawCardItem(item, quantity) {
+  const itemId = item.id
+  const container = document.querySelector('.cart--item-list')
+  const listItem = document.createElement('li')
+  // create image element
+  const itemName = item.name
+  const itemImg = document.createElement('img')
+  itemImg.classList.add('cart--item-icon')
+  itemImg.src = `./assets/icons/${itemId}.svg`
+  itemImg.alt = itemName
+  listItem.append(itemImg)
+  // create paragraph element
+  const paragraph = document.createElement('p')
+  paragraph.innerHTML = itemName
+  listItem.append(paragraph)
+  // create remove button element
+  let button = document.createElement('button')
+  button.innerHTML = '-'
+  button.classList.add('quantity-btn', 'remove-btn', 'center')
+  listItem.append(button)
+  button.onclick = () => decrementCardItem(itemId)
+  // create span element
+  const span = document.createElement('span')
+  span.id = `${itemId}-quantity`
+  span.classList.add('quantity-text', 'center')
+  span.innerHTML = quantity
+  listItem.append(span)
+  // create add button element
+  button = document.createElement('button')
+  button.innerHTML = '+'
+  button.classList.add('quantity-btn', 'add-btn', 'center')
+  button.onclick = () => incrementCardItem(itemId)
+  listItem.append(button)
+  container.append(listItem)
+}
+
+function incrementCardItem(itemId) {
+  const quantity = document.getElementById(`${itemId}-quantity`)
+  const itemIndex = state.cart[0].indexOf(itemId)
+  quantity.innerHTML = ++(state.cart[1][itemIndex])
+  updateTotal(itemId, 1)
+}
+
+function decrementCardItem(itemId) {
+  const itemIndex = state.cart[0].indexOf(itemId)
+  const newQuantity = --(state.cart[1][itemIndex])
+
+  if (newQuantity === 0) {
+    // remove item from the cart
+    state.cart[0].splice(itemIndex, 1)
+    state.cart[1].splice(itemIndex, 1)
+    const cartList = document.querySelectorAll('.cart--item-list li')
+    cartList[itemIndex].remove()
+  } else {
+    const quantity = document.getElementById(`${itemId}-quantity`)
+    quantity.innerHTML = newQuantity
+  }
+  updateTotal(itemId, -1)
+}
+
+function updateTotal(itemId, quantity) {
+  // keep track of the current total in the cart
+  // retrieve price of item with itemId
+  const item = state.items.find(item => item.id === itemId)
+  state.total += quantity * item.price
+  const totalElem = document.querySelector('.total-number')
+  totalElem.innerHTML = `£${state.total.toFixed(2)}`
+}
+
+// display the selection of items in the store
+drawStoreItems(state.items)
