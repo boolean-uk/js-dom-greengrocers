@@ -1,4 +1,4 @@
-# In this project, I explored a common scenario in eCommerce, adding and removing items from the cart, and calculating the total. I used JS DOM, JavaScript, HTML, and CSS to build the project.
+# GreenGrocers.
 
 In this project, I explored a common scenario in eCommerce, adding and removing items from the cart, and calculating the total. I used JS DOM, JavaScript, HTML, and CSS to build the project.
 
