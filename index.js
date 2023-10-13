@@ -53,3 +53,5 @@ const state = {
   ],
   cart: []
 };
+
+renderAll()
