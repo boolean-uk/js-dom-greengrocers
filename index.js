@@ -1,0 +1,5 @@
+renderStore();
+
+renderCart();
+
+renderTotal();

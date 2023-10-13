@@ -6,6 +6,7 @@ function renderAll() {
 }
 
 function renderStore() {
+  clearElement(STORE_ITEM_LIST);
   state.items.forEach((item) => {
     renderStoreItems(item);
   });
@@ -16,6 +17,7 @@ function renderStoreItems(item) {
   const itemIconDiv = createElement("div", "store--item-icon");
   const img = createImg(item);
   const button = createElement("button", null, null, "Add to cart");
+  button.addEventListener("click", () => addToCart(item));
 
   multiAppend(li, itemIconDiv, button);
   itemIconDiv.append(img);
@@ -23,8 +25,9 @@ function renderStoreItems(item) {
 }
 
 function renderCart() {
-  state.cart.forEach((item) => {
-    renderCartItems(item)
+  clearElement(CART_ITEM_LIST);
+  state.cart.forEach((item, idx) => {
+    renderCartItems(item);
   });
 }
 
@@ -38,7 +41,8 @@ function renderCartItems(item) {
     null,
     "-"
   );
-  const span = createElement("span", "quantity-text center", null, "1");
+
+  const span = createElement("span", "quantity-text center", null, item.quantity);
   const buttonAdd = createElement(
     "button",
     "quantity-btn add-btn center",
@@ -50,11 +54,22 @@ function renderCartItems(item) {
   CART_ITEM_LIST.append(li);
 }
 
-function renderTotal() {}
+function renderTotal() {
+  if (state.cart.length > 0) {
+    const prices = state.cart.map((item) => item.price);
+    const total = prices.reduce((sum, item) => sum + item);
+
+    TOTAL_NUMBER.innerText = `£${total.toFixed(2)}`;
+  }
+}
 
 // Clear
 
-function clearElement() {}
+function clearElement(element) {
+  while (element.lastChild) {
+    element.lastChild.remove()
+  }
+}
 
 // Create
 
@@ -85,13 +100,3 @@ function multiAppend(parentElement, ...childElements) {
     parentElement.append(child);
   });
 }
-
-const BEETROOT = state.items[0];
-renderStore();
-
-state.cart.push(BEETROOT)
-state.cart.push(BEETROOT)
-state.cart.push(BEETROOT)
-state.cart.push(BEETROOT)
-state.cart.push(BEETROOT)
-renderCart()
