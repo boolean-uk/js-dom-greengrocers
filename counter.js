@@ -21,5 +21,11 @@ const addDecreaseButton = () => {
 const addCounterDisplay = () => {
     const counterDisplay = document.createElement('span')
     counterDisplay.innerText = counter
-    cart.append(counterDisplay)
+    cartItem.append(counterDisplay)
+}
+
+const addQuantityCounter = () => {
+    addIncreaseButton()
+    addCounterDisplay()
+    addDecreaseButton()   
 }

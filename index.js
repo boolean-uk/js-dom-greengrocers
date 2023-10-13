@@ -73,3 +73,6 @@ console.log(cartItemList)
 console.log(totalSection)
 console.log(total.innerText)
 
+
+populateStoreItemList()
+populateCartItemList()

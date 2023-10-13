@@ -28,4 +28,6 @@
 
 ### [ ] Add even listeners where required, and get them up and running
 
-### [ ] Make the counter functions -> rendering, increasing, decreasing, displaying
+### [x] Make the counter functions -> rendering, increasing, decreasing, displaying
+
+### [ ] Add conditions to the counter
