@@ -51,7 +51,28 @@ const state = {
       price: 0.35
     }
   ],
-  cart: []
+  cart: [
+    // {
+    //   id: "007-bell-pepper",
+    //   name: "bell pepper",
+    //   price: 0.35
+    // },
+    // {
+    //   id: "008-berry",
+    //   name: "berry",
+    //   price: 0.35
+    // },
+    // {
+    //   id: "009-blueberry",
+    //   name: "blueberry",
+    //   price: 0.35
+    // },
+    // {
+    //   id: "010-eggplant",
+    //   name: "eggplant",
+    //   price: 0.35
+    // }
+  ]
 };
 
 
@@ -74,5 +95,9 @@ console.log(totalSection)
 console.log(total.innerText)
 
 
+
+
 populateStoreItemList()
+
 populateCartItemList()
+

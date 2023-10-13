@@ -1,5 +1,6 @@
 let counter = 0
 
+
 const increase = () => ++counter
 const decrease = () => --counter
 
