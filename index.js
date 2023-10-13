@@ -64,25 +64,29 @@ const state = {
   cart: []
 };
 
+//Variables in global scope (bad practice)
 const storeList = document.querySelector(".store--item-list");
 const itemList = document.querySelector(".cart--item-list");
+const price = document.querySelector(".total-number");
 
 const items = state.items;
 const cart = state.cart;
 
-const createStoreItems = () => {
+const renderStoreItems = () => {
   items.forEach((item) => {
+    // Create req. elements
     const li = document.createElement("li");
-
     const div = document.createElement("div");
     const img = document.createElement("img");
+    const button = document.createElement("button");
+    button.innerText = "Add to Cart"
+
+    // Setting attribute value
     img.src = `assets/icons/${item.id}.svg`;
     div.setAttribute("class", "store--item-icon");
     div.append(img);
 
-    const button = document.createElement("button");
-    button.innerText = "Add to Cart"
-
+    //Add to cart button
     button.addEventListener("click", () => {
       const cartItems = itemList.querySelectorAll("li");
       cartItems.forEach(item => item.remove());
@@ -92,7 +96,8 @@ const createStoreItems = () => {
        if (obj.id == item.id) { return true } else { return false }
       });
 
-      duplicate ? addCartItem() : (cart.push(item), addCartItem());
+      duplicate ? createCartItem() : (cart.push(item), createCartItem());
+      calculateTotal();
     });
 
     li.append(div, button);
@@ -100,7 +105,7 @@ const createStoreItems = () => {
   })
 };
 
-const addCartItem = () => {
+const createCartItem = () => {
   state.cart.forEach((item) => {
     // Create req. elements
     const li = document.createElement("li");
@@ -129,8 +134,10 @@ const addCartItem = () => {
   })
 };
 
-const render = () => {
-  createStoreItems();
+const calculateTotal = () => {
+  let num = 0;
+  cart.forEach(item => { num += item.quantity * item.price });
+  price.innerText = `£${num.toFixed(2)}`;
 };
 
-render()
+renderStoreItems()
