@@ -29,6 +29,7 @@ function renderCart() {
   state.cart.forEach((item, idx) => {
     renderCartItems(item);
   });
+  renderTotal()
 }
 
 function renderCartItems(item) {
@@ -41,6 +42,7 @@ function renderCartItems(item) {
     null,
     "-"
   );
+  buttonRemove.addEventListener("click", () => changeCartQuantity(item, "-"));
 
   const span = createElement(
     "span",
@@ -48,12 +50,14 @@ function renderCartItems(item) {
     null,
     item.quantity
   );
+
   const buttonAdd = createElement(
     "button",
     "quantity-btn add-btn center",
     null,
     "+"
   );
+  buttonAdd.addEventListener("click", () => changeCartQuantity(item, "+"));
 
   multiAppend(li, img, p, buttonRemove, span, buttonAdd);
   CART_ITEM_LIST.append(li);
@@ -65,6 +69,8 @@ function renderTotal() {
     const total = prices.reduce((sum, item) => sum + item);
 
     TOTAL_NUMBER.innerText = `£${total.toFixed(2)}`;
+  } else {
+    TOTAL_NUMBER.innerText = `£0.00`;
   }
 }
 

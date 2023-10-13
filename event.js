@@ -1,8 +1,6 @@
 function addToCart(storeItem) {
-  const matchingItem = state.cart.find(
-    (cartItem) => cartItem.id === storeItem.id
-  );
-  // console.log('matchingItem :>> ', matchingItem);
+  const matchingItem = matchToStateCart(storeItem);
+
   if (matchingItem) {
     storeItem.quantity = matchingItem.quantity + 1;
   } else {
@@ -10,8 +8,33 @@ function addToCart(storeItem) {
     state.cart.push(storeItem);
   }
 
-  // console.log('state.cart :>> ', state.cart);
+  renderCart();
+}
+
+function matchToStateCart(item) {
+  return state.cart.find((cartItem) => cartItem.id === item.id);
+}
+
+function changeCartQuantity(cartItem, plusOrMinus) {
+  const matchingItem = matchToStateCart(cartItem);
+
+  switch (plusOrMinus) {
+    case "+":
+      matchingItem.quantity++;
+      break;
+    case "-":
+      matchingItem.quantity === 1
+        ? state.cart.splice(state.cart.indexOf(matchingItem), 1)
+        : matchingItem.quantity--;
+
+      break;
+  }
+
+  if (plusOrMinus === "+") {
+  }
+
+  if (plusOrMinus === "-") {
+  }
 
   renderCart();
-  renderTotal();
 }
