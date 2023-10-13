@@ -42,7 +42,12 @@ function renderCartItems(item) {
     "-"
   );
 
-  const span = createElement("span", "quantity-text center", null, item.quantity);
+  const span = createElement(
+    "span",
+    "quantity-text center",
+    null,
+    item.quantity
+  );
   const buttonAdd = createElement(
     "button",
     "quantity-btn add-btn center",
@@ -56,7 +61,7 @@ function renderCartItems(item) {
 
 function renderTotal() {
   if (state.cart.length > 0) {
-    const prices = state.cart.map((item) => item.price);
+    const prices = state.cart.map((item) => item.price * item.quantity);
     const total = prices.reduce((sum, item) => sum + item);
 
     TOTAL_NUMBER.innerText = `£${total.toFixed(2)}`;
@@ -67,7 +72,7 @@ function renderTotal() {
 
 function clearElement(element) {
   while (element.lastChild) {
-    element.lastChild.remove()
+    element.lastChild.remove();
   }
 }
 
