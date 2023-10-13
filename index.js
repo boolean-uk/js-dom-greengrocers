@@ -88,8 +88,7 @@ const renderStoreItems = () => {
 
     //Add to cart button
     button.addEventListener("click", () => {
-      const cartItems = itemList.querySelectorAll("li");
-      cartItems.forEach(item => item.remove());
+      cartRemoval();
       item.quantity += 1;
 
       const duplicate = cart.some(obj => {
@@ -106,7 +105,7 @@ const renderStoreItems = () => {
 };
 
 const createCartItem = () => {
-  state.cart.forEach((item) => {
+  cart.forEach((item) => {
     // Create req. elements
     const li = document.createElement("li");
     const img = document.createElement("img");
@@ -129,9 +128,37 @@ const createCartItem = () => {
     span.innerText = item.quantity;
     addButton.innerText = "+";
 
+    // Add button
+    addButton.addEventListener("click", () => {
+      cartRemoval();
+
+      item.quantity++;
+      createCartItem();
+      calculateTotal();
+    });
+
+    // Remove button 
+    removeButton.addEventListener("click", () => {
+      cartRemoval();
+      item.quantity--;
+
+      if (item.quantity === 0) {
+        const idx = cart.indexOf(item);
+        if (idx > -1) { cart.splice(idx, 1) }
+      };  
+
+      createCartItem();
+      calculateTotal();
+    });
+
     li.append(img, p, removeButton, span, addButton);
     itemList.append(li);
   })
+};
+
+const cartRemoval = () => {
+  const cartItems = itemList.querySelectorAll("li");
+  cartItems.forEach(item => item.remove());
 };
 
 const calculateTotal = () => {
