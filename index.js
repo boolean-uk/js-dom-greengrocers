@@ -64,7 +64,7 @@ const state = {
   cart: []
 };
 
-//Variables in global scope (bad practice)
+// Variables in global scope (bad practice)
 const storeList = document.querySelector(".store--item-list");
 const itemList = document.querySelector(".cart--item-list");
 const price = document.querySelector(".total-number");
@@ -92,7 +92,7 @@ const renderStoreItems = () => {
       item.quantity += 1;
 
       const duplicate = cart.some(obj => {
-       if (obj.id == item.id) { return true } else { return false }
+       return obj.id == item.id
       });
 
       duplicate ? createCartItem() : (cart.push(item), createCartItem());
@@ -102,6 +102,11 @@ const renderStoreItems = () => {
     li.append(div, button);
     storeList.append(li);
   })
+};
+
+const cartRemoval = () => {
+  const cartItems = itemList.querySelectorAll("li");
+  cartItems.forEach(item => item.remove());
 };
 
 const createCartItem = () => {
@@ -154,11 +159,6 @@ const createCartItem = () => {
     li.append(img, p, removeButton, span, addButton);
     itemList.append(li);
   })
-};
-
-const cartRemoval = () => {
-  const cartItems = itemList.querySelectorAll("li");
-  cartItems.forEach(item => item.remove());
 };
 
 const calculateTotal = () => {
