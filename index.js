@@ -134,9 +134,22 @@ const refreshCartTotalDisplay = () => {
   total.innerText = "£" + calcCartTotal().toFixed(2)
 }
 
-const findItemIndex = (itemID) => state.items.forEach((item, index) => {
-  if (item.id === itemID) return index
-})
+const category = (productName) => {
+  const fruitArr = ["apple",
+    "apricot",
+    "bananas",
+    "berry",
+    "blueberry"]
+
+  const vegetablesArr = ["beetroot",
+    "carrot",
+    "avocado",
+    "bell pepper",
+    "eggplant"]
+
+  if (fruitArr.contains(productName) === true) return "fruit"
+  if (vegetablesArr.contains(productName) === true) return "vegetable"
+} 
 
 const changeItemAmount = (item, quantity) => {
   item.quantity + quantity >= 0 ? item.quantity += quantity : item.remove()
