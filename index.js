@@ -110,6 +110,11 @@ function clearCart(){
   cartSection.innerHTML = "";
 }
 
+//function to clear cards
+function clearCards(){
+  productSection.innerHTML = "";
+}
+
 //function to create the cart cards
 function createCart(){
   state.items.forEach(item => {
@@ -190,6 +195,7 @@ function filterItems(){
     });
     console.log(filteredItems);
     state.items = filteredItems;
+    clearCards();
     createCard();
   });
   //add elements to filter section
