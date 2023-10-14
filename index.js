@@ -78,10 +78,15 @@ function groceryItemsAvailable(value) {
     button.innerText = "Add to cart";
     button.setAttribute("id", value.id);
     li.append(button);
-
     storeItemList.append(li);
 }
 
+
+function addtoCart (button) {
+    button.addEventListener("click", () => {
+      // Where to put function that adds that current items details to the cart.
+  });
+}
 // Loop through all items in state and make correct grocery item.
 state.items.forEach((value) => {
     groceryItemsAvailable(value);
@@ -110,8 +115,6 @@ function createButton() {
     const button = document.createElement("button");
     return button;
 }
-
-// Call function to display items in header.
 
 // Create a function that adds items to basket based on what button was clicked.
 
