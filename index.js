@@ -58,12 +58,15 @@ const initItems = () => state.items.forEach(item => {
   item.total = function() {
     return this.quantity * this.price
   }
+  item.category = category(item.name)
 })
 
 const displayItems = () => {
   const itemDisplaySection = document.querySelector("header#store ul.item-list")
 
   state.items.forEach((item) => {
+    if (!!filter === true && item.category !== filter) return
+
     const li = document.createElement("li")
     
     const img = document.createElement("img")
@@ -147,9 +150,13 @@ const category = (productName) => {
     "bell pepper",
     "eggplant"]
 
-  if (fruitArr.contains(productName) === true) return "fruit"
-  if (vegetablesArr.contains(productName) === true) return "vegetable"
-} 
+  if (fruitArr.includes(productName)) return "fruits"
+  if (vegetablesArr.includes(productName)) return "vegetables"
+}
+
+let filter = ""
+const addFilter = (filterName) => filter = filterName
+const resetFilter = () => filter = ""
 
 const changeItemAmount = (item, quantity) => {
   item.quantity + quantity >= 0 ? item.quantity += quantity : item.remove()
