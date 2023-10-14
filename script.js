@@ -1,4 +1,4 @@
-console.log(state)
+console.log(state, "this is the state")
 
 // Render the store items
 // In header add items
@@ -15,23 +15,41 @@ console.log(state)
 //    - create button -- add text 
 //    - append button to li
 
+//CART ITEMS
+// 1. When the addToCartButton is clicked, then the items should appear in the cart.
+
+
+// 2. select the ul "item-list"
+// 3. create li
+//      append li to ul
+// 4. create images -- class, src, alt
+//      append img to li
+// 5. create para --enter name
+//      append p to li
+// 6. create button -- add class, text
+//      append button to li
+// 7. create span -- class, text
+//      append span to li
+// 8. create button -- add class, text
+//      append button to li
+
 
 // Actual code
 // 1. select the ul "item list"
 
 const ulItemStore = document.querySelector(".item-list")
-console.log(ulItemStore, "this is the ul")
+
 
 // 2. create forEach loop
 state.items.forEach((eachItem) => {
-    // console.log(state)
+
 
     // create li element
     const storeLi = document.createElement('li')
 
     // append li to ul
     ulItemStore.append(storeLi)
-    // console.log(storeLi)
+
 
     // create div -- add class
     const divItemStore = document.createElement('div')
@@ -41,7 +59,7 @@ state.items.forEach((eachItem) => {
 
     // create img -- add src(asset folder) and alt
     const storeImgs = document.createElement('img')
-    storeImgs.setAttribute("src", `assets/icons/${eachItem.name}`)
+    // storeImgs.setAttribute("src", `assets/icons/${eachItem.name}`)
     //append img to div
     divItemStore.append(storeImgs)
 
@@ -51,4 +69,55 @@ state.items.forEach((eachItem) => {
     //append button to li
     storeLi.append(addToCartButton)
 
+    // CART - plan at the top
+    // 1. Add event listener
+
+    addToCartButton.addEventListener('click', () => {
+
+        // 2. select the ul "item-list"
+        const mainDiv = document.querySelector(".cart--item-list-container > .item-list ")
+        console.log(mainDiv)
+
+        // 3. create li
+        const itemListLIs = document.createElement('li')
+        mainDiv.append(itemListLIs)
+
+        //4. create images -- class, src, alt
+        const cartImg = document.createElement('img')
+        cartImg.setAttribute("class",
+            "cart--item-icon")
+        cartImg.setAttribute("src", "assets/icons/001-beetroot.svg")
+        cartImg.setAttribute("alt", "beetroot")
+        itemListLIs.append(cartImg)
+
+        //5. create para --enter name
+        const cartPara = document.createElement('p')
+        cartPara.innerText = eachItem.name
+        itemListLIs.append(cartPara)
+
+        // 6. create button -- add class, text
+        const cartButtonMinus = document.createElement('button')
+        cartButtonMinus.setAttribute("class", "quantity-btn remove-btn center")
+        itemListLIs.append(cartButtonMinus)
+
+        // 7. create span -- class, text
+        const spanForCart = document.createElement('span')
+        spanForCart.setAttribute("class", "quantity-text center")
+        spanForCart.innerText = '1'
+        itemListLIs.append(spanForCart)
+
+        // 8. create button -- add class, text
+        const cartButtonAdd = document.createElement('button')
+        cartButtonAdd.setAttribute("class", "quantity-btn add-btn center")
+        cartButtonAdd.innerText = '+'
+        itemListLIs.append(cartButtonAdd)
+    })
+
+
 });
+
+
+
+
+
+
