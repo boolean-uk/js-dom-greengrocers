@@ -74,14 +74,20 @@ const displayItems = () => {
     
     const buttonAddToCart = document.createElement("button")
     buttonAddToCart.innerText = "Add to cart"
-    buttonAddToCart.addEventListener("click", () => console.log("add ", item))
+    buttonAddToCart.addEventListener("click", () => console.log(item.quantity))
     li.appendChild(buttonAddToCart)
 
     itemDisplaySection.appendChild(li)
   })
 }
 
+const clearCartItems = () => {
+  const cartItems = document.querySelectorAll("main#cart ul.cart--item-list li")
+  cartItems.forEach(item => item.remove())
+}
+
 const displayCartItems = () => {
+  clearCartItems()
   const cartDisplay = document.querySelector("main#cart ul.cart--item-list")
 
   state.items.forEach((item) => {
@@ -101,7 +107,7 @@ const displayCartItems = () => {
     buttonRemove.class = "quantity-btn remove-btn center"
     buttonRemove.innerText = "-"
     li.appendChild(buttonRemove)
-    buttonRemove.addEventListener("click", (event) => console.log(event))
+    buttonRemove.addEventListener("click", (event) => changeItemAmount(item, -1))
     
     const quantity = document.createElement("span")
     quantity.class = "quantity-text center"
@@ -111,7 +117,7 @@ const displayCartItems = () => {
     const buttonAdd = document.createElement("button")
     buttonAdd.class = "quantity-btn add-btn center"
     buttonAdd.innerText = "+"
-    buttonAdd.addEventListener("click", (event) => console.log(event))
+    buttonAdd.addEventListener("click", (event) => changeItemAmount(item, 1))
 
     li.appendChild(buttonAdd)
 
@@ -119,22 +125,23 @@ const displayCartItems = () => {
   })
 }
 
-const findItemIndex = (itemID) => state.items.forEach((item, index) => {
-  if (item.id === itemID) return index
-})
-
-const changeItemAmount = (itemID, quantity) => {
-  const ind = findItemIndex(itemID)
-  console.log(itemID, quantity)
-  state.items[ind].quantity += quantity
-}
-
 const calcCartTotal = () => state.items.reduce((sum, item) => sum + item.total(), 0)
 
 const refreshCartTotalDisplay = () => {
   const total = document.querySelector("span.total-number")
   total.innerText = "£" + calcCartTotal().toFixed(2)
-  return "refreshed"
+}
+
+const findItemIndex = (itemID) => state.items.forEach((item, index) => {
+  if (item.id === itemID) return index
+})
+
+const changeItemAmount = (item, quantity) => {
+  const index = findItemIndex(item.id)
+  console.log(index)
+  item.quantity += quantity
+  displayCartItems()
+  refreshCartTotalDisplay()
 }
 
 initItems()
