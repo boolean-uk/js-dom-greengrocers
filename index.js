@@ -91,6 +91,8 @@ const displayCartItems = () => {
   const cartDisplay = document.querySelector("main#cart ul.cart--item-list")
 
   state.items.forEach((item) => {
+    if (item.quantity === 0) return
+
     const li = document.createElement("li")
     
     const img = document.createElement("img")
@@ -138,8 +140,8 @@ const findItemIndex = (itemID) => state.items.forEach((item, index) => {
 
 const changeItemAmount = (item, quantity) => {
   const index = findItemIndex(item.id)
-  console.log(index)
-  item.quantity += quantity
+  item.quantity + quantity >= 0 ? item.quantity += quantity : item.remove()
+  // item.quantity += quantity
   displayCartItems()
   refreshCartTotalDisplay()
 }
