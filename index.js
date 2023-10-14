@@ -129,6 +129,14 @@ const changeItemAmount = (itemID, quantity) => {
   state.items[ind].quantity += quantity
 }
 
+const calcCartTotal = () => state.items.reduce((sum, item) => sum + item.total(), 0)
+
+const refreshCartTotalDisplay = () => {
+  const total = document.querySelector("span.total-number")
+  total.innerText = "£" + calcCartTotal().toFixed(2)
+  return "refreshed"
+}
+
 initItems()
 displayItems()
 displayCartItems()
