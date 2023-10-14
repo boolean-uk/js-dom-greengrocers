@@ -56,30 +56,81 @@ const state = {
 
 //const for the product section
 const productSection = document.querySelector(".store--item-list")
+const cartSection = document.querySelector(".cart--item-list")
+const totalSection = document.querySelector(".total-number")
 
-//function to create the cards
+//function to create the product cards
 function createCard(){
   state.items.forEach(item => {
-    // Create elements for the item card
+    // Create elements for the item cards
     const li = document.createElement('li');
     const div = document.createElement('div');
     const img = document.createElement('img');
-    const button = document.createElement('button');
-    button.innerText = "Add to cart";
+    const ATCButton = document.createElement('button');
+    ATCButton.innerText = "Add to cart";
 
     img.src = `assets/icons/${item.id}.svg`;
     div.setAttribute('class', 'store--item-icon');
     div.append(img);
 
-    li.append(div, button);
+    //add functionality to ATC button
+    ATCButton.addEventListener('click', () => {
+      clearCart();
+      item.quantity += 1;
+
+      //check if item is already in cart
+      const cartItem = state.cart.find(cartItem => cartItem.id === item.id);
+      if(cartItem){
+        cartItem.quantity += 1;
+      } else {
+        state.cart.push({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: 1
+        });
+      }
+      createCart();
+    });
+    // Add the item name and price to the card
+    li.append(div, ATCButton);
     productSection.append(li);
   });
 }
-createCard();
-  
-//function to add items to cart
+//function to clear cart
+function clearCart(){
+  cartSection.innerHTML = "";
+}
 
-//function to check if the item is in cart and if so increase the quantity in the cart
+//function to create the cart cards
+function createCart(){
+  state.items.forEach(item => {
+    // Create elements for the cart cards
+    const li = document.createElement('li');
+    const img = document.createElement('img');
+    const p = document.createElement('p');
+    const minusBtn = document.createElement('button');
+    const span = document.createElement('span');
+    const plusBtn = document.createElement('button');
+    //add classes to image element
+    img.classList.add('cart--item-icon');
+    img.src = `assets/icons/${item.id}.svg`;
+    img.alt = item.name;
+    //add classes to buttons and span elements
+    minusBtn.setAttribute('class', 'quantity-btn remove-btn center');
+    span.setAttribute('class', 'quantity-text center');
+    plusBtn.setAttribute('class', 'quantity-btn add-btn center');
+    //adding text to buttons and spans
+    p.innerText = item.name;
+    minusBtn.innerText = "-";
+    plusBtn.innerText = "+";
+    span.innerText = item.quantity;
+    //adding elements to the li element
+    li.append(img, p, minusBtn, span, plusBtn);
+    cartSection.append(li);
+  });
+}
+createCard();
 
 //function to look inside the cart and adjust the number of items inside, if the quantity is 0, remove the item from the cart
 
