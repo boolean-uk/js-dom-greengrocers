@@ -50,12 +50,39 @@ const state = {
       name: "eggplant",
       price: 0.35
     }
-  ],
-  cart: []
+  ]
 };
+
+const initItems = () => state.items.forEach(item => {
+  item.quantity = 0
+  item.total = function() {
+    return this.quantity * this.price
+  }
+})
 
 const displayItems = () => {
   const itemDisplaySection = document.querySelector("header#store ul.item-list")
+
+  state.items.forEach((item) => {
+    const li = document.createElement("li")
+    
+    const img = document.createElement("img")
+    img.class = "cart-item-icon"
+    img.src = "assets/icons/" + item.id + ".svg"
+  
+    li.appendChild(img)
+    
+    const buttonAddToCart = document.createElement("button")
+    buttonAddToCart.innerText = "Add to cart"
+    buttonAddToCart.addEventListener("click", () => console.log("add ", item))
+    li.appendChild(buttonAddToCart)
+
+    itemDisplaySection.appendChild(li)
+  })
+}
+
+const displayCartItems = () => {
+  const cartDisplay = document.querySelector("main#cart ul.cart--item-list")
 
   state.items.forEach((item) => {
     const li = document.createElement("li")
@@ -74,19 +101,34 @@ const displayItems = () => {
     buttonRemove.class = "quantity-btn remove-btn center"
     buttonRemove.innerText = "-"
     li.appendChild(buttonRemove)
+    buttonRemove.addEventListener("click", (event) => console.log(event))
     
     const quantity = document.createElement("span")
     quantity.class = "quantity-text center"
-    quantity.innerText = 1
+    quantity.innerText = item.quantity
     li.appendChild(quantity)
     
     const buttonAdd = document.createElement("button")
     buttonAdd.class = "quantity-btn add-btn center"
     buttonAdd.innerText = "+"
+    buttonAdd.addEventListener("click", (event) => console.log(event))
+
     li.appendChild(buttonAdd)
 
-    itemDisplaySection.appendChild(li)
+    cartDisplay.appendChild(li)
   })
 }
 
+const findItemIndex = (itemID) => state.items.forEach((item, index) => {
+  if (item.id === itemID) return index
+})
+
+const changeItemAmount = (itemID, quantity) => {
+  const ind = findItemIndex(itemID)
+  console.log(itemID, quantity)
+  state.items[ind].quantity += quantity
+}
+
+initItems()
 displayItems()
+displayCartItems()
