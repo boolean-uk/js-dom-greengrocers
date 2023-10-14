@@ -68,6 +68,7 @@ const state = {
 const productSection = document.querySelector(".store--item-list")
 const cartSection = document.querySelector(".cart--item-list")
 const totalSection = document.querySelector(".total-number")
+const filterSection = document.querySelector(".filter-section")
 
 const items = state.items;
 const cart = state.cart;
@@ -165,4 +166,35 @@ function itemTotals(){
   });
   totalSection.innerText = total.toFixed(2);
 }
+
+//function to filter out items and display the ones that match the search query
+function filterItems(){
+  //create filter elements
+  const filterLabel = document.createElement('label');
+  filterLabel.innerText = "Search for an item";
+
+  const filterInput = document.createElement('input');
+  filterInput.setAttribute('type', 'text');
+  filterInput.setAttribute('id', 'filter');
+
+  const filterBtn = document.createElement('button');
+  filterBtn.innerText = "Search";
+
+  //add functionality to filter button
+  filterBtn.addEventListener('click', () => {
+    console.log(filterInput.value);
+    clearCart();
+    const filter = filterInput.value.toLowerCase();
+    const filteredItems = items.filter(item => {
+      return item.name.includes(filter);
+    });
+    console.log(filteredItems);
+    state.items = filteredItems;
+    createCard();
+  });
+  //add elements to filter section
+  filterSection.append(filterLabel, filterInput, filterBtn);
+}
+filterItems();
+
 createCard();
