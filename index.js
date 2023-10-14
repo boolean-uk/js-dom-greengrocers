@@ -53,3 +53,43 @@ const state = {
   ],
   cart: []
 };
+
+
+//function to show the items in the store form the array
+const createStorelist =() => {
+  
+  //to loop through the items to display
+  state.items.forEach(product => {
+
+     // to display the items in the store list 
+    const listOfItem = document.querySelector('.store--item-list')
+  
+    //create a li to store  the item in the store
+    const storeList = document.createElement('li')
+    
+      const storeItemIcon = document.createElement('div')
+      storeItemIcon.setAttribute('class','store--item-icon')
+
+        //for the icon
+        const productIcon = document.createElement('img')
+        productIcon.setAttribute('src',`./assets/icons/${product.id}.svg`)
+    
+        storeItemIcon.append(productIcon)
+    
+       //for the button 
+       const button = document.createElement('button')
+       button.innerText = 'Add to card'
+
+       storeList.append(storeItemIcon)
+
+      storeList.append(button)
+
+
+      listOfItem.append(storeList)
+  })
+
+}
+  
+createStorelist();
+  
+
