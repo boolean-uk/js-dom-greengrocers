@@ -74,7 +74,7 @@ const displayItems = () => {
     
     const buttonAddToCart = document.createElement("button")
     buttonAddToCart.innerText = "Add to cart"
-    buttonAddToCart.addEventListener("click", () => console.log(item.quantity))
+    buttonAddToCart.addEventListener("click", () => changeItemAmount(item, 1))
     li.appendChild(buttonAddToCart)
 
     itemDisplaySection.appendChild(li)
@@ -109,7 +109,7 @@ const displayCartItems = () => {
     buttonRemove.class = "quantity-btn remove-btn center"
     buttonRemove.innerText = "-"
     li.appendChild(buttonRemove)
-    buttonRemove.addEventListener("click", (event) => changeItemAmount(item, -1))
+    buttonRemove.addEventListener("click", () => changeItemAmount(item, -1))
     
     const quantity = document.createElement("span")
     quantity.class = "quantity-text center"
@@ -119,7 +119,7 @@ const displayCartItems = () => {
     const buttonAdd = document.createElement("button")
     buttonAdd.class = "quantity-btn add-btn center"
     buttonAdd.innerText = "+"
-    buttonAdd.addEventListener("click", (event) => changeItemAmount(item, 1))
+    buttonAdd.addEventListener("click", () => changeItemAmount(item, 1))
 
     li.appendChild(buttonAdd)
 
@@ -139,9 +139,7 @@ const findItemIndex = (itemID) => state.items.forEach((item, index) => {
 })
 
 const changeItemAmount = (item, quantity) => {
-  const index = findItemIndex(item.id)
   item.quantity + quantity >= 0 ? item.quantity += quantity : item.remove()
-  // item.quantity += quantity
   displayCartItems()
   refreshCartTotalDisplay()
 }
