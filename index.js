@@ -138,7 +138,7 @@ function createCart(){
       return;
     }
 
-    //add functionality to minus button to say when the button is clicked it will update the item quantity of the same item in the cart
+    //add functionality to minus button 
     minusBtn.addEventListener('click', () => {
       clearCart();
       item.quantity -= 1;
