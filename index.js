@@ -55,11 +55,15 @@ const state = {
 
 const initItems = () => state.items.forEach(item => {
   item.quantity = 0
+  // to have different prices in tests I wrote a real life simulation of what it feels like looking at prices of fruit and veggies
+  item.price = newSurprisePrice().toFixed(2)
   item.total = function() {
     return this.quantity * this.price
   }
   item.category = category(item.name)
 })
+
+const newSurprisePrice = () => 1 + Math.random() * 2 + Math.random() / 100
 
 const clearDisplayItems = () => {
   const itemDisplaySection = document.querySelectorAll("header#store ul.item-list li")
