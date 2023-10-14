@@ -3,52 +3,62 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      quantity: 0
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      quantity: 0
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      quantity: 0
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      quantity: 0
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      quantity: 0
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      quantity: 0
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      quantity: 0
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      quantity: 0
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      quantity: 0
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      quantity: 0
     }
   ],
   cart: []
@@ -58,6 +68,9 @@ const state = {
 const productSection = document.querySelector(".store--item-list")
 const cartSection = document.querySelector(".cart--item-list")
 const totalSection = document.querySelector(".total-number")
+
+const items = state.items;
+const cart = state.cart;
 
 //function to create the product cards
 function createCard(){
@@ -79,18 +92,12 @@ function createCard(){
       item.quantity += 1;
 
       //check if item is already in cart
-      const cartItem = state.cart.find(cartItem => cartItem.id === item.id);
-      if(cartItem){
-        cartItem.quantity += 1;
-      } else {
-        state.cart.push({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: 1
-        });
-      }
-      createCart();
+      const dupItem = cart.some(obj => {
+        return obj.id === item.id;
+      });
+
+      dupItem ? createCart() : cart.push(item) , createCart();
+      itemTotals();
     });
     // Add the item name and price to the card
     li.append(div, ATCButton);
@@ -125,13 +132,37 @@ function createCart(){
     minusBtn.innerText = "-";
     plusBtn.innerText = "+";
     span.innerText = item.quantity;
+
+    //guard clause to check if item quantity is 0
+    if(item.quantity === 0){
+      return;
+    }
+
+    //add functionality to minus button to say when the button is clicked it will update the item quantity of the same item in the cart
+    minusBtn.addEventListener('click', () => {
+      clearCart();
+      item.quantity -= 1;
+      createCart();
+      itemTotals();
+    });
+    //add functionality to plus button
+    plusBtn.addEventListener('click', () => {
+      clearCart();
+      item.quantity += 1;
+      createCart();
+      itemTotals();
+    });
     //adding elements to the li element
     li.append(img, p, minusBtn, span, plusBtn);
     cartSection.append(li);
   });
 }
-createCard();
-
-//function to look inside the cart and adjust the number of items inside, if the quantity is 0, remove the item from the cart
-
 //function to calculate the total price of the items in the cart
+function itemTotals(){
+  let total = 0;
+  cart.forEach(item => {
+    total += item.price * item.quantity;
+  });
+  totalSection.innerText = total.toFixed(2);
+}
+createCard();
