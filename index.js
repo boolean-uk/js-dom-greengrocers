@@ -69,6 +69,7 @@ const productSection = document.querySelector(".store--item-list")
 const cartSection = document.querySelector(".cart--item-list")
 const totalSection = document.querySelector(".total-number")
 const filterSection = document.querySelector(".filter-section")
+const sortSection = document.querySelector(".sort-section")
 
 const items = state.items;
 const cart = state.cart;
@@ -202,5 +203,38 @@ function filterItems(){
   filterSection.append(filterLabel, filterInput, filterBtn);
 }
 filterItems();
+
+//function to sort by alphabetical order
+function sortBy(){
+  //create sort elements
+  const sortLabel = document.createElement('label');
+  sortLabel.innerText = "Sort by";
+
+  const sortInput = document.createElement('select');
+  const option1 = document.createElement('option');
+  option1.innerText = "A-Z";
+  sortInput.add(option1);
+
+  const sortBtn = document.createElement('button');
+  sortBtn.innerText = "Sort";
+
+  //add functionality to sort button
+  sortBtn.addEventListener('click', () => {
+    clearCart();
+    const sort = sortInput.value;
+    if(sort === "A-Z"){
+      const sortedItems = items.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+      state.items = sortedItems;
+      clearCards();
+      createCard();
+    }
+  });
+
+  //add elements to sort section
+  sortSection.append(sortLabel, sortInput, sortBtn);
+}
+sortBy();
 
 createCard();
