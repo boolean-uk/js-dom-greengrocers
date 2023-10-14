@@ -1,5 +1,6 @@
 console.log(state, "this is the state")
 
+//STORE ITEMS
 // Render the store items
 // In header add items
 
@@ -32,6 +33,12 @@ console.log(state, "this is the state")
 //      append span to li
 // 8. create button -- add class, text
 //      append button to li
+
+// ADD EVENT LISTENERS TO ADD AND MINUS BUTTONS
+// Minus button
+// 1. add event listener to minus button
+// 2. inside event listener
+//  if item is exisiting in the cart, increase the quantity(span)
 
 
 // Actual code
@@ -98,7 +105,10 @@ state.items.forEach((eachItem) => {
         // 6. create button -- add class, text
         const cartButtonMinus = document.createElement('button')
         cartButtonMinus.setAttribute("class", "quantity-btn remove-btn center")
+        cartButtonMinus.innerText = "-"
         itemListLIs.append(cartButtonMinus)
+
+
 
         // 7. create span -- class, text
         const spanForCart = document.createElement('span')
@@ -111,6 +121,26 @@ state.items.forEach((eachItem) => {
         cartButtonAdd.setAttribute("class", "quantity-btn add-btn center")
         cartButtonAdd.innerText = '+'
         itemListLIs.append(cartButtonAdd)
+
+        ////////////////////////////////////////////////////
+
+        //ADD EVENT LISTENERS TO MINUS AND PLUS BUTTON
+        // MINUS
+
+        cartButtonMinus.addEventListener("click", () => {
+            console.log("clicked")
+
+        })
+
+        //ADD EVENT LISTENERS TO MINUS AND PLUS BUTTON
+        // ADD
+
+        cartButtonAdd.addEventListener("click", () => {
+            console.log("clicked")
+            if (cartButtonAdd < 2) {
+                cartButtonAdd + 1
+            }
+        })
     })
 
 
