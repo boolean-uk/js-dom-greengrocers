@@ -61,11 +61,19 @@ const initItems = () => state.items.forEach(item => {
   item.category = category(item.name)
 })
 
+const clearDisplayItems = () => {
+  const itemDisplaySection = document.querySelectorAll("header#store ul.item-list li")
+  console.log(itemDisplaySection)
+  itemDisplaySection.forEach(item => item.remove())
+}
+
 const displayItems = () => {
+  clearDisplayItems()
   const itemDisplaySection = document.querySelector("header#store ul.item-list")
 
   state.items.forEach((item) => {
-    if (!!filter === true && item.category !== filter) return
+    
+    if (filter.length !== 0 && item.category !== filter) return
 
     const li = document.createElement("li")
     
@@ -155,8 +163,32 @@ const category = (productName) => {
 }
 
 let filter = ""
-const addFilter = (filterName) => filter = filterName
-const resetFilter = () => filter = ""
+const changeFilterValue = (filterName) => {
+  filter = filterName
+  console.log(filter)
+  displayItems()
+}
+
+const constructFilters = () => {
+  const aside = document.querySelector("header#store aside")
+  console.log(aside)
+  
+  const fruitFilter = document.createElement("button")
+  fruitFilter.innerText = "Fruits"
+  fruitFilter.addEventListener("click", () => changeFilterValue("fruits"))
+
+  const vegetablesFilter = document.createElement("button")
+  vegetablesFilter.innerText = "Vegetables"
+  vegetablesFilter.addEventListener("click", () => changeFilterValue("vegetables"))
+  
+  const resetFilterButton = document.createElement("button")
+  resetFilterButton.innerText = "Reset"
+  resetFilterButton.addEventListener("click", () => changeFilterValue(""))
+  
+  aside.appendChild(fruitFilter)
+  aside.appendChild(vegetablesFilter)
+  aside.appendChild(resetFilterButton)
+}
 
 const changeItemAmount = (item, quantity) => {
   item.quantity + quantity >= 0 ? item.quantity += quantity : item.remove()
@@ -164,6 +196,7 @@ const changeItemAmount = (item, quantity) => {
   refreshCartTotalDisplay()
 }
 
+constructFilters()
 initItems()
 displayItems()
 displayCartItems()
