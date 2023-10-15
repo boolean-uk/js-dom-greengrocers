@@ -55,23 +55,40 @@ const state = {
 };
 
 
-function renderItem(){
-  items.array.forEach(element => {
+function renderItem() {
+  const container = document.getElementById('item-list'); 
+
+  state.items.forEach(item => {
+    const itemDiv = document.createElement('div'); 
+
+    const image = document.createElement('img');
+    image.src = 'assets/' + item.id + '.svg';
+
+    const name = document.createElement('h3');
+    name.textContent = item.name;
+
+    const itemPrice = document.createElement('div');
+    itemPrice.textContent = '£' + item.price.toFixed(2);
+
+    const addButton = document.createElement('button');
+    addButton.textContent = 'Add to Cart';
+    addButton.addEventListener('click', () => {
+      
+    });
+
+   
+    itemDiv.appendChild(image);
+    itemDiv.appendChild(name);
+    itemDiv.appendChild(itemPrice);
+    itemDiv.appendChild(addButton);
+
     
+    container.appendChild(itemDiv);
   });
-    
-  };
+}
 
 
-const item = document.createElement('img');
-image.src = items.id
 
-const names = document.createElement('h3');
-names.textContent = items.name
-
-
-const price = document.createElement('div');
-price.textContent = items.price;
 
 
 
