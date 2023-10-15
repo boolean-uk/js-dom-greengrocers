@@ -53,3 +53,6 @@ const state = {
   ],
   cart: []
 };
+
+
+const renderItem = document.querySelector("store--item-list");
