@@ -53,3 +53,52 @@ const state = {
   ],
   cart: []
 };
+
+// HIGH LEVEL STORE VARIABLES
+const storeList = document.querySelector('#store > ul')
+
+// COMPLETE RENDER FUNCTION
+
+const render = () => {
+  renderStore()
+}
+
+
+// CREATE STORE FUNCTIONS
+const createStoreItemButton = () => {
+  const storeItemButton = document.createElement('button')
+  storeItemButton.innerText = "Add to cart"
+  return storeItemButton
+}
+
+const selectStoreItemImage = (item) => {
+  const storeItemImage = document.createElement('img')
+  storeItemImage.src = `assets/icons/${item.id}.svg`
+  return storeItemImage
+}
+
+const createStoreItemDiv = (item) => {
+  const storeItemDiv = document.createElement('div')
+  storeItemDiv.setAttribute('class', 'store--item-icon')
+  storeItemDiv.append(selectStoreItemImage(item))
+
+  return storeItemDiv
+}
+
+// DISPLAY EACH OF THE STORE ITEMS ON THE PAGE
+
+const renderStore = () => {
+  state.items.forEach((item) => {
+    const storeItem = document.createElement('li')
+    storeItem.innerText = "placeholder"
+  
+    storeItem.append(createStoreItemDiv(item))
+    // storeItem.append(selectStoreItemImage(item))
+  
+    storeItem.append(createStoreItemButton())
+    
+    storeList.append(storeItem)
+  })
+}
+
+render()
