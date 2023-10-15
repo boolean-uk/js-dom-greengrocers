@@ -55,4 +55,23 @@ const state = {
 };
 
 
-const renderItem = document.querySelector("store--item-list");
+function renderItem(){
+  items.array.forEach(element => {
+    
+  });
+    
+  };
+
+
+const item = document.createElement('img');
+image.src = items.id
+
+const names = document.createElement('h3');
+names.textContent = items.name
+
+
+const price = document.createElement('div');
+price.textContent = items.price;
+
+
+
