@@ -147,6 +147,7 @@ const renderTheCart = () => {
         renderTheCart();
       }
     });
+    // added the image,  NameOfItem, decreaseButton, span, increaseButton
     li.append(image, NameOfItem, decreaseButton, span, increaseButton);
     cartLists.append(li);
   });
