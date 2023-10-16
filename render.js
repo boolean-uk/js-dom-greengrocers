@@ -16,7 +16,7 @@ function renderStore() {
 
 function renderFilter() {
   const select = createSelect();
-  const optionPick = createOption("", "Pick a type");
+  const optionPick = createOption("", "Filter by type");
   optionPick.setAttribute("disabled", "");
   optionPick.setAttribute("selected", "");
   const optionVegetable = createOption("vegetable", "vegetable");
@@ -120,16 +120,7 @@ function createImg(item, className) {
 
 function createSelect() {
   const select = createElement("select", "store-filter");
-  select.addEventListener("input", (e) => {
-    const filterType = e.target.value;
-    state.items.forEach((item) => {
-      item.visible = false;
-      if (item.filter.type === filterType) {
-        item.visible = true;
-      }
-    });
-    renderStore();
-  });
+  select.addEventListener("input", (e) => filterStoreItems("type",e.target.value));
   return select;
 }
 

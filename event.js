@@ -22,7 +22,7 @@ function changeCartQuantity(cartItem, plusOrMinus) {
     case "+":
       matchingItem.quantity++;
       break;
-      
+
     case "-":
       matchingItem.quantity === 1
         ? state.cart.splice(state.cart.indexOf(matchingItem), 1)
@@ -33,8 +33,31 @@ function changeCartQuantity(cartItem, plusOrMinus) {
   renderCart();
 }
 
-function filterCartItems() {
-  console.log(state.cart);
+function filterStoreItems(filterType, filterValue) {
+  state.items.forEach((item) => {
+    item.visible = false;
+    if (item.filter[filterType] === filterValue) {
+      item.visible = true;
+    }
+  });
+  renderStore();
 }
 
-filterCartItems()
+function sortStoreAlphabet(a, b) {
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  if (nameA < nameB) {
+    return -1;
+  }
+
+  if (nameA > nameB) {
+    return 1;
+  }
+
+  return 0;
+}
+
+function sortStorePrice(a,b) {
+  return a.price - b.price
+}

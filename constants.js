@@ -4,7 +4,7 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       visible: true,
-      price: 0.35,
+      price: 1,
       filter: {
         type: "vegetable",
         color: ["pink", "green"],
@@ -14,7 +14,7 @@ const state = {
       id: "002-carrot",
       name: "carrot",
       visible: true,
-      price: 0.35,
+      price: 0.25,
       filter: {
         type: "vegetable",
         color: ["orange", "green"],
@@ -24,7 +24,7 @@ const state = {
       id: "003-apple",
       name: "apple",
       visible: true,
-      price: 0.35,
+      price: 0.60,
       filter: {
         type: "fruit",
         color: ["red", "green"],
@@ -34,7 +34,7 @@ const state = {
       id: "004-apricot",
       name: "apricot",
       visible: true,
-      price: 0.35,
+      price: 0.70,
       filter: {
         type: "fruit",
         color: ["orange", "green"],
@@ -44,7 +44,7 @@ const state = {
       id: "005-avocado",
       name: "avocado",
       visible: true,
-      price: 0.35,
+      price: 2.50,
       filter: {
         type: "fruit",
         color: ["green"],
@@ -54,7 +54,7 @@ const state = {
       id: "006-bananas",
       name: "bananas",
       visible: true,
-      price: 0.35,
+      price: 10,
       filter: {
         type: "fruit",
         color: ["yellow"],
@@ -64,7 +64,7 @@ const state = {
       id: "007-bell-pepper",
       name: "bell pepper",
       visible: true,
-      price: 0.35,
+      price: 0.50,
       filter: {
         type: "fruit",
         color: ["green"],
@@ -74,7 +74,7 @@ const state = {
       id: "008-cherry",
       name: "cherry",
       visible: true,
-      price: 0.35,
+      price: 0.15,
       filter: {
         type: "fruit",
         color: ["red", "green"],
@@ -84,7 +84,7 @@ const state = {
       id: "009-blueberry",
       name: "blueberry",
       visible: true,
-      price: 0.35,
+      price: 0.25,
       filter: {
         type: "fruit",
         color: ["blue", "green"],
@@ -94,7 +94,7 @@ const state = {
       id: "010-eggplant",
       name: "eggplant",
       visible: true,
-      price: 0.35,
+      price: 1.35,
       filter: {
         type: "fruit",
         color: ["purple", "green"],
