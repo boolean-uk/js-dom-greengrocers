@@ -104,4 +104,32 @@ for (let i = 0; i < items.length; i++) {
     const itemButton = document.createElement('button')
     itemButton.innerText = 'Add to cart'
     listItem.append(itemButton)
-}
+
+    // When "Add to cart" is clicked
+    itemButton.addEventListener('click', () => {
+
+      // If the item wasn't added to basket, create all elements in the basket
+      if (items[i].ifClicked === false) {
+      items[i].ifClicked = true
+      const itemList = document.querySelector('.cart--item-list')
+      const addItem = document.createElement('li')
+      itemList.append(addItem)
+
+      // Creates img element in the basket
+      const cartImage = document.createElement('img')
+      addItem.append(cartImage)
+      cartImage.src = items[i].image
+
+      //  Creates name of item in basket and capitalizes first letter
+      const cartP = document.createElement('p')
+      cartP.innerText = items[i].name
+      cartP.style.textTransform = 'capitalize'
+      addItem.append(cartP)
+
+      // Creates remove from cart button
+      const cartItemRemoveButton = document.createElement('button')
+      cartItemRemoveButton.innerText = '-'
+      cartItemRemoveButton.setAttribute('class', 'quantity-btn remove-btn center')
+      addItem.append(cartItemRemoveButton)
+
+      }})} 
