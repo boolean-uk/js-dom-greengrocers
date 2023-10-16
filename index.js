@@ -152,10 +152,4 @@ function renderCartItems(){
   })
 }
 
-function totalPrice() {
-  const prices = state.cart.map((item) => item.price * item.quantity);
-  const total = prices.reduce((sum, item) => sum + item);
-  price.innerText = `£${total.toFixed(2)}`;
-}
-
 renderStoreList()
