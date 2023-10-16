@@ -7,7 +7,10 @@ const STATE = {
       price: 1,
       filter: {
         type: "vegetable",
+        subType: "root",
         color: ["pink", "green"],
+        eddApproved: "no",
+        isAPlant: "yes"
       },
     },
     {
@@ -17,7 +20,10 @@ const STATE = {
       price: 0.25,
       filter: {
         type: "vegetable",
+        subType: "root",
         color: ["orange", "green"],
+        eddApproved: "yes",
+        isAPlant: "yes"
       },
     },
     {
@@ -27,7 +33,10 @@ const STATE = {
       price: 0.6,
       filter: {
         type: "fruit",
+        subType: "pome",
         color: ["red", "green"],
+        eddApproved: "yes",
+        isAPlant: "yes"
       },
     },
     {
@@ -37,7 +46,10 @@ const STATE = {
       price: 0.7,
       filter: {
         type: "fruit",
+        subType: "berry",
         color: ["orange", "green"],
+        eddApproved: "no",
+        isAPlant: "yes"
       },
     },
     {
@@ -47,7 +59,10 @@ const STATE = {
       price: 2.5,
       filter: {
         type: "fruit",
+        subType: "berry",
         color: ["green"],
+        eddApproved: "yes",
+        isAPlant: "yes"
       },
     },
     {
@@ -58,6 +73,9 @@ const STATE = {
       filter: {
         type: "fruit",
         color: ["yellow"],
+        subType: "berry",
+        eddApproved: "yes",
+        isAPlant: "yes"
       },
     },
     {
@@ -67,7 +85,10 @@ const STATE = {
       price: 0.5,
       filter: {
         type: "fruit",
+        subType: "berry",
         color: ["green"],
+        eddApproved: "yes",
+        isAPlant: "yes"
       },
     },
     {
@@ -77,7 +98,10 @@ const STATE = {
       price: 0.15,
       filter: {
         type: "fruit",
+        subType: "berry",
         color: ["red", "green"],
+        eddApproved: "yes",
+        isAPlant: "yes"
       },
     },
     {
@@ -87,7 +111,10 @@ const STATE = {
       price: 0.25,
       filter: {
         type: "fruit",
+        subType: "berry",
         color: ["blue", "green"],
+        eddApproved: "yes",
+        isAPlant: "yes"
       },
     },
     {
@@ -97,7 +124,10 @@ const STATE = {
       price: 1.35,
       filter: {
         type: "fruit",
+        subType: "berry",
         color: ["purple", "green"],
+        eddApproved: "no",
+        isAPlant: "yes"
       },
     },
   ],

@@ -20,15 +20,36 @@ function renderFilter() {
   resetButton.addEventListener("click", resetFilter);
 
   const select = createFilterSelect();
-  const optionPick = createOption("", "Filter by type");
+  const optionPick = createOption("", "Filter By:");
   optionPick.setAttribute("disabled", "");
   optionPick.setAttribute("selected", "");
 
-  const optionVegetable = createOption("vegetable", "vegetable");
-  const optionFruit = createOption("fruit", "fruit");
+  const options = renderFilterDropDown(findFilterCategories());
 
-  multiAppend(select, optionPick, optionVegetable, optionFruit);
+  // const optionVegetable = createOption("vegetable", "vegetable");
+  // const optionFruit = createOption("fruit", "fruit");
+  // multiAppend(select, optionPick, optionVegetable, optionFruit);
+
+  multiAppend(select, optionPick,...options)
   multiAppend(STORE_FILTER_SORT, resetButton, select);
+}
+
+function renderFilterDropDown(categoryArray) {
+  const result = []
+
+  categoryArray.forEach((category) => {
+    const optGroup = document.createElement("optgroup");
+    optGroup.label = category;
+
+    const values = findFilterValues(category)
+    values.forEach(value => {
+      const option = createOption(value, value)
+      optGroup.append(option)
+    })
+
+    result.push(optGroup)
+  });
+  return result
 }
 
 function renderSort() {
@@ -69,7 +90,7 @@ function renderStoreItems(item) {
     "div",
     "store--item-name",
     null,
-    item.name[0].toUpperCase() + item.name.slice(1)
+    titleCase(item.name)
   );
 
   const itemIconDiv = createElement("div", "store--item-icon");
@@ -176,8 +197,11 @@ function createImg(item, className) {
 
 function createFilterSelect() {
   const select = createElement("select", "filter-sort-select", "store-filter");
-  select.addEventListener("input", (e) =>
-    filterStoreItems("type", e.target.value)
+  select.addEventListener("input", (e) => {
+    const selected = e.target.querySelector("option:checked")
+    const parent = selected.parentElement
+    filterStoreItems(parent.label, e.target.value)
+  }
   );
   return select;
 }
@@ -191,7 +215,7 @@ function createSortSelect() {
 function createOption(value, text) {
   const option = createElement("option");
   option.value = value;
-  option.innerText = text[0].toUpperCase() + text.slice(1);
+  option.innerText = titleCase(text);
   return option;
 }
 
@@ -201,4 +225,10 @@ function multiAppend(parentElement, ...childElements) {
   childElements.forEach((child) => {
     parentElement.append(child);
   });
+}
+
+// text transform
+
+function titleCase(text) {
+  return text.split(" ").map(word => word[0].toUpperCase() + word.slice(1)).join(" ")
 }

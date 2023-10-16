@@ -36,7 +36,11 @@ function changeCartQuantity(cartItem, plusOrMinus) {
 function filterStoreItems(filterType, filterValue) {
   STATE.items.forEach((item) => {
     item.visible = false;
-    if (item.filter[filterType] === filterValue) {
+    const category = item.filter[filterType];
+    if (
+      category &&
+      (category === filterValue || category.includes(filterValue))
+    ) {
       item.visible = true;
     }
   });
@@ -106,4 +110,24 @@ function resetFilter() {
   filter.value = "";
 
   renderStore();
+}
+
+function findFilterCategories() {
+  const categorySet = new Set();
+  STATE.items.forEach((item) => {
+    const keys = Object.keys(item.filter);
+    keys.forEach((key) => categorySet.add(key));
+  });
+
+  return Array.from(categorySet).sort();
+}
+
+function findFilterValues(category) {
+  const valueSet = new Set();
+  const values = STATE.items.flatMap((item) => item.filter[category]);
+
+  values.forEach((value) => valueSet.add(value));
+  valueSet.delete(undefined);
+
+  return Array.from(valueSet);
 }
