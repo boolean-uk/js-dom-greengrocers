@@ -3,37 +3,37 @@ const state = {
         {
             id: "001-beetroot",
             name: "beetroot",
-            price: 0.35,
+            price: 0.4,
             type: "vegetables",
         },
         {
             id: "002-carrot",
             name: "carrot",
-            price: 0.35,
+            price: 0.99,
             type: "vegetables",
         },
         {
             id: "003-apple",
             name: "apple",
-            price: 0.35,
+            price: 0.55,
             type: "fruits",
         },
         {
             id: "004-apricot",
             name: "apricot",
-            price: 0.35,
+            price: 0.39,
             type: "fruits",
         },
         {
             id: "005-avocado",
             name: "avocado",
-            price: 0.35,
+            price: 1,
             type: "fruits",
         },
         {
             id: "006-bananas",
             name: "bananas",
-            price: 0.35,
+            price: 0.9,
             type: "fruits",
         },
         {
@@ -45,19 +45,19 @@ const state = {
         {
             id: "008-berry",
             name: "berry",
-            price: 0.35,
+            price: 0.95,
             type: "fruits",
         },
         {
             id: "009-blueberry",
             name: "blueberry",
-            price: 0.35,
+            price: 1.45,
             type: "fruits",
         },
         {
             id: "010-eggplant",
             name: "eggplant",
-            price: 0.35,
+            price: 0.15,
             type: "vegetables",
         },
     ],
@@ -74,13 +74,20 @@ const totalNumber = document.querySelector(".total-number");
 
 // Render functions
 
-const renderStore = (filter) => {
+const renderStore = (filter, sort) => {
     storeItems.querySelectorAll("li").forEach((item) => item.remove());
 
     state.items
         .filter((item) => (filter ? item.type === filter : item))
+        .sort(
+            (a, b) =>
+                sort && a[sort].toString().localeCompare(b[sort].toString())
+        )
         .forEach((item) => {
             const itemContainer = document.createElement("li");
+
+            const itemName = document.createElement("p");
+            itemName.innerText = item.name;
 
             const itemDiv = document.createElement("div");
             itemDiv.setAttribute("class", "store--item-icon");
@@ -88,6 +95,9 @@ const renderStore = (filter) => {
             const itemImage = document.createElement("img");
             itemImage.src = `assets/icons/${item.id}.svg`;
             itemImage.alt = item.name;
+
+            const itemPrice = document.createElement("span");
+            itemPrice.innerText = `£${item.price}`;
 
             const itemButton = document.createElement("button");
             itemButton.innerText = "Add to cart";
@@ -106,7 +116,7 @@ const renderStore = (filter) => {
 
             // configuration
             itemDiv.append(itemImage);
-            itemContainer.append(itemDiv, itemButton);
+            itemContainer.append(itemName, itemDiv, itemPrice, itemButton);
             storeItems.append(itemContainer);
         });
 };
@@ -179,10 +189,16 @@ const renderCart = () => {
         .toFixed(2)}`;
 };
 
-// filter function
+// filter and sort functions
+const storeTools = document.querySelectorAll(".store-tools > select");
 const filterSelector = document.querySelector("#store-fitler");
+const sortSelector = document.querySelector("#store-sort");
 
-filterSelector.addEventListener("change", (e) => renderStore(e.target.value));
+storeTools.forEach((item) => {
+    item.addEventListener("change", () => {
+        renderStore(filterSelector.value, sortSelector.value);
+    });
+});
 
 // Calling functions
 renderStore();
