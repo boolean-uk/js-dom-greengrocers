@@ -1,15 +1,29 @@
 // Render
 
 function renderAll() {
+  renderFilter();
   renderStore();
   renderCart();
+  renderTotal();
 }
 
 function renderStore() {
   clearElement(STORE_ITEM_LIST);
   state.items.forEach((item) => {
-    renderStoreItems(item);
+    item.visible ? renderStoreItems(item) : null;
   });
+}
+
+function renderFilter() {
+  const select = createSelect();
+  const optionPick = createOption("", "Pick a type");
+  optionPick.setAttribute("disabled", "");
+  optionPick.setAttribute("selected", "");
+  const optionVegetable = createOption("vegetable", "vegetable");
+  const optionFruit = createOption("fruit", "fruit");
+
+  multiAppend(select, optionPick, optionVegetable, optionFruit);
+  STORE_FILTER.append(select);
 }
 
 function renderStoreItems(item) {
@@ -29,7 +43,7 @@ function renderCart() {
   state.cart.forEach((item, idx) => {
     renderCartItems(item);
   });
-  renderTotal()
+  renderTotal();
 }
 
 function renderCartItems(item) {
@@ -102,6 +116,28 @@ function createImg(item, className) {
   img.alt = item.name;
 
   return img;
+}
+
+function createSelect() {
+  const select = createElement("select", "store-filter");
+  select.addEventListener("input", (e) => {
+    const filterType = e.target.value;
+    state.items.forEach((item) => {
+      item.visible = false;
+      if (item.filter.type === filterType) {
+        item.visible = true;
+      }
+    });
+    renderStore();
+  });
+  return select;
+}
+
+function createOption(value, text) {
+  const option = createElement("option");
+  option.value = value;
+  option.innerText = text[0].toUpperCase() + text.slice(1);
+  return option;
 }
 
 // append

@@ -22,19 +22,19 @@ function changeCartQuantity(cartItem, plusOrMinus) {
     case "+":
       matchingItem.quantity++;
       break;
+      
     case "-":
       matchingItem.quantity === 1
         ? state.cart.splice(state.cart.indexOf(matchingItem), 1)
         : matchingItem.quantity--;
-
       break;
-  }
-
-  if (plusOrMinus === "+") {
-  }
-
-  if (plusOrMinus === "-") {
   }
 
   renderCart();
 }
+
+function filterCartItems() {
+  console.log(state.cart);
+}
+
+filterCartItems()
