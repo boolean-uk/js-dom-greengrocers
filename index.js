@@ -69,7 +69,7 @@ const renderHeader = () => {
     const image= document.createElement('img');
     image.src = `assets/icons/${item.id}.svg`
     image.alt= item.name;
-    imageBox.append(image);
+    imageBox.append(image); 
 
     const button= document.createElement('button');
     button.innerText = 'add to cart';
@@ -78,4 +78,38 @@ const renderHeader = () => {
     });
   
 }
+const renderMain = () => {
+  state.items.forEach((item) => {
+    const itemListBox = document.querySelector('.cart--item-list');
+
+    const listItem2 = document.createElement('li');
+    itemListBox.append(listItem2);
+
+    const image= document.createElement('img');
+    image.src = `assets/icons/${item.id}.svg`
+    image.alt= item.name;
+    listItem2.append(image);
+
+    const paragraph = document.createElement('p')
+    paragraph.innerText = item.name;
+    listItem2.append(paragraph);
+
+    const addButton = document.createElement('button');
+    addButton.innerText = `+`;
+    listItem2.append(addButton);
+    
+    const totalNumber = document.createElement('span');
+    totalNumber.innerText = '1';
+    listItem2.append(totalNumber);
+    
+    const removeButton = document.createElement('button');
+    removeButton.innerText = '-';
+    listItem2.append(removeButton);
+
+
+
+
+  })
+}
 renderHeader();
+renderMain();
