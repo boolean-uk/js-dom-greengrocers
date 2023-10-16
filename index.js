@@ -83,15 +83,19 @@ const renderItems = () => {
     containerCart.append(buttonMinus);
     //create an event listener for the remove button for each item
     buttonMinus.addEventListener("click", () => {
-      const foundItem = state.cart.find((itemsList) => itemsList.id === item.id);
+      const foundItem = state.cart.find(
+        (itemsList) => itemsList.id === item.id
+      );
       if (foundItem) {
         if (foundItem.quantity !== 0) {
           foundItem.quantity--;
         }
-        //TODO: add logic to remove the item from the cart
+        //added logic to remove the item from the cart
+        if (foundItem.quantity === 0) {
+          state.cart = state.cart.filter((item) => item.id !== foundItem.id);
+        }
       }
       renderItems();
-    
     });
     //create a quantity for each item
     const inputQuantity = document.createElement("span");
@@ -104,16 +108,23 @@ const renderItems = () => {
     buttonPlus.setAttribute("class", "add-btn");
     containerCart.append(buttonPlus);
     buttonPlus.addEventListener("click", () => {
-      const foundItem = state.cart.find((itemsList) => itemsList.id === item.id);
-      console.log(foundItem);
+      const foundItem = state.cart.find(
+        (itemsList) => itemsList.id === item.id
+      );
       if (foundItem) {
         foundItem.quantity++;
       }
       renderItems();
-      });
-      //TODO: create a price for each item
+    });
+    //create a price for each item in the cart and add it and append it to the span price 
+    const spanPrice = document.querySelector(".total-number");
+    const totalPrice = state.cart.reduce((total, item) => {
+      return total + item.price * item.quantity;
+    }, 0);
+    spanPrice.innerText = "£" + totalPrice.toFixed(2);
+  });
+};
 
-  })};
 
 state.items.forEach((storedItem) => {
   const container = document.createElement("li");
