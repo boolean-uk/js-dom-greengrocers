@@ -61,10 +61,10 @@ const cartList = document.querySelector('#cart > div > ul')
 // FULL PAGE RENDER FUNCTION
 function render() {
   renderStore()
-  // renderCart()
 }
 
 // STORE
+
 // CREATE STORE FUNCTIONS
 function renderStoreItemDiv(item) {
   const storeItemDiv = document.createElement('div')
@@ -80,11 +80,22 @@ function renderStoreItemImage(item) {
   return storeItemImage
 }
 
+// ADD ITEM TO CART BUTTON FUNCTION
+function addItemToCart(item) {
+  const isItemInCart = state.cart.find((newItem) => newItem.name === item.name)
+
+  if (isItemInCart) {
+    isItemInCart.quantity += 1 
+  } else {
+    state.cart.push({id: item.id, name: item.name, price: item.price, quantity: 1})
+  }
+  renderCart()
+}
+
 // RENDER STORE ITEMS ON THE PAGE
 function renderStore() {
   state.items.forEach((item) => {
     const storeItem = document.createElement('li')
-  
     storeItem.append(renderStoreItemDiv(item))  
 
     const storeItemButton = document.createElement('button')
@@ -93,21 +104,12 @@ function renderStore() {
 
     storeList.append(storeItem)
 
-    storeItemButton.addEventListener('click', () => {
-      const isItemInCart = state.cart.find((newItem) => newItem.name === item.name)
-
-      if (isItemInCart) {
-        isItemInCart.quantity += 1 
-      } else {
-        state.cart.push({id: item.id, name: item.name, price: item.price, quantity: 1})
-      }
-      renderCart()
-    })
+    storeItemButton.addEventListener('click', () => addItemToCart(item))
   })
 }
 
-
 // CART
+
 // CREATE INDIVIDUAL CART FUNCTIONS
 function renderCartItemImage(item) {
   const cartItemImage = document.createElement('img')
@@ -128,19 +130,7 @@ function renderDecreaseButton(item) {
   cartItemDecreaseButton.classList.add('quantity-btn', 'remove-btn', 'center')
   cartItemDecreaseButton.innerText = '-'
 
-  cartItemDecreaseButton.addEventListener('click', () => {
-
-    if (item.quantity > 1) {
-      item.quantity -= 1
-    }
-    else {
-      const itemToRemove = state.cart.indexOf(item)
-        state.cart.splice(itemToRemove, 1)
-    }
-
-    renderCart()
-  } )
-
+  cartItemDecreaseButton.addEventListener('click', () => decreaseCartItem(item))
   return cartItemDecreaseButton
 }
 
@@ -156,12 +146,25 @@ function renderIncreaseButton(item) {
   cartItemIncreaseButton.classList.add('quantity-btn', 'add-btn', 'center')
   cartItemIncreaseButton.innerText = '+'
 
-  cartItemIncreaseButton.addEventListener('click', () => {
-    item.quantity += 1
-    renderCart()
-  })
-
+  cartItemIncreaseButton.addEventListener('click', () => increaseCartItem(item))
   return cartItemIncreaseButton
+}
+
+// INCREASE/DECREASE BUTTON FUNCTIONS
+function decreaseCartItem(item) {
+  if (item.quantity > 1) {
+    item.quantity -= 1
+  }
+  else {
+    const itemToRemove = state.cart.indexOf(item)
+      state.cart.splice(itemToRemove, 1)
+  }
+  renderCart()
+}
+
+function increaseCartItem(item) {
+  item.quantity += 1
+  renderCart()
 }
 
 // CART RENDER FUNCTION
