@@ -51,32 +51,12 @@ const state = {
       price: 0.35
     }
   ],
-  cart: [
-    // {
-    //   id: "007-bell-pepper",
-    //   name: "bell pepper",
-    //   price: 0.35
-    // },
-    // {
-    //   id: "008-berry",
-    //   name: "berry",
-    //   price: 0.35
-    // },
-    // {
-    //   id: "009-blueberry",
-    //   name: "blueberry",
-    //   price: 0.35
-    // },
-    // {
-    //   id: "010-eggplant",
-    //   name: "eggplant",
-    //   price: 0.35
-    // }
-  ]
+  cart: []
 };
 
+state.items.forEach(item => item.quantity = 1)
 
-//access the html element we will need to either append things to, or to modify.
+
 const store = document.querySelector('#store')
 const storeItemList = document.querySelector('.store--item-list')
 const cart = document.querySelector('#cart')
@@ -84,18 +64,6 @@ const cartItemListContainer = document.querySelector('.cart--item-list-container
 const cartItemList = document.querySelector('.cart--item-list')
 const totalSection = document.querySelector('.total-section')
 const total = document.querySelector('.total-number')
-
-//check that all const are pointing where they should: 
-console.log(store)
-console.log(storeItemList)
-console.log(cart)
-console.log(cartItemListContainer)
-console.log(cartItemList)
-console.log(totalSection)
-console.log(total.innerText)
-
-
-
 
 populateStoreItemList()
 

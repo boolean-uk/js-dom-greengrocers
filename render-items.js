@@ -1,5 +1,3 @@
-//STORE
-
 const populateStoreItemList = () => {state.items.forEach(item => {
 
     const storeItem = document.createElement('li')
@@ -15,22 +13,28 @@ const populateStoreItemList = () => {state.items.forEach(item => {
     storeItem.append(addToCart)
     addToCart.addEventListener('click', event => {
 
+    const checkIfInCart = state.cart.find((cartItem) =>  cartItem.name === item.name)
+      
+      if (!checkIfInCart) { 
+          state.cart.push(item)  
+        } else {
+          checkIfInCart.quantity += 1   
+        }
+
         const itemsInCart = cartItemList.querySelectorAll('li')
         itemsInCart.forEach(item => item.remove())
-        state.cart.push(item)
-        populateCartItemList()
+        populateCartItemList()  
     }
-    )
-    
+    ) 
+
 
 })
     
 }
 
 let cartItem
-// CART 
-const populateCartItemList = () => { state.cart.forEach(item => {
-
+ 
+const populateCartItemList = () => {state.cart.forEach(item => {
     cartItem = document.createElement('li')
     cartItemList.append(cartItem)
 
@@ -41,8 +45,22 @@ const populateCartItemList = () => { state.cart.forEach(item => {
     const cartItemName = document.createElement('p')
     cartItem.append(cartItemName)
     cartItemName.innerText = item.name
+    calculateSum()
+    addQuantityCounter(item)
 
-    addQuantityCounter()
 })
 
 }
+
+
+
+const addQuantityCounter = (item) => {
+  
+
+    addDecreaseButton(item)
+    addCounterDisplay(item)
+    addIncreaseButton(item)
+    
+  
+  }
+  
