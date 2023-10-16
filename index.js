@@ -59,69 +59,58 @@ const storeList = document.querySelector('#store > ul')
 const cartList = document.querySelector('#cart > div > ul')
 
 // FULL PAGE RENDER FUNCTION
-const render = () => {
+function render() {
   renderStore()
-  renderCart()
+  // renderCart()
 }
 
 // STORE
 // CREATE STORE FUNCTIONS
-const renderStoreItemDiv = (item) => {
+function renderStoreItemDiv(item) {
   const storeItemDiv = document.createElement('div')
   storeItemDiv.setAttribute('class', 'store--item-icon')
   storeItemDiv.append(renderStoreItemImage(item))
   return storeItemDiv
 }
 
-const renderStoreItemImage = (item) => {
+function renderStoreItemImage(item) {
   const storeItemImage = document.createElement('img')
   storeItemImage.src = `assets/icons/${item.id}.svg`
   storeItemImage.alt = item.name
   return storeItemImage
 }
 
-const renderStoreItemButton = (item) => {
-  const storeItemButton = document.createElement('button')
-  storeItemButton.innerText = "Add to cart"
-
-  storeItemButton.addEventListener('click', (e) => {
-
-    renderCart()
-
-    // state.cart.push(newCartInfo)
-    // console.log(state.cart)
-
-    // state.items.forEach((item) => {
-      // const cartItem = document.renderElement('li')
-      // console.log(e.target)
-      // if ()
-      // cartItem.innerText = item.name
-      // console.log(item.name)
-
-      // cartList.append(cartItem)
-
-    // })
-  })
-
-  return storeItemButton
-}
-
-// DISPLAY EACH OF THE STORE ITEMS ON THE PAGE
-
-const renderStore = () => {
+// RENDER STORE ITEMS ON THE PAGE
+function renderStore() {
   state.items.forEach((item) => {
     const storeItem = document.createElement('li')
   
     storeItem.append(renderStoreItemDiv(item))  
-    storeItem.append(renderStoreItemButton())
-    
+
+    const storeItemButton = document.createElement('button')
+    storeItemButton.innerText = "Add to cart"
+    storeItem.append(storeItemButton)
+
     storeList.append(storeItem)
+
+    storeItemButton.addEventListener('click', () => {
+      const isItemInCart = state.cart.find((newItem) => newItem.name === item.name)
+
+      if (isItemInCart) {
+        isItemInCart.quantity += 1 
+      } else {
+        state.cart.push({id: item.id, name: item.name, price: item.price, quantity: 1})
+        console.log(state.cart)
+      }
+      renderCart()
+    })
   })
 }
 
+
 // CART
-// CREATE CART FUNCTIONS
-const renderCartItemImage = (item) => {
+// CREATE INDIVIDUAL CART FUNCTIONS
+function renderCartItemImage(item) {
   const cartItemImage = document.createElement('img')
   cartItemImage.setAttribute('class', 'cart--item-icon')
   cartItemImage.src = `assets/icons/${item.id}.svg`
@@ -129,44 +118,52 @@ const renderCartItemImage = (item) => {
   return cartItemImage
 }
 
-const renderCartItemName = (item) => {
+function renderCartItemName(item) {
   const cartItemName = document.createElement('p')
   cartItemName.innerText = item.name
   return cartItemName
 }
 
-const renderDecreaseButton = () => {
+function renderDecreaseButton() {
   const cartItemDecreaseButton = document.createElement('button')
   cartItemDecreaseButton.classList.add('quantity-btn', 'remove-btn', 'center')
   cartItemDecreaseButton.innerText = '-'
   return cartItemDecreaseButton
 }
 
-const renderCounter = () => {
+function renderCounter(item) {
   const cartItemspan = document.createElement('span')
   cartItemspan.classList.add('quantity-text', 'center')
+  cartItemspan.innerText = item.quantity
+  console.log(item)
   return cartItemspan
 }
 
-const renderIncreaseButton = () => {
+function renderIncreaseButton() {
   const cartItemIncreaseButton = document.createElement('button')
   cartItemIncreaseButton.classList.add('quantity-btn', 'add-btn', 'center')
   cartItemIncreaseButton.innerText = '+'
   return cartItemIncreaseButton
 }
 
-const renderCart = () => {
-  state.items.forEach((item) => {
-    const cartItem = document.createElement('li')
-    
-    cartItem.append(renderCartItemImage(item))
-    cartItem.append(renderCartItemName(item))
-    cartItem.append(renderDecreaseButton())
-    cartItem.append(renderCounter())
-    cartItem.append(renderIncreaseButton())
+// CART RENDER FUNCTION
+function renderCart() {
+  cartList.innerHTML = ''
 
-    cartList.append(cartItem)
+  state.cart.forEach((item) => {
+    // if (item.name) {
+      const cartItem = document.createElement('li')
+    
+      cartItem.append(renderCartItemImage(item))
+      cartItem.append(renderCartItemName(item))
+      cartItem.append(renderDecreaseButton())
+      cartItem.append(renderCounter(item))
+      cartItem.append(renderIncreaseButton())
+  
+      cartList.append(cartItem)
+    // }
   })
 }
 
+// CALL PAGE RENDER FUNCTION AT THE END
 render()
