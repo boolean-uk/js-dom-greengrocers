@@ -73,7 +73,7 @@ const clearDisplayItems = () => {
 const displayItems = () => {
   clearDisplayItems()
   const itemDisplaySection = document.querySelector("header#store ul.item-list")
-  
+
   sortBy()
   
   state.items.forEach((item) => {
@@ -178,7 +178,7 @@ const changeFilterValue = (filterName) => {
 }
 
 const constructFilters = () => {
-  const aside = document.querySelector("header#store aside")
+  const aside = document.querySelector("header#store aside section.filter")
   
   const fruitFilter = document.createElement("button")
   fruitFilter.innerText = "Fruits"
@@ -200,6 +200,32 @@ const constructFilters = () => {
 const sorting = {
   value: "price",
   order: "asc"
+}
+
+const flipSortingValue = () => sorting.value === "price" ? sorting.value = "name" : sorting.value = "price"
+const flipSortingOrder = () => sorting.order === "asc" ? sorting.order = "desc" : sorting.order = "asc"
+
+const constructSorting = () => {
+  const aside = document.querySelector("header#store aside section.sort")
+
+  const sortingValueButton = document.createElement("button")
+  sortingValueButton.innerText = sorting.value
+  sortingValueButton.addEventListener("click", () => {
+    flipSortingValue()
+    sortingValueButton.innerText = sorting.value
+    displayItems()
+  })
+
+  const sortingOrderButton = document.createElement("button")
+  sortingOrderButton.innerText = sorting.order
+  sortingOrderButton.addEventListener("click", () => {
+    flipSortingOrder()
+    sortingOrderButton.innerText = sorting.order
+    displayItems()
+  })
+
+  aside.appendChild(sortingValueButton)
+  aside.appendChild(sortingOrderButton)
 }
 
 const sortBy = () => {
@@ -226,6 +252,7 @@ const changeItemAmount = (item, quantity) => {
 }
 
 constructFilters()
+constructSorting()
 initItems()
 displayItems()
 displayCartItems()
