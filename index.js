@@ -54,45 +54,91 @@ const state = {
     cart: [],
 };
 
-// Query Selectors //
-
+// First query Selectors //
 const storeItemList = document.querySelector(".store--item-list");
+const cartlist = document.querySelector(".cart--item-list");
 
-// A function to clear items in the basket.              !!!DO YOU NEED THIS??!!......
 function basketClear() {
-    const cartContainer = document.querySelector(".cart--item-list");
-    cartContainer.innerHTML = "";
+    cartlist.innerHTML = "";
 }
 
-// Create a function to populate header with list items of imgs and buttons.
+// Create a function to populate header with list items of imgs and buttons. DONE
 function groceryItemsAvailable(value) {
     const li = createLi();
 
     const div = createDiv("store--item-icon");
     li.append(div);
 
-    const img = createImg("assets/icons/" + value.id + ".svg", `${value.name}`);
+    const img = createImg(
+        "assets/icons/" + value.id + ".svg",
+        `${value.name}`,
+        ""
+    );
     div.append(img);
 
-    const button = createButton();
-    button.innerText = "Add to cart";
-    button.setAttribute("id", value.id);
+    const button = createButton("Add to cart", "addButton");
     li.append(button);
+    button.value = value.name;
+    button.addEventListener("click", (event) => {
+        itemName = event.target.value;
+
+        const foundCartItem = state.cart.find((name) => name.name === itemName);
+
+        if (foundCartItem) {
+            foundCartItem.quantity += 1;
+
+        } else {
+            state.cart.push({
+                id: value.id,
+                name: value.name,
+                price: value.price,
+                quantity: 1,
+            });
+
+        }
+        renderCart();
+    });
+
     storeItemList.append(li);
 }
 
+// Create a function that makes the cart items.
+function createCartItem(value) {
+    const li = createLi();
 
-function addtoCart (button) {
-    button.addEventListener("click", () => {
-      // Where to put function that adds that current items details to the cart.
-  });
+    const img = createImg(
+        "assets/icons/" + value.id + ".svg",
+        `${value.name}`,
+        "cart--item-icon"
+    );
+    li.append(img);
+
+    const p = createPTag(`${value.name}`);
+    li.append(p);
+
+    const buttonMinus = createButton("-", "quantity-btn remove-btn center");
+    buttonMinus.addEventListener("click", (event) => {
+        value.quantity--;
+        remover()
+        renderCart();
+    });
+    li.append(buttonMinus);
+
+    const span = createSpan(`${value.quantity}`, "quantity-text center");
+    li.append(span);
+
+    const buttonPlus = createButton("+", "quantity-btn add-btn center");
+    buttonPlus.addEventListener("click", (event) => {
+        value.quantity += 1;
+        renderCart();
+    });
+
+    li.append(buttonPlus);
+
+    cartlist.append(li);
 }
-// Loop through all items in state and make correct grocery item.
-state.items.forEach((value) => {
-    groceryItemsAvailable(value);
-});
 
-// Create all functions for creating types of elements inside header.
+// Create all functions for creating types of elements inside header. They will be hoisted.
 function createDiv(classe) {
     const div = document.createElement("div");
     div.classList.add(classe);
@@ -104,20 +150,64 @@ function createLi() {
     return li;
 }
 
-function createImg(src, alt) {
+function createImg(src, alt, classe) {
     const img = document.createElement("img");
     img.setAttribute("src", src);
     img.setAttribute("alt", alt);
+    img.setAttribute("classe", classe);
     return img;
 }
 
-function createButton() {
+function createButton(text, classe) {
     const button = document.createElement("button");
+    button.innerText = text;
+    button.setAttribute("class", classe);
     return button;
 }
 
-// Create a function that adds items to basket based on what button was clicked.
+function createPTag(text) {
+    const p = document.createElement("p");
+    p.innerText = text;
+    return p;
+}
 
+function createSpan(text, classe) {
+    const span = document.createElement("span");
+    span.innerText = text;
+    span.setAttribute("class", classe);
+    return span;
+}
 // Create a function that looks at list items in basket and adds all prices in the state in the basket
 
 // Create a function with an eventListener that looks at quantity text and adds additional price data and displays it in total.
+
+// Render functions
+function renderHeader() {
+    state.items.forEach((value) => {
+        groceryItemsAvailable(value);
+    });
+}
+
+function renderCart() {
+    basketClear();
+    state.cart.forEach((value) => {
+        createCartItem(value);
+    });
+}
+
+function render() {
+    renderHeader();
+    renderCart();
+}
+
+
+
+render();
+
+function remover() {
+    for (let i = 0; i < state.cart.length; i++ )  {
+        if (state.cart.quantity === 0) {
+            item.slice(i, 1, "");
+        }
+    };
+}
