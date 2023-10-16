@@ -53,3 +53,23 @@ const state = {
   ],
   cart: []
 };
+
+const divHeader = document.querySelector(".item-list")
+
+state.items.forEach(item => {
+  const container = document.createElement("li");
+
+  const img = document.createElement("img");
+  img.setAttribute("alt", item.name);
+  img.setAttribute("src", "assets/icons/" + item.id + ".svg");
+  container.append(img);
+
+  const button = document.createElement("button");
+  button.innerText = "Add to cart";
+
+  container.append(button);
+
+  divHeader.append(container);
+
+  });
+
