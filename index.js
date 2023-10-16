@@ -57,6 +57,8 @@ const state = {
 // First query Selectors //
 const storeItemList = document.querySelector(".store--item-list");
 const cartlist = document.querySelector(".cart--item-list");
+const totalNumber = document.querySelector(".total-number");
+
 
 function basketClear() {
     cartlist.innerHTML = "";
@@ -86,7 +88,6 @@ function groceryItemsAvailable(value) {
 
         if (foundCartItem) {
             foundCartItem.quantity += 1;
-
         } else {
             state.cart.push({
                 id: value.id,
@@ -94,7 +95,6 @@ function groceryItemsAvailable(value) {
                 price: value.price,
                 quantity: 1,
             });
-
         }
         renderCart();
     });
@@ -119,9 +119,10 @@ function createCartItem(value) {
     const buttonMinus = createButton("-", "quantity-btn remove-btn center");
     buttonMinus.addEventListener("click", (event) => {
         value.quantity--;
-        remover()
+        // remover();
         renderCart();
     });
+
     li.append(buttonMinus);
 
     const span = createSpan(`${value.quantity}`, "quantity-text center");
@@ -177,9 +178,7 @@ function createSpan(text, classe) {
     span.setAttribute("class", classe);
     return span;
 }
-// Create a function that looks at list items in basket and adds all prices in the state in the basket
 
-// Create a function with an eventListener that looks at quantity text and adds additional price data and displays it in total.
 
 // Render functions
 function renderHeader() {
@@ -200,14 +199,12 @@ function render() {
     renderCart();
 }
 
-
+// function remover() {
+//     const zeroQuantity = (num) => num <= 0;
+//     console.log(state.cart.findIndex(zeroQuantity));
+//     // if (value.quantity <= 0) {
+//     //    value.filter
+//     // }
+// }
 
 render();
-
-function remover() {
-    for (let i = 0; i < state.cart.length; i++ )  {
-        if (state.cart.quantity === 0) {
-            item.slice(i, 1, "");
-        }
-    };
-}
