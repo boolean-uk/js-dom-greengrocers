@@ -1,3 +1,7 @@
+//TODO: find a way to prevent the counter from shifting to the right of the + button when addCounterDisplay is called 
+
+
+
 let counter = 1
 
 
@@ -12,8 +16,8 @@ const addIncreaseButton = () => {
     increaseButton.addEventListener('click', e => {
         const initialCounter = cart.querySelector('span[class="quantity-text center"]')
         initialCounter.remove()
-        increase()
         addCounterDisplay()
+        increase()
     })
     cartItem.append(increaseButton)
 }
@@ -36,7 +40,9 @@ const addCounterDisplay = () => {
     counterDisplay.setAttribute('class', 'quantity-text center')
     counterDisplay.innerText = counter
     cartItem.append(counterDisplay)
+    
 }
+
 
 const addQuantityCounter = () => {
    
