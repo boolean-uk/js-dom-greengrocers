@@ -53,3 +53,29 @@ const state = {
   ],
   cart: []
 };
+const renderHeader = () => {
+
+  state.items.forEach((item)=> {
+    const itemListContainer = document.querySelector('.item-list');
+    
+    
+    const listItem = document.createElement('li');
+    itemListContainer.append(listItem);
+
+    const imageBox = document.createElement('div');
+    imageBox.classList.add('store--item-icon')
+    listItem.append(imageBox);
+
+    const image= document.createElement('img');
+    image.src = `assets/icons/${item.id}.svg`
+    image.alt= item.name;
+    imageBox.append(image);
+
+    const button= document.createElement('button');
+    button.innerText = 'add to cart';
+    listItem.append(button);
+
+    });
+  
+}
+renderHeader();
