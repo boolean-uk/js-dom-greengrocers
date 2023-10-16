@@ -80,14 +80,15 @@ let basketPrice = 0
 // Default quantity
 let basketItemQuantity = 1 
 
+const header = document.querySelector('header')
 const itemsUl = document.createElement('ul') 
 itemsUl.setAttribute('class', 'item-list store--item-list')
 itemsUl.setAttribute('style', 'list-style-type: none')
-const header = document.querySelector('header')
 header.append(itemsUl)
 
 for (let i = 0; i < items.length; i++) {
 
+  
   // Creates the store items
     const listItem = document.createElement('li')
     itemsUl.append(listItem)
@@ -131,5 +132,43 @@ for (let i = 0; i < items.length; i++) {
       cartItemRemoveButton.innerText = '-'
       cartItemRemoveButton.setAttribute('class', 'quantity-btn remove-btn center')
       addItem.append(cartItemRemoveButton)
+      
+      // Removes from total
+      cartItemRemoveButton.addEventListener('click', () => {
+        basketItemQuantity -= 1
+        basketPrice -= .35
+        cartSpan.innerText = basketItemQuantity
+        basketTotalNumberSelector.innerText = '£' + basketPrice.toFixed(2)
 
-      }})} 
+        // This will stop the price going below £0.00 
+        if (basketPrice <= 0) {
+          basketTotalNumberSelector.innerText = '£0.00'
+        }
+
+        // If item quantity hits 0, then remove from the basket.
+        if (basketItemQuantity === 0) {
+          addItem.remove()
+          console.log(items[i].ifClicked)
+        }
+      })
+          // Quantity of each item 
+      let basketItemQuantity = 1
+      const cartSpan = document.createElement('span')
+      cartSpan.innerText = basketItemQuantity
+      cartSpan.setAttribute('class', 'quantity-text center')
+      addItem.append(cartSpan)
+
+
+      // Create button 
+      const cartAddButton = document.createElement('button')
+      cartAddButton.innerText = '+'
+      cartAddButton.setAttribute('class', 'quantity-btn add-btn center')
+      addItem.append(cartAddButton)
+
+      // Adding to total price per item
+      const basketTotalNumberSelector = document.querySelector('.total-number')
+      basketPrice += 0.35
+      basketTotalNumberSelector.innerText = '£' + basketPrice.toFixed(2)
+
+
+      }})}
