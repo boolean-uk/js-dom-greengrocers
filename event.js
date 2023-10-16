@@ -129,5 +129,5 @@ function findFilterValues(category) {
   values.forEach((value) => valueSet.add(value));
   valueSet.delete(undefined);
 
-  return Array.from(valueSet);
+  return Array.from(valueSet).sort();
 }
