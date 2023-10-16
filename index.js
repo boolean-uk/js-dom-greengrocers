@@ -63,7 +63,7 @@ const initItems = () => state.items.forEach(item => {
   item.category = category(item.name)
 })
 
-const newSurprisePrice = () => 1 + Math.random() * 2 + Math.random() / 100
+const newSurprisePrice = () => 1 + Math.random() + Math.random() / 100
 
 const clearDisplayItems = () => {
   const itemDisplaySection = document.querySelectorAll("header#store ul.item-list li")
@@ -86,6 +86,10 @@ const displayItems = () => {
     img.src = "assets/icons/" + item.id + ".svg"
   
     li.appendChild(img)
+    
+    const pPrice = document.createElement("p")
+    pPrice.innerText = "£" + item.price
+    li.appendChild(pPrice) 
     
     const buttonAddToCart = document.createElement("button")
     buttonAddToCart.innerText = "Add to cart"
@@ -194,6 +198,26 @@ const constructFilters = () => {
   aside.appendChild(resetFilterButton)
 }
 
+
+const sortBy = (PriceOrName, AscOrDesc) => {
+  // asc = default
+  if ((PriceOrName.toLowerCase() === "price" || PriceOrName.toLowerCase() === "name" || false) === false) return
+
+  const mode = AscOrDesc === "asc" ? 1 : -1
+
+  state.items.sort((a, b) => {
+    if (a[PriceOrName] < b[PriceOrName]) {
+      return -1 * mode
+    } 
+    if (a[PriceOrName] > b[PriceOrName]) {
+      console.log((a[PriceOrName] > b[PriceOrName]), 1 * mode)
+      return 1 * mode
+    }
+
+    return 0
+  })
+}
+
 const changeItemAmount = (item, quantity) => {
   item.quantity + quantity >= 0 ? item.quantity += quantity : item.remove()
   displayCartItems()
@@ -202,5 +226,6 @@ const changeItemAmount = (item, quantity) => {
 
 constructFilters()
 initItems()
+sortBy("price", "asc")
 displayItems()
 displayCartItems()
