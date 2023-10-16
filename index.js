@@ -44,33 +44,39 @@ const state = {
     },
   /*new id */
     {
-      id: "008- Dragon Fruit",
-      name: "Dragon Fruit",
+      id: "012- dragon-fruit",
+      name: "dragon-fruit",
       price: 1.35,
       type: "fruits"
     },
 
     {
-      id: "009-Passion Fruit",
-      name: "Passion Fruit",
+      id: "011-melon",
+      name: "melon",
       price: 1.35,
       type: "fruits"
     },
     {
-      id: "010-berry",
+      id: "008-berry",
       name: "berry",
       price: 10.35,
       type: "fruits"
     },
     {
-      id: "011-blueberry",
+      id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
       type: "fruits"
     },
     {
-      id: "012-eggplant",
+      id: "010-eggplant",
       name: "eggplant",
+      price: 20.35,
+      type: "fruits"
+    },
+    {
+      id: "013-passion-fruits",
+      name: "passion-fruits",
       price: 20.35,
       type: "fruits"
     }
@@ -196,7 +202,9 @@ function calTotal() {
 
   myCurrentTotal.innerText = `£ ${total.toFixed(2)}`
 }
+
 /*event listeners to the filter buttons to trigger the filtering*/
+
 const filterButtons = document.querySelectorAll('.filter-button');
 filterButtons.forEach(button => {
   button.addEventListener('click', function () {
@@ -204,3 +212,79 @@ filterButtons.forEach(button => {
     filterItems(filterType);
   });
 });
+
+// Define a function to filter items by type
+function filterItems(type) {
+  const filteredCart = state.cart.filter(cartItem => {
+    for (let i = 0; i < state.items.length; i++) {
+      const product = state.items[i];
+      if (product.name === cartItem.name && product.type === type) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+  // Clear the current cart list
+  while (cartList.firstChild) {
+    cartList.removeChild(cartList.firstChild);
+  }
+
+  // Rebuild the cart list with the filtered items
+  for (const cartItem of filteredCart) {
+    const productInfo = state.items.find(item => item.name === cartItem.name);
+
+    const selectedListItem = document.createElement('li');
+    selectedListItem.setAttribute('class', 'cart--item');
+
+    const selectedProductIcon = document.createElement('img');
+    selectedProductIcon.src = `assets/icons/${productInfo.id}.svg`;
+    selectedProductIcon.src = `assets/icons/${productInfo.id}.png`;
+    selectedProductIcon.className = 'cart--item-icon';
+    selectedProductIcon.alt = `${productInfo.name}`;
+
+    const selectedProductName = document.createElement('p');
+    selectedProductName.innerText = productInfo.name;
+
+    const selectedButtonRemove = document.createElement('button');
+    selectedButtonRemove.setAttribute('class', 'quantity-btn remove-btn center');
+    selectedButtonRemove.innerText = '-';
+
+    const selectedItemQuantity = document.createElement('span');
+    selectedItemQuantity.setAttribute('class', 'cart--item-quantity');
+    selectedItemQuantity.innerText = cartItem.quantity;
+
+    const selectedButtonAdd = document.createElement('button');
+    selectedButtonAdd.setAttribute('class', 'quantity-btn add-btn center')
+    selectedButtonAdd.innerText = '+';
+
+    selectedListItem.append(selectedProductIcon, selectedProductName, selectedButtonRemove, selectedItemQuantity, selectedButtonAdd);
+    cartList.append(selectedListItem);
+
+    // Add event listeners for increment and decrement buttons
+    selectedButtonAdd.addEventListener('click', function (event) {
+      cartItem.quantity++;
+      selectedItemQuantity.innerText = cartItem.quantity;
+      calTotal();
+    });
+
+    selectedButtonRemove.addEventListener('click', function (event) {
+      cartItem.quantity--;
+      selectedItemQuantity.innerText = cartItem.quantity;
+      if (cartItem.quantity === 0) {
+        selectedListItem.style.display = 'none';
+        for (let k = 0; k < state.cart.length; k++) {
+          if (state.cart[k] === cartItem) {
+            state.cart.splice(k, 1);
+            k--;
+          }
+        }
+      }
+      calTotal();
+    });
+  }
+
+  calTotal();
+}
+
+
