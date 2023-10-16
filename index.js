@@ -57,10 +57,23 @@ const state = {
 // HIGH LEVEL VARIABLES
 const storeList = document.querySelector('#store > ul')
 const cartList = document.querySelector('#cart > div > ul')
+const total = document.querySelector('.total-number')
 
 // FULL PAGE RENDER FUNCTION
 function render() {
   renderStore()
+}
+
+// CALCULATE RUNNING TOTAL
+function runningTotal() {
+  let sum = 0
+  const cartValues = state.cart.map((cartItems) => {
+    const value = cartItems.price
+    const number = cartItems.quantity
+    return sum = value * number
+  })
+  const newTotal = cartValues.reduce((acc, curr) => acc + curr, 0)
+  total.innerText = `£${newTotal.toFixed(2)}`
 }
 
 // STORE
@@ -85,10 +98,14 @@ function addItemToCart(item) {
   const isItemInCart = state.cart.find((newItem) => newItem.name === item.name)
 
   if (isItemInCart) {
-    isItemInCart.quantity += 1 
+    isItemInCart.quantity += 1
+    // isItemInCart.price += item.price
+    
   } else {
     state.cart.push({id: item.id, name: item.name, price: item.price, quantity: 1})
   }
+
+  runningTotal()
   renderCart()
 }
 
@@ -159,11 +176,13 @@ function decreaseCartItem(item) {
     const itemToRemove = state.cart.indexOf(item)
       state.cart.splice(itemToRemove, 1)
   }
+  runningTotal()
   renderCart()
 }
 
 function increaseCartItem(item) {
   item.quantity += 1
+  runningTotal()
   renderCart()
 }
 
