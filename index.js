@@ -53,3 +53,22 @@ const state = {
   ],
   cart: []
 };
+
+const itemDisplay = document.querySelector('.store--item-list')
+
+state.items.forEach(item => {
+  const newItem = document.createElement('li')
+  const div = document.createElement('div')
+  const img = document.createElement('img')
+  const addButton = document.createElement('button')
+
+
+  div.className = 'store--item-icon'
+  img.src = `assets/icons/${item.id}.svg`
+  img.alt = item.name
+  addButton.innerText = 'Add to cart'
+
+  div.append(img)
+  newItem.append(div, addButton)
+  itemDisplay.append(newItem)
+})
