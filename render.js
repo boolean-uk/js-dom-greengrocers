@@ -2,6 +2,7 @@
 
 function renderAll() {
   renderFilter();
+  renderSort();
   renderStore();
   renderCart();
   renderTotal();
@@ -9,38 +10,93 @@ function renderAll() {
 
 function renderStore() {
   clearElement(STORE_ITEM_LIST);
-  state.items.forEach((item) => {
+  STATE.items.forEach((item) => {
     item.visible ? renderStoreItems(item) : null;
   });
 }
 
 function renderFilter() {
-  const select = createSelect();
+  const resetButton = createElement("button", null, null, "Reset");
+  resetButton.addEventListener("click", resetFilter);
+
+  const select = createFilterSelect();
   const optionPick = createOption("", "Filter by type");
   optionPick.setAttribute("disabled", "");
   optionPick.setAttribute("selected", "");
+
   const optionVegetable = createOption("vegetable", "vegetable");
   const optionFruit = createOption("fruit", "fruit");
 
   multiAppend(select, optionPick, optionVegetable, optionFruit);
-  STORE_FILTER.append(select);
+  multiAppend(STORE_FILTER_SORT, resetButton, select);
+}
+
+function renderSort() {
+  const resetButton = createElement("button", null, null, "Reset");
+  resetButton.addEventListener("click", resetSort);
+
+  const select = createSortSelect();
+  const optionPick = createOption("", "Sort by:");
+  optionPick.setAttribute("disabled", "");
+  optionPick.setAttribute("selected", "");
+
+  const optionAToZ = createOption("aToZ", "Sort by: Name - A to Z");
+  const optionZToA = createOption("zToA", "Sort by: Name - Z to A");
+  const optionPriceAsc = createOption(
+    "priceAsc",
+    "Sort by: Price - Low to High"
+  );
+  const optionPriceDesc = createOption(
+    "priceDesc",
+    "Sort by: Price - High to Low"
+  );
+
+  multiAppend(
+    select,
+    optionPick,
+    optionAToZ,
+    optionZToA,
+    optionPriceAsc,
+    optionPriceDesc
+  );
+  multiAppend(STORE_FILTER_SORT, select, resetButton);
 }
 
 function renderStoreItems(item) {
   const li = createElement("li");
+
+  const itemName = createElement(
+    "div",
+    "store--item-name",
+    null,
+    item.name[0].toUpperCase() + item.name.slice(1)
+  );
+
   const itemIconDiv = createElement("div", "store--item-icon");
   const img = createImg(item);
+
+  const itemDesc = createElement("div", "store--item-description");
+  const itemPrice = createElement(
+    "div",
+    "store--item-price",
+    null,
+    `£${item.price.toFixed(2)}`
+  );
+
   const button = createElement("button", null, null, "Add to cart");
   button.addEventListener("click", () => addToCart(item));
 
-  multiAppend(li, itemIconDiv, button);
-  itemIconDiv.append(img);
+  multiAppend(itemIconDiv, img);
+  multiAppend(itemDesc, itemPrice);
+
+  multiAppend(li, itemName, itemIconDiv, itemDesc, button);
+
   STORE_ITEM_LIST.append(li);
 }
 
 function renderCart() {
   clearElement(CART_ITEM_LIST);
-  state.cart.forEach((item, idx) => {
+  STATE.cart.forEach((item, idx) => {
     renderCartItems(item);
   });
   renderTotal();
@@ -78,8 +134,8 @@ function renderCartItems(item) {
 }
 
 function renderTotal() {
-  if (state.cart.length > 0) {
-    const prices = state.cart.map((item) => item.price * item.quantity);
+  if (STATE.cart.length > 0) {
+    const prices = STATE.cart.map((item) => item.price * item.quantity);
     const total = prices.reduce((sum, item) => sum + item);
 
     TOTAL_NUMBER.innerText = `£${total.toFixed(2)}`;
@@ -118,9 +174,17 @@ function createImg(item, className) {
   return img;
 }
 
-function createSelect() {
-  const select = createElement("select", "store-filter");
-  select.addEventListener("input", (e) => filterStoreItems("type",e.target.value));
+function createFilterSelect() {
+  const select = createElement("select", "filter-sort-select", "store-filter");
+  select.addEventListener("input", (e) =>
+    filterStoreItems("type", e.target.value)
+  );
+  return select;
+}
+
+function createSortSelect() {
+  const select = createElement("select", "filter-sort-select", "store-sort");
+  select.addEventListener("input", (e) => sortStoreItems(e.target.value));
   return select;
 }
 

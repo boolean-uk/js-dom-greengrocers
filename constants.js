@@ -1,4 +1,4 @@
-const state = {
+const STATE = {
   items: [
     {
       id: "001-beetroot",
@@ -24,7 +24,7 @@ const state = {
       id: "003-apple",
       name: "apple",
       visible: true,
-      price: 0.60,
+      price: 0.6,
       filter: {
         type: "fruit",
         color: ["red", "green"],
@@ -34,7 +34,7 @@ const state = {
       id: "004-apricot",
       name: "apricot",
       visible: true,
-      price: 0.70,
+      price: 0.7,
       filter: {
         type: "fruit",
         color: ["orange", "green"],
@@ -44,7 +44,7 @@ const state = {
       id: "005-avocado",
       name: "avocado",
       visible: true,
-      price: 2.50,
+      price: 2.5,
       filter: {
         type: "fruit",
         color: ["green"],
@@ -64,7 +64,7 @@ const state = {
       id: "007-bell-pepper",
       name: "bell pepper",
       visible: true,
-      price: 0.50,
+      price: 0.5,
       filter: {
         type: "fruit",
         color: ["green"],
@@ -105,7 +105,7 @@ const state = {
 };
 
 const STORE = document.querySelector("#store");
-const STORE_FILTER = document.querySelector(".store--filter")
+const STORE_FILTER_SORT = document.querySelector(".store--filter-sort");
 const STORE_ITEM_LIST = STORE.querySelector(".store--item-list");
 
 const CART = document.querySelector("#cart");

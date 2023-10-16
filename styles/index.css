@@ -35,6 +35,21 @@ button {
   text-align: center;
 }
 
+.store--filter-sort {
+  display: grid;
+  grid-template-columns: auto 200px 200px auto;
+  justify-content: center;
+  gap: 10px;
+
+  margin-bottom: 1rem;
+}
+
+.store--filter-sort select {
+  color: gray;
+  font-size: 0.8rem;
+}
+
+
 .store--item-list {
   display: grid;
   grid-template-columns: repeat(4, 125px);
@@ -46,11 +61,26 @@ button {
   display: grid;
   place-items: center;
   grid-row-gap: 0.5rem;
+
+  background-color: #5ae;
+  border-radius: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .store--item-icon {
   width: 125px;
   height: 125px;
+}
+
+.store--item-description {
+  display: grid;
+  grid-auto-flow: column;
+
+  justify-content: start;
+  justify-items: start;
+
+  gap: 5px;
 }
 
 @media only screen and (max-width: 600px) {
