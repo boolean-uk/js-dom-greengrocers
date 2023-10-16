@@ -23,7 +23,7 @@ button {
 /* Store */
 
 #store {
-  height: 45vh;
+  height: 50vh;
   padding: 1rem;
 
   overflow-y: scroll;
@@ -68,7 +68,7 @@ button {
 /* Cart */
 
 #cart {
-  height: 50vh;
+  height: 40vh;
   padding: 1rem;
 
   display: grid;

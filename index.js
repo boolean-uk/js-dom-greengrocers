@@ -88,6 +88,10 @@ const displayItems = () => {
   
     li.appendChild(img)
     
+    const pName = document.createElement("p")
+    pName.innerText = item.name.toUpperCase()
+    li.appendChild(pName)
+
     const pPrice = document.createElement("p")
     pPrice.innerText = "£" + item.price
     li.appendChild(pPrice) 
