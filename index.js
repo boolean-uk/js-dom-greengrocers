@@ -4,61 +4,71 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
-      quantity: 0
+      quantity: 0,
+      type: "veg"
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
-      quantity: 0
+      quantity: 0,
+      type: "veg"
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
-      quantity: 0
+      quantity: 0,
+      type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
-      quantity: 0
+      quantity: 0,
+      type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
-      quantity: 0
+      quantity: 0,
+      type: "fruit"
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
-      quantity: 0
+      quantity: 0,
+      type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
-      quantity: 0
+      quantity: 0,
+      type: "veg"
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
-      quantity: 0
+      quantity: 0,
+      type: "fruit"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
-      quantity: 0
+      quantity: 0,
+      type: "fruit"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
-      quantity: 0
+      quantity: 0,
+      type: "fruit"
     }
   ],
   cart: []
@@ -68,6 +78,7 @@ const state = {
 const storeList = document.querySelector(".store--item-list");
 const itemList = document.querySelector(".cart--item-list");
 const price = document.querySelector(".total-number");
+const filter = document.querySelector("#filter"); 
 
 const items = state.items;
 const cart = state.cart;
@@ -86,14 +97,12 @@ const renderStoreItems = () => {
     div.setAttribute("class", "store--item-icon");
     div.append(img);
 
-    //Add to cart button
+    // Add to cart button
     button.addEventListener("click", () => {
       cartRemoval();
       item.quantity += 1;
 
-      const duplicate = cart.some(obj => {
-       return obj.id == item.id
-      });
+      const duplicate = cart.some(obj => { return obj.id == item.id });
 
       duplicate ? createCartItem() : (cart.push(item), createCartItem());
       calculateTotal();
@@ -107,6 +116,11 @@ const renderStoreItems = () => {
 const cartRemoval = () => {
   const cartItems = itemList.querySelectorAll("li");
   cartItems.forEach(item => item.remove());
+};
+
+const storeRemoval = () => {
+  const storeItems = storeList.querySelectorAll("li");
+  storeItems.forEach(item => item.remove());
 };
 
 const createCartItem = () => {
@@ -167,4 +181,75 @@ const calculateTotal = () => {
   price.innerText = `£${num.toFixed(2)}`;
 };
 
-renderStoreItems()
+// Fruit filter
+
+const fruitFilter = () => {
+  items.forEach((item) => {
+    // Create req. elements
+    const li = document.createElement("li");
+    const div = document.createElement("div");
+    const img = document.createElement("img");
+    const button = document.createElement("button");
+    button.innerText = "Add to Cart"
+
+    // Setting attribute value
+    img.src = `assets/icons/${item.id}.svg`;
+    div.setAttribute("class", "store--item-icon");
+    div.append(img);
+
+    // Add to cart button
+    button.addEventListener("click", () => {
+      cartRemoval();
+      item.quantity += 1;
+
+      const duplicate = cart.some(obj => { return obj.id == item.id });
+
+      duplicate ? createCartItem() : (cart.push(item), createCartItem());
+      calculateTotal();
+    });
+
+    if (item.type === "fruit") { li.append(div, button), storeList.append(li) };
+  })
+};
+
+// Vegetable Filter
+
+const vegFilter = () => {
+  items.forEach((item) => {
+    // Create req. elements
+    const li = document.createElement("li");
+    const div = document.createElement("div");
+    const img = document.createElement("img");
+    const button = document.createElement("button");
+    button.innerText = "Add to Cart"
+
+    // Setting attribute value
+    img.src = `assets/icons/${item.id}.svg`;
+    div.setAttribute("class", "store--item-icon");
+    div.append(img);
+
+    // Add to cart button
+    button.addEventListener("click", () => {
+      cartRemoval();
+      item.quantity += 1;
+
+      const duplicate = cart.some(obj => { return obj.id == item.id });
+
+      duplicate ? createCartItem() : (cart.push(item), createCartItem());
+      calculateTotal();
+    });
+
+    if (item.type === "veg") { li.append(div, button), storeList.append(li) };
+  })
+};
+
+filter.addEventListener("change", () => {
+  const option = filter.value;
+  storeRemoval();
+
+  option === "fruit" ? fruitFilter() 
+  : option === "veg" ? vegFilter()
+  : renderStoreItems();
+});
+
+renderStoreItems();
