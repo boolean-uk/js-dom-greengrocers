@@ -10,7 +10,7 @@ const STATE = {
         subType: "root",
         color: ["pink", "green"],
         eddApproved: "no",
-        isAPlant: "yes"
+        isAPlant: "yes",
       },
     },
     {
@@ -23,7 +23,7 @@ const STATE = {
         subType: "root",
         color: ["orange", "green"],
         eddApproved: "yes",
-        isAPlant: "yes"
+        isAPlant: "yes",
       },
     },
     {
@@ -36,7 +36,7 @@ const STATE = {
         subType: "pome",
         color: ["red", "green"],
         eddApproved: "yes",
-        isAPlant: "yes"
+        isAPlant: "yes",
       },
     },
     {
@@ -49,7 +49,7 @@ const STATE = {
         subType: "berry",
         color: ["orange", "green"],
         eddApproved: "no",
-        isAPlant: "yes"
+        isAPlant: "yes",
       },
     },
     {
@@ -62,7 +62,7 @@ const STATE = {
         subType: "berry",
         color: ["green"],
         eddApproved: "yes",
-        isAPlant: "yes"
+        isAPlant: "yes",
       },
     },
     {
@@ -75,7 +75,7 @@ const STATE = {
         color: ["yellow"],
         subType: "berry",
         eddApproved: "yes",
-        isAPlant: "yes"
+        isAPlant: "yes",
       },
     },
     {
@@ -88,7 +88,7 @@ const STATE = {
         subType: "berry",
         color: ["green"],
         eddApproved: "yes",
-        isAPlant: "yes"
+        isAPlant: "yes",
       },
     },
     {
@@ -101,7 +101,7 @@ const STATE = {
         subType: "berry",
         color: ["red", "green"],
         eddApproved: "yes",
-        isAPlant: "yes"
+        isAPlant: "yes",
       },
     },
     {
@@ -114,7 +114,7 @@ const STATE = {
         subType: "berry",
         color: ["blue", "green"],
         eddApproved: "yes",
-        isAPlant: "yes"
+        isAPlant: "yes",
       },
     },
     {
@@ -127,7 +127,7 @@ const STATE = {
         subType: "berry",
         color: ["purple", "green"],
         eddApproved: "no",
-        isAPlant: "yes"
+        isAPlant: "yes",
       },
     },
   ],
