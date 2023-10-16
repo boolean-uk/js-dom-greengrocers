@@ -40,7 +40,7 @@ console.log(state, "this is the state")
 // 2. inside event listener
 //  if item is exisiting in the cart, increase the quantity(span)
 
-
+////////////////////////////////////////////////////////////
 // Actual code
 // 1. select the ul "item list"
 
@@ -49,13 +49,8 @@ const ulItemStore = document.querySelector(".item-list")
 
 // 2. create forEach loop
 state.items.forEach((eachItem) => {
-
-
     // create li element
     const storeLi = document.createElement('li')
-
-    // append li to ul
-    ulItemStore.append(storeLi)
 
 
     // create div -- add class
@@ -66,7 +61,9 @@ state.items.forEach((eachItem) => {
 
     // create img -- add src(asset folder) and alt
     const storeImgs = document.createElement('img')
-    // storeImgs.setAttribute("src", `assets/icons/${eachItem.name}`)
+    // storeImgs.setAttribute("src", `assets/icons/${eachItem.id}.svg`)
+    storeImgs.alt = eachItem.name
+    storeImgs.src = `assets/icons/${eachItem.id}.svg`
     //append img to div
     divItemStore.append(storeImgs)
 
@@ -75,6 +72,11 @@ state.items.forEach((eachItem) => {
     addToCartButton.innerText = 'Add to cart'
     //append button to li
     storeLi.append(addToCartButton)
+
+    // append li to ul
+    ulItemStore.append(storeLi)
+
+    ///////////////////////////////////////////////////////////
 
     // CART - plan at the top
     // 1. Add event listener
@@ -93,8 +95,9 @@ state.items.forEach((eachItem) => {
         const cartImg = document.createElement('img')
         cartImg.setAttribute("class",
             "cart--item-icon")
-        cartImg.setAttribute("src", "assets/icons/001-beetroot.svg")
-        cartImg.setAttribute("alt", "beetroot")
+        cartImg.src = `assets/icons/${eachItem.id}.svg`
+
+        cartImg.alt = eachItem.name
         itemListLIs.append(cartImg)
 
         //5. create para --enter name
@@ -127,21 +130,36 @@ state.items.forEach((eachItem) => {
         //ADD EVENT LISTENERS TO MINUS AND PLUS BUTTON
         // MINUS
 
-        cartButtonMinus.addEventListener("click", () => {
-            console.log("clicked")
-
+        cartButtonAdd.addEventListener("click", () => {
+            // when plus button is clicked --> increase value
+            let number = parseInt(spanForCart.innerText)
+            number++
+            spanForCart.innerText = number
         })
 
-        //ADD EVENT LISTENERS TO MINUS AND PLUS BUTTON
-        // ADD
-
-        cartButtonAdd.addEventListener("click", () => {
-            console.log("clicked")
-            if (cartButtonAdd < 2) {
-                cartButtonAdd + 1
+        cartButtonMinus.addEventListener("click", () => {
+            let number = parseInt(spanForCart.innerText)
+            if (number <= 1) {
+                itemListLIs.remove()
             }
+            number--
+            spanForCart.innerText = number
         })
     })
+
+
+    //ADD EVENT LISTENERS TO MINUS AND PLUS BUTTON
+    // ADD
+
+
+
+    /////////////////////////////////////////////
+    // TOTAL SECTION
+
+    // Get the total-number
+    // total-number x price 
+
+
 
 
 });
