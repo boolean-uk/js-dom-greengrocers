@@ -3,52 +3,76 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 1.35
+      price: 1.35,
+      type: "vegetables"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetables"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: "fruits"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 7.35
+      price: 7.35,
+      type: "vegetables"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 3.67
+      price: 3.67,
+      type: "fruits"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 9.35
+      price: 9.35,
+      type: "fruits"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: "vegetables"
+    },
+  /*new id */
+    {
+      id: "008- Dragon Fruit",
+      name: "Dragon Fruit",
+      price: 1.35,
+      type: "fruits"
+    },
+
+    {
+      id: "009-Passion Fruit",
+      name: "Passion Fruit",
+      price: 1.35,
+      type: "fruits"
     },
     {
-      id: "008-berry",
+      id: "010-berry",
       name: "berry",
-      price: 10.35
+      price: 10.35,
+      type: "fruits"
     },
     {
-      id: "009-blueberry",
+      id: "011-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: "fruits"
     },
     {
-      id: "010-eggplant",
+      id: "012-eggplant",
       name: "eggplant",
-      price: 20.35
+      price: 20.35,
+      type: "fruits"
     }
   ],
   cart: []
@@ -172,3 +196,11 @@ function calTotal() {
 
   myCurrentTotal.innerText = `£ ${total.toFixed(2)}`
 }
+/*event listeners to the filter buttons to trigger the filtering*/
+const filterButtons = document.querySelectorAll('.filter-button');
+filterButtons.forEach(button => {
+  button.addEventListener('click', function () {
+    const filterType = button.getAttribute('data-filter');
+    filterItems(filterType);
+  });
+});
