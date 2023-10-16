@@ -4,51 +4,61 @@ const state = {
             id: "001-beetroot",
             name: "beetroot",
             price: 0.35,
+            type: "vegetables",
         },
         {
             id: "002-carrot",
             name: "carrot",
             price: 0.35,
+            type: "vegetables",
         },
         {
             id: "003-apple",
             name: "apple",
             price: 0.35,
+            type: "fruits",
         },
         {
             id: "004-apricot",
             name: "apricot",
             price: 0.35,
+            type: "fruits",
         },
         {
             id: "005-avocado",
             name: "avocado",
             price: 0.35,
+            type: "fruits",
         },
         {
             id: "006-bananas",
             name: "bananas",
             price: 0.35,
+            type: "fruits",
         },
         {
             id: "007-bell-pepper",
             name: "bell pepper",
             price: 0.35,
+            type: "vegetables",
         },
         {
             id: "008-berry",
             name: "berry",
             price: 0.35,
+            type: "fruits",
         },
         {
             id: "009-blueberry",
             name: "blueberry",
             price: 0.35,
+            type: "fruits",
         },
         {
             id: "010-eggplant",
             name: "eggplant",
             price: 0.35,
+            type: "vegetables",
         },
     ],
     cart: [],
@@ -62,38 +72,44 @@ const totalNumber = document.querySelector(".total-number");
 
 // Logic
 
-state.items.forEach((item) => {
-    const itemContainer = document.createElement("li");
+// Render functions
 
-    const itemDiv = document.createElement("div");
-    itemDiv.setAttribute("class", "store--item-icon");
+const renderStore = (filter) => {
+    storeItems.querySelectorAll("li").forEach((item) => item.remove());
 
-    const itemImage = document.createElement("img");
-    itemImage.src = `assets/icons/${item.id}.svg`;
-    itemImage.alt = item.name;
+    state.items
+        .filter((item) => (filter ? item.type === filter : item))
+        .forEach((item) => {
+            const itemContainer = document.createElement("li");
 
-    const itemButton = document.createElement("button");
-    itemButton.innerText = "Add to cart";
+            const itemDiv = document.createElement("div");
+            itemDiv.setAttribute("class", "store--item-icon");
 
-    itemButton.addEventListener("click", () => {
-        const itemInCart = state.cart.find(
-            (cartItem) => cartItem.id === item.id
-        );
+            const itemImage = document.createElement("img");
+            itemImage.src = `assets/icons/${item.id}.svg`;
+            itemImage.alt = item.name;
 
-        itemInCart
-            ? ++itemInCart.count
-            : state.cart.push({ ...item, count: 1 });
+            const itemButton = document.createElement("button");
+            itemButton.innerText = "Add to cart";
 
-        renderCart();
-    });
+            itemButton.addEventListener("click", () => {
+                const itemInCart = state.cart.find(
+                    (cartItem) => cartItem.id === item.id
+                );
 
-    // configuration
-    itemDiv.append(itemImage);
-    itemContainer.append(itemDiv, itemButton);
-    storeItems.append(itemContainer);
-});
+                itemInCart
+                    ? ++itemInCart.count
+                    : state.cart.push({ ...item, count: 1 });
 
-// Render function
+                renderCart();
+            });
+
+            // configuration
+            itemDiv.append(itemImage);
+            itemContainer.append(itemDiv, itemButton);
+            storeItems.append(itemContainer);
+        });
+};
 
 const renderCart = () => {
     cartItems.querySelectorAll("li").forEach((item) => item.remove());
@@ -162,3 +178,11 @@ const renderCart = () => {
         .reduce((a, b) => a + b, 0)
         .toFixed(2)}`;
 };
+
+// filter function
+const filterSelector = document.querySelector("#store-fitler");
+
+filterSelector.addEventListener("change", (e) => renderStore(e.target.value));
+
+// Calling functions
+renderStore();
