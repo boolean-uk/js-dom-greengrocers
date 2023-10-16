@@ -67,14 +67,15 @@ const newSurprisePrice = () => 1 + Math.random() + Math.random() / 100
 
 const clearDisplayItems = () => {
   const itemDisplaySection = document.querySelectorAll("header#store ul.item-list li")
-  console.log(itemDisplaySection)
   itemDisplaySection.forEach(item => item.remove())
 }
 
 const displayItems = () => {
   clearDisplayItems()
   const itemDisplaySection = document.querySelector("header#store ul.item-list")
-
+  
+  sortBy()
+  
   state.items.forEach((item) => {
     
     if (filter.length !== 0 && item.category !== filter) return
@@ -173,13 +174,11 @@ const category = (productName) => {
 let filter = ""
 const changeFilterValue = (filterName) => {
   filter = filterName
-  console.log(filter)
   displayItems()
 }
 
 const constructFilters = () => {
   const aside = document.querySelector("header#store aside")
-  console.log(aside)
   
   const fruitFilter = document.createElement("button")
   fruitFilter.innerText = "Fruits"
@@ -198,19 +197,21 @@ const constructFilters = () => {
   aside.appendChild(resetFilterButton)
 }
 
+const sorting = {
+  value: "price",
+  order: "asc"
+}
 
-const sortBy = (PriceOrName, AscOrDesc) => {
+const sortBy = () => {
+  
   // asc = default
-  if ((PriceOrName.toLowerCase() === "price" || PriceOrName.toLowerCase() === "name" || false) === false) return
-
-  const mode = AscOrDesc === "asc" ? 1 : -1
+  const mode = sorting.order === "asc" ? 1 : -1
 
   state.items.sort((a, b) => {
-    if (a[PriceOrName] < b[PriceOrName]) {
+    if (a[sorting.value] < b[sorting.value]) {
       return -1 * mode
     } 
-    if (a[PriceOrName] > b[PriceOrName]) {
-      console.log((a[PriceOrName] > b[PriceOrName]), 1 * mode)
+    if (a[sorting.value] > b[sorting.value]) {
       return 1 * mode
     }
 
@@ -226,6 +227,5 @@ const changeItemAmount = (item, quantity) => {
 
 constructFilters()
 initItems()
-sortBy("price", "asc")
 displayItems()
 displayCartItems()
