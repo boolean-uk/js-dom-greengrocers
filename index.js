@@ -100,7 +100,6 @@ function renderStore() {
         isItemInCart.quantity += 1 
       } else {
         state.cart.push({id: item.id, name: item.name, price: item.price, quantity: 1})
-        console.log(state.cart)
       }
       renderCart()
     })
@@ -124,10 +123,24 @@ function renderCartItemName(item) {
   return cartItemName
 }
 
-function renderDecreaseButton() {
+function renderDecreaseButton(item) {
   const cartItemDecreaseButton = document.createElement('button')
   cartItemDecreaseButton.classList.add('quantity-btn', 'remove-btn', 'center')
   cartItemDecreaseButton.innerText = '-'
+
+  cartItemDecreaseButton.addEventListener('click', () => {
+
+    if (item.quantity > 1) {
+      item.quantity -= 1
+    }
+    else {
+      const itemToRemove = state.cart.indexOf(item)
+        state.cart.splice(itemToRemove, 1)
+    }
+
+    renderCart()
+  } )
+
   return cartItemDecreaseButton
 }
 
@@ -135,14 +148,19 @@ function renderCounter(item) {
   const cartItemspan = document.createElement('span')
   cartItemspan.classList.add('quantity-text', 'center')
   cartItemspan.innerText = item.quantity
-  console.log(item)
   return cartItemspan
 }
 
-function renderIncreaseButton() {
+function renderIncreaseButton(item) {
   const cartItemIncreaseButton = document.createElement('button')
   cartItemIncreaseButton.classList.add('quantity-btn', 'add-btn', 'center')
   cartItemIncreaseButton.innerText = '+'
+
+  cartItemIncreaseButton.addEventListener('click', () => {
+    item.quantity += 1
+    renderCart()
+  })
+
   return cartItemIncreaseButton
 }
 
@@ -151,17 +169,15 @@ function renderCart() {
   cartList.innerHTML = ''
 
   state.cart.forEach((item) => {
-    // if (item.name) {
       const cartItem = document.createElement('li')
     
       cartItem.append(renderCartItemImage(item))
       cartItem.append(renderCartItemName(item))
-      cartItem.append(renderDecreaseButton())
+      cartItem.append(renderDecreaseButton(item))
       cartItem.append(renderCounter(item))
-      cartItem.append(renderIncreaseButton())
+      cartItem.append(renderIncreaseButton(item))
   
       cartList.append(cartItem)
-    // }
   })
 }
 
