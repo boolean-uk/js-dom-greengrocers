@@ -56,76 +56,104 @@ const state = {
 
 // SELECT EXISTING HTML ELEMENTS
 const grocersList = document.querySelector(".store--item-list");
-const cartList = document.querySelector(".cart--item-list");
-const totalSpan = document.querySelector(".total-number");
+const cartLists = document.querySelector(".cart--item-list");
+const totalNumber = document.querySelector(".total-number");
 
-// RENDER FOR STORE ITEMS
+state.items.forEach((item) => {
+  // create li
+  const li = document.createElement("li");
 
-function storeItems() {
-  grocersList.innerHTML = "";
-  state.items.forEach((item) => {
-    const li = document.createElement("li");
-    grocersList.append("li");
-    // create div
-    const div = document.createElement("div");
-    div.setAttribute("class", "store--item-icon");
-    li.append(div);
+  //create div
+  const div = document.createElement("div");
+  div.setAttribute("class", "store--item-icon");
 
-    //create img  inside div
-    const image = document.createElement("img");
-    image.src = `assets/icons/${item.id}.svg`;
-    image.alt = `${item.id}`;
-    div.appendChild(image);
+  // image
+  const image = document.createElement("img");
+  image.src = `assets/icons/${item.id}.svg`;
+  image.alt = item.name;
 
-    //create button and listen to it
-    const button = document.createElement("button");
-    button.innerText = "Add to cart";
-    li.append(button);
+  const addToCart = document.createElement("button");
+  addToCart.innerText = "Add to cart";
 
-    button.addEventListener("click", (event) => {
-      addTheItem(item);
-    });
+  addToCart.addEventListener("click", () => {
+    const itemCartValue = state.cart.find(
+      (cartItem) => cartItem.id === item.id
+    );
+
+    if (itemCartValue) {
+      itemCartValue.count++;
+    } else {
+      state.cart.push({ ...item, count: 1 });
+    }
+
+    renderTheCart();
   });
-}
-
-function addTheItem(item) {
-  const existingItem = state.cart.find((produce) => produce.name === item.name);
-
-  if (!existingItem) {
-    item.quantity = 1;
-    state.cart.push(item);
-  } else {
-    existingItem.quantity++;
-  }
-
-  renderTheCart();
-}
+  // added the lists, div, image and button to the grocersList
+  div.append(image);
+  li.append(div, addToCart);
+  grocersList.append(li);
+});
 
 // RENDER FOR CART
 // Write a renderCart() function
+const renderTheCart = () => {
+  cartLists.innerHTML = "";
 
-function renderTheCart() {
-  cart.innerHTML = " ";
   state.cart.forEach((item) => {
-    // create cart List
-    const cartList = document.createElement("li");
-    cart.append(cartList);
-    // create Image
-    const cartImage = document.createElement("img");
-    cartImage.setAttribute("class", "cart--item-icon");
-    cartImage.src = `assets/icons/${item.id}.svg`;
-    cartImage.alt = `${item.id}`;
-    cartList.append(cartImage);
+    const li = document.createElement("li");
+
+    const image = document.createElement("img");
+    image.setAttribute("class", "cart--item-icon");
+    image.src = `assets/icons/${item.id}.svg`;
+    image.alt = item.name;
 
     // name of the item
     const NameOfItem = document.createElement("p");
     NameOfItem.innerText = `${item.name}`;
-    cartList.append(NameOfItem);
 
     // create the button for minus
     const decreaseButton = document.createElement("button");
     decreaseButton.setAttribute("class", "quantity-btn remove-btn center");
     decreaseButton.innerText = "_";
-    cartList.append(decreaseButton);
+
+    decreaseButton.addEventListener("click", () => {
+      const itemCartValue = state.cart.find(
+        (cartItem) => cartItem.id === item.id
+      );
+      if (itemCartValue && itemCartValue.count > 1) {
+        itemCartValue.count--;
+      } else {
+        state.cart = state.cart.filter((cartItem) => cartItem.id !== item.id);
+      }
+
+      renderTheCart();
+    });
+    const span = document.createElement("span");
+    span.setAttribute("class", "quantity-text center");
+    span.innerText = item.count;
+
+    // create the button for Add
+    const increaseButton = document.createElement("button");
+    increaseButton.setAttribute("class", "quantity-btn add-btn center");
+    increaseButton.innerText = "+";
+
+    increaseButton.addEventListener("click", () => {
+      const itemCartValue = state.cart.find(
+        (cartItem) => cartItem.id === item.id
+      );
+
+      if (itemCartValue) {
+        itemCartValue.count++;
+        renderTheCart();
+      }
+    });
+    li.append(image, NameOfItem, decreaseButton, span, increaseButton);
+    cartLists.append(li);
   });
-}
+  const totalAmount = state.cart
+    .map((item) => item.price * item.count)
+    .reduce((a, b) => a + b, 0)
+    .toFixed(2);
+
+  totalNumber.innerText = `£${totalAmount}`;
+};
