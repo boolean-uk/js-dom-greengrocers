@@ -1,3 +1,7 @@
+
+
+//STORE - RENDER ITEMS
+
 const populateStoreItemList = (array) => {array.forEach(item => {
 
     const storeItem = document.createElement('li')
@@ -12,7 +16,7 @@ const populateStoreItemList = (array) => {array.forEach(item => {
     const addToCart = document.createElement('button')
     addToCart.innerText = 'Add to cart'
     storeItem.append(addToCart)
-    addToCart.addEventListener('click', event => {
+    addToCart.addEventListener('click', () => {
 
     const checkIfInCart = state.cart.find((cartItem) =>  cartItem.name === item.name)
       
@@ -21,17 +25,16 @@ const populateStoreItemList = (array) => {array.forEach(item => {
         } else {
           checkIfInCart.quantity += 1   
         }
-
-        const itemsInCart = cartItemList.querySelectorAll('li')
-        itemsInCart.forEach(item => item.remove())
+        removePreviousCartContent()
         populateCartItemList()  
     }
     ) 
 
-
 })
     
 }
+
+//CART - RENDER ITEMS
 
 let cartItem
  
