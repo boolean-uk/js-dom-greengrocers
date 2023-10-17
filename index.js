@@ -66,10 +66,11 @@ const basketContainer = document.querySelector("#cart > div.cart--item-list-cont
 // console.log(basketContainer)
 
 
+
 // for filter extension can use a diffrent variable than allItems when displaying shop items
 
 allItems.forEach((itemInfo) => {
-  console.log(itemInfo)
+  // console.log(itemInfo)
   // create elements for store-item template
   const itemLi = document.createElement("li")
   storeList.append(itemLi)
@@ -132,13 +133,9 @@ function shopToCart (itemInfo) {
   // render cart
   renderCart()
 
+  // update total value
+  updateTotal()
 
-
- 
-  
-
-  
-  // mutliple routes here might need making
 }
 
 // create function for adding rendering a new item to the cart
@@ -157,6 +154,7 @@ function createItemInBasket (itemInfo) {
   const subtractButton = document.createElement("button")
   subtractButton.setAttribute("class", "quantity-btn remove-btn center")
   subtractButton.innerText = "-"
+  
 
   const quantity = document.createElement("span")
   quantity.setAttribute("class", "quantity-text center")
@@ -167,14 +165,35 @@ function createItemInBasket (itemInfo) {
   addButton.setAttribute("class", "quantity-btn add-btn center")
   addButton.innerText = "+"
 
+  // add button events to update quantity
+  addButton.addEventListener("click", () => {
+    console.log("add")
+    itemInfo.quantity += 1
+    clearCart()
+    renderCart()
+    updateTotal()
+  })
+
+  subtractButton.addEventListener("click", () => {
+    console.log("subtract")
+    itemInfo.quantity -= 1
+    clearCart()
+    renderCart()
+    updateTotal()
+  })
+
+
+
 
   // append all items to li at the end
   li.append(img, p, subtractButton, quantity, addButton)
 }
 
+
 function clearCart () {
   // select container children
   const cartElements = document.querySelectorAll("ul.item-list.cart--item-list > *")
+  
   console.log("clearing cart")
 
   // remove each element
@@ -186,28 +205,66 @@ function clearCart () {
 function renderCart () {
   console.log("rendering")
   // store the items in the basket and then generate li elements from that 
-  state.cart.forEach((item) => {
+  let itemNeedsDeleting = false
+  let arrayIndex = null
+  state.cart.forEach((item, index) => {
     if (item.quantity > 0) {
       createItemInBasket(item)
     }
     else {
-      console.log("item needs deleting from cart")
+      console.log("item deleted from cart")
+      // console.log(index)
+      itemNeedsDeleting = true
+      arrayIndex = index
+      // delete state.cart[index]
     }
     
   })
+
+  // remove any item with quantity 0
+  if (itemNeedsDeleting === true) {
+    state.cart.splice(arrayIndex, 1)
+
+  }
+
+  // reset checks for items which need removing
+  arrayIndex = null
+  itemNeedsDeleting = false
+
+
 }
 
-function total () {
+function updateTotal () {
+  // update the total price depending on items
+
+// reset total to 0 before adding total
+let totalPrice = 0
+
+
+// 1) select all elements within the cart; set to variable
+let basketItems = state.cart
+basketItems.forEach((item) => {
+  console.log(item)
+  const quantity = item.quantity
+  const price = item.price
+  const subTotal = price*quantity
+  totalPrice += subTotal
+})
+
+// console.log(totalPrice)
+
+// 2) for each element get the price and quantity and set in variables
+// 3)Calculate total and set to variable
+// 4) select span element and the text within then set value
+const totalElement = document.querySelector(".total-number")
+totalElement.innerText = `£${totalPrice.toFixed(2)}`
 
 }
 
 
 // tasks
-// update the total price depending on items
-// 1) select all elements within the cart; set to variable
-// 2) for each element get the price and quantity and set in variables
-// 3)Calculate total and set to variable
-// 4) select span element and the text within then set value
+
+
 
 
 // add event listners to cart item buttons so the quantity can be updated
