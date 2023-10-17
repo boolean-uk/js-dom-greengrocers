@@ -61,7 +61,7 @@ const total = document.querySelector('.total-number')
 
 // FULL PAGE RENDER FUNCTION
 function render() {
-  renderStore()
+  initialStoreRender()
   renderFilter()
 }
 
@@ -116,6 +116,27 @@ function addItemToCart(item) {
   renderCart()
 }
 
+// RENDER STORE FUNCTION
+function renderStore(item) {
+  const storeItemVeg = document.createElement('li')
+  storeItemVeg.append(renderStoreItemDiv(item))  
+
+  const storeItemButton = document.createElement('button')
+  storeItemButton.innerText = "Add to cart"
+  storeItemVeg.append(storeItemButton)
+
+  storeList.append(storeItemVeg)
+
+  storeItemButton.addEventListener('click', () => addItemToCart(item))
+} 
+
+// INITIAL STORE RENDER
+function initialStoreRender() {
+  state.items.forEach((item) => {
+    renderStore(item)
+  })
+}
+
 // CREATE FILTER OPTIONS
 
 // CLEAR STORE
@@ -141,7 +162,9 @@ function showAllRender() {
   
   showAllButton.addEventListener('click', () => {
     clearStore()
-    renderStore()
+    state.items.forEach((item) => {
+      renderStore(item)
+    })
   })
   showAll.append(showAllButton)
   return showAll
@@ -157,7 +180,7 @@ function vegetableRender() {
     clearStore()
     state.items.forEach((item) => {
       if (item.filter === 'vegetable') {
-        createFilteredStore(item)
+        renderStore(item)
       }
     }) 
   })
@@ -176,43 +199,12 @@ function fruitRender() {
     clearStore()
     state.items.forEach((item) => {
       if (item.filter === 'fruit') {
-        createFilteredStore(item)
+        renderStore(item)
       }
     })
   })
   fruit.append(fruitButton)
   return fruit
-}
-
-// RENDER STORE FILTERS
-function createFilteredStore(item) {
-  const storeItemVeg = document.createElement('li')
-  storeItemVeg.append(renderStoreItemDiv(item))  
-
-  const storeItemButton = document.createElement('button')
-  storeItemButton.innerText = "Add to cart"
-  storeItemVeg.append(storeItemButton)
-
-  storeList.append(storeItemVeg)
-
-  storeItemButton.addEventListener('click', () => addItemToCart(item))
-} 
-
-// RENDER STORE ITEMS ON THE PAGE
-function renderStore() {
-
-  state.items.forEach((item) => {
-    const storeItem = document.createElement('li')
-    storeItem.append(renderStoreItemDiv(item))  
-
-    const storeItemButton = document.createElement('button')
-    storeItemButton.innerText = "Add to cart"
-    storeItem.append(storeItemButton)
-
-    storeList.append(storeItem)
-
-    storeItemButton.addEventListener('click', () => addItemToCart(item))
-  })
 }
 
 // CART
