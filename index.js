@@ -99,6 +99,8 @@ function updateCart(newItem) {
     }
   }
 
+
+  // Display cart items and setup buttons
   const cartContainer = document.querySelector('.cart--item-list')
   cartContainer.textContent = ''
   
@@ -109,7 +111,6 @@ function updateCart(newItem) {
     currency: 'GBP'
   })
 
-  // Display cart items and setup buttons
   state.cart.forEach(item => {
     const itemContainer = document.createElement('li')
 
