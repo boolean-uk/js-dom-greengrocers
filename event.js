@@ -1,9 +1,8 @@
 function addToCart(storeItem) {
   const matchingItem = matchToSTATECart(storeItem);
 
-  if (matchingItem) {
-    storeItem.quantity = matchingItem.quantity + 1;
-  } else {
+  if (matchingItem) storeItem.quantity = matchingItem.quantity + 1;
+  else {
     storeItem.quantity = 1;
     STATE.cart.push(storeItem);
   }
@@ -40,9 +39,8 @@ function filterStoreItems(filterType, filterValue) {
     if (
       category &&
       (category === filterValue || category.includes(filterValue))
-    ) {
+    )
       item.visible = true;
-    }
   });
   renderStore();
 }
