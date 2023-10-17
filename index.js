@@ -82,8 +82,7 @@ function groceryItemsAvailable(value) {
     li.append(button);
     button.value = value.name;
     button.addEventListener("click", (event) => {
-        itemName = event.target.value;
-
+        const itemName = event.target.value;
         const foundCartItem = state.cart.find((name) => name.name === itemName);
 
         if (foundCartItem) {
@@ -119,7 +118,8 @@ function createCartItem(value) {
     const buttonMinus = createButton("-", "quantity-btn remove-btn center");
     buttonMinus.addEventListener("click", (event) => {
         value.quantity--;
-        // remover();
+        calcTotal()
+        remover();
         renderCart();
     });
 
@@ -131,11 +131,12 @@ function createCartItem(value) {
     const buttonPlus = createButton("+", "quantity-btn add-btn center");
     buttonPlus.addEventListener("click", (event) => {
         value.quantity += 1;
+        calcTotal()
         renderCart();
     });
 
     li.append(buttonPlus);
-
+   
     cartlist.append(li);
 }
 
@@ -199,12 +200,23 @@ function render() {
     renderCart();
 }
 
-// function remover() {
-//     const zeroQuantity = (num) => num <= 0;
-//     console.log(state.cart.findIndex(zeroQuantity));
-//     // if (value.quantity <= 0) {
-//     //    value.filter
-//     // }
-// }
+function remover() {
+    state.cart.forEach((item) => {
+        console.log(state.cart)
+        if (item.quantity === 0){
+            state.cart = state.cart.filter((item) => item.quantity > 0);
+            // console.log("something is zero")
+        }
+    })
+}
+
+function calcTotal() {
+    state.cart.forEach((item) => {
+        let total = item.quantity * item.price
+        console.log(item)
+        console.log(total.toFixed(2))
+        return total.toFixed(2)
+    })
+}
 
 render();
