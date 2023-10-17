@@ -52,26 +52,27 @@ const state = {
       },
     ],
     cart: [
-        {
-            id: "001-beetroot",
-            name: "beetroot",
-            price: 0.35,
-            quantity: 1
-          },
-          {
-            id: "002-carrot",
-            name: "carrot",
-            price: 0.35,
-            quantity: 1
-          },
-          {
-            id: "003-apple",
-            name: "apple",
-            price: 0.35,
-            quantity: 1
-          }
+        // {
+        //     id: "001-beetroot",
+        //     name: "beetroot",
+        //     price: 0.35,
+        //     quantity: 1
+        //   },
+        //   {
+        //     id: "002-carrot",
+        //     name: "carrot",
+        //     price: 0.35,
+        //     quantity: 1
+        //   },
+        //   {
+        //     id: "003-apple",
+        //     name: "apple",
+        //     price: 0.35,
+        //     quantity: 1
+        //   }
     ],
   };
+
 
   //to render the items in the store
   function renderStorelist(){
@@ -98,7 +99,20 @@ const state = {
 
         //add addeventlistener to the button
         addButton.addEventListener('click',()=>{
+          const foundItem = state.cart.find((cartItem)=>cartItem.id === item.id)
 
+          if(foundItem){
+            foundItem.quantity++;
+          }else{
+            state.cart.push({
+                id : item.id,
+                name : item.name,
+                price: item.price,
+                quantity: 1,
+              })
+          }
+          renderCartList();
+        
         })
         //appends
         itemDiv.append(itemImage)
@@ -108,10 +122,11 @@ const state = {
 
   }
 
+
   function renderCartList() {
     //select ul from cart
       const cartList = document.querySelector('.cart--item-list');
-  
+      console.log(cartList)
       //to remove items in the card after rendering
       const removeItemsInTheCart =cartList.querySelectorAll('*');
       removeItemsInTheCart.forEach((childElement)=>childElement.remove());
@@ -129,25 +144,45 @@ const state = {
         const cartName = document.createElement('p');
         cartName.innerText = cartItem.name;
   
-        const buttonMinus = document.createElement('button');
-        buttonMinus.setAttribute('class', 'quantity-btn remove-btn center');
-        buttonMinus.innerText = '-';
+        const buttonRemove = document.createElement('button');
+        buttonRemove.setAttribute('class', 'quantity-btn remove-btn center');
+        buttonRemove.innerText = '-';
+        buttonRemove.addEventListener("click", () => {
+          const foundItem = state.cart.find(
+            (cartList) => cartList.id === cartItem.id
+          );
+          if (foundItem.quantity >= 1) {
+            foundItem.quantity--;
+          }else if(foundItem.quantity === 0){
+            state.cart = state.cart.filter((product) => cartItem.id !== foundItem.id);
+          }
+          renderCartList();
+        });
+        
     
         const cartQuantity = document.createElement('span');
+        cartQuantity.innerText = cartItem.quantity;
          cartQuantity.setAttribute('class', 'quantity-text center');
-         cartQuantity.innerText = 1;
 
-        const buttonPlus = document.createElement('button');
-         buttonPlus .setAttribute('class', 'quantity-btn add-btn center');
-         buttonPlus .innerText = '+';
-         buttonPlus .value = cartItem.id
-    
-
-        cartListName.append(cartImage,cartName,cartQuantity,buttonMinus,buttonPlus);
+        const buttonAdd = document.createElement('button');
+         buttonAdd .setAttribute('class', 'quantity-btn add-btn center');
+         buttonAdd .innerText = '+';
+         buttonAdd.addEventListener("click", () => {
+          const foundItem = state.cart.find(
+            (cartList) => cartList.id === cartItem.id
+          );
+          if (foundItem) {
+            foundItem.quantity++;
+          }
+          renderCartList();
+        });
+      
+        cartListName.append(cartImage,cartName,buttonRemove,cartQuantity,buttonAdd);
         cartList.append(cartListName);
     })
   
   
   }
+
   renderStorelist();
   renderCartList()
