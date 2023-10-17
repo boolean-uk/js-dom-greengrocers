@@ -1,7 +1,7 @@
 /* Typography */
 
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif;
 }
 
 h1,
@@ -23,7 +23,7 @@ button {
 /* Store */
 
 #store {
-  height: 40vh;
+  height: 60vh;
   padding: 1rem;
 
   overflow-y: scroll;
@@ -33,6 +33,27 @@ button {
 
 #store h1 {
   text-align: center;
+}
+
+.store--filter-sort {
+  display: grid;
+  grid-template-columns: auto repeat(2, minmax(auto, 200px)) auto;
+  justify-content: center;
+  gap: 10px;
+
+  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+
+  padding: 10px;
+
+  background-color: white;
+  border-radius: 5px;
+}
+
+.store--filter-sort select {
+  color: gray;
+  font-size: 0.8rem;
 }
 
 .store--item-list {
@@ -46,11 +67,26 @@ button {
   display: grid;
   place-items: center;
   grid-row-gap: 0.5rem;
+
+  background-color: #5ae;
+  border-radius: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .store--item-icon {
   width: 125px;
   height: 125px;
+}
+
+.store--item-description {
+  display: grid;
+  grid-auto-flow: column;
+
+  justify-content: start;
+  justify-items: start;
+
+  gap: 5px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -68,7 +104,7 @@ button {
 /* Cart */
 
 #cart {
-  height: 60vh;
+  height: 40vh;
   padding: 1rem;
 
   display: grid;
