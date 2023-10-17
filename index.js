@@ -53,3 +53,100 @@ const state = {
   ],
   cart: []
 };
+
+
+
+
+
+
+state.items.forEach((item) =>{
+  const listContent = document.querySelector('ul');
+
+  const list = document.createElement('li');
+  listContent.append(list);
+
+  const div = document.createElement('div')
+  div.setAttribute("class","store--item-icon");
+  list.append(div)
+
+// creating the greengrocers images
+  const img = document.createElement('img')
+  img.src = `assets/icons/${item.id}.svg`
+  img.alt = item.name
+  div.append(img);
+
+  //creating the greengrocers image buttons
+  const button = document.createElement('button')
+  button.innerText = 'Add to cart'
+  list.append(button);
+  
+// creating the eventlistener
+  button.addEventListener('click',() =>{
+    // const cartContent = document.querySelector('.cart--item-list-container');
+    const cartItem = document.querySelector('.cart--item-list');
+    const cartList = document.createElement('li');
+    cartItem.append(cartList);
+   
+
+    const cartImg = document.createElement('img');
+    cartImg.setAttribute('class', 'cart--item-icon');
+    cartImg.src = `assets/icons/${item.id}.svg`;
+    cartImg.alt = item.name;
+    cartList.append(cartImg);
+
+
+    const p = document.createElement('p');
+    p.innerText = 'beetroot';
+    cartList.append(p);
+
+      const minusButton = document.createElement('button');
+      minusButton.setAttribute('class', 'quantity-btn remove-btn center');
+      minusButton.innerText = '-'
+      cartList.append(minusButton);
+
+      minusButton.addEventListener('click', () =>{
+        const removeItem = state.cart.find((cartItem)=> cartItem.type === item.type)
+        if (removeItem){
+          if(removeItem.quantity !== 0){
+            removeItem.quantity -=1
+          }
+        }
+      })
+      cartList.append(minusButton)
+     
+      
+    const span = document.createElement('span');
+    span.setAttribute('class', 'quantity-text center');
+    span.innerText = '1';
+    cartList.append(span);
+
+    const plusButton = document.createElement('button');
+    plusButton.setAttribute('class', 'quantity-btn add-btn center');
+    plusButton.innerText = '+';
+    cartList.append(plusButton);
+
+    plusButton.addEventListener('click', (event)=> {
+      const addItem = state.cart.find((cartItem)=> cartItem.type === item.type)
+      if(addItem){
+        addItem.quantity +=1
+      }else{
+        state.cart.push({item, quantity: 1})
+      }
+      
+      });
+      cartList.append(plusButton)
+    
+    
+
+    
+    
+  
+  
+  
+  
+  
+  })
+}) 
+
+
+
