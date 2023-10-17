@@ -56,6 +56,7 @@ const state = {
 
 const itemDisplay = document.querySelector('.store--item-list')
 
+// Store display
 state.items.forEach(item => {
   const newItem = document.createElement('li')
   const div = document.createElement('div')
@@ -78,7 +79,9 @@ state.items.forEach(item => {
   itemDisplay.append(newItem)
 })
 
+// Cart display
 function updateCart(newItem) {
+  // Add to item count if object is in array
   if (typeof newItem === 'object') {
     let found = false
     state.cart.forEach(item => {
@@ -89,12 +92,12 @@ function updateCart(newItem) {
       }
     })
 
+    // Add count property with default value of 1, then push to array if item doesn't exist
     if (!found) {
       newItem.count = 1
       state.cart.push(newItem)
     }
   }
-  
 
   const cartContainer = document.querySelector('.cart--item-list')
   cartContainer.textContent = ''
@@ -106,6 +109,7 @@ function updateCart(newItem) {
     currency: 'GBP'
   })
 
+  // Display cart items and setup buttons
   state.cart.forEach(item => {
     const itemContainer = document.createElement('li')
 
@@ -127,23 +131,25 @@ function updateCart(newItem) {
     total += item.price * item.count
     totalElement.innerText = totalPrice.format(total)
 
+    // remove button event listener
     remove.addEventListener('click', listener => {
       item.count--
-      if (item.count <= 0) {
+      total -= item.price
+      if (item.count < 1) {
         state.cart.splice(state.cart.indexOf(item), 1)
-        updateCart()
-        return
       }
+      totalElement.innerText = totalPrice.format(total)
       updateCart()
-      quantity.innerText = item.count
     })
 
     add.className = 'quantity-btn add-btn center'
     add.innerText = '+'
 
+    // add button event listener
     add.addEventListener('click', listener => {
       item.count++
-      quantity.innerText = item.count
+      total += item.price
+      updateCart()
     })
 
     quantity.innerText = item.count
