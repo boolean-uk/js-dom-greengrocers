@@ -62,12 +62,13 @@ const total = document.querySelector('.total-number')
 // FULL PAGE RENDER FUNCTION
 function render() {
   renderStore()
+  renderFilter()
 }
 
 // CALCULATE RUNNING TOTAL
 function runningTotal() {
-  let sum = 0
   const cartValues = state.cart.map((cartItems) => {
+    let sum = 0
     const value = cartItems.price
     const number = cartItems.quantity
     return sum = value * number
@@ -75,6 +76,15 @@ function runningTotal() {
   const newTotal = cartValues.reduce((acc, curr) => acc + curr, 0)
   total.innerText = `£${newTotal.toFixed(2)}`
 }
+
+// STATE UPDATE TO CREATE FILTERS
+state.items.forEach((item) => 
+  {if (item.name === 'beetroot' || item.name === 'carrot') {
+    item.filter = 'vegetable'
+  } else {
+    item.filter = 'fruit'
+  }
+}) 
 
 // STORE
 
@@ -99,18 +109,98 @@ function addItemToCart(item) {
 
   if (isItemInCart) {
     isItemInCart.quantity += 1
-    // isItemInCart.price += item.price
-    
   } else {
     state.cart.push({id: item.id, name: item.name, price: item.price, quantity: 1})
   }
-
   runningTotal()
   renderCart()
 }
 
+// CREATE FILTER OPTIONS
+
+// CLEAR STORE
+function clearStore() {
+  storeList.innerHTML = ''
+}
+
+// CREATE FILTER LIST AND APPEND TO HEADER
+function renderFilter() {
+  const filterDiv = document.querySelector('.filters')
+  const filterHeader = document.createElement('h2')
+  filterHeader.innerText = 'Filters'
+  const filterList = document.createElement('ul')
+  filterDiv.append(filterHeader, filterList)
+  filterList.append(showAllRender(), vegetableRender(), fruitRender())
+}
+
+// SHOW ALL/NO FILTER
+function showAllRender() {
+  const showAll = document.createElement('li')
+  const showAllButton = document.createElement('button')
+  showAllButton.innerText = 'Show All'
+  
+  showAllButton.addEventListener('click', () => {
+    clearStore()
+    renderStore()
+  })
+  showAll.append(showAllButton)
+  return showAll
+}
+
+// VEG FILTER
+function vegetableRender() {
+  const vegetable = document.createElement('li')
+  const vegetableButton = document.createElement('button')
+  
+  vegetableButton.innerText = 'Vegetables'
+  vegetableButton.addEventListener('click', () => {
+    clearStore()
+    state.items.forEach((item) => {
+      if (item.filter === 'vegetable') {
+        createFilteredStore(item)
+      }
+    }) 
+  })
+  vegetable.append(vegetableButton)
+  return vegetable
+}
+
+// FRUIT FILTER
+function fruitRender() {
+  const fruit = document.createElement('li')
+  const fruitButton = document.createElement('button')
+  
+  fruitButton.innerText ='Fruit'
+  
+  fruitButton.addEventListener('click', () => {
+    clearStore()
+    state.items.forEach((item) => {
+      if (item.filter === 'fruit') {
+        createFilteredStore(item)
+      }
+    })
+  })
+  fruit.append(fruitButton)
+  return fruit
+}
+
+// RENDER STORE FILTERS
+function createFilteredStore(item) {
+  const storeItemVeg = document.createElement('li')
+  storeItemVeg.append(renderStoreItemDiv(item))  
+
+  const storeItemButton = document.createElement('button')
+  storeItemButton.innerText = "Add to cart"
+  storeItemVeg.append(storeItemButton)
+
+  storeList.append(storeItemVeg)
+
+  storeItemButton.addEventListener('click', () => addItemToCart(item))
+} 
+
 // RENDER STORE ITEMS ON THE PAGE
 function renderStore() {
+
   state.items.forEach((item) => {
     const storeItem = document.createElement('li')
     storeItem.append(renderStoreItemDiv(item))  
