@@ -12,25 +12,33 @@
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
+      <div class="filter-buttons">
+        <button class="fruit-filter">Show Fruits</button>
+        <button class="veg-filter">Show Vegetables</button>
+        <button class="clear-filter">Show All</button>
+      </div>  
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
     </header>
 
     <main id="cart">
+      <div class="sort-buttons">
+        <button class="price-sort">Sort by Price</button>
+        <button class="alphabet-sort">Sort Alphabetically</button>
+      </div>
       <h2>Your Cart</h2>
+
 
       <div class="cart--item-list-container">
         <ul class="item-list cart--item-list">
           <!-- Take a look at cart-item.html -->
         </ul>
       </div>
-
       <div class="total-section">
         <div>
           <h3>Total</h3>
         </div>
-
         <div>
           <span class="total-number">£0.00</span>
         </div>
