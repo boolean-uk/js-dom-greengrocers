@@ -98,8 +98,17 @@ function updateCart(newItem) {
 
   const cartContainer = document.querySelector('.cart--item-list')
   cartContainer.textContent = ''
+  
+  const totalElement = document.querySelector('.total-number')
+  let total = 0
+  let totalPrice = new Intl.NumberFormat('en-UK', {
+    style: 'currency',
+    currency: 'GBP'
+  })
+
   state.cart.forEach(item => {
     const itemContainer = document.createElement('li')
+
     const image = document.createElement('img')
     const name = document.createElement('p')
     const remove = document.createElement('button')
@@ -112,20 +121,21 @@ function updateCart(newItem) {
 
     name.innerText = item.name
 
-    
-
     remove.className = 'quantity-btn remove-btn center'
     remove.innerText = '-'
     
-    remove.addEventListener('click', listener => {
-      if (item.count <= 0) {
-        delete state.cart[state.cart.indexOf(item)]
-        updateCart()
-      }
-      
-      item.count--
-      quantity.innerText = item.count
+    total += item.price * item.count
+    totalElement.innerText = totalPrice.format(total)
 
+    remove.addEventListener('click', listener => {
+      item.count--
+      if (item.count <= 0) {
+        state.cart.splice(state.cart.indexOf(item), 1)
+        updateCart()
+        return
+      }
+      updateCart()
+      quantity.innerText = item.count
     })
 
     add.className = 'quantity-btn add-btn center'
