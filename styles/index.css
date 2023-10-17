@@ -1,7 +1,7 @@
 /* Typography */
 
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif;
 }
 
 h1,
@@ -181,4 +181,62 @@ button {
     border-top: 2px solid #00675b;
     border-bottom: 2px solid #00675b;
   }
+}
+
+/* Filter Section */
+.filter-section {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter__buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.filter__btn {
+  background-color: #2ecc71;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filter__btn:hover {
+  background-color: #27ae60;
+}
+
+/* Sort Section */
+.sort__section {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+label[for="sort-select"] {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+#sort-select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Centered Container */
+.centered-container {
+  text-align: center;
+  margin-top: 20px;
 }
