@@ -125,6 +125,7 @@ state.items.forEach((eachItem) => {
         cartButtonAdd.innerText = '+'
         itemListLIs.append(cartButtonAdd)
 
+
         // Total
 
         let number = parseInt(spanForCart.innerText)
@@ -133,23 +134,28 @@ state.items.forEach((eachItem) => {
 
 
         totalNum.innerText = eachItem.price * number
-        console.log(totalNum)
+        console.log(totalNum.innerText)
+
 
         ////////////////////////////////////////////////////
 
         //ADD EVENT LISTENERS TO MINUS AND PLUS BUTTON
         // MINUS
 
+
+
         cartButtonAdd.addEventListener("click", () => {
-            // Increase Number by 1 each time when you click plus
             number++
+            // need to convert back to string from value
+            spanForCart.innerText = number.toString()
 
-            // Total
-            let totalNum = document.querySelector(".total-number")
+            // Total - use Math.floor to round to 2 dec places
+            totalNum.innerText = Math.floor(eachItem.price * number * 100) / 100
 
 
-            totalNum.innerText = eachItem.price * number
-            console.log(totalNum)
+            // Increase Number by 1 each time when you click plus
+
+
         })
 
         cartButtonMinus.addEventListener("click", () => {
@@ -160,12 +166,12 @@ state.items.forEach((eachItem) => {
             number--
             spanForCart.innerText = number
 
-            // Total
+            // Total - use Math.floor to round to 2 dec places
             let totalNum = document.querySelector(".total-number")
 
 
-            totalNum.innerText = eachItem.price * number
-            console.log(totalNum)
+            totalNum.innerText = Math.floor(eachItem.price * number * 100) / 100
+
 
         })
     })
