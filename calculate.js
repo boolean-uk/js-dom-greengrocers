@@ -18,9 +18,15 @@ const addDecreaseButton = (item) => {
   const decreaseButton = document.createElement("button")
   decreaseButton.innerText = '-'  
   decreaseButton.setAttribute('class', 'quantity-btn remove-btn center') 
-  decreaseButton.addEventListener('click', () => {
+  decreaseButton.setAttribute('id', `${item.id}Decrease`)
+  decreaseButton.addEventListener('click', (event) => {
 
-      if (state.cart.find((item) =>  item.quantity <= 1 )) {
+    const t = event.target
+    console.log(t)
+    console.log(item.id)
+    console.log(event.target.id)
+
+      if (`${item.id}Decrease`=== event.target.id && item.quantity <= 1) {
           state.cart.splice(state.cart.indexOf(item), 1)
 
       } else {
