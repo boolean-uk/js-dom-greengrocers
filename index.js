@@ -118,7 +118,6 @@ function createCartItem(value) {
     const buttonMinus = createButton("-", "quantity-btn remove-btn center");
     buttonMinus.addEventListener("click", (event) => {
         value.quantity--;
-        calcTotal()
         remover();
         renderCart();
     });
@@ -131,7 +130,6 @@ function createCartItem(value) {
     const buttonPlus = createButton("+", "quantity-btn add-btn center");
     buttonPlus.addEventListener("click", (event) => {
         value.quantity += 1;
-        calcTotal()
         renderCart();
     });
 
@@ -140,7 +138,7 @@ function createCartItem(value) {
     cartlist.append(li);
 }
 
-// Create all functions for creating types of elements inside header. They will be hoisted.
+// Create all functions for creating types of elements/logic inside header and cart.
 function createDiv(classe) {
     const div = document.createElement("div");
     div.classList.add(classe);
@@ -180,6 +178,25 @@ function createSpan(text, classe) {
     return span;
 }
 
+function calcTotal() {
+    let sum = ""
+    // console.log(sum)
+    const totalOfItems = state.cart.map((item) => {
+        return sum = item.quantity * item.price
+    })
+    // console.log(totalOfItems)
+    const Total = totalOfItems.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+    totalNumber.innerText = `£${Total.toFixed(2)}`
+}
+
+function remover() {
+    state.cart.forEach((item) => {
+        if (item.quantity === 0){
+            state.cart = state.cart.filter((item) => item.quantity > 0);
+        }
+    })
+}
+
 
 // Render functions
 function renderHeader() {
@@ -192,6 +209,7 @@ function renderCart() {
     basketClear();
     state.cart.forEach((value) => {
         createCartItem(value);
+        calcTotal()
     });
 }
 
@@ -200,23 +218,6 @@ function render() {
     renderCart();
 }
 
-function remover() {
-    state.cart.forEach((item) => {
-        console.log(state.cart)
-        if (item.quantity === 0){
-            state.cart = state.cart.filter((item) => item.quantity > 0);
-            // console.log("something is zero")
-        }
-    })
-}
 
-function calcTotal() {
-    state.cart.forEach((item) => {
-        let total = item.quantity * item.price
-        console.log(item)
-        console.log(total.toFixed(2))
-        return total.toFixed(2)
-    })
-}
-
+// FIRST RENDER //
 render();
