@@ -74,6 +74,11 @@ const renderHeader = () => {
     const button= document.createElement('button');
     button.innerText = 'add to cart';
     listItem.append(button);
+    const eventButton = document.querySelector('button');
+    const newItem= document.querySelector('span');
+    eventButton.addEventListener ('click',() =>{
+      newItem ++;
+    })
 
     });
   
@@ -97,14 +102,30 @@ const renderMain = () => {
     const addButton = document.createElement('button');
     addButton.innerText = `+`;
     listItem2.append(addButton);
+
+    addButton.addEventListener('click', () => {
+      const totalNumber = listItem2.querySelector('span');
+      let count = parseInt(totalNumber.innerText);
+      count++; // Increase the count.
+      totalNumber.innerText = count;
+    });
+    
     
     const totalNumber = document.createElement('span');
     totalNumber.innerText = '1';
     listItem2.append(totalNumber);
     
-    const removeButton = document.createElement('button');
+    const removeButton= document.createElement('button');
     removeButton.innerText = '-';
     listItem2.append(removeButton);
+    removeButton.addEventListener('click', () => {
+      const totalNumber = listItem2.querySelector('span');
+      let count = parseInt(totalNumber.innerText);
+      if (count > 0) {
+        count--; // Decrease the count, but ensure it doesn't go below zero.
+        totalNumber.innerText =count;
+    }
+    });
 
 
 
