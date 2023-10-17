@@ -52,4 +52,5 @@ const state = {
     }
   ],
   cart: []
-};
+
+renderCartItems();
