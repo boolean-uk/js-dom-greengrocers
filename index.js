@@ -76,14 +76,13 @@ const state = {
 // Shows each object in the array above 
 const items = state.items 
 // Total of the basket price
-let basketPrice = 0 
+let basketPrice = 0
 // Default quantity
 let basketItemQuantity = 1 
 
 const header = document.querySelector('header')
 const itemsUl = document.createElement('ul') 
 itemsUl.setAttribute('class', 'item-list store--item-list')
-itemsUl.setAttribute('style', 'list-style-type: none')
 header.append(itemsUl)
 
 for (let i = 0; i < items.length; i++) {
@@ -96,7 +95,7 @@ for (let i = 0; i < items.length; i++) {
     divItems.setAttribute('class', 'store--item-icon')
     listItem.append(divItems)
 
-    // Image for each store item
+    // Image for each item
     const itemImage = document.createElement('img')
     itemImage.src = items[i].image
     divItems.append(itemImage)
@@ -106,37 +105,38 @@ for (let i = 0; i < items.length; i++) {
     itemButton.innerText = 'Add to cart'
     listItem.append(itemButton)
 
-    // When "Add to cart" is clicked
+    // When add to cart is clicked
     itemButton.addEventListener('click', () => {
 
-      // If the item wasn't added to basket, create all elements in the basket
+      // If the item wasn't added to basket
       if (items[i].ifClicked === false) {
       items[i].ifClicked = true
       const itemList = document.querySelector('.cart--item-list')
       const addItem = document.createElement('li')
       itemList.append(addItem)
 
-      // Creates img element in the basket
+      // This will create the image element in the basket
       const cartImage = document.createElement('img')
       addItem.append(cartImage)
       cartImage.src = items[i].image
 
-      //  Creates name of item in basket and capitalizes first letter
+      //  First letter will be a capital
       const cartP = document.createElement('p')
       cartP.innerText = items[i].name
       cartP.style.textTransform = 'capitalize'
       addItem.append(cartP)
 
-      // Creates remove from cart button
+      // remove from cart 
       const cartItemRemoveButton = document.createElement('button')
       cartItemRemoveButton.innerText = '-'
       cartItemRemoveButton.setAttribute('class', 'quantity-btn remove-btn center')
       addItem.append(cartItemRemoveButton)
       
-      // Removes from total
-      cartItemRemoveButton.addEventListener('click', () => {
+      // Removes from total amount 
+      cartItemRemoveButton.addEventListener('click', (event) => {
+        event.preventDefault()
         basketItemQuantity -= 1
-        basketPrice -= .35
+        basketPrice -= 0.35
         cartSpan.innerText = basketItemQuantity
         basketTotalNumberSelector.innerText = '£' + basketPrice.toFixed(2)
 
@@ -148,7 +148,6 @@ for (let i = 0; i < items.length; i++) {
         // If item quantity hits 0, then remove from the basket.
         if (basketItemQuantity === 0) {
           addItem.remove()
-          console.log(items[i].ifClicked)
         }
       })
           // Quantity of each item 
@@ -157,7 +156,6 @@ for (let i = 0; i < items.length; i++) {
       cartSpan.innerText = basketItemQuantity
       cartSpan.setAttribute('class', 'quantity-text center')
       addItem.append(cartSpan)
-
 
       // Create button 
       const cartAddButton = document.createElement('button')
@@ -170,5 +168,24 @@ for (let i = 0; i < items.length; i++) {
       basketPrice += 0.35
       basketTotalNumberSelector.innerText = '£' + basketPrice.toFixed(2)
 
+      cartAddButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        basketItemQuantity += 1
+        basketPrice += 0.35
+        cartSpan.innerText = basketItemQuantity
+        basketTotalNumberSelector.innerText = '£' + basketPrice.toFixed(2)
+    })
 
-      }})}
+    // Adding to total when quantity is updated at the bottom section
+    itemButton.addEventListener('click', (event) => {
+      event.preventDefault()
+      basketItemQuantity += 1
+      basketPrice += 0.35
+      cartSpan.innerText = basketItemQuantity
+      basketTotalNumberSelector.innerText = '£' + basketPrice.toFixed(2)
+  }
+  )
+      }
+    }
+    )
+  }
