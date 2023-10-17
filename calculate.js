@@ -51,5 +51,5 @@ const calculateSum = () => {
       {sum += item.price  * item.quantity
       return sum} )
       console.log(sum)
-      total.innerText = `£${sum}`
+      total.innerText = `£${sum.toFixed(2)}`
   }

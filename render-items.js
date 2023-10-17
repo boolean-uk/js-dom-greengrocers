@@ -1,6 +1,7 @@
-const populateStoreItemList = () => {state.items.forEach(item => {
+const populateStoreItemList = (array) => {array.forEach(item => {
 
     const storeItem = document.createElement('li')
+    storeItem.setAttribute('id', `${item.name}`)
     storeItemList.append(storeItem)
 
     const storeItemImage = document.createElement('img')
