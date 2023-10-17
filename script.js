@@ -82,11 +82,32 @@ state.items.forEach((eachItem) => {
     // 1. Add event listener
 
     addToCartButton.addEventListener('click', () => {
+        // finding existing fruit
+        const existingItem = state.cart.find(fruit => fruit.id === eachItem.id)
 
-        // 2. select the ul "item-list"
-        const mainDiv = document.querySelector(".cart--item-list-container > .item-list ")
-        console.log(mainDiv)
+        // if fruit is already in cart, just add qty, else push to cart
+        if (existingItem) {
+            eachItem.qty++
+        }
+        else {
+            eachItem.qty = 1
+            state.cart.push(eachItem)
+        }
+        renderCartItems()
+    })
+});
 
+
+
+function renderCartItems() {
+    // 2. select the ul "item-list"
+    const mainDiv = document.querySelector(".cart--item-list-container > .item-list ")
+    mainDiv.innerHTML = ""
+
+    // initial total to zero
+    let totalPrice = 0;
+
+    state.cart.forEach(item => {
         // 3. create li
         const itemListLIs = document.createElement('li')
         mainDiv.append(itemListLIs)
@@ -95,14 +116,14 @@ state.items.forEach((eachItem) => {
         const cartImg = document.createElement('img')
         cartImg.setAttribute("class",
             "cart--item-icon")
-        cartImg.src = `assets/icons/${eachItem.id}.svg`
+        cartImg.src = `assets/icons/${item.id}.svg`
 
-        cartImg.alt = eachItem.name
+        cartImg.alt = item.name
         itemListLIs.append(cartImg)
 
         //5. create para --enter name
         const cartPara = document.createElement('p')
-        cartPara.innerText = eachItem.name
+        cartPara.innerText = item.name
         itemListLIs.append(cartPara)
 
         // 6. create button -- add class, text
@@ -111,12 +132,10 @@ state.items.forEach((eachItem) => {
         cartButtonMinus.innerText = "-"
         itemListLIs.append(cartButtonMinus)
 
-
-
         // 7. create span -- class, text
         const spanForCart = document.createElement('span')
         spanForCart.setAttribute("class", "quantity-text center")
-        spanForCart.innerText = '1'
+        spanForCart.innerText = item.qty
         itemListLIs.append(spanForCart)
 
         // 8. create button -- add class, text
@@ -125,75 +144,31 @@ state.items.forEach((eachItem) => {
         cartButtonAdd.innerText = '+'
         itemListLIs.append(cartButtonAdd)
 
-
-        // Total
-
-        let number = parseInt(spanForCart.innerText)
-        spanForCart.innerText = number
-        let totalNum = document.querySelector(".total-number")
-
-
-        totalNum.innerText = eachItem.price * number
-        console.log(totalNum.innerText)
-
-
-        ////////////////////////////////////////////////////
-
         //ADD EVENT LISTENERS TO MINUS AND PLUS BUTTON
         // MINUS
-
-
-
         cartButtonAdd.addEventListener("click", () => {
-            number++
-            // need to convert back to string from value
-            spanForCart.innerText = number.toString()
-
-            // Total - use Math.floor to round to 2 dec places
-            totalNum.innerText = Math.floor(eachItem.price * number * 100) / 100
-
-
-            // Increase Number by 1 each time when you click plus
-
-
+            item.qty++
+            renderCartItems()
         })
 
         cartButtonMinus.addEventListener("click", () => {
-            let number = parseInt(spanForCart.innerText)
-            if (number <= 1) {
-                itemListLIs.remove()
+            if (item.qty <= 1) {
+                // remove item from state cart
+                state.cart = state.cart.filter(fruit => fruit.id !== item.id)
+            } else {
+                // subtract one from qty
+                item.qty--
             }
-            number--
-            spanForCart.innerText = number
-
-            // Total - use Math.floor to round to 2 dec places
-            let totalNum = document.querySelector(".total-number")
-
-
-            totalNum.innerText = Math.floor(eachItem.price * number * 100) / 100
-
-
+            renderCartItems()
         })
+
+        // add total price of item to totalPrice
+        totalPrice += item.qty * item.price
     })
-
-
-    //ADD EVENT LISTENERS TO MINUS AND PLUS BUTTON
-    // ADD
-
-
-
-    /////////////////////////////////////////////
-    // TOTAL SECTION
-
-    // Get the total-number
-    // total-number x price 
-
-
-
-
-});
-
-
+    // Update total in the dom
+    let totalNum = document.querySelector(".total-number")
+    totalNum.innerText = "£" + totalPrice.toFixed(2)
+}
 
 
 
