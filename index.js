@@ -1,55 +1,17 @@
-const state = {
-  items: [
-    {
-      id: "001-beetroot",
-      name: "beetroot",
-      price: 0.35
-    },
-    {
-      id: "002-carrot",
-      name: "carrot",
-      price: 0.35
-    },
-    {
-      id: "003-apple",
-      name: "apple",
-      price: 0.35
-    },
-    {
-      id: "004-apricot",
-      name: "apricot",
-      price: 0.35
-    },
-    {
-      id: "005-avocado",
-      name: "avocado",
-      price: 0.35
-    },
-    {
-      id: "006-bananas",
-      name: "bananas",
-      price: 0.35
-    },
-    {
-      id: "007-bell-pepper",
-      name: "bell pepper",
-      price: 0.35
-    },
-    {
-      id: "008-berry",
-      name: "berry",
-      price: 0.35
-    },
-    {
-      id: "009-blueberry",
-      name: "blueberry",
-      price: 0.35
-    },
-    {
-      id: "010-eggplant",
-      name: "eggplant",
-      price: 0.35
-    }
-  ],
-  cart: []
-};
+
+//These are the only two functions that run when the webpage is first loaded
+
+populateStoreItemList(state.items)
+populateCartItemList()
+
+
+
+// both functions are stored in render-item.js
+
+// all global const (hopefully, might have missed some) are in global-const.js
+
+//functions related to adjusting, updating, calculating or otherwise manipulating numbers are in calculate.js
+
+// filter.js contains the code for the first part of the extended criteria
+
+// sort.js contains the code for the second part of the extended criteria 
