@@ -97,8 +97,45 @@ allItems.forEach((itemInfo) => {
 function shopToCart (itemInfo) {
   console.log("added an item")
 
+  // variable to be changed for condition
+  let inBasketAlready = false
+  let itemBasketIndex = null
+
   // add checks here for is item is in basket already
-  createItemInBasket(itemInfo)
+  for (let x = 0; x < state.cart.length; x++) {
+    if (state.cart[x].name === itemInfo.name) {
+      console.log("item already in basket")
+      inBasketAlready = true
+      itemBasketIndex = x
+    }
+  }
+
+  if (inBasketAlready === false) {
+     // push item data into basket
+     itemInfo.quantity = 1
+     state.cart.push(itemInfo)
+     createItemInBasket(itemInfo)
+  }
+
+  else {
+    state.cart[itemBasketIndex].quantity += 1
+    console.log("quantity updated")
+    // itemInfo.quantity++
+  }
+
+  // reset inBasketAlready value
+  inBasketAlready = false
+
+  // clear cart data
+  clearCart()
+
+  // render cart
+  renderCart()
+
+
+
+ 
+  
 
   
   // mutliple routes here might need making
@@ -123,8 +160,8 @@ function createItemInBasket (itemInfo) {
 
   const quantity = document.createElement("span")
   quantity.setAttribute("class", "quantity-text center")
-  // this quantity section will need changing in future functions
-  quantity.innerText = 1
+  // this quantity will changed depending on how many duplicates of the item are in the cart
+  quantity.innerText = itemInfo.quantity
 
   const addButton = document.createElement("button")
   addButton.setAttribute("class", "quantity-btn add-btn center")
@@ -135,30 +172,44 @@ function createItemInBasket (itemInfo) {
   li.append(img, p, subtractButton, quantity, addButton)
 }
 
-// maybe update the code above to set the quantity value
-// store the items in the basket and then generate li elements from that 
+function clearCart () {
+  // select container children
+  const cartElements = document.querySelectorAll("ul.item-list.cart--item-list > *")
+  console.log("clearing cart")
 
-// create element to go into basket once this is working concentrate on not making duplicates
+  // remove each element
+  cartElements.forEach((item) => {
+    item.remove()
+  })
+}
 
+function renderCart () {
+  console.log("rendering")
+  // store the items in the basket and then generate li elements from that 
+  state.cart.forEach((item) => {
+    if (item.quantity > 0) {
+      createItemInBasket(item)
+    }
+    else {
+      console.log("item needs deleting from cart")
+    }
+    
+  })
+}
 
+function total () {
 
-
-
-
-// create function for updating current cart quantity
-
-// create function for creating li in cart
-
-
-// create structure for store cart
-// a tracker of number in cart will be needed 
-// if item already in cart dont create new list item instead just update the span
+}
 
 
 // tasks
-// create state for basket
-// create tempory inputs which can be updated
+// update the total price depending on items
+// 1) select all elements within the cart; set to variable
+// 2) for each element get the price and quantity and set in variables
+// 3)Calculate total and set to variable
+// 4) select span element and the text within then set value
 
 
+// add event listners to cart item buttons so the quantity can be updated
+// if quantity drops to 0 remove from cart
 
-// cart info needs name of item, quantity, price
