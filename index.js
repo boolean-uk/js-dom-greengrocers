@@ -110,16 +110,17 @@ for (let i = 0; i < items.length; i++) {
 
       // If the item wasn't added to basket
       if (items[i].ifClicked === false) {
-      items[i].ifClicked = true
+
+      if (items[i].ifClicked = true){
       const itemList = document.querySelector('.cart--item-list')
       const addItem = document.createElement('li')
       itemList.append(addItem)
-
+      
       // This will create the image element in the basket
       const cartImage = document.createElement('img')
       addItem.append(cartImage)
       cartImage.src = items[i].image
-
+      
       //  First letter will be a capital
       const cartP = document.createElement('p')
       cartP.innerText = items[i].name
@@ -187,5 +188,7 @@ for (let i = 0; i < items.length; i++) {
   )
       }
     }
+    }
     )
   }
+
