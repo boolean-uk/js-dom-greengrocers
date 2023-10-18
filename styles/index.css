@@ -35,46 +35,6 @@ button {
   text-align: center;
 }
 
-.filters {
-  display: grid;
-  place-items: center;
-  width: 150px;
-  position: fixed;
-  border: dotted 1px rgba(255, 0, 0, 0.537);
-  border-radius: 5px;
-}
-
-.filters h2 {
-  margin: 0;
-}
-
-.filters ul {
-  list-style: none;
-  display: grid;
-  justify-items: center;
-  padding: 0;
-  grid-template-rows: auto;
-  gap: 10px;
-  font-size: 16px;
-}
-
-.filters button {
-  background: none;
-	color:midnightblue;
-	border: none;
-  width: 100px;
-  background-color: rgba(72, 236, 50, 0.37);
-	padding: 5px;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
-}
-
-.filters button:hover {
-  background-color: goldenrod;
-  color: white;
-}
-
 .store--item-list {
   display: grid;
   grid-template-columns: repeat(4, 125px);
@@ -91,6 +51,53 @@ button {
 .store--item-icon {
   width: 125px;
   height: 125px;
+}
+
+/* FILTERS AND SORT */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(2, 180px);
+  position: fixed;
+  top: 100px;
+}
+
+.filters, .sort {
+  display: grid;
+  place-items: center;
+  width: 150px;
+  border: dotted 1px rgba(255, 0, 0, 0.537);
+  border-radius: 5px;
+}
+
+.filters h2, .sort h2 {
+  margin: 0;
+}
+
+.filters ul, .sort ul {
+  list-style: none;
+  display: grid;
+  justify-items: center;
+  padding: 0;
+  grid-template-rows: auto;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.filters button, .sort button {
+  background: none;
+	color:midnightblue;
+	border: none;
+  width: 100px;
+  background-color: rgba(72, 236, 50, 0.37);
+	padding: 5px;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.filters button:hover, .sort button:hover {
+  background-color: goldenrod;
+  color: white;
 }
 
 @media only screen and (max-width: 600px) {

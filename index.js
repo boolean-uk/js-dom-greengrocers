@@ -61,8 +61,9 @@ const total = document.querySelector('.total-number')
 
 // FULL PAGE RENDER FUNCTION
 function render() {
-  initialStoreRender()
+  renderStore()
   renderFilter()
+  renderSort()
 }
 
 // CALCULATE RUNNING TOTAL
@@ -87,7 +88,6 @@ state.items.forEach((item) =>
 }) 
 
 // STORE
-
 // CREATE STORE FUNCTIONS
 function renderStoreItemDiv(item) {
   const storeItemDiv = document.createElement('div')
@@ -117,7 +117,7 @@ function addItemToCart(item) {
 }
 
 // RENDER STORE FUNCTION
-function renderStore(item) {
+function createStore(item) {
   const storeItemVeg = document.createElement('li')
   storeItemVeg.append(renderStoreItemDiv(item))  
 
@@ -131,19 +131,18 @@ function renderStore(item) {
 } 
 
 // INITIAL STORE RENDER
-function initialStoreRender() {
+function renderStore() {
   state.items.forEach((item) => {
-    renderStore(item)
+    createStore(item)
   })
 }
-
-// CREATE FILTER OPTIONS
 
 // CLEAR STORE
 function clearStore() {
   storeList.innerHTML = ''
 }
 
+// FILTERS
 // CREATE FILTER LIST AND APPEND TO HEADER
 function renderFilter() {
   const filterDiv = document.querySelector('.filters')
@@ -162,9 +161,7 @@ function showAllRender() {
   
   showAllButton.addEventListener('click', () => {
     clearStore()
-    state.items.forEach((item) => {
-      renderStore(item)
-    })
+    renderStore()
   })
   showAll.append(showAllButton)
   return showAll
@@ -180,7 +177,7 @@ function vegetableRender() {
     clearStore()
     state.items.forEach((item) => {
       if (item.filter === 'vegetable') {
-        renderStore(item)
+        createStore(item)
       }
     }) 
   })
@@ -199,7 +196,7 @@ function fruitRender() {
     clearStore()
     state.items.forEach((item) => {
       if (item.filter === 'fruit') {
-        renderStore(item)
+        createStore(item)
       }
     })
   })
@@ -207,8 +204,87 @@ function fruitRender() {
   return fruit
 }
 
-// CART
+// SORTING
+// CREATE SORTING LIST AND APPEND TO HEADER
+function renderSort() {
+  const sort = document.querySelector('.sort')
+  const sortHeader = document.createElement('h2')
+  sortHeader.innerText = 'Sort'
+  const sortList = document.createElement('ul')
+  sort.append(sortHeader, sortList)
+  sortList.append(defaultSort(), sortAlphabetically(), sortReverseAlphabetically())
+}
 
+// NO SORTING
+function defaultSort() {
+  const noSort = document.createElement('li')
+  const noSortButton = document.createElement('button')
+  noSortButton.innerText = 'Default'
+
+  noSortButton.addEventListener('click', () => {
+    clearStore()
+    renderStore()
+  })
+
+  noSort.append(noSortButton)
+  return noSort
+}
+
+// SORT A-Z
+function sortAlphabetically() {
+  const sortAToZ = document.createElement('li')
+  const sortAToZButton = document.createElement('button')
+  sortAToZButton.innerText = 'A-Z'
+
+  sortAToZButton.addEventListener('click', () => {
+    clearStore()
+    const sortedAToZ = state.items.toSorted((a, b) => {
+    const nameA = a.name.toUpperCase()
+    const nameB = b.name.toUpperCase()
+    if (nameA < nameB) {
+      return -1
+    }
+    if (nameA > nameB) {
+      return 1
+    }
+      return 0
+  }) 
+  sortedAToZ.forEach((item) => {
+    createStore(item)
+  })
+  })
+  sortAToZ.append(sortAToZButton)
+  return sortAToZ
+}
+
+// SORT Z-A
+function sortReverseAlphabetically() {
+  const sortZToA = document.createElement('li')
+  const sortZToAButton = document.createElement('button')
+  sortZToAButton.innerText = 'Z-A'
+
+  sortZToAButton.addEventListener('click', () => {
+    clearStore()
+    const sortedZToA = state.items.toSorted((a, b) => {
+      const nameA = a.name.toUpperCase()
+      const nameB = b.name.toUpperCase()
+      if (nameB < nameA) {
+        return -1
+      }
+      if (nameB > nameA) {
+        return 1
+      }
+        return 0
+    }) 
+    sortedZToA.forEach((item) => {
+      createStore(item)
+    })
+  })
+  sortZToA.append(sortZToAButton)
+  return sortZToA
+}
+
+// CART
 // CREATE INDIVIDUAL CART FUNCTIONS
 function renderCartItemImage(item) {
   const cartItemImage = document.createElement('img')
