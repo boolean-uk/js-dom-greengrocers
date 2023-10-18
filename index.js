@@ -56,6 +56,7 @@ const state = {
 
 
 
+
 const storeItemList = document.querySelector(".store--item-list");
 const cartIItemList = document.querySelector(".cart--item-list");
 const totalNumber = document.querySelector(".total-number");
@@ -63,22 +64,22 @@ const totalNumber = document.querySelector(".total-number");
 function renderStoreItems() {
   storeItemList.innerHTML = " ";
   state.items.forEach((item) => {
-    const listingTheItems = document.createElement("li");
-    storeItemList.append(listingTheItems);
+    const Storeli = document.createElement("li");
+    storeItemList.append(Storeli);
    
     const div = document.createElement("div");
     div.setAttribute("class", "store--item-icon");
-    listingTheItems.append(div);
-
+    Storeli.append(div);
+    
     const imgItems = document.createElement("img");
     imgItems.src = `assets/icons/${item.id}.svg`;
     imgItems.alt = "${items.id}";
     div.append(imgItems);
-    
+   
     const storeAddButton = document.createElement("button");
     storeAddButton.innerText = "Add to cart";
-    listingTheItems.append(storeAddButton);
-   
+    Storeli.append(storeAddButton);
+    
     storeAddButton.addEventListener("click", (e) => {
       console.log("Item has been selected!");
       item.quantity += 1;
@@ -87,7 +88,10 @@ function renderStoreItems() {
       productTotal;
     });
   });
+ 
 }
+
+
 function addItem(item) {
   if (state.cart.find((produce) => produce.name === item.name) === undefined) {
     item.quantity = 1;
@@ -102,10 +106,10 @@ function addItem(item) {
 function placeItems_Cart() {
   cartIItemList.innerHTML = " ";
   state.cart.forEach((item) => {
-  
+    
     const cartItemli = document.createElement("li");
     cartIItemList.append(cartItemli);
-   
+  
     const cartItemImg = document.createElement("img");
     cartItemImg.setAttribute("class", "cart--item-icon");
     cartItemImg.src = `assets/icons/${item.id}.svg`;
@@ -144,7 +148,9 @@ function placeItems_Cart() {
       productTotal();
     });
   });
+  productTotal()
 }
+
 
 function productTotal() {
   let total = 0;
