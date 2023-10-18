@@ -51,26 +51,7 @@ const state = {
         price: 0.35,
       },
     ],
-    cart: [
-        // {
-        //     id: "001-beetroot",
-        //     name: "beetroot",
-        //     price: 0.35,
-        //     quantity: 1
-        //   },
-        //   {
-        //     id: "002-carrot",
-        //     name: "carrot",
-        //     price: 0.35,
-        //     quantity: 1
-        //   },
-        //   {
-        //     id: "003-apple",
-        //     name: "apple",
-        //     price: 0.35,
-        //     quantity: 1
-        //   }
-    ],
+    cart: [],
   };
 
 
@@ -158,6 +139,10 @@ const state = {
           }
           renderCartList();
         });
+        const span = document.querySelector(".total-number");
+          const total = state.cart.reduce((total,cartItem) => {
+            return total + cartItem.price * cartItem.quantity }, 0)
+            span.innerText = "£" + total.toFixed(2)
         
     
         const cartQuantity = document.createElement('span');
