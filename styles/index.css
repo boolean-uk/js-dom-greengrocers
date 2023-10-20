@@ -1,7 +1,7 @@
 /* Typography */
 
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif;
 }
 
 h1,
@@ -32,6 +32,14 @@ button {
 }
 
 #store h1 {
+  text-align: center;
+}
+
+.store--filter-container {
+  text-align: center;
+}
+
+.store--sort-container {
   text-align: center;
 }
 
