@@ -180,10 +180,10 @@ function createSpan(text, classe) {
 
 function calcTotal() {
     const totalOfItems = state.cart.map((item) => {
-        console.log(totalOfItems)
-        return sum = item.quantity * item.price
+        return item.quantity * item.price
     })
     
+    console.log(totalOfItems)
     const Total = totalOfItems.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
     totalNumber.innerText = `£${Total.toFixed(2)}`
 }
