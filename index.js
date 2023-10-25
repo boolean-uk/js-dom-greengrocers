@@ -54,95 +54,119 @@ const state = {
   cart: []
 };
 
-const imageSources = [
-  './assets/icons/001-beetroot.svg',
-  './assets/icons/002-carrot.svg',
-  './assets/icons/003-apple.svg',
-  './assets/icons/004-apricot.svg',
-  './assets/icons/005-avocado.svg',
-  './assets/icons/006-bananas.svg',
-  './assets/icons/007-bell-pepper.svg',
-  './assets/icons/008-berry.svg',
-  './assets/icons/009-blueberry.svg',
-  './assets/icons/010-eggplant.svg'
-];
+//to render the items in the store
+function renderStorelist(){
 
-// render item in the store
-const renderHeader = () => {
-const header = document.querySelector('ul')
-console.log(header)
+  //to loop through everything in the state.items
+  state.items.forEach((item)=>{
 
- // loop through everything in the state.items
-state.items.forEach((item,index)=>{
-    const li=document.createElement('li')
-    const div=document.createElement('div')
-    div.setAttribute('class','store--item-icon')
-    const img=document.createElement('img')
-    img.src=imageSources[index]
-    img.alt= item.id
-    const button =document.createElement('button')
-    button.innerText ='Add to cart'
-    div.append(img)
-    li.append(div)
-    li.append(button)
-    header.append(li)
- 
-   button.addEventListener('click',()=>{
-      const cart = document.getElementById('cart')
-      console.log('cart clicked',cart)
-      const cartDiv =document.querySelector('.cart--item-list-container')
-      const cartUl = document.querySelector('.cart--item-list')
+      //select the ul from the header
+      const listOfItems = document.querySelector('.store--item-list')
 
-      const li = document.createElement('li')
-      const img = document.createElement('img') 
-      img.class = 'cart--item-icon'
-      //img.src = 'assets/icons/001-beetroot.svg'
-      img.src=imageSources[index]
-      img.alt = item.id
-      li.append(img)
-      const p = document.createElement('p')
-      //p.innerText = 'beetroot'
-      p.innerText = `${item.name}`
-      li.append(p)
-      //for remove button
-      const removeButton = document.createElement('button')
-      removeButton.setAttribute =  'class','quantity-btn remove-btn center'
-      removeButton.innerText = '-'
-      li.append(removeButton)
-      
-      // for counter
-      const counterNumber = document.createElement('strong')
-      counterNumber.setAttribute = 'class','quantity-text center'
-      counterNumber.innerText = '0'
-      li.append(counterNumber)
-      
-      // for add button
+      //select the li to create the image
+      const storeList = document.createElement('li')
+
+      //create a div for the store list
+      const itemDiv =document.createElement('div')
+      itemDiv.setAttribute('class','store--item-icon')
+
+      const itemImage = document.createElement('img')
+      itemImage.setAttribute('src',`assets/icons/${item.id}.svg`)
+      itemImage.setAttribute('alt','item.name')
+
       const addButton = document.createElement('button')
-      addButton.setAttribute = 'class','quantity-btn  add-btn center'
-      addButton.innerText = '+'
-      //add button value
-      //addButton.class = items.quantity
-     // console.log(state)
-     //addButton.addEventListener('click',(event)=>{
-      
-     //})
-      li.append(addButton)
-      cartUl.append(li)
-      cartDiv.append(cartUl)
-      cart.append(cartDiv)
+      addButton.innerText = 'Add to cart'
 
-      // for total
-     const totalSection = document.querySelector('.total-section')
-    cart.append(totalSection)
+      //add addeventlistener to the button
+      addButton.addEventListener('click',()=>{
+        const foundItem = state.cart.find((cartItem)=>cartItem.id === item.id)
 
-     // for  amount 
-     const totalNumber = document.querySelector('.total-number')
-     cart.append(totalSection)
-    
+        if(foundItem){
+          foundItem.quantity++;
+        }else{
+          state.cart.push({
+              id : item.id,
+              name : item.name,
+              price: item.price,
+              quantity: 1,
+            })
+        }
+        renderCartList();
+
+      })
+      //appends
+      itemDiv.append(itemImage)
+      storeList.append(itemDiv,addButton)
+      listOfItems.append(storeList)
   })
-})
+
 }
 
 
-renderHeader()
+function renderCartList() {
+  //select ul from cart
+    const cartList = document.querySelector('.cart--item-list');
+    console.log(cartList)
+    //to remove items in the card after rendering
+    const removeItemsInTheCart =cartList.querySelectorAll('*');
+    removeItemsInTheCart.forEach((childElement)=>childElement.remove());
 
+    //for eacg item in the cart
+  state.cart.forEach((cartItem) => {
+
+      const cartListName = document.createElement('li');
+
+      const cartImage = document.createElement('img');
+      cartImage.src = `assets/icons/${cartItem.id}.svg`;
+      cartImage.className = 'cart--item-icon';
+      cartImage.alt = `${cartItem.name}`;
+
+      const cartName = document.createElement('p');
+      cartName.innerText = cartItem.name;
+
+      const buttonRemove = document.createElement('button');
+      buttonRemove.setAttribute('class', 'quantity-btn remove-btn center');
+      buttonRemove.innerText = '-';
+      buttonRemove.addEventListener("click", () => {
+        const foundItem = state.cart.find(
+          (cartList) => cartList.id === cartItem.id
+        );
+        if (foundItem.quantity >= 1) {
+          foundItem.quantity--;
+        }else if(foundItem.quantity === 0){
+          state.cart = state.cart.filter((product) => cartItem.id !== foundItem.id);
+        }
+        renderCartList();
+      });
+      const span = document.querySelector(".total-number");
+        const total = state.cart.reduce((total,cartItem) => {
+          return total + cartItem.price * cartItem.quantity }, 0)
+          span.innerText = "£" + total.toFixed(2)
+
+
+      const cartQuantity = document.createElement('span');
+      cartQuantity.innerText = cartItem.quantity;
+       cartQuantity.setAttribute('class', 'quantity-text center');
+
+      const buttonAdd = document.createElement('button');
+       buttonAdd .setAttribute('class', 'quantity-btn add-btn center');
+       buttonAdd .innerText = '+';
+       buttonAdd.addEventListener("click", () => {
+        const foundItem = state.cart.find(
+          (cartList) => cartList.id === cartItem.id
+        );
+        if (foundItem) {
+          foundItem.quantity++;
+        }
+        renderCartList();
+      });
+
+      cartListName.append(cartImage,cartName,buttonRemove,cartQuantity,buttonAdd);
+      cartList.append(cartListName);
+  })
+
+
+}
+
+renderStorelist();
+renderCartList()
