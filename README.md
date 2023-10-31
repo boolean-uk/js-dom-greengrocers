@@ -1,5 +1,8 @@
 # Greengrocers
-In this exercise we explore a common scenario in eCommerce, adding and removing items from the cart, and calculating the total. You final solution should look like this:
+In this project, I explored a common scenario in eCommerce, adding and removing items from the cart, and calculating the total. I used JavaScript, HTML, and CSS to build the project.
+
+I have deployed the repo on vercel and it is available to view a live demo. I would really appreciate if you viewed the work I am so proud of and see it in action.
+<a href='https://spotify-clone-amber-six.vercel.app/'> Link to deployed app<a/>
 
 ![Result](result.gif)
 
