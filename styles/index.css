@@ -175,6 +175,13 @@ button {
 .total-number {
   font-weight: bold;
 }
+select{
+  border-radius: 50px;
+  width: 80px;
+  font-size: 15px;
+  background-color: rgb(154, 252, 229);
+  color: #00675b;
+}
 
 @media only screen and (max-width: 450px) {
   .total-section {
