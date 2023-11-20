@@ -251,17 +251,18 @@ function render() {
 }
 
 function sortingBy(sortType) {
-    if (sortType === "price"){
-    const sortPrice = state.items.sort((a,b)=> a.price - b.price )
-    console.log(sortPrice)
-    clearList()
-    renderHeader(sortPrice)
-} else if (sortType === "name"){
-    const sortName = state.items.sort((a,b)=> a.name.localeCompare(b.name))
-    console.log(sortName)
-    clearList()
-    renderHeader(sortName)
-}
+    if (sortType === "price") {
+        const sortPrice = state.items.sort((a, b) => a.price - b.price);
+        console.log(sortPrice);
+        clearList();
+        renderHeader(sortPrice);
+    } else if (sortType === "name") {
+        const sortName = state.items.sort((a, b) =>
+            a.name.localeCompare(b.name)
+        );
+        clearList();
+        renderHeader(sortName);
+    }
 }
 
 // Filtering and sorting
