@@ -3,52 +3,62 @@ const state = {
         {
             id: "001-beetroot",
             name: "beetroot",
-            price: 0.35,
+            price: 0.45,
+            type: "vegetable"
         },
         {
             id: "002-carrot",
             name: "carrot",
-            price: 0.35,
+            price: 0.60,
+            type: "vegetable"
         },
         {
             id: "003-apple",
             name: "apple",
-            price: 0.35,
+            price: 0.20,
+            type: "fruit"
         },
         {
             id: "004-apricot",
             name: "apricot",
-            price: 0.35,
+            price: 0.40,
+            type: "fruit"
         },
         {
             id: "005-avocado",
             name: "avocado",
-            price: 0.35,
+            price: 0.75,
+            type: "fruit"
         },
         {
             id: "006-bananas",
             name: "bananas",
-            price: 0.35,
+            price: 0.45,
+            type: "fruit"
         },
         {
             id: "007-bell-pepper",
             name: "bell pepper",
-            price: 0.35,
+            price: 0.30,
+            type: "vegetable"
         },
         {
             id: "008-berry",
             name: "berry",
-            price: 0.35,
+            price: 0.25,
+            type: "fruit"
         },
         {
             id: "009-blueberry",
             name: "blueberry",
-            price: 0.35,
+            price: 0.15,
+            type: "fruit"
         },
         {
             id: "010-eggplant",
             name: "eggplant",
-            price: 0.35,
+            price: 0.55,
+            type: "vegetable"
         },
     ],
     cart: [],
@@ -58,6 +68,8 @@ const state = {
 const storeItemList = document.querySelector(".store--item-list");
 const cartlist = document.querySelector(".cart--item-list");
 const totalNumber = document.querySelector(".total-number");
+const filterByType = document.getElementById("#filter-by-type")
+const sortItem = document.getElementById("#sort-items")
 
 
 function basketClear() {
@@ -110,6 +122,7 @@ function createCartItem(value) {
         `${value.name}`,
         "cart--item-icon"
     );
+
     li.append(img);
 
     const p = createPTag(`${value.name}`);
@@ -200,6 +213,7 @@ function remover() {
 // Render functions
 function renderHeader() {
     state.items.forEach((value) => {
+
         groceryItemsAvailable(value);
     });
 }
@@ -216,6 +230,9 @@ function render() {
     renderHeader();
     renderCart();
 }
+
+// Filtering and sorting    
+// filterByType.addEventListener("change",(event) => event.target.value)
 
 
 // FIRST RENDER //
