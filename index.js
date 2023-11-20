@@ -4,61 +4,61 @@ const state = {
             id: "001-beetroot",
             name: "beetroot",
             price: 0.45,
-            type: "vegetable"
+            type: "vegetables",
         },
         {
             id: "002-carrot",
             name: "carrot",
-            price: 0.60,
-            type: "vegetable"
+            price: 0.6,
+            type: "vegetables",
         },
         {
             id: "003-apple",
             name: "apple",
-            price: 0.20,
-            type: "fruit"
+            price: 0.2,
+            type: "fruits",
         },
         {
             id: "004-apricot",
             name: "apricot",
-            price: 0.40,
-            type: "fruit"
+            price: 0.4,
+            type: "fruits",
         },
         {
             id: "005-avocado",
             name: "avocado",
             price: 0.75,
-            type: "fruit"
+            type: "fruits",
         },
         {
             id: "006-bananas",
             name: "bananas",
             price: 0.45,
-            type: "fruit"
+            type: "fruits",
         },
         {
             id: "007-bell-pepper",
             name: "bell pepper",
-            price: 0.30,
-            type: "vegetable"
+            price: 0.3,
+            type: "vegetables",
         },
         {
             id: "008-berry",
             name: "berry",
             price: 0.25,
-            type: "fruit"
+            type: "fruits",
         },
         {
             id: "009-blueberry",
             name: "blueberry",
             price: 0.15,
-            type: "fruit"
+            type: "fruits",
         },
         {
             id: "010-eggplant",
             name: "eggplant",
             price: 0.55,
-            type: "vegetable"
+            type: "vegetables",
         },
     ],
     cart: [],
@@ -68,9 +68,8 @@ const state = {
 const storeItemList = document.querySelector(".store--item-list");
 const cartlist = document.querySelector(".cart--item-list");
 const totalNumber = document.querySelector(".total-number");
-const filterByType = document.getElementById("#filter-by-type")
-const sortItem = document.getElementById("#sort-items")
-
+const filterByType = document.getElementById("filter-by-type");
+const sortItem = document.getElementById("sort-items");
 
 function basketClear() {
     cartlist.innerHTML = "";
@@ -147,7 +146,7 @@ function createCartItem(value) {
     });
 
     li.append(buttonPlus);
-   
+
     cartlist.append(li);
 }
 
@@ -193,36 +192,56 @@ function createSpan(text, classe) {
 
 function calcTotal() {
     const totalOfItems = state.cart.map((item) => {
-        return item.quantity * item.price
-    })
-    
-    console.log(totalOfItems)
-    const Total = totalOfItems.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    totalNumber.innerText = `£${Total.toFixed(2)}`
+        return item.quantity * item.price;
+    });
+
+    console.log(totalOfItems);
+    const Total = totalOfItems.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+    );
+    totalNumber.innerText = `£${Total.toFixed(2)}`;
 }
 
 function remover() {
     state.cart.forEach((item) => {
-        if (item.quantity === 0){
+        if (item.quantity === 0) {
             state.cart = state.cart.filter((item) => item.quantity > 0);
         }
-    })
+    });
 }
 
+function clearList() {
+    storeItemList.querySelectorAll("li").forEach((item) => item.remove());
+}
 
 // Render functions
-function renderHeader() {
-    state.items.forEach((value) => {
-
-        groceryItemsAvailable(value);
-    });
+function renderHeader(filtered) {
+    if (filtered === "fruits" || filtered === "vegetables") {
+        const filteredItems = state.items.filter(
+            (item) => item.type === filtered
+        );
+        clearList();
+        filteredItems.forEach((filteredItem) => {
+            groceryItemsAvailable(filteredItem);
+        });
+    } else if (filtered === "all") {
+        clearList();
+        state.items.forEach((value) => {
+            groceryItemsAvailable(value);
+        });
+    } else {
+        state.items.forEach((value) => {
+            groceryItemsAvailable(value);
+        });
+    }
 }
 
 function renderCart() {
     basketClear();
     state.cart.forEach((value) => {
         createCartItem(value);
-        calcTotal()
+        calcTotal();
     });
 }
 
@@ -231,9 +250,10 @@ function render() {
     renderCart();
 }
 
-// Filtering and sorting    
-// filterByType.addEventListener("change",(event) => event.target.value)
-
+// Filtering and sorting
+filterByType.addEventListener("change", (event) =>
+    renderHeader(event.target.value)
+);
 
 // FIRST RENDER //
 render();
