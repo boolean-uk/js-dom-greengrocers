@@ -250,10 +250,26 @@ function render() {
     renderCart();
 }
 
+function sortingBy(sortType) {
+    if (sortType === "price"){
+    const sortPrice = state.items.sort((a,b)=> a.price - b.price )
+    console.log(sortPrice)
+    clearList()
+    renderHeader(sortPrice)
+} else if (sortType === "name"){
+    const sortName = state.items.sort((a,b)=> a.name.localeCompare(b.name))
+    console.log(sortName)
+    clearList()
+    renderHeader(sortName)
+}
+}
+
 // Filtering and sorting
 filterByType.addEventListener("change", (event) =>
     renderHeader(event.target.value)
 );
+
+sortItem.addEventListener("change", (event) => sortingBy(event.target.value));
 
 // FIRST RENDER //
 render();
