@@ -216,7 +216,7 @@ function clearList() {
 }
 
 // Render functions
-function renderHeader(filtered) {
+function renderHeader(filtered, sort) {
     if (filtered === "fruits" || filtered === "vegetables") {
         const filteredItems = state.items.filter(
             (item) => item.type === filtered
@@ -228,6 +228,10 @@ function renderHeader(filtered) {
     } else if (filtered === "all") {
         clearList();
         state.items.forEach((value) => {
+            groceryItemsAvailable(value);
+        });
+    } else if (sort) {
+        sort.forEach((value) => {
             groceryItemsAvailable(value);
         });
     } else {
@@ -251,17 +255,17 @@ function render() {
 }
 
 function sortingBy(sortType) {
+    let originalState = [...state.items]
     if (sortType === "price") {
-        const sortPrice = state.items.sort((a, b) => a.price - b.price);
+        const sortPrice = originalState.sort((a, b) => a.price - b.price);
         console.log(sortPrice);
         clearList();
-        renderHeader(sortPrice);
+        renderHeader(null, sortPrice);
+        originalState = [...state.items]
     } else if (sortType === "name") {
-        const sortName = state.items.sort((a, b) =>
-            a.name.localeCompare(b.name)
-        );
+        const sortName = originalState.sort((a, b) => a.name.localeCompare(b.name));
         clearList();
-        renderHeader(sortName);
+        renderHeader(null ,sortName);
     }
 }
 
