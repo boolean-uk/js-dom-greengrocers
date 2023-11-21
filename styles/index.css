@@ -35,6 +35,12 @@ button {
   text-align: center;
 }
 
+.filter-area {
+  display: grid;
+  justify-items: center;
+  margin-bottom: 10px;
+}
+
 .store--item-list {
   display: grid;
   grid-template-columns: repeat(4, 125px);
