@@ -1,6 +1,6 @@
-# Greengrocers Basket
+## Greengrocers Basket
 
-Tech stack
+# Tech stack
 
 <p float="left">
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" width="70" />
@@ -8,7 +8,7 @@ Tech stack
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" width="70" />
 </p>
 
-Preview
+# Preview
 ![Result](result.gif)
 
 ## User Requirements:
