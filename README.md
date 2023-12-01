@@ -1,4 +1,6 @@
-# Greengrocers Basket
+## Greengrocers Basket
+
+# Tech stack
 
 <p float="left">
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" width="70" />
