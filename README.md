@@ -8,7 +8,7 @@ Tech stack
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" width="70" />
 </p>
 
-
+Preview
 ![Result](result.gif)
 
 ## User Requirements:
