@@ -1,19 +1,19 @@
-/* Modern Reset */
 
-/* Box sizing rules */
+
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* Remove default padding */
+
 ul[class],
 ol[class] {
   padding: 0;
 }
 
-/* Remove default margin */
+
 body,
 h1,
 h2,
@@ -26,7 +26,7 @@ li {
   margin: 0;
 }
 
-/* Set core body defaults */
+
 body {
   min-height: 100vh;
   scroll-behavior: smooth;
@@ -34,13 +34,13 @@ body {
   line-height: 1.5;
 }
 
-/* Make images easier to work with */
+
 img {
   max-width: 100%;
   display: block;
 }
 
-/* Inherit fonts for inputs and buttons */
+
 input,
 button,
 textarea,

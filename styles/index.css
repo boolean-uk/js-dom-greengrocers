@@ -71,7 +71,7 @@ button {
   }
 }
 
-/* Cart */
+
 
 #cart {
   height: 60vh;
@@ -169,7 +169,7 @@ button {
   font-weight: bold;
 }
 
-/* Total */
+
 
 .total-section {
   padding: 0.5rem 1rem;
@@ -190,7 +190,7 @@ button {
   }
 }
 
-/* Newly Added Stylesheet */
+
 
 .cart--item-icon {
   display: inline-block;
