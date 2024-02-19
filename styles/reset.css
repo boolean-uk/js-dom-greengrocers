@@ -5,6 +5,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  text-align: center;
 }
 
 /* Remove default padding */
