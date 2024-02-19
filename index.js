@@ -4,7 +4,7 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       type: "vegetable",
-      price: 0.35
+      price: 0.40
     },
     {
       id: "002-carrot",
@@ -16,49 +16,49 @@ const state = {
       id: "003-apple",
       name: "apple",
       type : "fruit",
-      price: 0.35
+      price: 0.45
     },
     {
       id: "004-apricot",
       name: "apricot",
       type : "fruit",
-      price: 0.35
+      price: 0.15
     },
     {
       id: "005-avocado",
       name: "avocado",
       type: "vegetable",
-      price: 0.35
+      price: 1.05
     },
     {
       id: "006-bananas",
       name: "bananas",
       type : "fruit",
-      price: 0.35
+      price: 0.90
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       type: "vegetable",
-      price: 0.35
+      price: 0.50
     },
     {
       id: "008-berry",
       name: "berry",
       type : "fruit",
-      price: 0.35
+      price: 0.25
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       type : "fruit",
-      price: 0.35
+      price: 0.20
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       type: "vegetable",
-      price: 0.35
+      price: 1.50
     }
   ],
   cart: []
@@ -69,6 +69,7 @@ const storeUl = document.querySelector('.store--item-list')
 const cartUl = document.querySelector('.cart--item-list')
 const total = document.querySelector('.total-number')
 let filter = 'all'
+let sorting = 'id'
 
 function AddItem(item)
 {
@@ -113,6 +114,18 @@ function CalculatePrice()
   var result = 0
   state.cart.forEach((x) => result += (x.price * x.quantity))
   return result.toFixed(2)
+}
+function SortElements(item)
+{
+  sorting = item
+  if (typeof state.items[0][`${item}`] === 'string')
+  {
+    state.items.sort((a,b) => a[`${item}`].localeCompare(b[`${item}`]) )
+  }
+  else {
+    state.items.sort((a,b) => a[`${item}`] - b[`${item}`])
+  }
+  RenderStore()
 }
 
 function RenderCartItem(item)
@@ -168,7 +181,6 @@ function RenderStoreItem(item, ul)
 
 }
 
-
 function ApplyFilter(newFilter)
 {
   console.log("Apply filter", newFilter)
@@ -176,14 +188,23 @@ function ApplyFilter(newFilter)
   RenderStore()
 }
 
-function CreateFilterButton(f, text)
+function RenderFilterButton(f, text)
 {
-  showAllButton = document.createElement('button')
-  showAllButton.appendChild(document.createTextNode(`${text}`))
-  showAllButton.addEventListener("click", () =>  ApplyFilter(`${f}`))
-  if (filter === `${f}`) showAllButton.setAttribute('disabled', 'disabled')
+  button = document.createElement('button')
+  button.appendChild(document.createTextNode(`${text}`))
+  button.addEventListener("click", () =>  ApplyFilter(`${f}`))
+  if (filter === `${f}`) button.setAttribute('disabled', 'disabled')
 
-  store.appendChild(showAllButton)
+  store.appendChild(button)
+}
+
+function RenderSortButton(sortBy, div)
+{
+  button = document.createElement('button')
+  button.appendChild(document.createTextNode(`Sort by ${sortBy}`))
+  button.addEventListener("click", () =>  SortElements(`${sortBy}`))
+  if (sorting === `${sortBy}`) button.setAttribute('disabled', 'disabled')
+  div.appendChild(button)
 }
 
 function RenderStore()
@@ -196,9 +217,16 @@ function RenderStore()
    h1.appendChild(document.createTextNode('Greengrocers'))
 
    store.appendChild(h1)
-   CreateFilterButton('all', 'Show All')
-   CreateFilterButton('fruit', 'Fruit')
-   CreateFilterButton('vegetable', 'Vegetable')
+   RenderFilterButton('all', 'Show All')
+   RenderFilterButton('fruit', 'Fruit')
+   RenderFilterButton('vegetable', 'Vegetable')
+
+   div = document.createElement('div')
+   RenderSortButton('name', div)
+   RenderSortButton('price', div)
+   RenderSortButton('id', div)
+
+   store.append(div)
 
    store.appendChild(storeUl)
    state.items.forEach((item) => RenderStoreItem(item, storeUl))
