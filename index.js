@@ -4,55 +4,74 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
+      type: "vegetable",
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35,
+      price: 0.15,
+      type: "vegetable",
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35,
+      price: 0.45,
+      type: "fruit",
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
+      type: "vegetable",
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
+      type: "vegetable",
     },
   ],
   cart: [],
 };
+
+function filterByType(itemType) {
+  const filteredItems = state.items.filter((item) => {
+    return item.type === itemType;
+  });
+
+  // Render the filtered items, also adding the reset button
+  renderFilteredStore(filteredItems);
+}
 
 // Function to generate HTML for store items
 function generateStoreItemHTML(item) {
@@ -74,6 +93,7 @@ function generateStoreItemHTML(item) {
     // and then attaching an eventlistener to the button listening for clicks.
     addToCart(item); //when the button is clicked it calls the addToCart function and passes the item object as an argument
   });
+
   return li; //returning the <li> element that was created, which now contains all the necessary HTML markup for displaying a store item
 }
 
@@ -114,9 +134,104 @@ function generateCartItemHTML(cartItem) {
 function renderStore() {
   const storeItemList = document.querySelector(".store--item-list"); // query selector to select the store item list
   storeItemList.innerHTML = ""; // Clear existing items
+
+  const filterButton = document.createElement("button");
+  filterButton.textContent = "Filter by Type";
+  filterButton.addEventListener("click", () => {
+    // Prompt the user to enter a type to filter by
+    const type = prompt("Enter a type to filter by (e.g., fruit, vegetable):");
+    if (type) {
+      filterByType(type.toLowerCase()); // Convert the type to lowercase for case-insensitive comparison
+    }
+  });
+
+  // Append the filter button to the store item list
+  storeItemList.appendChild(filterButton);
+
+  const sortButton = document.createElement("button");
+  sortButton.textContent = "Sort by Type";
+  sortButton.addEventListener("click", () => {
+    // Prompt the user to enter a type to sort by
+    const type = prompt("Enter a type to sort by (e.g., price, type):");
+    if (type) {
+      sortByType(type.toLowerCase()); // Convert the type to lowercase for case-insensitive comparison
+    }
+  });
+
+  // Append the sort button to the store item list
+  storeItemList.appendChild(sortButton);
+
+  // Render all items in the store
   state.items.forEach((item) => {
-    const itemHTML = generateStoreItemHTML(item); //calling the generate store item HTML for each item in the state array
-    storeItemList.appendChild(itemHTML); // adding to the store item list
+    const itemHTML = generateStoreItemHTML(item);
+    storeItemList.appendChild(itemHTML);
+  });
+}
+
+function sortByType(type) {
+  if (type === "price") {
+    state.items.sort((a, b) => a.price - b.price);
+  } else {
+    state.items.sort((a, b) => {
+      // Convert the type to lowercase for case-insensitive comparison
+      const typeA = a[type].toLowerCase();
+      const typeB = b[type].toLowerCase();
+
+      // Compare the types
+      if (typeA < typeB) {
+        return -1;
+      }
+      if (typeA > typeB) {
+        return 1;
+      }
+      // If types are equal
+      return 0;
+    });
+  }
+
+  // After sorting, re-render the store
+  renderSortedStore(state.items);
+}
+
+function renderSortedStore(sortedItems) {
+  const storeItemList = document.querySelector(".store--item-list");
+  storeItemList.innerHTML = ""; // Clear existing items
+
+  const resetSortingButton = document.createElement("button");
+  resetSortingButton.textContent = "Reset Sorting";
+  resetSortingButton.addEventListener("click", () => {
+    // Call the renderStore function to display all items without filtering
+    renderStore();
+  });
+
+  // Append the reset filter button to the store item list
+  storeItemList.appendChild(resetSortingButton);
+
+  // Render the filtered items
+  sortedItems.forEach((item) => {
+    const itemHTML = generateStoreItemHTML(item);
+    storeItemList.appendChild(itemHTML);
+  });
+}
+
+function renderFilteredStore(filteredItems) {
+  const storeItemList = document.querySelector(".store--item-list");
+  storeItemList.innerHTML = ""; // Clear existing items
+
+  const resetFilterButton = document.createElement("button");
+  resetFilterButton.textContent = "Reset Filter";
+  resetFilterButton.addEventListener("click", () => {
+    // Call the renderStore function to display all items without filtering
+    renderStore();
+  });
+
+  // Append the reset filter button to the store item list
+  storeItemList.appendChild(resetFilterButton);
+
+  // Render the filtered items
+  filteredItems.forEach((item) => {
+    const itemHTML = generateStoreItemHTML(item);
+    storeItemList.appendChild(itemHTML);
   });
 }
 
