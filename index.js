@@ -74,24 +74,50 @@ const sortingElementAlphabet = document.getElementById(
   "sort--store-items-alphabet"
 );
 
+const filteringFruit = document.getElementById("filter--store-items-fruit");
+const filteringVetetable = document.getElementById(
+  "filter--store-items-vegetable"
+);
+const undo = document.getElementById("undo");
+
 let totalCost;
 
+// SORTING
 function sortByPrice() {
   state.items.sort((a, b) => a.price - b.price);
   storeItemListUl.innerHTML = "";
 
-  renderingCards();
+  renderingCards(state.items);
 }
 
 function sortByAlphabet() {
   state.items.sort((a, b) => a.name.localeCompare(b.name));
   storeItemListUl.innerHTML = "";
 
-  renderingCards();
+  renderingCards(state.items);
+}
+// END SOPRTING
+
+// FILTERING
+function filteringFruits(itemType) {
+  const filteredItems = state.items.filter((item) => item.type === itemType);
+  storeItemListUl.innerHTML = "";
+
+  renderingCards(filteredItems);
 }
 
-function renderingCards() {
-  for (const grocery of state.items) {
+function filteringVetetables(itemType) {
+  const filteredItems = state.items.filter((item) => item.type === itemType);
+  storeItemListUl.innerHTML = "";
+
+  renderingCards(filteredItems);
+}
+
+// Refactored function so it could be rejusted of filtering functions
+// END FILTERING
+function renderingCards(items) {
+  storeItemListUl.innerHTML = "";
+  for (const grocery of items) {
     const liElement = createCardElement(grocery);
     storeItemListUl.appendChild(liElement);
   }
@@ -197,15 +223,21 @@ function removeFromCart(parentElement, childElement, grocery) {
   }
 }
 
+// eventlistners for sorting and filtering
 sortingElement.addEventListener("click", () => sortByPrice());
-
 sortingElementAlphabet.addEventListener("click", () => sortByAlphabet());
+
+filteringFruit.addEventListener("click", () => filteringFruits("fruit"));
+filteringVetetable.addEventListener("click", () =>
+  filteringVetetables("vegetable")
+);
+undo.addEventListener("click", () => renderingCards(state.items));
 
 function initialize() {
   console.log("initializing...");
   totalCost = 0;
   totalNumber.innerText = `£${totalCost}`;
-  renderingCards();
+  renderingCards(state.items);
   console.log("initialized!");
 }
 
