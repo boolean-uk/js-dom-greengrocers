@@ -4,51 +4,61 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
+      type: "vegetable",
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
+      type: "vegetable",
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
+      type: "vegetable",
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
+      type: "fruit",
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
+      type: "vegetable",
     },
   ],
   cart: [],
@@ -59,17 +69,67 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartItemList = document.querySelector(".cart--item-list");
   const totalNumber = document.querySelector(".total-number");
 
-  // Render items in the store
-  function renderStoreItems() {
-    state.items.forEach((item) => {
-      const storeItem = document.createElement("li");
-      storeItem.innerHTML = `
-        <div class="store--item-icon">
-          <img src="assets/icons/${item.id}.svg" alt="${item.name}" />
-        </div>
-        <button class="add-to-cart-btn" data-id="${item.id}">Add to cart</button>
-      `;
-      storeItemList.appendChild(storeItem);
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const sortSelect = document.getElementById("sort-select");
+
+  // Filter items by type
+  function filterItems(type) {
+    if (type === "all") {
+      renderStoreItems();
+    } else if (type === "fruit") {
+      const filteredItems = state.items.filter((item) => item.type === type);
+      renderStoreItems(filteredItems);
+    } else if (type === "vegetable") {
+      const filteredItems = state.items.filter((item) => item.type === type);
+      renderStoreItems(filteredItems);
+    } else {
+      const filteredItems = state.items.filter((item) => item.type === type);
+      renderStoreItems(filteredItems);
+    }
+  }
+
+  // Sort items
+  function sortItems(criteria) {
+    const sortedItems = [...state.items];
+    if (criteria === "price") {
+      sortedItems.sort((a, b) => a.price - b.price);
+    } else if (criteria === "name") {
+      sortedItems.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    renderStoreItems(sortedItems);
+  }
+
+  // Event listener for filter buttons
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const type = this.dataset.type;
+      filterItems(type);
+    });
+  });
+
+  // Event listener for sorting select
+  sortSelect.addEventListener("change", function () {
+    const criteria = this.value;
+    sortItems(criteria);
+  });
+
+  // Function to render items in the store
+  function renderStoreItems(itemsToRender = state.items) {
+    const itemList = document.querySelector(".store--item-list");
+
+    // Clear the existing list of items
+    itemList.innerHTML = "";
+
+    itemsToRender.forEach((item) => {
+      // Create HTML elements for each item and append them to the list
+      const itemElement = document.createElement("li");
+      itemElement.innerHTML = `
+      <div class="store--item-icon">
+        <img src="assets/icons/${item.id}.svg" alt="${item.name}" />
+      </div>
+      <button class="add-to-cart-btn" data-id="${item.id}">Add to cart</button>
+    `;
+      itemList.appendChild(itemElement);
     });
   }
 
