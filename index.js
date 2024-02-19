@@ -3,58 +3,93 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     }
   ],
   cart: []
 };
 
+document.getElementById("filter-by").addEventListener("change", filterByType);
+document.getElementById("sort-by").addEventListener("change", sortAlphabetically);
 
+let originalItems = state.items;
+state.filteredItems = [...originalItems];
+
+function filterByType() {
+  const filterBy = this.value;
+  if (filterBy === 'all') {
+    state.filteredItems = [...originalItems];
+  } else {
+    const filteredItems = originalItems.filter(item => item.type === filterBy);
+    state.filteredItems = filteredItems;
+  }
+  renderStoreItems();
+}
+
+function sortAlphabetically() {
+  const sortBy = this.value;
+  if (sortBy === 'ascending') {
+    state.filteredItems.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortBy === 'descending') {
+    state.filteredItems.sort((a, b) => b.name.localeCompare(a.name));
+  }
+  renderStoreItems();
+}
 
 
 function createCartItem(item) {
@@ -78,7 +113,7 @@ function createCartItem(item) {
 
   const quantityText = document.createElement("span");
   quantityText.className = "quantity-text center";
-  quantityText.textContent = "1";
+  quantityText.textContent = item.quantity.toString();
   li.appendChild(quantityText);
 
   const addButton = document.createElement("button");
@@ -86,8 +121,21 @@ function createCartItem(item) {
   addButton.innerHTML = "+";
   addButton.addEventListener("click", () => increaseQuantity(li));
   li.appendChild(addButton);
-
+  updateCartQuantity(li, item.quantity);
   return li;
+}
+
+function updateCartQuantity(li, quantity) {
+  const itemId = li.querySelector("img").alt;
+  const item = state.cart.find(item => item.name === itemId);
+
+  if (item) {
+    item.quantity = quantity;
+  }
+
+  const totalValueElement = document.querySelector(".total-number");
+  const totalPrice = state.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+  totalValueElement.textContent = `£${totalPrice.toFixed(2)}`;
 }
 
 function decreaseQuantity(li) {
@@ -97,6 +145,18 @@ function decreaseQuantity(li) {
     quantity--;
     quantityText.textContent = quantity.toString();
     updateCartQuantity(li, quantity);
+  } else {
+    li.remove();
+    removeFromCart(li);
+    updateCartQuantity(li, 0);
+  }
+}
+
+function removeFromCart(li) {
+  const itemId = li.querySelector("img").alt;
+  const itemIndex = state.cart.findIndex(item => item.name === itemId);
+  if (itemIndex !== -1) {
+    state.cart.splice(itemIndex, 1);
   }
 }
 
@@ -106,16 +166,6 @@ function increaseQuantity(li) {
   quantity++;
   quantityText.textContent = quantity.toString();
   updateCartQuantity(li, quantity);
-}
-
-function updateCartQuantity(li, quantity) {
-  const itemId = li.querySelector("img").alt;
-  const item = state.cart.find(item => item.name === itemId);
-
-  if (item) {
-    item.quantity = quantity;
-    console.log(state.cart)
-  }
 }
 
 function createStoreItems(item) {
@@ -135,6 +185,7 @@ function createStoreItems(item) {
 
 function renderCartItems() {
   const cartItems = document.querySelector(".item-list.cart--item-list");
+  cartItems.innerHTML = "";
   state.cart.forEach(item => {
     cartItems.appendChild(createCartItem(item));
   });
@@ -142,11 +193,11 @@ function renderCartItems() {
 
 function renderStoreItems() {
   const storeItems = document.querySelector(".item-list.store--item-list");
-  state.items.forEach(item => {
+  storeItems.innerHTML = "";
+  state.filteredItems.forEach(item => {
     storeItems.appendChild(createStoreItems(item));
   });
 }
-
 function addToCart(item) {
   const cartItem = state.cart.find(cartItem => cartItem.id === item.id);
 
