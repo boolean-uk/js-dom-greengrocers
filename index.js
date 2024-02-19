@@ -146,8 +146,6 @@ function createItemElement(item) {
   button.textContent = "Add to cart";
   li.appendChild(button);
 
-  // This function could be extended to include event listeners for the button
-  // For example, to handle adding the item to the cart
   button.addEventListener("click", () => {
     console.log(item.id);
     addToCart(item.id);
@@ -204,10 +202,8 @@ function CreateCartItem(item, cartList) {
 function addToCart(itemId) {
   const itemIndex = state.cart.findIndex((item) => item.id === itemId);
   if (itemIndex > -1) {
-    //  increase quantity
     state.cart[itemIndex].quantity += 1;
   } else {
-    // Item not in cart so add new item
     const item = state.items.find((item) => item.id === itemId);
     if (item) {
       state.cart.push({ ...item, quantity: 1 });
