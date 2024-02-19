@@ -112,9 +112,9 @@ function filteringVetetables(itemType) {
 
   renderingCards(filteredItems);
 }
+// END FILTERING
 
 // Refactored function so it could be rejusted of filtering functions
-// END FILTERING
 function renderingCards(items) {
   storeItemListUl.innerHTML = "";
   for (const grocery of items) {
@@ -124,11 +124,13 @@ function renderingCards(items) {
 }
 
 function createCardElement(grocery) {
+  // Create my elements I need
   const liElement = document.createElement("li");
   const divElement = document.createElement("div");
   const imgElement = document.createElement("img");
   const btnElement = document.createElement("button");
 
+  // set class and other attributes according to template
   imgElement.setAttribute("src", `assets/icons/${grocery.id}.svg`);
   imgElement.setAttribute("alt", `${grocery.name}`);
 
@@ -147,43 +149,45 @@ function createCardElement(grocery) {
 }
 
 function createCartCard(grocery) {
+  // Creating my elements I need
   const liElement = document.createElement("li");
   const imgElement = document.createElement("img");
   const pElement = document.createElement("p");
-  const iBtnElement = document.createElement("button");
+  const increaseGroceryQuantityBtn = document.createElement("button");
   const spanElement = document.createElement("span");
-  const dBtnElement = document.createElement("button");
+  const decreaseGroceryQuantityBtn = document.createElement("button");
 
   // initialize new quantity attribute
   grocery.quantity = 1;
 
-  // add price of grocery
+  // Display price of grocery
   totalNumber.innerText = `£${(totalCost += grocery.price).toFixed(2)}`;
 
   // add grocery obj to state.cart
   state.cart.push(grocery);
 
+  // set class and other attributes according to template
   imgElement.className = "cart--item-icon";
   imgElement.setAttribute("src", `assets/icons/${grocery.id}.svg`);
   imgElement.setAttribute("alt", `${grocery.name}`);
 
   pElement.innerText = grocery.name;
 
-  dBtnElement.className = "quantity-btn remove-btn center";
-  dBtnElement.innerText = "-";
+  decreaseGroceryQuantityBtn.className = "quantity-btn remove-btn center";
+  decreaseGroceryQuantityBtn.innerText = "-";
 
   spanElement.className = "quantity-text center";
   spanElement.innerText = grocery.quantity;
 
-  iBtnElement.className = "quantity-btn add-btn center";
-  iBtnElement.innerText = "+";
+  increaseGroceryQuantityBtn.className = "quantity-btn add-btn center";
+  increaseGroceryQuantityBtn.innerText = "+";
 
   const elementsToAppend = [
     imgElement,
     pElement,
-    dBtnElement,
+    decreaseGroceryQuantityBtn,
     spanElement,
-    iBtnElement,
+    increaseGroceryQuantityBtn,
   ];
 
   // Append elements using a loop
@@ -191,7 +195,7 @@ function createCartCard(grocery) {
     liElement.appendChild(element);
   });
 
-  dBtnElement.addEventListener("click", () => {
+  decreaseGroceryQuantityBtn.addEventListener("click", () => {
     totalNumber.innerText = `£${(totalCost -= grocery.price).toFixed(2)}`;
     if (grocery.quantity > 1) {
       grocery.quantity--;
@@ -201,7 +205,7 @@ function createCartCard(grocery) {
     }
   });
 
-  iBtnElement.addEventListener("click", () => {
+  increaseGroceryQuantityBtn.addEventListener("click", () => {
     grocery.quantity++;
     spanElement.innerText = grocery.quantity;
     totalNumber.innerText = `£${(totalCost += grocery.price).toFixed(2)}`;
@@ -223,45 +227,29 @@ function removeFromCart(parentElement, childElement, grocery) {
   }
 }
 
-// eventlistners for sorting and filtering
+// eventlistners for sorting
 sortingElement.addEventListener("click", () => sortByPrice());
 sortingElementAlphabet.addEventListener("click", () => sortByAlphabet());
 
+// eventlistners for filtering
 filteringFruit.addEventListener("click", () => filteringFruits("fruit"));
 filteringVetetable.addEventListener("click", () =>
   filteringVetetables("vegetable")
 );
+
+// eventlistners for undo filtering
 undo.addEventListener("click", () => renderingCards(state.items));
 
 function initialize() {
   console.log("initializing...");
+  // init variables
   totalCost = 0;
   totalNumber.innerText = `£${totalCost}`;
+
+  // init function
   renderingCards(state.items);
+
   console.log("initialized!");
 }
 
 initialize();
-
-/* Store card 
-<li>
-  <div class="store--item-icon">
-    <img src="assets/icons/001-beetroot.svg" alt="beetroot" />
-  </div>
-  <button>Add to cart</button>
-</li>
- */
-
-/* Cart card
-<li>
-  <img
-    class="cart--item-icon"
-    src="assets/icons/001-beetroot.svg"
-    alt="beetroot"
-  />
-  <p>beetroot</p>
-  <button class="quantity-btn remove-btn center">-</button>
-  <span class="quantity-text center">1</span>
-  <button class="quantity-btn add-btn center">+</button>
-</li>
-*/
