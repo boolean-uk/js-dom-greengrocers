@@ -3,22 +3,22 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35,
+      price: 0.15,
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35,
+      price: 0.12,
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35,
+      price: 0.25,
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35,
+      price: 0.29,
     },
     {
       id: "005-avocado",
@@ -28,27 +28,27 @@ const state = {
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35,
+      price: 0.19,
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35,
+      price: 0.2,
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35,
+      price: 0.32,
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35,
+      price: 0.31,
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35,
+      price: 0.27,
     },
   ],
   cart: [],
@@ -59,9 +59,18 @@ console.log(state);
 const storeItemListUl = document.querySelector(".item-list.store--item-list");
 const cartItemListUl = document.querySelector(".item-list.cart--item-list");
 const totalNumber = document.querySelector(".total-number");
+const sortingElement = document.querySelector(".sort--store-items");
+
+let totalCost;
+
+function sortByPrice() {
+  state.items.sort((a, b) => a.price - b.price);
+  storeItemListUl.innerHTML = "";
+
+  renderingCards();
+}
 
 function renderingCards() {
-  console.log(state.items);
   for (const grocery of state.items) {
     const liElement = createCardElement(grocery);
     storeItemListUl.appendChild(liElement);
@@ -102,6 +111,9 @@ function createCartCard(grocery) {
   // initialize new quantity attribute
   grocery.quantity = 1;
 
+  // add price of grocery
+  totalNumber.innerText = `£${(totalCost += grocery.price).toFixed(2)}`;
+
   // add grocery obj to state.cart
   state.cart.push(grocery);
 
@@ -134,6 +146,7 @@ function createCartCard(grocery) {
   });
 
   dBtnElement.addEventListener("click", () => {
+    totalNumber.innerText = `£${(totalCost -= grocery.price).toFixed(2)}`;
     if (grocery.quantity > 1) {
       grocery.quantity--;
       spanElement.innerText = grocery.quantity;
@@ -145,6 +158,7 @@ function createCartCard(grocery) {
   iBtnElement.addEventListener("click", () => {
     grocery.quantity++;
     spanElement.innerText = grocery.quantity;
+    totalNumber.innerText = `£${(totalCost += grocery.price).toFixed(2)}`;
   });
 
   cartItemListUl.appendChild(liElement);
@@ -163,9 +177,12 @@ function removeFromCart(parentElement, childElement, grocery) {
   }
 }
 
+sortingElement.addEventListener("click", () => sortByPrice());
+
 function initialize() {
   console.log("initializing...");
-
+  totalCost = 0;
+  totalNumber.innerText = `£${totalCost}`;
   renderingCards();
   console.log("initialized!");
 }
