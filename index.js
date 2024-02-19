@@ -59,12 +59,22 @@ console.log(state);
 const storeItemListUl = document.querySelector(".item-list.store--item-list");
 const cartItemListUl = document.querySelector(".item-list.cart--item-list");
 const totalNumber = document.querySelector(".total-number");
-const sortingElement = document.querySelector(".sort--store-items");
+const sortingElement = document.getElementById("sort--store-items-price");
+const sortingElementAlphabet = document.getElementById(
+  "sort--store-items-alphabet"
+);
 
 let totalCost;
 
 function sortByPrice() {
   state.items.sort((a, b) => a.price - b.price);
+  storeItemListUl.innerHTML = "";
+
+  renderingCards();
+}
+
+function sortByAlphabet() {
+  state.items.sort((a, b) => a.name.localeCompare(b.name));
   storeItemListUl.innerHTML = "";
 
   renderingCards();
@@ -178,6 +188,8 @@ function removeFromCart(parentElement, childElement, grocery) {
 }
 
 sortingElement.addEventListener("click", () => sortByPrice());
+
+sortingElementAlphabet.addEventListener("click", () => sortByAlphabet());
 
 function initialize() {
   console.log("initializing...");
