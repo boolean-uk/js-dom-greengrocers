@@ -53,3 +53,100 @@ const state = {
   ],
   cart: []
 };
+
+function GenerateItemList() {
+  const parent = document.getElementsByClassName('item-list store--item-list')[0]
+
+  state.items.forEach((item) =>  {
+    const produceItem = document.createElement("li")
+
+    const imageContainer = document.createElement("div")
+    imageContainer.classList.add("store--item-icon")
+    const image = document.createElement("img")
+    image.src = "./assets/icons/"+item.id+".svg"
+    image.alt = item.name
+    imageContainer.appendChild(image)
+
+    const addToCartButton = document.createElement("button")
+    addToCartButton.textContent = "Add to cart"
+    addToCartButton.addEventListener("click", () => {
+      state.cart.push(item)
+      GenerateCartItemList()
+    })
+
+    produceItem.appendChild(imageContainer)
+    produceItem.appendChild(addToCartButton)
+
+    parent.appendChild(produceItem)
+  })
+}
+
+function GenerateCartItemList() {
+  const parent = document.getElementsByClassName('item-list cart--item-list')[0]
+  parent.innerHTML = ""
+  state.items.forEach((item) => {
+    const numberOfItem = state.cart.filter(obj => obj == item).length
+    if (numberOfItem != 0) {
+      const cartItem = GenerateCartItem(item, numberOfItem)
+      parent.appendChild(cartItem)
+    }
+  })
+  UpdateCartTotalPrice()
+}
+
+function GenerateCartItem(item, count) {
+  const cartItem = document.createElement("li")
+
+  const image = document.createElement("img")
+  image.classList.add("cart--item-icon")
+  image.src = "./assets/icons/"+item.id+".svg"
+  image.alt = item.name
+
+  const cartItemName = document.createElement("p")
+  cartItemName.textContent = item.name
+
+  const quantityCounter = document.createElement("span")
+  quantityCounter.classList.add("quantity-text", "center")
+  quantityCounter.textContent = count
+
+  const removeButton = document.createElement("button")
+  removeButton.classList.add("quantity-btn", "remove-btn", "center")
+  removeButton.textContent = "-"
+  removeButton.addEventListener("click", () => {
+    state.cart.splice(state.cart.indexOf(item), 1)
+    GenerateCartItemList()
+  })
+
+  const addButton = document.createElement("button")
+  addButton.classList.add("quantity-btn", "add-btn", "center")
+  addButton.textContent = "+"
+  addButton.addEventListener("click", () => {
+    state.cart.push(item)
+    GenerateCartItemList()
+  })
+
+  cartItem.appendChild(image)
+  cartItem.appendChild(cartItemName)
+  cartItem.appendChild(removeButton)
+  cartItem.appendChild(quantityCounter)
+  cartItem.appendChild(addButton)
+
+  return cartItem
+}
+
+function UpdateCartTotalPrice() {
+  const parent = document.getElementsByClassName("total-number")[0]
+  let price = 0
+
+  state.cart.forEach((item) => {
+    price = price + item.price
+  })
+  // Set price to be in pounds and to carry 2 decimals
+  parent.textContent = "£" + price.toFixed(2)
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  GenerateItemList()
+  GenerateCartItemList()
+  UpdateCartTotalPrice
+})
