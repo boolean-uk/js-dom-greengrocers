@@ -157,61 +157,77 @@ function createCartCard(grocery) {
   const spanElement = document.createElement("span");
   const decreaseGroceryQuantityBtn = document.createElement("button");
 
-  // initialize new quantity attribute
-  grocery.quantity = 1;
+  // Check if item to add already exists in the cart
+  const existingItem = state.cart.find((item) => item.id === grocery.id);
 
-  // Display price of grocery
-  totalNumber.innerText = `£${(totalCost += grocery.price).toFixed(2)}`;
+  if (!existingItem) {
+    // initialize new quantity attribute
+    grocery.quantity = 1;
 
-  // add grocery obj to state.cart
-  state.cart.push(grocery);
-
-  // set class and other attributes according to template
-  imgElement.className = "cart--item-icon";
-  imgElement.setAttribute("src", `assets/icons/${grocery.id}.svg`);
-  imgElement.setAttribute("alt", `${grocery.name}`);
-
-  pElement.innerText = grocery.name;
-
-  decreaseGroceryQuantityBtn.className = "quantity-btn remove-btn center";
-  decreaseGroceryQuantityBtn.innerText = "-";
-
-  spanElement.className = "quantity-text center";
-  spanElement.innerText = grocery.quantity;
-
-  increaseGroceryQuantityBtn.className = "quantity-btn add-btn center";
-  increaseGroceryQuantityBtn.innerText = "+";
-
-  const elementsToAppend = [
-    imgElement,
-    pElement,
-    decreaseGroceryQuantityBtn,
-    spanElement,
-    increaseGroceryQuantityBtn,
-  ];
-
-  // Append elements using a loop
-  elementsToAppend.forEach((element) => {
-    liElement.appendChild(element);
-  });
-
-  decreaseGroceryQuantityBtn.addEventListener("click", () => {
-    totalNumber.innerText = `£${(totalCost -= grocery.price).toFixed(2)}`;
-    if (grocery.quantity > 1) {
-      grocery.quantity--;
-      spanElement.innerText = grocery.quantity;
-    } else {
-      removeFromCart(cartItemListUl, liElement, grocery);
-    }
-  });
-
-  increaseGroceryQuantityBtn.addEventListener("click", () => {
-    grocery.quantity++;
-    spanElement.innerText = grocery.quantity;
+    // Display price of grocery
     totalNumber.innerText = `£${(totalCost += grocery.price).toFixed(2)}`;
-  });
 
-  cartItemListUl.appendChild(liElement);
+    // add grocery obj to state.cart
+    state.cart.push(grocery);
+
+    // set class and other attributes according to template
+    imgElement.className = "cart--item-icon";
+    imgElement.setAttribute("src", `assets/icons/${grocery.id}.svg`);
+    imgElement.setAttribute("alt", `${grocery.name}`);
+
+    pElement.innerText = grocery.name;
+
+    decreaseGroceryQuantityBtn.className = "quantity-btn remove-btn center";
+    decreaseGroceryQuantityBtn.innerText = "-";
+
+    spanElement.className = "quantity-text center";
+    spanElement.innerText = grocery.quantity;
+
+    increaseGroceryQuantityBtn.className = "quantity-btn add-btn center";
+    increaseGroceryQuantityBtn.innerText = "+";
+
+    const elementsToAppend = [
+      imgElement,
+      pElement,
+      decreaseGroceryQuantityBtn,
+      spanElement,
+      increaseGroceryQuantityBtn,
+    ];
+
+    // Append elements using a loop
+    elementsToAppend.forEach((element) => {
+      liElement.appendChild(element);
+    });
+
+    decreaseGroceryQuantityBtn.addEventListener("click", () => {
+      totalNumber.innerText = `£${(totalCost -= grocery.price).toFixed(2)}`;
+      if (grocery.quantity > 1) {
+        grocery.quantity--;
+        spanElement.innerText = grocery.quantity;
+      } else {
+        removeFromCart(cartItemListUl, liElement, grocery);
+      }
+    });
+
+    increaseGroceryQuantityBtn.addEventListener("click", () => {
+      grocery.quantity++;
+      spanElement.innerText = grocery.quantity;
+      totalNumber.innerText = `£${(totalCost += grocery.price).toFixed(2)}`;
+    });
+
+    cartItemListUl.appendChild(liElement);
+  } else {
+    // If the item is already in the cart, update the quantity
+    grocery.quantity++;
+    totalNumber.innerText = `£${(totalCost += grocery.price).toFixed(2)}`;
+    const existingCartItemElement = document.querySelector(
+      `.cart--item-icon[src="assets/icons/${grocery.id}.svg"]`
+    );
+    const quantityElement =
+      existingCartItemElement.nextElementSibling.nextElementSibling
+        .nextElementSibling;
+    quantityElement.innerText = grocery.quantity;
+  }
 }
 
 function removeFromCart(parentElement, childElement, grocery) {
