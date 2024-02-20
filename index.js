@@ -54,9 +54,37 @@ const state = {
   cart: []
 };
 
+function GenerateSortButtonsStoreItem() {
+  const parent = document.getElementById("sortContainer")
+  console.log(parent)
+  const sortByPriceButton = document.createElement("button")
+  sortByPriceButton.textContent = "Price"
+  sortByPriceButton.addEventListener("click", () => {
+    state.items.sort((a, b) => a.price - b.price)
+    GenerateItemList()
+  })
+  const sortByNameButtonDescending = document.createElement("button")
+  sortByNameButtonDescending.textContent = "Alphabetical (ASC)"
+  sortByNameButtonDescending.addEventListener("click", () => {
+    state.items.sort((a, b) => a.name > b.name)
+    GenerateItemList()
+  })
+
+  const sortByNameButtonAscending = document.createElement("button")
+  sortByNameButtonAscending.textContent = "Alphabetical (DESC)"
+  sortByNameButtonAscending.addEventListener("click", () => {
+    state.items.sort((a, b) => a.name < b.name)
+    GenerateItemList()
+  })
+
+  parent.appendChild(sortByPriceButton)
+  parent.appendChild(sortByNameButtonAscending)
+  parent.appendChild(sortByNameButtonDescending)
+}
+
 function GenerateItemList() {
   const parent = document.getElementsByClassName('item-list store--item-list')[0]
-
+  parent.innerHTML = ""
   state.items.forEach((item) =>  {
     const produceItem = document.createElement("li")
 
@@ -145,8 +173,8 @@ function UpdateCartTotalPrice() {
   parent.textContent = "£" + price.toFixed(2)
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   GenerateItemList()
   GenerateCartItemList()
-  UpdateCartTotalPrice
+  GenerateSortButtonsStoreItem()
 })
