@@ -65,6 +65,39 @@ const StoreUl = document.querySelector(".store--item-list");
 const CartUl = document.querySelector(".cart--item-list");
 
 // LOGIC (functions) TO UPDATE APP STATE (controller -> model -> view update)
+function addButtonEventListener(cartItem) {
+  // Description: When addBtn is pressed, increase the quantity of this cartItem.quantity by one
+  // Input: cartItem
+  // Output: NaN
+  console.log("Increasing");
+  // Increase quantity on cartItem
+  cartItem.quantity += 1;
+  // Render items again
+  renderItemsInCart();
+}
+function removeButtonEventListener(cartItem) {
+  // Description: When remBtn is pressed, decrease the quantity of this cartItem.quantity by one, if it becomes 0 then remove from state.cart
+  // Input: cartItem
+  // Output: NaN
+  console.log("Decreasing");
+  // Decrease quantity on cartItem
+  cartItem.quantity -= 1;
+  // Check if quantity is now 0
+  if (cartItem.quantity === 0) {
+    console.log("Removing");
+    // If it is -> remove cartItem from state.cart
+    // Loop through state.cart to find index of cartItem
+    for (let i = 0; i < state.cart.length; i++) {
+      // Splice that index and leave loop
+      if (state.cart[i].id === cartItem.id) {
+        state.cart.splice(i, 1);
+        break;
+      }
+    }
+  }
+  // Render items again
+  renderItemsInCart();
+}
 function addItemToCart(storeItem) {
   // Description: recieves an item from state.items, 'turns' it into cartItem and renders it to the cart element. On "Add to cart"-button click
   // Input: storeItem
@@ -93,6 +126,7 @@ function addItemToCart(storeItem) {
     state.cart.push(cartItem);
   }
   console.log(state.cart);
+  // Render the cartItem to HTML
   renderItemsInCart();
 }
 // LOGIC (functions) TO HANDLE USER EVENTS (view -> controller interaction)
@@ -118,7 +152,9 @@ function renderItemsInCart() {
     const remBtn = document.createElement("button");
     remBtn.setAttribute("class", "quantity-btn remove-btn center");
     remBtn.innerText = "-";
-    //remBtn.addEventListener("click");
+    remBtn.addEventListener("click", () =>
+      removeButtonEventListener(state.cart[i])
+    );
 
     const span = document.createElement("span");
     span.setAttribute("class", "quantity-text center");
@@ -127,7 +163,9 @@ function renderItemsInCart() {
     const addBtn = document.createElement("button");
     addBtn.setAttribute("class", "quantity-btn add-btn center");
     addBtn.innerText = "+";
-    //addBtn.addEventListener("click");
+    addBtn.addEventListener("click", () =>
+      addButtonEventListener(state.cart[i])
+    );
 
     // Append Elements to CartUl list
     li.appendChild(img);
@@ -174,7 +212,6 @@ function initialise() {
 
   // perfrom initial render
   renderStoreItems();
-  renderItemsInCart();
   // setup event handlers
   console.log("Initialisation done.");
 }
