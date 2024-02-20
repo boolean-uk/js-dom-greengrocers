@@ -7,12 +7,15 @@
     <link rel="stylesheet" href="styles/reset.css" />
     <link rel="stylesheet" href="styles/index.css" />
     <title>Greengrocers</title>
-    <script defer src="index.js"></script>
+    <script defer src="database.js" type="module"></script>
+    <script defer src="cartItem.js" type="module"></script>
+    <script defer src="storeItem.js" type="module"></script>
+    <script defer src="index.js" type="module"></script>
   </head>
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
-      <ul class="item-list store--item-list">
+      <ul id="store-item-list" class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
     </header>
@@ -21,7 +24,7 @@
       <h2>Your Cart</h2>
 
       <div class="cart--item-list-container">
-        <ul class="item-list cart--item-list">
+        <ul id="cart-item-list" class="item-list cart--item-list">
           <!-- Take a look at cart-item.html -->
         </ul>
       </div>
