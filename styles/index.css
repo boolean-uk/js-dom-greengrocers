@@ -1,7 +1,7 @@
 /* Typography */
 
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif;
 }
 
 h1,
@@ -181,4 +181,17 @@ button {
     border-top: 2px solid #00675b;
     border-bottom: 2px solid #00675b;
   }
+}
+
+button {
+  border-radius: 5px;
+  padding: 10px;
+}
+
+button:hover {
+  background-color: #c4e4cb;
+}
+
+.sort--store-items {
+  margin-top: 50px;
 }
