@@ -31,8 +31,9 @@ button {
   background-color: #e7f4ea;
 }
 
-#store h1 {
+#store h1, h3 {
   text-align: center;
+  padding: 1rem;
 }
 
 .store--item-list {
