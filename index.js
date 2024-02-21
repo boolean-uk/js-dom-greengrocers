@@ -63,6 +63,7 @@ const state = {
 // SELECT EXISTING/FIXED DOM ELEMENTS
 const StoreUl = document.querySelector(".store--item-list");
 const CartUl = document.querySelector(".cart--item-list");
+const TotalCost = document.querySelector(".total-number");
 
 // LOGIC (functions) TO UPDATE APP STATE (controller -> model -> view update)
 function addButtonEventListener(cartItem) {
@@ -73,6 +74,7 @@ function addButtonEventListener(cartItem) {
   // Increase quantity on cartItem
   cartItem.quantity += 1;
   // Render items again
+  addToTotalCost(cartItem.price);
   renderItemsInCart();
 }
 function removeButtonEventListener(cartItem) {
@@ -96,6 +98,7 @@ function removeButtonEventListener(cartItem) {
     }
   }
   // Render items again
+  removeFromTotalCost(cartItem.price);
   renderItemsInCart();
 }
 function addItemToCart(storeItem) {
@@ -112,6 +115,7 @@ function addItemToCart(storeItem) {
       exists = true;
       // Increment cartItem.quantity by 1
       state.cart[i].quantity += 1;
+      addToTotalCost(state.cart[i].price);
       break;
     }
   }
@@ -124,10 +128,41 @@ function addItemToCart(storeItem) {
     };
     // Add cartItem to state.cart if not exists
     state.cart.push(cartItem);
+    addToTotalCost(cartItem.price);
   }
   console.log(state.cart);
   // Render the cartItem to HTML
   renderItemsInCart();
+}
+function addToTotalCost(price) {
+  // Description: Adds the provided price to the value of totalCost
+  // Input: price
+  // Output: NaN
+  // Turn TotalCost.innerText to Number
+  let totalNr = Number(
+    TotalCost.innerText.slice(1, TotalCost.innerText.length)
+  );
+  // Add price to totalNr
+  totalNr += price;
+  // Round totalNr to avoid calculation errors
+  const formattedNumber = Math.round(totalNr * 100) / 100;
+  // Print new TotalCost
+  TotalCost.innerText = "£" + formattedNumber;
+}
+function removeFromTotalCost(price) {
+  // Description: Removes the provided price from the value of totalCost
+  // Input: price
+  // Output: NaN
+  // Turn TotalCost.innerText to Number
+  let totalNr = Number(
+    TotalCost.innerText.slice(1, TotalCost.innerText.length)
+  );
+  // Remove price from totalCost
+  totalNr -= price;
+  // Round totalNr to avoid calculation errors
+  const formattedNumber = Math.round(totalNr * 100) / 100;
+  // Print new TotalCost
+  TotalCost.innerText = "£" + formattedNumber;
 }
 // LOGIC (functions) TO HANDLE USER EVENTS (view -> controller interaction)
 
@@ -212,6 +247,8 @@ function initialise() {
 
   // perfrom initial render
   renderStoreItems();
+
+  //TotalCost.innerText = "£1.50";
   // setup event handlers
   console.log("Initialisation done.");
 }
