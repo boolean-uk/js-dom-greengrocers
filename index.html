@@ -12,11 +12,21 @@
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
+      <select class = "fltr--slct" name="fltr--slct" id="fltr--slct">
+        <option value="">Default</option>
+        <option value="fruit">Fruit</option>
+        <option value="vegtable">Vegtable</option>
+      </select>
+      <select class = "srt--slct" name="srt--slct" id="srt--slct">
+        <option value="">Default</option>
+        <option value="alpha">Alphabetical</option>
+        <option value="price-high-low">Price: High-Low</option>
+        <option value="price-low-high">Price: Low-High</option>
+      </select>
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
     </header>
-
     <main id="cart">
       <h2>Your Cart</h2>
 
