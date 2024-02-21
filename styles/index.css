@@ -182,3 +182,25 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+.item-filter-container, .item-sort-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.item-filter, .item-sort{
+  text-align: center;
+  height: 40px;
+  width: 150px;
+  border-radius: 4px;
+  border: 2px solid rgb(83, 168, 151);
+  background-color: #caffda;
+}
+
+.item-filter:hover, .item-sort:hover{
+  background-color: #b3f0c3;
+}
