@@ -1,50 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/reset.css" />
-    <link rel="stylesheet" href="styles/index.css" />
-    <title>Greengrocers</title>
-    <script defer src="index.js"></script>
-  </head>
-  <body>
-    <header id="store">
-      <h1>Greengrocers</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles/reset.css" />
+  <link rel="stylesheet" href="styles/index.css" />
+  <title>Greengrocers</title>
+  <script defer src="index.js"></script>
+  <style>
+    /* Center the filter buttons and text */
+    #filters-container {
+      text-align: center;
+      margin-bottom: 20px; /* Optional: Add some space between the filter buttons and the items */
+    }
+    /* New CSS for left-aligned navigation */
+    #navigation {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: 20px;
+    }
+    .dropdown {
+      margin-bottom: 10px; /* Optional: Add some space between dropdowns */
+    }
+  </style>
+  <style>
+    #sort-container {
+      text-align: center;
+      margin-bottom: 20px; 
+    }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+    /* Add down arrow icon */
+    .dropdown .dropbtn::after {
+      content: '\25BC'; /* Unicode character for down arrow */
+      margin-left: 5px; /* Adjust as needed */
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header id="store">
+    <h1>Greengrocers</h1>
+    <div id="navigation">
+      <button id="home-btn">Home</button>
+      <div class="dropdown" id="item-types-dropdown">
+        <button class="dropbtn">Item Types</button>
+        <div class="dropdown-content">
+          <button class="filter-btn" data-type="vegetable">Vegetables</button>
+          <button class="filter-btn" data-type="fruit">Fruits</button>
+          <button class="filter-btn" data-type="berry">Berries</button>
+        </div>
+      </div>
+      <div class="dropdown" id="sort-items-dropdown">
+        <button class="dropbtn">Sort Items</button>
+        <div class="dropdown-content">
+          <button class="sort-btn" data-sort="price">Prices</button>
+          <button class="sort-btn" data-sort="alphabetical">Alphabetically</button>
+        </div>
+      </div>
+    </div>
+    <div id="filters-container">
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
-    </header>
-
-    <main id="cart">
-      <h2>Your Cart</h2>
-
-      <div class="cart--item-list-container">
-        <ul class="item-list cart--item-list">
-          <!-- Take a look at cart-item.html -->
-        </ul>
-      </div>
-
-      <div class="total-section">
-        <div>
-          <h3>Total</h3>
-        </div>
-
-        <div>
-          <span class="total-number">£0.00</span>
-        </div>
-      </div>
-    </main>
-    <div>
-      Icons made by
-      <a href="https://www.flaticon.com/authors/icongeek26" title="Icongeek26">
-        Icongeek26
-      </a>
-      from
-      <a href="https://www.flaticon.com/" title="Flaticon">
-        www.flaticon.com
-      </a>
     </div>
-  </body>
+  </header>
+
+  <main id="cart">
+    <h2>Your Cart</h2>
+
+    <div class="cart--item-list-container">
+      <ul class="item-list cart--item-list">
+        <!-- Take a look at cart-item.html -->
+      </ul>
+    </div>
+
+    <div class="total-section">
+      <div>
+        <h3>Total</h3>
+      </div>
+
+      <div>
+        <span class="total-number">£0.00</span>
+      </div>
+    </div>
+  </main>
+  <div>
+    Icons made by
+    <a href="https://www.flaticon.com/authors/icongeek26" title="Icongeek26">
+      Icongeek26
+    </a>
+    from
+    <a href="https://www.flaticon.com/" title="Flaticon">
+      www.flaticon.com
+    </a>
+  </div>
+</body>
 </html>
