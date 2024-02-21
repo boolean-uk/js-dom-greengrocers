@@ -134,21 +134,19 @@ function handleSortItems(sort) {
   renderGroceryData([...state.items], filterState, sortState);
 }
 
-// LOGIC (functions) TO HANDLE RENDERING / DISPLAY / CLEARING OF UI (view)
-// LOGIC TO HANDLE RENDERING / DISPLAY / CLEARING OF UI (view)
+
 function createGroceryImage(item) {
-  // li: with the name of a teacher + a button to view details
-  // <li>1: Carlo <button>View Details</button></li>
+
   const li = document.createElement("li");
   const img = document.createElement("img");
   img.setAttribute("id", `${item.id}`);
   img.setAttribute("class", "item--img");
   img.setAttribute("alt", "grocery image");
-  // create button
+
   const button = document.createElement("button");
   button.innerText = "ADD TO CART";
   button.addEventListener("click", (event) => handleAddToCart(event, item));
-  // place button inside list item
+ 
   img.setAttribute("src", `assets/icons/${item.id}.svg`);
 
   li.appendChild(img);

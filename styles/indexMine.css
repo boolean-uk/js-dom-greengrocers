@@ -168,4 +168,6 @@ body {
       border-bottom: 2px solid #00675b;
     }
   }
-  
+  a {
+    text-decoration: none; /* Removes underline */
+  }
