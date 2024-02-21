@@ -15,8 +15,15 @@ const createCartItem = (item) => {
     return toReturn;
 };
 
+let shouldSortCartItems = false;
+
 const createAllCartItems = (items) => {
-    return items.map((i) => createCartItem(i));
+    if (shouldSortCartItems) {
+        const sortedItems = items.slice().sort((a, b) => a.name.localeCompare(b.name));
+        return sortedItems.map((i) => createCartItem(i));
+    } else {
+        return items.map((i) => createCartItem(i));
+    }
 };
 
 const updateCartItems = () => {
@@ -48,3 +55,9 @@ const updateCartItems = () => {
 };
 
 updateCartItems();
+
+const addButton = document.querySelector(".sort-btn");
+addButton.addEventListener("click", () => {
+    shouldSortCartItems = !shouldSortCartItems;
+    updateCartItems();
+});
