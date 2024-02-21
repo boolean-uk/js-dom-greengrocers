@@ -20,6 +20,12 @@ button {
   cursor: pointer;
 }
 
+/* Ribbon */
+.ribbon {
+  display: flex;
+  justify-content: center; /* Horizontally center the buttons */
+}
+
 /* Store */
 
 #store {
