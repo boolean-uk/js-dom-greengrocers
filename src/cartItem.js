@@ -1,5 +1,3 @@
-const itemsToRender = [];
-
 export function renderCartItems(cart) {
   const cartElement = document.getElementById("cart-item-list");
   cartElement.innerHTML = "";
