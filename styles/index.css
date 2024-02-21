@@ -182,3 +182,24 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+.sort-button--container {
+  position: relative;
+  top: 50%;
+  left: 50;
+  width: 240px;
+  margin: auto;
+  border-top: solid black 1px;
+  border-bottom: solid black 1px;
+}
+
+.sort-button {
+ width: 60px;
+ background-color: transparent;
+ border-radius: 25%;
+ border: none;
+}
+
+.sort-button:hover {
+  background-color: #b4aeae;
+}
