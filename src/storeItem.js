@@ -1,7 +1,16 @@
 import { renderCartItems } from "./cartItem.js";
 
-export function renderStoreItems(items, cart) {
+/**
+ *
+ * @param {Array} items
+ * @param {Array} cart
+ */
+export function renderStoreItems(items, cart, filter) {
+  if (filter) {
+    items = items.filter((p) => p.name.includes(filter));
+  }
   const storeItemsList = document.getElementById("store-item-list");
+  storeItemsList.innerHTML = "";
   for (let i = 0; i < items.length; i++) {
     const storeItem = storeItemComponent(items[i], cart);
     storeItemsList.appendChild(storeItem);
