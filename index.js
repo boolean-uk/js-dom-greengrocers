@@ -4,61 +4,80 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.15,
+      type: "vegetable"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.45,
+      type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.55,
+      type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.63,
+      type: "fruit"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.16,
+      type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.70,
+      type: "vegetable"
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.40,
+      type: "berry"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: "berry"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.45,
+      type: "vegetable"
     }
   ],
   cart: []
 };
-function renderStore() {
+
+// Function to render store items based on selected type
+function renderStore(selectedType) {
   const storeItemList = document.querySelector('.store--item-list');
   storeItemList.innerHTML = ''; // Clear previous content
 
-  state.items.forEach(item => {
+  let filteredItems;
+  if (selectedType) {
+    filteredItems = state.items.filter(item => item.type === selectedType);
+  } else {
+    filteredItems = state.items;
+  }
+
+  filteredItems.forEach(item => {
     const listItem = document.createElement('li');
     listItem.innerHTML = `
       <div class="store--item-icon">
@@ -74,6 +93,47 @@ function renderStore() {
   addToCartButtons.forEach(button => {
     button.addEventListener('click', addToCart);
   });
+}
+
+// Function to handle filter click event
+function handleFilterClick(event) {
+  const selectedType = event.target.dataset.type;
+  renderStore(selectedType);
+}
+
+// Add event listeners to filter buttons
+const filterButtons = document.querySelectorAll('.filter-btn');
+filterButtons.forEach(button => {
+  button.addEventListener('click', handleFilterClick);
+});
+
+
+// Function to handle sort click event
+function handleSortClick(event) {
+  const sortType = event.target.dataset.sort;
+  sortItems(sortType);
+}
+
+// Add event listeners to sort buttons
+const sortButtons = document.querySelectorAll('.sort-btn');
+sortButtons.forEach(button => {
+  button.addEventListener('click', handleSortClick);
+});
+
+
+// Function to sort items
+function sortItems(sortType) {
+  switch (sortType) {
+    case 'price':
+      state.items.sort((a, b) => a.price - b.price);
+      break;
+    case 'alphabetical':
+      state.items.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    default:
+      break;
+  }
+  renderStore();
 }
 
 // Function to add items to cart
@@ -144,5 +204,27 @@ function removeFromCart(event) {
   renderCart();
 }
 
-renderStore();
-renderCart();
+
+// Function to handle home button click event
+function handleHomeClick() {
+  // Render the store without any filters or sorting
+  renderStore();
+}
+
+// Function to handle item types button click event
+function handleItemTypesClick() {
+  // Render the store with all item types
+  renderStore();
+}
+
+// Function to handle sort items button click event
+function handleSortItemsClick() {
+  // Render the store without any sorting
+  renderStore();
+}
+
+handleHomeClick();
+// Add event listeners to buttons
+document.getElementById('home-btn').addEventListener('click', handleHomeClick);
+document.getElementById('item-types-btn').addEventListener('click', handleItemTypesClick);
+document.getElementById('sort-items-btn').addEventListener('click', handleSortItemsClick);
