@@ -1,4 +1,4 @@
-import { renderCartItem } from "./cartItem.js";
+import { renderCartItems } from "./cartItem.js";
 
 export function renderStoreItems(items, cart) {
   const storeItemsList = document.getElementById("store-item-list");
@@ -28,8 +28,18 @@ function storeItemComponent(item, cart) {
   return container;
 }
 
+/**
+ *
+ * @param {Object} item
+ * @param {Array} cart
+ */
 const addToCart = (item, cart) => {
-  console.log(cart);
+  if (cart.includes(item)) {
+    item.quantity += 1;
+    renderCartItems(cart);
+    return;
+  }
+  item.quantity = 1;
   cart.push(item);
-  renderCartItem(item);
+  renderCartItems(cart);
 };
