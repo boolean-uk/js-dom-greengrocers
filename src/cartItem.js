@@ -15,7 +15,7 @@ function renderCartTotal(cart) {
     sum += item.price * item.quantity;
   }
   const totalPriceElement = document.getElementById("total-price");
-  totalPriceElement.innerText = `£${sum}`;
+  totalPriceElement.innerText = `£${sum.toFixed(2)}`;
 }
 
 /**
