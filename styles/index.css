@@ -20,6 +20,12 @@ button {
   cursor: pointer;
 }
 
+/* Filters */
+.filters {
+  display: flex;
+  justify-content: center; /* Horizontally center the buttons */
+}
+
 /* Store */
 
 #store {

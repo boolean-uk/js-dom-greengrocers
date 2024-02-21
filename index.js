@@ -1,71 +1,83 @@
-const storeUl = document.querySelector('.store--item-list');
-const cartUl = document.querySelector('.cart--item-list')
-const totalSpan = document.querySelector('.total-number')
-
 const state = {
   items: [
-    {
-      id: "001-beetroot",
-      name: "beetroot",
-      price: 0.35
-    },
-    {
-      id: "002-carrot",
-      name: "carrot",
-      price: 0.35
-    },
-    {
-      id: "003-apple",
-      name: "apple",
-      price: 0.35
-    },
-    {
-      id: "004-apricot",
-      name: "apricot",
-      price: 0.35
-    },
-    {
-      id: "005-avocado",
-      name: "avocado",
-      price: 0.35
-    },
-    {
-      id: "006-bananas",
-      name: "bananas",
-      price: 0.35
-    },
-    {
-      id: "007-bell-pepper",
-      name: "bell pepper",
-      price: 0.35
-    },
-    {
-      id: "008-berry",
-      name: "berry",
-      price: 0.35
-    },
-    {
-      id: "009-blueberry",
-      name: "blueberry",
-      price: 0.35
-    },
-    {
-      id: "010-eggplant",
-      name: "eggplant",
-      price: 0.35
-    }
+    {id: "001-beetroot", name: "beetroot", price: 0.35, type: "vegetable"},
+    {id: "002-carrot", name: "carrot", price: 0.35, type: "vegetable"},
+    {id: "003-apple", name: "apple", price: 0.35, type: "fruit"},
+    {id: "004-apricot", name: "apricot", price: 0.35, type: "fruit"},
+    {id: "005-avocado", name: "avocado", price: 0.35, type: "fruit"},
+    {id: "006-bananas", name: "bananas", price: 0.35, type: "fruit"},
+    {id: "007-bell-pepper", name: "bell pepper", price: 0.35, type: "vegetable"},
+    {id: "008-berry", name: "berry", price: 0.35, type: "fruit"},
+    {id: "009-blueberry", name: "blueberry", price: 0.35, type: "fruit"},
+    {id: "010-eggplant", name: "eggplant", price: 0.35, type: "vegetable"}
   ],
   cart: []
 };
 
+let displayFruits = true
+let displayVegetables = true 
+
+const filters = {
+  'Fruit': true,
+  'Vegetable': true
+}
+
 //Main
+renderFilterButtons()
 renderStore()
 
+
 //Functions
-function renderStore(){
+function renderFilterButtons() {
+  const filterDiv = document.querySelector('.filters');
+
+  const fruitFilterButton = document.createElement('button');
+  updateFilterButtonClass(filters.Fruit, fruitFilterButton);
+  fruitFilterButton.innerText = 'Fruits';
+  fruitFilterButton.addEventListener('click', () => {
+    updateFilter('Fruit', fruitFilterButton);
+  });
+  filterDiv.append(fruitFilterButton);
+
+  const vegetableFilterButton = document.createElement('button');
+  updateFilterButtonClass(filters.Vegetable, vegetableFilterButton);
+  vegetableFilterButton.innerText = 'Vegetables';
+  vegetableFilterButton.addEventListener('click', () => {
+    updateFilter('Vegetable', vegetableFilterButton);
+  });
+  filterDiv.append(vegetableFilterButton);
+}
+
+function updateFilter(filtername, button){
+  filters[filtername] = !filters[filtername]
+
+  updateFilterButtonClass(filters[filtername], button);
+
+  renderStore()
+}
+
+function updateFilterButtonClass(display, button) {
+  button.classList.remove('add-btn', 'remove-btn');
+  if (display) {
+    button.classList.add('add-btn');
+  } else {
+    button.classList.add('remove-btn');
+  }
+}
+
+
+function renderStore() {
+  const storeUl = document.querySelector('.store--item-list');
+  storeUl.innerHTML = '';
+
   state.items.forEach(item => {
+    const itemType = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+    if (!filters[itemType]) {
+      return;
+    }
+
     const product = document.createElement('li');       
-  
+
     const image = document.createElement('img');
     image.classList.add('store--item-icon');
     image.src = `assets/icons/${item.id}.svg`;
@@ -82,30 +94,8 @@ function renderStore(){
   });
 }
 
-function addToCart(item) {
-  const existingItem = state.cart.find(element => element.id === item.id);
-
-  if (existingItem) {
-    existingItem.quantity++;
-  } else {
-    const newItem = convert(item);
-    state.cart.push(newItem);
-  }
-
-  renderCart();
-}
-
-
-function convert(shopItem){
-  return {
-    id: shopItem.id,
-    name: shopItem.name,
-    price: shopItem.price,
-    quantity: 1
-  }
-}
-
 function renderCart(){
+  const cartUl = document.querySelector('.cart--item-list')
   cartUl.innerHTML = '';
 
   state.cart.forEach(item => {
@@ -143,6 +133,19 @@ function renderCart(){
   updateTotal()
 }
 
+function addToCart(item) {
+  const existingItem = state.cart.find(element => element.id === item.id);
+
+  if (existingItem) {
+    existingItem.quantity++;
+  } else {
+    const newItem = convert(item);
+    state.cart.push(newItem);
+  }
+
+  renderCart();
+}
+
 function removeFromCart(item) {
   const existingItem = state.cart.find(element => element.id === item.id);
 
@@ -158,7 +161,17 @@ function removeFromCart(item) {
   renderCart();
 }
 
+function convert(shopItem){
+  return {
+    id: shopItem.id,
+    name: shopItem.name,
+    price: shopItem.price,
+    quantity: 1
+  }
+}
+
 function updateTotal(){
+  const totalSpan = document.querySelector('.total-number')
   let sum = 0
 
   state.cart.forEach(element => {
