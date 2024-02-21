@@ -1,3 +1,6 @@
+/**
+ * Generate and attach a form with interactable buttons that indicate if a type of produce should be included or excluded from the list generated in PopulateCurrentSelection().
+ */
 function filterByType() {
     const parent = document.getElementById("options-container")
 
@@ -11,28 +14,33 @@ function filterByType() {
     const filterSelection = document.createElement("form")
     filterSelection.type = "checkbox"
 
-    const [filterFruitInput, filterFruitLabel] = CreateFormInputElement("Fruit")
-    filterFruitInput.id = "SelectFruits"
-    filterFruitInput.defaultChecked = true
-    AppendClickListener(filterFruitInput)
+    const [fruitInput, fruitLabel] = CreateFormInputElement("Fruit")
+    fruitInput.id = "SelectFruits"
+    fruitInput.defaultChecked = true
+    AppendClickListener(fruitInput)
 
-    filterSelection.appendChild(filterFruitInput)
-    filterSelection.appendChild(filterFruitLabel)
+    filterSelection.appendChild(fruitInput)
+    filterSelection.appendChild(fruitLabel)
     filterSelection.appendChild(document.createElement("br"))
 
-    const [filterVegetableInput, filterVegetableLabel] = CreateFormInputElement("Vegetable")
-    filterVegetableInput.id = "SelectVegetables"
-    filterVegetableInput.defaultChecked = true
-    AppendClickListener(filterVegetableInput)
+    const [vegetableInput, vegetableLabel] = CreateFormInputElement("Vegetable")
+    vegetableInput.id = "SelectVegetables"
+    vegetableInput.defaultChecked = true
+    AppendClickListener(vegetableInput)
 
-    filterSelection.appendChild(filterVegetableInput)
-    filterSelection.appendChild(filterVegetableLabel)
+    filterSelection.appendChild(vegetableInput)
+    filterSelection.appendChild(vegetableLabel)
 
     filterContainer.appendChild(filterSelection)
 
     parent.prepend(filterContainer)
 }
 
+/**
+ * Generate and configure both a label and a input element as checkbox type.
+ * @param {string} text The desired text on the label part of the form element
+ * @returns Elements created and configured in the form of a [inputElement, labelElement] array.
+ */
 function CreateFormInputElement(text) {
     const elementLabel = document.createElement("label")
     elementLabel.textContent = " " + text
@@ -43,6 +51,10 @@ function CreateFormInputElement(text) {
     return [elementInput, elementLabel]
 }
 
+/**
+ * Attach a event listener that both set the element value ("on"/"off") and repopulates the current selection state array.
+ * @param {HTMLInputElement} InputElement The input element to attach a click listener to.
+ */
 function AppendClickListener(InputElement) {
     InputElement.addEventListener("click", () => {
         if (InputElement.value === "on") {

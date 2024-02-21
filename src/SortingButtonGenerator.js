@@ -1,3 +1,6 @@
+/**
+ * Generate and attach a div with interactable buttons that indicate if the store items should be sorted by price (ascending/descending) or alphabetically (ascending/descending)
+ */
 function CreateStoreItemSorteringButtons() {
     const parent = document.getElementById("options-container")
   
@@ -45,6 +48,10 @@ function CreateStoreItemSorteringButtons() {
     parent.appendChild(buttonContainer)
 }
 
+/**
+ * Generate a new HTMLButtonElement and attach the class "sort-button" to the new element.
+ * @returns HTMLButtonElement with attached class "sort-button"
+ */
 function CreateButtonElement() {
   const buttonElement = document.createElement("button")
   buttonElement.classList.add("sort-button")
