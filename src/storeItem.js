@@ -29,9 +29,9 @@ function storeItemComponent(item, cart) {
 }
 
 /**
- *
- * @param {Object} item
- * @param {Array} cart
+ * Adds an item to a given cart and renders it.
+ * @param {Object} item The item to add
+ * @param {Array} cart The cart the item will be added to
  */
 const addToCart = (item, cart) => {
   if (cart.includes(item)) {
