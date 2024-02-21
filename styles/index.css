@@ -35,9 +35,48 @@ button {
   text-align: center;
 }
 
+#store h2 {
+  text-align: center;
+  padding: 5px;
+}
+
+.store--filter-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 125px);
+  grid-gap: 1rem;
+  justify-content: center;
+}
+
+.store--filter-buttons li {
+  display: grid;
+  place-items: center;
+  grid-row-gap: 0.5rem;
+}
+
+.store--filter-buttons button {
+  width: 125px;
+}
+
+.store--sort-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 125px);
+  grid-gap: 1rem;
+  justify-content: center;
+}
+
+.store--sort-buttons li {
+  display: grid;
+  place-items: center;
+  grid-row-gap: 0.5rem;
+}
+
+.store--sort-buttons button {
+  width: 125px;
+}
+
 .store--item-list {
   display: grid;
-  grid-template-columns: repeat(4, 125px);
+  grid-template-columns: repeat(5, 125px);
   grid-gap: 1rem;
   justify-content: center;
 }
