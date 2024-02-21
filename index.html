@@ -7,18 +7,26 @@
     <link rel="stylesheet" href="styles/reset.css" />
     <link rel="stylesheet" href="styles/index.css" />
     <title>Greengrocers</title>
-    <script defer src="index.js"></script>
+    <script defer src="./index.js"></script>
+    <script defer src="./store-item.js"></script>
+    <script defer src="./cart-item.js"></script>
   </head>
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
+      <div class="store--filter">
+        <button class="remove-filter-btn">Remove Filter</button>
+        <button class="greens-filter-btn">Greens</button>
+        <button class="fruits-filter-btn">Fruits</button>
+      </div>
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
     </header>
 
     <main id="cart">
-      <h2>Your Cart</h2>
+      <button class="sort-btn">Sort</button>
+      <h2 max-height="50px">Your Cart</h2>
 
       <div class="cart--item-list-container">
         <ul class="item-list cart--item-list">
