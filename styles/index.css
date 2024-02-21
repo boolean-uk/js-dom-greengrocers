@@ -182,3 +182,58 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+#options-container {
+  position: fixed;
+  top: 10vh;
+  left: 15%;
+  padding: 5px;
+  overflow:scroll;
+  border: solid gray 0.5px;
+  border-radius: 5%;
+}
+
+@media screen and (max-width: 1500px) {
+  #options-container {
+    left: 5%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #sortContainer {
+    left: 0%;
+  }
+  .filter--container {
+    left: 0%;
+  }
+}
+
+.sort-button--container {
+  position: relative;
+  top: 2%;
+  left: 0%;
+  width: 120px;
+  margin: auto;
+  border-top: solid black 1px;
+}
+
+.sort-button {
+ width: 60px;
+ background-color: transparent;
+ border-radius: 25%;
+ border: solid dimgrey 0.1px;
+}
+
+.sort-button:hover {
+  background-color: #b4aeae;
+}
+
+#filter--container {
+  position: relative;
+  top: 0%;
+  left: 0%;
+  width: auto;
+  border: none;
+  margin: auto;
+  background-color: transparent;
+}
