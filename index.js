@@ -51,14 +51,12 @@ const state = {
       price: 0.35
     }
   ],
-  cart: []
+  cart: [],
 };
 const storeItems = document.querySelector(".store--item-list")
-const cartItems = document.querySelector(".cart--item-list-container")
+const cartItems = document.querySelector(".cart--item-list")
 
 state.items.forEach(item => {
-  
-  
   storeItems.append(renderStoreItem(item))
 }) 
 
@@ -74,6 +72,9 @@ function renderStoreItem(item){
   
   let storeButton = document.createElement('button')
   storeButton.innerText = 'Add to cart'
+  storeButton.addEventListener('click', function()  {
+    addToCart(item)
+  })
 
   storeItemContainer.append(storeItemImg)
   storeItem.append(storeItemContainer)
@@ -82,5 +83,34 @@ function renderStoreItem(item){
 }
 
 function addToCart(item){
-  cart.push(item)
+  state.cart.push(item)
+  cartItems.append(renderCartItem(item))
+  console.log(state.cart)
+}
+
+function renderCartItem(item){
+  const cartItem = document.createElement('li')
+  cartItem.style.listStyle = 'none'
+
+  let cartItemImg = document.createElement('img')
+  cartItemImg.setAttribute('src', 'assets/icons/' + item.id +'.svg')
+
+  let cartItemName = document.createElement('p')
+  cartItemName.innerText = item.name
+
+  let minusButton = document.createElement('button')
+  let itemValue = document.createElement('span')
+  let plusButton = document.createElement('button')
+
+  minusButton.setAttribute('class', 'remove-btn')
+  itemValue.setAttribute('class','quantity-text')
+  plusButton.setAttribute('class', 'add-btn')
+
+  cartItem.append(cartItemImg)
+  cartItem.append(cartItemName)
+  cartItem.append(minusButton)
+  cartItem.append(itemValue)
+  cartItem.append(plusButton)
+  console.log(cartItem)
+  return cartItem
 }
