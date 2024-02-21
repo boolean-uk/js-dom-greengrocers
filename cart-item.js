@@ -59,5 +59,7 @@ updateCartItems();
 const addButton = document.querySelector(".sort-btn");
 addButton.addEventListener("click", () => {
     shouldSortCartItems = !shouldSortCartItems;
+    if (shouldSortCartItems) addButton.innerHTML = `UnSort`;
+    else addButton.innerHTML = `Sort`;
     updateCartItems();
 });
