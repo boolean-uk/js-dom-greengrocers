@@ -5,9 +5,21 @@ import { renderCartItems } from "./cartItem.js";
  * @param {Array} items
  * @param {Array} cart
  */
-export function renderStoreItems(items, cart, filter) {
+export function renderStoreItems(
+  items,
+  cart,
+  filter = undefined,
+  sort = undefined
+) {
   if (filter) {
     items = items.filter((p) => p.name.includes(filter));
+  }
+  console.log(sort);
+  if (sort !== undefined) {
+    items =
+      sort === true
+        ? items.sort((a, b) => a.price - b.price)
+        : items.sort((a, b) => b.price - a.price);
   }
   const storeItemsList = document.getElementById("store-item-list");
   storeItemsList.innerHTML = "";
@@ -27,11 +39,15 @@ function storeItemComponent(item, cart) {
   img.alt = item.name;
   storeItemIcon.appendChild(img);
 
+  const priceElement = document.createElement("p");
+  priceElement.innerText = `£${item.price}`;
+
   const button = document.createElement("button");
   button.innerText = "Add to cart";
   button.onclick = () => addToCart(item, cart);
 
   container.appendChild(storeItemIcon);
+  container.appendChild(priceElement);
   container.appendChild(button);
 
   return container;
