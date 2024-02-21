@@ -20,8 +20,8 @@ button {
   cursor: pointer;
 }
 
-/* Filters */
-.filters {
+/* Ribbon */
+.ribbon {
   display: flex;
   justify-content: center; /* Horizontally center the buttons */
 }
