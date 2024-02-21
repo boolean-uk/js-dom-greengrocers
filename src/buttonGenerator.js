@@ -4,7 +4,7 @@ function GenerateSortButtonsStoreItem() {
     const buttonContainer = document.createElement("div")
     buttonContainer.classList.add("sort-button--container")
   
-    console.log(parent)
+    const newLine = document.createElement("br")
     const sortByPriceButtonAscending = document.createElement("button")
     sortByPriceButtonAscending.textContent = "Price ↓"
     sortByPriceButtonAscending.classList.add("sort-button")
@@ -43,8 +43,11 @@ function GenerateSortButtonsStoreItem() {
   
     buttonContainer.appendChild(textElement)
     buttonContainer.appendChild(sortByPriceButtonAscending)
+    buttonContainer.appendChild(newLine)
     buttonContainer.appendChild(sortByPriceButtonDescending)
+    buttonContainer.appendChild(newLine)
     buttonContainer.appendChild(sortByNameButtonAscending)
+    buttonContainer.appendChild(newLine)
     buttonContainer.appendChild(sortByNameButtonDescending)
   
     parent.appendChild(buttonContainer)

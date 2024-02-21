@@ -183,11 +183,17 @@ button {
   }
 }
 
+#sortContainer {
+  position: fixed;
+  top: 10vh;
+  left: 25vw;
+}
+
 .sort-button--container {
   position: relative;
   top: 50%;
   left: 50;
-  width: 240px;
+  width: 120px;
   margin: auto;
   border-top: solid black 1px;
   border-bottom: solid black 1px;
@@ -197,9 +203,29 @@ button {
  width: 60px;
  background-color: transparent;
  border-radius: 25%;
- border: none;
+ border: solid dimgrey 0.1px;
 }
 
 .sort-button:hover {
+  background-color: #b4aeae;
+}
+
+.filter--container {
+  position: fixed;
+  top: 25vh;
+  left: 25vw;
+  width: 160px;
+  border: none;
+  margin: auto;
+  background-color: transparent;
+}
+
+.filter-button--submit {
+  border-radius: 25%;
+  border: solid dimgrey 0.1px;
+  background-color: transparent;
+}
+
+.filter-button--submit:hover {
   background-color: #b4aeae;
 }
