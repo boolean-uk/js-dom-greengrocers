@@ -4,61 +4,90 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
+      group: "vegetable"
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
+      group: "vegetable"
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
+      group: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
+      group: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
+      group: "fruit"
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
+      group: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
+      group: "vegetable"
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
+      group: "berry"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
+      group: "berry"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
+      group: "vegetable"
     },
   ],
   cart: [],
+  groups: ["fruit", "vegetable", "berry"]
 };
 
 const storeUl = document.querySelector(".store--item-list");
 const cartUl = document.querySelector(".cart--item-list");
 
+const parent = document.querySelector("#store");
+const sibling = parent.querySelector("h1");
+const div = document.createElement("div")
+
+const p = document.createElement("p")
+p.textContent = 'Filter by: '
+p.classList.add("filter")
+
+div.appendChild(p)
+
+for (const group of state.groups) {
+  createFilterCheckbox(group, div);
+}
+
+parent.insertBefore(div, sibling.nextSibling);
+
+
 for (const item of state.items) {
   const li = document.createElement("li");
+  li.alt = item.group
   const div = document.createElement("div");
   div.classList.add("store--item-icon");
 
@@ -73,10 +102,32 @@ for (const item of state.items) {
   button.textContent = "Add to cart";
 
   div.appendChild(img);
-  li.appendChild(button);
   li.appendChild(div);
+  li.appendChild(button);
 
   storeUl.appendChild(li);
+}
+
+function createFilterCheckbox(group, div) {
+  const checkbox = document.createElement("INPUT");
+  checkbox.setAttribute("type", "checkbox");
+  checkbox.classList.add("filter");
+  checkbox.alt = group;
+  checkbox.setAttribute('id', `${group}-filter`);
+
+  checkbox.addEventListener("change", handleCheckboxChange);
+
+  div.appendChild(checkbox);
+
+  const label = document.createElement('label');
+  label.setAttribute('for', `${group}-filter`);
+  if (group[group.length-1] === 'y') {
+    label.innerHTML = `${group[0].toUpperCase() + group.slice(1, group.length - 1)}ies`;
+  } else {
+    label.innerHTML = `${group[0].toUpperCase() + group.slice(1)}s`;
+  }
+
+  div.appendChild(label);
 }
 
 function addToCart(item) {
@@ -103,6 +154,7 @@ function addToCart(item) {
   }
 }
 
+// CREATE CART LIST OBJECT
 function createListObject(item) {
   const li = document.createElement("li");
   li.classList.add("item", `item--${item.name.replace(" ", "-")}`);
@@ -180,4 +232,37 @@ function removeFromCart(item) {
   cost.textContent = `$${(
     Number(cost.textContent.slice(1)) - item.price
   ).toFixed(2)}`;
+}
+
+
+function handleCheckboxChange() {
+  const filters = document.querySelectorAll(".filter")
+  const checkedCheckboxes = [];
+  const storeItems = document.querySelector(".store--item-list").querySelectorAll("li")
+
+  filters.forEach(checkbox => {
+    if (checkbox.checked) {
+        checkedCheckboxes.push(checkbox);
+    }
+  })
+
+  if (checkedCheckboxes.length === 0) {
+    for (const item of storeItems) {
+      item.style.display = "grid"
+    }
+  } else {
+    const activeFilters = []
+    for (const checkbox of checkedCheckboxes) {
+      activeFilters.push(checkbox.alt)
+    }
+
+    for (const item of storeItems) {
+      if ( activeFilters.includes(item.alt)) {
+        item.style.display = "grid"
+      } else {
+        item.style.display = "none"
+      }
+    }
+
+  }
 }
