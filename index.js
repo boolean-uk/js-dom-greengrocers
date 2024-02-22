@@ -51,5 +51,8 @@ const state = {
       price: 0.35
     }
   ],
-  cart: []
+  cart: [
+
+
+  ]
 };
