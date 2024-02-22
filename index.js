@@ -153,32 +153,32 @@ function renderCart() {
 
   state.cart.forEach((item) => {
     const li = document.createElement("li");
-    const img = document.createElement("img");
-    img.src = `assets/icons/${item.id}.svg`;
-    img.alt = item.name;
-    img.classList.add("cart--item-icon");
-    li.appendChild(img);
+    const image = document.createElement("img");
+    image.src = `assets/icons/${item.id}.svg`;
+    image.alt = item.name;
+    image.classList.add("cart--item-icon");
+    li.appendChild(image);
 
     const p = document.createElement("p");
     p.textContent = item.name;
     li.appendChild(p);
 
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "-";
-    removeBtn.classList.add("quantity-btn", "remove-btn", "center");
-    removeBtn.addEventListener('click', () => changeQuantity(item.id, -1));
-    li.appendChild(removeBtn);
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "-";
+    removeButton.classList.add("quantity-btn", "remove-btn", "center");
+    removeButton.addEventListener('click', () => changeQuantity(item.id, -1));
+    li.appendChild(removeButton);
 
     const quantityText = document.createElement("span");
     quantityText.textContent = item.quantity;
     quantityText.classList.add("quantity-text", "center");
     li.appendChild(quantityText);
 
-    const addBtn = document.createElement("button")
-    addBtn.textContent = "+"
-    addBtn.classList.add("quantity-btn", "add-btn", "center")
-    addBtn.addEventListener('click', () => changeQuantity(item.id, 1))
-    li.appendChild(addBtn)
+    const addButton = document.createElement("button")
+    addButton.textContent = "+"
+    addButton.classList.add("quantity-btn", "add-btn", "center")
+    addButton.addEventListener('click', () => changeQuantity(item.id, 1))
+    li.appendChild(addButton)
 
     cartList.appendChild(li)
   })
