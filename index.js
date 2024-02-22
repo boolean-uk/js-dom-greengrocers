@@ -57,6 +57,9 @@ const state = {
 const storeItems = document.querySelector(".store--item-list")
 const cartItems = document.querySelector(".cart--item-list")
 
+const button = document.querySelector('.filter-button')
+button.addEventListener('click', filterCartAlphabetically)
+
 state.items.forEach(item => {
   storeItems.append(renderStoreItem(item))
 }) 
@@ -164,4 +167,22 @@ function renderCartItem(item, number){
   cartItem.append(itemValue)
   cartItem.append(plusButton)
   return cartItem
+}
+
+function filterCartAlphabetically(){
+  state.cart.forEach(item => {unrenderCartItem(item)})
+  state.cart.sort(function(a,b){
+    let x = a.name.toLowerCase()
+    let y = b.name.toLowerCase()
+    if (x < y) {return -1}
+    if (x > y) {return 1}
+    return 0;
+  })
+  state.cart.forEach(item => {
+    let number = state.cart.filter(x => x.id === item.id).length
+    cartItem = renderCartItem(item, number)
+    cartItems.append(cartItem)
+  }
+)
+  
 }
