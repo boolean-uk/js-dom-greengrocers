@@ -54,11 +54,7 @@ const state = {
   cart: [],
 };
 
-  const handleClick = () => {
-
-  }
-
-
+  // Store
   window.onload = function() {
     const itemContainer = document.querySelector('.store--item-list');
     for(let i = 0; i < state.items.length; i++){
@@ -76,7 +72,8 @@ const state = {
 
       // button
       const addToCartButton = document.createElement('button')
-      addToCartButton.textContent = "ADD TO CART"
+      addToCartButton.textContent = "Add to cart"
+      addToCartButton.onclick = () => handleClick(state.items[i])
       item.appendChild(addToCartButton)
 
 
@@ -86,4 +83,109 @@ const state = {
     }
   }
 
+  //
+  function handleClick(item) {
+    console.log(item)
+    item.quantity = 1
+    item.total = item.price
+    const cartContainer = document.querySelector('.cart--item-list')
+    updateTotal()
+    // Check if the item already exists in the cart
+    const existingCartItem = cartContainer.querySelector(`[data-id="${item.id}"]`);
+
+    if (existingCartItem) {
+      // If item already exists, increment its quantity
+      const quantityText = existingCartItem.querySelector('.quantity')
+      item.quantity = parseInt(quantityText.textContent)
+      item.quantity++
+      quantityText.textContent = item.quantity
+      item.total = (item.quantity * item.price)
+      existingCartItem.setAttribute('data-total', item.total);
+      updateTotal();
+      console.log("TOTAL:", item.total)
+    } else {
+        // Create a new cart item
+        const cartItem = document.createElement('li')
+        cartItem.setAttribute('data-id', item.id)
+        cartItem.setAttribute('data-quantity', item.quantity)
+        cartItem.setAttribute('data-total', item.total)
+
+
+        // Image
+        const image = document.createElement('img')
+        image.src = `assets/icons/${item.id}.svg`
+        image.alt = item.name; // Dynamically set alt attribute
+        cartItem.appendChild(image)
+
+        // Name of item
+        const itemName = document.createElement('p')
+        itemName.textContent = item.name
+        cartItem.appendChild(itemName)
+
+        // Quantity of item
+        const quantityText = document.createElement('span')
+        quantityText.className = `quantity-text center`
+        quantityText.textContent = `${item.quantity}`
+        quantityText.classList.add('quantity')
+
+        // Add button
+        const addButton = document.createElement('button')
+        addButton.className = `quantity-btn add-btn center`
+        addButton.textContent = '+'
+        addButton.addEventListener('click', () => {
+            item.quantity = parseInt(quantityText.textContent)
+            item.quantity++
+            quantityText.textContent = item.quantity
+            item.total = (item.quantity * item.price)
+            cartItem.setAttribute('data-total', item.total);
+            updateTotal();
+            console.log("TOTAL:", item.total)
+            //console.log(totalPrice.textContent)
+        });
+
+        // Remove button
+        const removeButton = document.createElement('button')
+        removeButton.className = `quantity-btn remove-btn center`
+        removeButton.textContent = '-'
+        removeButton.addEventListener('click', () => {
+            item.quantity = parseInt(quantityText.textContent)
+            if (item.quantity > 0) {
+                item.quantity--
+                if (item.quantity === 0) {
+                  cartItem.remove()
+                }
+                quantityText.textContent = item.quantity
+                item.total = (item.quantity * item.price)
+                cartItem.setAttribute('data-total', item.total);
+                updateTotal();
+                console.log("TOTAL:", item.total)
+                
+            }
+        });
+
+
+        cartItem.appendChild(removeButton)
+        cartItem.appendChild(quantityText)
+        cartItem.appendChild(addButton)
+        cartContainer.appendChild(cartItem)
+        updateTotal()
+    }
+  }
+
+  function updateTotal() {
+    const cartItems = document.querySelectorAll('.cart--item-list li');
+    let totalPrice = 0;
+
+    // Calculate the total price based on the items in the cart
+    cartItems.forEach(cartItem => {
+        let itemTotal = cartItem.getAttribute('data-total')
+        
+        totalPrice += parseFloat(itemTotal)
+        console.log(totalPrice)
+    });
+
+    // Update the total price in the UI
+    const totalPriceElement = document.querySelector('.total-number');
+    totalPriceElement.textContent = `£${totalPrice.toFixed(2)}` //with two decimal places
+}
 
