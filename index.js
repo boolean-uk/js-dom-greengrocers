@@ -3,52 +3,64 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
+
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
+
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: "berry"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: "berry"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: "berry"
     }
   ],
   cart: []
@@ -56,6 +68,8 @@ const state = {
 
 const createStore = (item) => 
 {
+  if (item === null) return null
+
   let itemName = item.name
   itemName = itemName.charAt(0).toUpperCase() + itemName.slice(1)
   
@@ -68,11 +82,13 @@ const createStore = (item) =>
     
 }
   
-  const createAllStoreItems = (storeList) => {
+  const createAllStoreItems = (storeList, type) => {
+    if(type !== "everything") storeList = storeList.map(p => p.type === type ? p : null)
+      //console.log(storeList)
       return storeList.map(p => createStore(p))
   }
   
-  document.getElementsByClassName('item-list store--item-list')[0].innerHTML = createAllStoreItems(state.items).join('')
+  document.getElementsByClassName('item-list store--item-list')[0].innerHTML = createAllStoreItems(state.items, "everything").join('')
 
   const addItemToCart = (itemid) =>
   {
@@ -88,7 +104,7 @@ const createStore = (item) =>
       state.cart.push({item: newItem, quantity: 1})
     }
 
-    console.log(state.cart)
+    //console.log(state.cart)
 
     updateCartVisual()
   }
@@ -104,7 +120,7 @@ const createStore = (item) =>
 
 const createCart = (item) =>
 {
-  let itemName = item.item.id.slice(4)
+  let itemName = item.item.name
   itemName = itemName.charAt(0).toUpperCase() + itemName.slice(1)
 
         return `<li>
@@ -120,9 +136,14 @@ const createCart = (item) =>
   </li>`
 }
 
+const updateShopSelection = (type) =>
+{
+  //console.log(type)
+  document.getElementsByClassName('item-list store--item-list')[0].innerHTML = createAllStoreItems(state.items, type).join('')
+}
+
 const updateCartVisual = () =>
 {
-  ///TODO cart total
   document.getElementsByClassName('item-list cart--item-list')[0].innerHTML = createAllCartItems(state.cart).join('')
 
   document.getElementsByClassName('total-number')[0].innerHTML = calcCartTotal(state.cart)
