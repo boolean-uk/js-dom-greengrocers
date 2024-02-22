@@ -55,19 +55,21 @@ const state = {
 };
 
 const itemListUL = document.querySelector('#store .store--item-list')
-//const addToCartButtons = document.querySelector('#store .store--item-button')
+const cartListUL = document.querySelector('#cart .cart--item-list')
+const addToCartButtons = document.querySelectorAll('#store .store--item-button');
+const total = document.querySelector('.total-number')
 
 function renderStoreItems() {
     itemListUL.innerHTML = ''
-    itemListUL.classList.add('store--item-list')
 
     for (let i = 0; i < state.items.length; i++) {
         const item = state.items[i]
         const itemLi = document.createElement('li')
-        itemLi.setAttribute('id', item.id)
+
+        const div = document.createElement('div')
+        div.classList.add('store--item-icon')
         
         const img = document.createElement('img')
-        img.classList.add('store--item-icon')
         img.setAttribute('src', `assets/icons/${item.id}.svg`)
         img.setAttribute('alt', item.name)
 
@@ -75,8 +77,12 @@ function renderStoreItems() {
         button.classList.add('store--item-button')
         button.setAttribute('type', 'button')
         button.textContent = 'Add to cart'
+        button.addEventListener('click', function(){
+          addToCart(item)
+        })
       
-        itemLi.appendChild(img)
+        div.appendChild(img)
+        itemLi.appendChild(div)
         itemLi.appendChild(button)
 
         itemListUL.appendChild(itemLi)
@@ -85,7 +91,6 @@ function renderStoreItems() {
 
 function renderCart() {
   cartListUL.innerHTML = ''
-  cartListUL.classList.add('cart--item-list')
 
   for (let i = 0; i < state.cart.length; i++){
     const item = state.cart[i]
@@ -109,7 +114,7 @@ function renderCart() {
     quantity.textContent = item.quantity // TODO?
 
     const buttonAdd = document.createElement('button')
-    buttoncAdd.classList.add('quantity-btn', 'add-btn', 'center')
+    buttonAdd.classList.add('quantity-btn', 'add-btn', 'center')
     buttonAdd.textContent = '+'
 
     cartLi.appendChild(img)
@@ -122,29 +127,27 @@ function renderCart() {
   }
 }
 
-function registerButtonClicked() {
-  const addToCartButtons = document.querySelectorAll('.store--item-button');
-
-  addToCartButtons.forEach(button => {
-      button.addEventListener('click', () => {
-          const listItem = button.closest('li');
-          const itemId = listItem.getAttribute('id');
-          const itemToAdd = state.items.find(item => item.id === itemId);
-
-          state.cart.push({
-              ...itemToAdd,
-              quantity: 1 
-          });
-
-          renderCart();
-      });
-  });
+function addToCart(item) {
+  cartObj = item
+  cartObj.quantity = 1
+  state.cart.push(item)
+  renderCart()
 }
 
+function registerQuantityButtons(){
+
+}
+
+function displayTotal(){
+  let totalCost = state.cart.reduce((total, item) => total + item.price, 0)
+  totalCost = totalCost.toFixed(2)
+  total.textContent = `£${totalCost}`
+}
 
 function main() {
     renderStoreItems()
-    registerButtonClicked
+    renderCart()
+    displayTotal()
 }
 
 main()
