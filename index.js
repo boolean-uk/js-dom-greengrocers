@@ -51,5 +51,39 @@ const state = {
       price: 0.35
     }
   ],
-  cart: []
+  cart: [],
 };
+
+  const handleClick = () => {
+
+  }
+
+
+  window.onload = function() {
+    const itemContainer = document.querySelector('.store--item-list');
+    for(let i = 0; i < state.items.length; i++){
+      // Template for store item
+      const item = document.createElement('li');
+      item.className = state.items[i].id
+      const itemImageContainer = document.createElement('div')
+      item.appendChild(itemImageContainer)
+      itemImageContainer.className = "store--item-icon"
+
+      // image
+      const itemImage = document.createElement('img')
+      itemImage.src = `assets/icons/${state.items[i].id}.svg`
+      itemImageContainer.appendChild(itemImage)
+
+      // button
+      const addToCartButton = document.createElement('button')
+      addToCartButton.textContent = "ADD TO CART"
+      item.appendChild(addToCartButton)
+
+
+
+
+      itemContainer.appendChild(item)
+    }
+  }
+
+
