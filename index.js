@@ -54,11 +54,28 @@ const state = {
   cart: []
 };
 
+// Extension function to sort items by name
+function sortItems() {
+  state.items.sort((a, b) => a.name.localeCompare(b.name));
+}
 
+// Extension function to shuffle items
+function randomizeItemsOrder() {
+  shuffle(state.items);
+}
+
+// Helper function using Fisher-Yates shuffle algorithm
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
 
 // Select Root Elements
 const groceriesListUL = document.querySelector(".item-list.store--item-list");
 const cartListUL = document.querySelector(".item-list.cart--item-list");
+// Might not need the line below, hm. 
 const cartItems = cartListUL.querySelector('li');
 
 // Function to create an Item list item
@@ -102,6 +119,10 @@ function renderGroceries() {
     const itemLi = createItemListItem(item);
     groceriesListUL.appendChild(itemLi);
   });
+  const sortButton = createSortItemsButton();
+  const shuffleButton = createShuffleItemsButton();
+  groceriesListUL.appendChild(sortButton);
+  groceriesListUL.appendChild(shuffleButton);
 }
 
 // Helper function to update the total based on cart items
@@ -195,6 +216,28 @@ function createIncreaseButton(item, span) {
     console.log(`${item.name} increased by 1`);
     span.innerText = parseInt(span.innerText) + 1;
     updateTotal();
+  })
+  return button;
+}
+
+// Helper function to create sortItems button
+function createSortItemsButton() {
+  const button = document.createElement('button');
+  button.innerText = 'SORT ITEMS BY NAME';
+  button.addEventListener('click', () => {
+    sortItems();
+    renderGroceries();
+  })
+  return button;
+}
+
+// Helper function to create shuffleItems button
+function createShuffleItemsButton() {
+  const button = document.createElement('button');
+  button.innerText = 'DO NOT PRESS';
+  button.addEventListener('click', () => {
+    randomizeItemsOrder();
+    renderGroceries();
   })
   return button;
 }
