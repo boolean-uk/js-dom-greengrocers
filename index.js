@@ -58,9 +58,15 @@ const state = {
 const storeEl = document.getElementsByClassName("item-list store--item-list")[0]
 const cartEl = document.getElementsByClassName("item-list cart--item-list")[0]
 
+const totalEl = document.getElementsByClassName("total-number")[0]
+
+
+
+
+
 for(let i = 0; i < state.items.length; i++) {
 
-  state.items[i].bought = 0
+  state.items[i].bought = 1
 
   const liElStore = document.createElement("li")
   
@@ -93,11 +99,12 @@ for(let i = 0; i < state.items.length; i++) {
 
 function addItemToCart(id) {
   for (let i = 0; i < cartEl.children.length; i++) {
-    console.log(cartEl.children[i].id === `liEl${id}`)
     if(cartEl.children[i].id === `liEl${id}`) {
       state.items[id].bought += 1
       const span = document.getElementById(`spanEl${id}`)
       span.innerHTML = state.items[id].bought
+      
+      calculateTotalCost()
       return
     }
 
@@ -108,6 +115,8 @@ function addItemToCart(id) {
   const liEl = document.createElement("li")
 
   liEl.id = "liEl" + id
+  liEl.value = id
+
 
   const imgEl = document.createElement("img")
 
@@ -123,7 +132,7 @@ function addItemToCart(id) {
   imgEl.alt = state.items[id].name
   imgEl.src = `assets/icons/${state.items[id].id}.svg`
 
-  console.log(imgEl.src)
+
 
   pEl.innerHTML = state.items[id].name
 
@@ -132,13 +141,15 @@ function addItemToCart(id) {
 
   buttonEl.addEventListener("click", function() {
     const spanEl = document.getElementById(`spanEl${id}`)
-    if(state.items[id].bought === 0) {
+    if(state.items[id].bought <= 1) {
       cartEl.removeChild(liEl)
+      calculateTotalCost()
       return
     }
     state.items[id].bought -= 1
     const span = document.getElementById(`spanEl${id}`)
     span.innerHTML = state.items[id].bought
+    calculateTotalCost()
   });
 
   spanEl.className = "quantity-text center"
@@ -154,6 +165,7 @@ function addItemToCart(id) {
     state.items[id].bought += 1
     const span = document.getElementById(`spanEl${id}`)
     span.innerHTML = state.items[id].bought
+    calculateTotalCost()
   });
 
   liEl.appendChild(imgEl)
@@ -163,8 +175,20 @@ function addItemToCart(id) {
   liEl.appendChild(buttonEl2)
 
   cartEl.appendChild(liEl)
+  calculateTotalCost()
+}
 
-  console.log(cartEl.children[0].id)
-  console.log(`liEl${id}`)
+function calculateTotalCost() {
+  let totalCost = 0
+
+  console.log(cartEl.children)
+  for (let i = 0; i < cartEl.children.length; i++) {
+    let id = cartEl.children[i].value
+    totalCost += state.items[id].price * state.items[id].bought
+  }
+
+  totalEl.innerHTML = "£" + Math.round((totalCost + Number.EPSILON) * 100) / 100
+
+
 }
 
