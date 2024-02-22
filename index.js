@@ -9,37 +9,37 @@ const state = {
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35,
+      price: 0.55,
       type: "vegetable"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35,
+      price: 0.25,
       type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35,
+      price: 0.75,
       type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35,
-      type: "vegetable"
+      price: 0.30,
+      type: "fruit"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35,
+      price: 0.60,
       type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35,
+      price: 0.85,
       type: "vegetable"
     },
     {
@@ -51,32 +51,43 @@ const state = {
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35,
+      price: 0.75,
       type: "fruit"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35,
+      price: 0.15,
       type: "vegetable"
     }
   ],
   cart: [],
   filter: "all",
+  sort: "alphabeticall"
 };
 
-showItems();
+
 function showItems(){
 
   const itemList = document.getElementById("item-list");
   itemList.innerHTML = "";
 
+  sortItems();
+
+  state.items.forEach(item => {
   if(state.filter === "all" || state.filter === item.type){
-   state.items.forEach(item => {
     const itemShow = showItem(item);
     itemList.appendChild(itemShow);
-  }) 
+  } 
+})
 }
+
+function sortItems(){
+  if(state.sort === "alphabeticall"){
+    return state.items.sort((a, b) => a.name.localeCompare(b.name));
+  } else if(state.sort === "price"){
+    return state.items.sort((a, b) => a.price - b.price);
+  }
 }
 
 function showItem(item){
@@ -179,6 +190,20 @@ function showCartTotal(){
   totalPrice.innerText = `£${sum.toFixed(2)}`;
 }
 
+const itemFilter = document.querySelector(".item-filter");
+itemFilter.addEventListener("change", () => {
+  const filter = itemFilter.value.toLowerCase();
+  state.filter = filter;
+  showItems();
+})
 
+const sortBy = document.querySelector(".item-sort");
+sortBy.addEventListener("change", () => {
+  const sort = sortBy.value.toLowerCase();
+  state.sort = sort;
+  showItems();
+})
+
+showItems();
 
 
