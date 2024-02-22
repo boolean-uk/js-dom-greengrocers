@@ -212,3 +212,10 @@ button {
   margin-bottom: 5px; /* Adjust as needed */
   background-color: #d32f2f;
 } */
+
+/* Apply style to cart-filter */
+.cart-filter {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #00675b;
+}
