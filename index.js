@@ -52,6 +52,7 @@ const state = {
     }
   ],
   cart: [],
+  total: 0,
 };
 const storeItems = document.querySelector(".store--item-list")
 const cartItems = document.querySelector(".cart--item-list")
@@ -84,12 +85,54 @@ function renderStoreItem(item){
 
 function addToCart(item){
   state.cart.push(item)
-  cartItems.append(renderCartItem(item))
-  console.log(state.cart)
+  let number = state.cart.filter(i => i.id === item.id).length
+  DOMitem = renderCartItem(item, number)
+  if(number === 1){
+    cartItems.append(DOMitem)
+  } else {
+    updateCartItem(DOMitem, number)
+  }
+  updateTotal()
 }
 
-function renderCartItem(item){
+function removeFromCart(item){
+  let itemIndex = state.cart.findIndex(i => i.id === item.id)
+  state.cart.splice(itemIndex, 1)
+  let number = state.cart.filter(i => i.id === item.id).length
+  if(number === 0){
+    unrenderCartItem(item)
+  }
+  else {
+    updateCartItem(item, number)
+  }
+  updateTotal()
+}
+
+function updateCartItem(item, number){
+  let itemId = document.getElementById(item.id) 
+  if(itemId){
+    itemId.querySelector('.quantity-text').innerText = number  
+  }
+}
+
+function unrenderCartItem(item){
+  let itemId = document.getElementById(item.id)
+  itemId.remove()
+}
+
+function updateTotal(){
+  let totalElement = document.querySelector('.total-number')
+  let total = state.total
+  for(let i = 0; i < state.cart.length; i++){
+    total += Number(state.cart[i].price)  
+  }
+
+  totalElement.innerText = total
+}
+
+function renderCartItem(item, number){
   const cartItem = document.createElement('li')
+  cartItem.setAttribute('id', item.id)
   cartItem.style.listStyle = 'none'
 
   let cartItemImg = document.createElement('img')
@@ -99,18 +142,26 @@ function renderCartItem(item){
   cartItemName.innerText = item.name
 
   let minusButton = document.createElement('button')
+  minusButton.addEventListener('click', function() {
+    removeFromCart(item)
+  })
   let itemValue = document.createElement('span')
   let plusButton = document.createElement('button')
+  plusButton.addEventListener('click', function() {
+    addToCart(item)
+  })
 
   minusButton.setAttribute('class', 'remove-btn')
+  minusButton.innerText = '-'
   itemValue.setAttribute('class','quantity-text')
+  itemValue.innerText = number
   plusButton.setAttribute('class', 'add-btn')
+  plusButton.innerText = '+'
 
   cartItem.append(cartItemImg)
   cartItem.append(cartItemName)
   cartItem.append(minusButton)
   cartItem.append(itemValue)
   cartItem.append(plusButton)
-  console.log(cartItem)
   return cartItem
 }
