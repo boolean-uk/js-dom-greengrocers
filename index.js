@@ -53,3 +53,41 @@ const state = {
   ],
   cart: []
 };
+
+const storeList = document.getElementById("store").children[1]
+
+
+// Render the items
+
+function renderShopItems() {
+
+  for (let i = 0; i < state.items.length; i++) {
+
+    const itemLi = document.createElement("li")
+
+    let itemDiv = document.createElement("div")
+    itemDiv.setAttribute('class', 'store--item-icon')
+
+    let itemImg = document.createElement("img")
+    itemImg.setAttribute('src', 'assets/icons/' + state.items[i].id + '.svg')
+    itemImg.setAttribute('alt', state.items[i].name)
+
+    itemDiv.appendChild(itemImg)
+
+    let itemButton = document.createElement("button")
+    itemButton.innerText = "Add to cart"
+
+    itemLi.appendChild(itemDiv)
+    itemLi.appendChild(itemButton)
+
+    
+    storeList.appendChild(itemLi)
+  }
+
+}
+
+function main() {
+  renderShopItems()
+}
+
+main()
