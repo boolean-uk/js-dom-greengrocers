@@ -56,6 +56,7 @@ const state = {
 
 const storeList = document.getElementById("store").children[1]
 const cartList  = document.getElementById("cart").children[1].children[0]
+const totalText = document.querySelector(".total-number")
 
 // update data
 
@@ -138,6 +139,7 @@ function renderShopItems() {
 }
 
 function renderCart() { 
+  let total = 0
   cartList.innerHTML = ""
   for (let i = 0; i < state.cart.length; i++) {
     if (state.cart[i].amount > 0) {
@@ -172,8 +174,11 @@ function renderCart() {
       cartLi.appendChild(cartButton2)
       cartLi.appendChild(cartButton3)
       cartList.appendChild(cartLi)
+
+      total += state.cart[i].item.price * state.cart[i].amount
     }
   }
+  totalText.innerHTML = '£' + (Math.round(total * 100) / 100).toFixed(2)
 
 }
 
