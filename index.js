@@ -3,51 +3,61 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
+      type: "vegetable",
       price: 0.35
     },
     {
       id: "002-carrot",
       name: "carrot",
+      type: "vegetable",
       price: 0.35
     },
     {
       id: "003-apple",
       name: "apple",
+      type: "fruit",
       price: 0.35
     },
     {
       id: "004-apricot",
       name: "apricot",
+      type: "fruit",
       price: 0.35
     },
     {
       id: "005-avocado",
       name: "avocado",
+      type: "fruit",
       price: 0.35
     },
     {
       id: "006-bananas",
       name: "bananas",
+      type: "fruit",
       price: 0.35
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
+      type: "vegetable",
       price: 0.35
     },
     {
       id: "008-berry",
       name: "berry",
+      type: "berry",
       price: 0.35
     },
     {
       id: "009-blueberry",
       name: "blueberry",
+      type: "berry",
       price: 0.35
     },
     {
       id: "010-eggplant",
       name: "eggplant",
+      type: "vegetable",
       price: 0.35
     }
   ],
@@ -61,7 +71,7 @@ function renderStore() {
   
   state.items.forEach(item => {
     const itemHTML = `
-      <li class="item">
+      <li class="item" data-type="${item.type}">
         <img src="assets/icons/${item.id}.svg" alt="${item.name}" /> <!-- Add image -->
         <button class="add-to-cart" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}">Add to Cart</button>
       </li>
@@ -75,6 +85,27 @@ function renderStore() {
     button.addEventListener('click', addToCart);
   });
 }
+
+// Function to render filter dropdown
+function renderFilterDropdown() {
+  const filterDropdown = document.getElementById('filter-dropdown');
+  filterDropdown.addEventListener('change', applyFilter);
+}
+
+function applyFilter(event) {
+  const selectedType = event.target.value;
+  const storeItems = document.querySelectorAll('.store--item-list .item');
+
+  storeItems.forEach(item => {
+    console.log('Item Type:', item.dataset.type);
+    if (selectedType === 'all' || item.dataset.type === selectedType) {
+      item.style.display = 'grid'; // Show items matching the selected type
+    } else {
+      item.style.display = 'none'; // Hide items not matching the selected type
+    }
+  });
+}
+
 
 // Function to add items to the cart
 function addToCart(event) {
@@ -182,7 +213,7 @@ function incrementCartItem(event) {
   }
 }
 
-
 // Initial rendering
 renderStore();
+renderFilterDropdown();
 renderCart();
