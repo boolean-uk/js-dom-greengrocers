@@ -11,8 +11,22 @@
   </head>
   <body>
     <header id="store">
-      <h1>Greengrocers</h1>
-      <ul class="item-list store--item-list">
+      <div class="item-filter-container">
+        <p>Filter by:</p>
+        <select class="item-filter">
+          <option value="all">All</option>
+          <option value="fruit">Fruit</option>
+          <option value="vegetable">Vegetables</option>
+        </select>
+      </div>
+      <div class="item-sort-container">
+        <p>Sort by:</p>
+        <select class="item-sort">
+          <option value="alphabeticall">Alphabetically</option>
+          <option value="price">Price</option>
+        </select>
+      </div>
+      <ul class="item-list store--item-list" id="item-list">
         <!-- Take a look at store-item.html -->
       </ul>
     </header>
@@ -21,7 +35,7 @@
       <h2>Your Cart</h2>
 
       <div class="cart--item-list-container">
-        <ul class="item-list cart--item-list">
+        <ul class="item-list cart--item-list" id="cart-list">
           <!-- Take a look at cart-item.html -->
         </ul>
       </div>
