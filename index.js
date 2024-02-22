@@ -51,5 +51,56 @@ const state = {
       price: 0.35
     }
   ],
-  cart: []
+  cart: [
+    {
+      id: "009-blueberry",
+      name: "blueberry",
+      price: 0.35,
+      quantity: 4
+    }
+  ]
 };
+
+const AddToCart = (item) => {
+  // check if item is in cart
+    const itemIsInCart = state.cart.findIndex((i) => i.id === item.id)
+    if (itemIsInCart === -1){
+      // add if empty
+      const toCart = item
+      toCart.quantity = 1
+      state.cart.push(toCart)
+      
+    } else {
+      // increase quantity
+      state.cart[itemIsInCart].quantity++
+      
+    }
+    // render cart again after updating it and calculate total price again
+    updateCart();
+    CartTotal();
+}
+
+const RemoveFromCart = (item) => {
+  // check if item is in cart
+  const itemIsInCart = state.cart.findIndex((i) => i.id === item.id)
+  if (itemIsInCart === -1) {
+    console.log('Nothing to remove')
+  } else {
+    state.cart[itemIsInCart].quantity--
+    if (state.cart[itemIsInCart].quantity <= 0) {
+      state.cart.splice(itemIsInCart, 1);
+    }
+  }
+  updateCart();
+  CartTotal();
+}
+
+const CartTotal = () => {
+  let sum = 0.0
+  state.cart.forEach((item) => {
+    sum += item.price * item.quantity
+  })
+  document.getElementsByClassName("total-number")[0].innerHTML = `£${sum.toFixed(2)}`
+}
+
+CartTotal()
