@@ -182,3 +182,22 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+.sort, .filter {
+  display: inline-block
+}
+
+.main-div {
+  text-align: center; 
+}
+
+.sub-div {
+  width: 50%; 
+  display: inline-block;
+  height: 70px; 
+  box-sizing: border-box; 
+}
+
+p.filter, p.sort {
+  font-weight: bold;
+}
