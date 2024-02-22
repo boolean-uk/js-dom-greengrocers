@@ -1,27 +1,56 @@
 function populateStore(items) {
+  makeItemCards(items)
+
+  const store = document.querySelector('#store')
+  const sortContainer = document.createElement('div')
+  sortContainer.classList.add('sort-container', 'center')
+  const label = document.createElement('label')
+  label.textContent = 'SORT BY PRICE'
+  const checkbox = document.createElement('input')
+  checkbox.type = 'checkbox'
+  checkbox.addEventListener('change', function () {
+    refreshStore(items, checkbox.checked)
+  })
+  sortContainer.appendChild(label)
+  sortContainer.appendChild(checkbox)
+  store.appendChild(sortContainer)
+}
+
+function refreshStore(items, sortByPrice) {
+  const ul = document.querySelector('.store--item-list')
+  ul.innerHTML = ''
+
+  // sort store
+  const sortedItems = sortByPrice ? [...items].sort((a, b) => b.price - a.price) : items
+
+  makeItemCards(sortedItems)
+}
+
+function makeItemCards(items) {
   const ul = document.querySelector('.store--item-list')
 
   for (const item of items) {
     const li = document.createElement('li')
     const div = document.createElement('div')
     div.classList.add('store--item-icon')
-  
+
     const img = document.createElement('img')
     img.src = `assets/icons/${item.id}.svg`
     img.alt = item.name
-  
+
     const button = document.createElement('button')
-    button.addEventListener("click", function () {
+    button.addEventListener('click', function () {
       addToCart(item)
     })
     button.textContent = 'add to cart'
-  
+
     div.appendChild(img)
     li.appendChild(div)
     li.appendChild(button)
-  
+
     ul.appendChild(li)
   }
+  
 }
 
 function refreshCart() {
@@ -29,7 +58,7 @@ function refreshCart() {
   ul.innerHTML = ''
 
   for (const item of state.cart) {
-    const existingItem = ul.querySelector(`[data-id="${item.id}"]`);
+    const existingItem = ul.querySelector(`[data-id="${item.id}"]`)
 
     if (!existingItem) {
       const li = document.createElement('li')
@@ -70,7 +99,7 @@ function refreshCart() {
       li.appendChild(button1)
       li.appendChild(span)
       li.appendChild(button2)
-      li.dataset.id = item.id;
+      li.dataset.id = item.id
 
       ul.appendChild(li)
     } else {
@@ -113,7 +142,7 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.2
     },
     {
       id: "002-carrot",
@@ -128,12 +157,12 @@ const state = {
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.70
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 1.2
     },
     {
       id: "006-bananas",
@@ -143,7 +172,7 @@ const state = {
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.10
     },
     {
       id: "008-berry",
@@ -153,12 +182,12 @@ const state = {
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.50
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.60
     }
   ],
   cart: []
