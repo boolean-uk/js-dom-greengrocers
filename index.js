@@ -60,38 +60,28 @@ const cartEl = document.getElementsByClassName("item-list cart--item-list")[0]
 
 const totalEl = document.getElementsByClassName("total-number")[0]
 
+const inputFilterEl = document.getElementById("filterInput")
+
+createStore(state)
+
+inputFilterEl.addEventListener("input", function(e) {
+  const newState = {}
+  newState.items = []
+  for (let i = 0; i < state.items.length; i++) {
+    if (state.items[i].name.includes(e.target.value.toLowerCase())) {
+      console.log(e.target.value)
+      newState.items.push(state.items[i])
+    }
+  }
+
+  createStore(newState)
+
+})
 
 
 
 
-for(let i = 0; i < state.items.length; i++) {
 
-  state.items[i].bought = 1
-
-  const liElStore = document.createElement("li")
-  
-  const divElStore = document.createElement("div")
-
-  divElStore.className = "store--item-icon"
-
-  const imgElStore = document.createElement("img")
-
-  imgElStore.src = `assets/icons/${state.items[i].id}.svg`
-  imgElStore.alt = state.items[i].name
-  const buttonELStore = document.createElement("button")
-  buttonELStore.id = i
-  buttonELStore.innerHTML = "Add to cart"
-  buttonELStore.addEventListener("click", function() {
-    addItemToCart(i)
-  });
-
-  divElStore.appendChild(imgElStore)
-  liElStore.appendChild(divElStore)
-  liElStore.appendChild(buttonELStore)
-
-  storeEl.appendChild(liElStore)
-
-}
 
 
 
@@ -181,7 +171,6 @@ function addItemToCart(id) {
 function calculateTotalCost() {
   let totalCost = 0
 
-  console.log(cartEl.children)
   for (let i = 0; i < cartEl.children.length; i++) {
     let id = cartEl.children[i].value
     totalCost += state.items[id].price * state.items[id].bought
@@ -190,5 +179,44 @@ function calculateTotalCost() {
   totalEl.innerHTML = "£" + Math.round((totalCost + Number.EPSILON) * 100) / 100
 
 
+}
+
+function createStore(newState) {
+  while(storeEl.firstChild) {
+    storeEl.removeChild(storeEl.firstChild)
+  }
+
+  for(let i = 0; i < newState.items.length; i++) {
+
+    newState.items[i].bought = 1
+  
+    const liElStore = document.createElement("li")
+    
+    const divElStore = document.createElement("div")
+  
+    divElStore.className = "store--item-icon"
+  
+    const imgElStore = document.createElement("img")
+  
+    imgElStore.src = `assets/icons/${newState.items[i].id}.svg`
+    imgElStore.alt = newState.items[i].name
+    const spanEl = document.createElement("span")
+    spanEl.innerHTML = "£" + newState.items[i].price
+  
+    const buttonElStore = document.createElement("button")
+    buttonElStore.id = i
+    buttonElStore.innerHTML = "Add to cart"
+    buttonElStore.addEventListener("click", function() {
+      addItemToCart(i)
+    });
+    
+    divElStore.appendChild(imgElStore)
+    liElStore.appendChild(divElStore)
+    liElStore.appendChild(spanEl)
+    liElStore.appendChild(buttonElStore)
+  
+    storeEl.appendChild(liElStore)
+  
+  }
 }
 
