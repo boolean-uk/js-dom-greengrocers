@@ -3,52 +3,62 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.65
+      price: 0.65,
+      color: "pink"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.10
+      price: 0.10,
+      color: "orange"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.15
+      price: 0.15,
+      color: "red"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.55
+      price: 0.55,
+      color: "orange"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.25
+      price: 0.25,
+      color: "green"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      color: "yellow"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.31
+      price: 0.31,
+      color: "green"
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.52
+      price: 0.52,
+      color: "red"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.13
+      price: 0.13,
+      color: "blue"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.23
+      price: 0.23,
+      color: "purple"
     }
   ],
   cart: []
@@ -64,39 +74,49 @@ const inputFilterEl = document.getElementById("filterInput")
 
 const filterCheckBoxEl = document.getElementById("filterByPriceButton")
 
+const colorContainerEl = document.getElementById("colorContainer")
+
+
+const allInputs = document.getElementsByTagName("input")
+
 createStore(state)
 
-filterCheckBoxEl.addEventListener("change", function() {
+for (let i = 0; i < allInputs.length; i++) {
+  allInputs[i].addEventListener("input", function(e) {
+       onStoreFilterOnChanges()
+    })
+}
+
+
+function onStoreFilterOnChanges() {
   const newState = {}
   newState.items = []
+  let noneChecked = true
+  for (let x = 0; x < allInputs.length; x++) {
+    if(allInputs[x].id !== "filterInput" && allInputs[x].id !== "filterByPriceButton") {
+      if(allInputs[x].checked) {
+        noneChecked = false;
+      }
+    }
+
+  }
   for (let i = 0; i < state.items.length; i++) {
-    if (state.items[i].name.includes(inputFilterEl.value)) {
-      newState.items.push(state.items[i])
+    if (state.items[i].name.includes(inputFilterEl.value.toLowerCase())) {
+      const colorCheck = document.getElementById(state.items[i].color)
+      
+     
+      if(noneChecked === true) {
+        newState.items.push(state.items[i])
+      } else if(colorCheck.checked) {
+        newState.items.push(state.items[i])
+      }
     }
   }
   createStore(newState)
-})
+}
 
 
 
-inputFilterEl.addEventListener("input", function(e) {
-  const newState = {}
-  newState.items = []
-  for (let i = 0; i < state.items.length; i++) {
-    if (state.items[i].name.includes(e.target.value.toLowerCase())) {
-      console.log(e.target.value)
-      newState.items.push(state.items[i])
-    }
-  }
-
-  createStore(newState)
-
-})
-
-
-
-
-function changeState() {}
 
 
 
