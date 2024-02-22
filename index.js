@@ -3,27 +3,27 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.65
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.10
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.15
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.55
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.25
     },
     {
       id: "006-bananas",
@@ -33,22 +33,22 @@ const state = {
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.31
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.52
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.13
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.23
     }
   ],
   cart: []
@@ -62,7 +62,22 @@ const totalEl = document.getElementsByClassName("total-number")[0]
 
 const inputFilterEl = document.getElementById("filterInput")
 
+const filterCheckBoxEl = document.getElementById("filterByPriceButton")
+
 createStore(state)
+
+filterCheckBoxEl.addEventListener("change", function() {
+  const newState = {}
+  newState.items = []
+  for (let i = 0; i < state.items.length; i++) {
+    if (state.items[i].name.includes(inputFilterEl.value)) {
+      newState.items.push(state.items[i])
+    }
+  }
+  createStore(newState)
+})
+
+
 
 inputFilterEl.addEventListener("input", function(e) {
   const newState = {}
@@ -81,7 +96,7 @@ inputFilterEl.addEventListener("input", function(e) {
 
 
 
-
+function changeState() {}
 
 
 
@@ -185,6 +200,9 @@ function createStore(newState) {
   while(storeEl.firstChild) {
     storeEl.removeChild(storeEl.firstChild)
   }
+  if(filterCheckBoxEl.checked) {
+    newState.items.sort(compare)
+  }
 
   for(let i = 0; i < newState.items.length; i++) {
 
@@ -217,6 +235,17 @@ function createStore(newState) {
   
     storeEl.appendChild(liElStore)
   
+  }
+
+
+  function compare( a, b ) {
+    if ( a.price < b.price ){
+      return -1;
+    }
+    if ( a.price > b.price ){
+      return 1;
+    }
+    return 0;
   }
 }
 
