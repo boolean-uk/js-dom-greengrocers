@@ -42,14 +42,14 @@ button {
   justify-content: center;
 }
 
-.store--item-list li {
+.store--item-list li,p {
   display: grid;
   place-items: center;
   grid-row-gap: 0.5rem;
 }
 
 .store--item-icon {
-  width: 125px;
+  width: 50px;
   height: 125px;
 }
 
