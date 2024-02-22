@@ -58,6 +58,67 @@ const state = {
 const cartItemUL = document.querySelector('.cart--item-list')
 const storeItemUL = document.querySelector('.store--item-list')
 const totalSpan = document.querySelector('.total-number')
+const h1 = document.querySelector('h1')
+let chosenType = ''
+
+//Extension 1
+//Add type to the existing products
+function addTypeToExisting(){
+  for(let i = 0; i < state.items.length; i ++){
+    const fruit = state.items[i]
+    fruit.type = 'fruit'
+  }  
+}
+
+//Create other category
+function addNewProducts(){
+  
+  let idCount = 10
+  for(let i = 0; i < 10; i ++){
+    let newProd = {}
+    idCount++
+    newProd.id = `${idCount} - item`
+    
+    newProd.name = `${idCount} name`
+    newProd.price = idCount - 0.55
+    newProd.type = 'other'
+
+    state.items.push(newProd)
+  }
+}
+
+//Render filter buttons
+function renderButtons(){
+  const showAllButton = document.createElement('button')
+  showAllButton.textContent = 'Show all'
+
+  const filterFruitButton = document.createElement('button')
+  filterFruitButton.textContent = 'Filter fruits'
+
+  const filterOtherButton = document.createElement('button')
+  filterOtherButton.textContent = 'Filter other'
+
+  //EventListeners
+  showAllButton.addEventListener('click',() => {
+    chosenType = ''
+    renderStore()
+  })
+  filterFruitButton.addEventListener('click',() => {
+    chosenType = 'fruit'
+    renderStore()
+  })
+  filterOtherButton.addEventListener('click',() => {
+    chosenType = 'other'
+    renderStore()
+  })
+
+  const buttonDiv = document.createElement('div')
+
+  buttonDiv.append(showAllButton)
+  buttonDiv.append(filterFruitButton)
+  buttonDiv.append(filterOtherButton)
+  h1.append(buttonDiv)
+}
 
 //Render cart
 function renderCart(){
@@ -112,25 +173,27 @@ function renderStore(){
   storeItemUL.innerHTML = ''
   for(let i = 0; i < state.items.length; i ++){
     const product = state.items[i]
-    const storeLi = document.createElement('li')
-    const storeDiv = document.createElement('div')
-    storeDiv.setAttribute('class','store--item-icon')
-    const idName = state.items[i].id
-    const storeIcon = document.createElement('img')
-    storeIcon.setAttribute('src',`assets/icons/${idName}.svg`)
-    //Button
-    const storeButton = document.createElement('button')
-    storeButton.textContent = 'Add to cart'
-    //EventListener
-    storeButton.addEventListener('click',() => {
-      //Get the item
-      addProductToCart(product)
-  })
-    storeDiv.appendChild(storeIcon)
-    storeLi.appendChild(storeDiv)
-    storeLi.appendChild(storeButton)
-    storeItemUL.appendChild(storeLi)
-  }
+    if (chosenType === '' || product.type === chosenType){
+      const storeLi = document.createElement('li')
+      const storeDiv = document.createElement('div')
+      storeDiv.setAttribute('class','store--item-icon')
+      const idName = state.items[i].id
+      const storeIcon = document.createElement('img')
+      storeIcon.setAttribute('src',`assets/icons/${idName}.svg`)
+      //Button
+      const storeButton = document.createElement('button')
+      storeButton.textContent = 'Add to cart'
+      //EventListener
+      storeButton.addEventListener('click',() => {
+        //Get the item
+        addProductToCart(product)
+    })
+      storeDiv.appendChild(storeIcon)
+      storeLi.appendChild(storeDiv)
+      storeLi.appendChild(storeButton)
+      storeItemUL.appendChild(storeLi)
+  } 
+}
 }
 
 //Render total cost
@@ -173,8 +236,12 @@ function decreaseProduct(product){
   renderCart()
 }
 
+
 //Render page
 function renderGrocers(){
+  addTypeToExisting()
+  addNewProducts()
+  renderButtons()
   renderStore()
   renderCart()
 }
