@@ -71,27 +71,36 @@ const cartUl = document.querySelector(".cart--item-list");
 
 const parent = document.querySelector("#store");
 const sibling = parent.querySelector("h1");
-const div = document.createElement("div");
+const div = document.createElement("div")
+div.classList.add("main-div")
 
+const divFilter = document.createElement("div");
+divFilter.classList.add("sub-div")
 // FILTERS
 const pFilter = document.createElement("p");
 pFilter.textContent = "Filter by: ";
 pFilter.classList.add("filter");
-div.appendChild(pFilter);
+divFilter.appendChild(pFilter);
 
 for (const group of state.groups) {
-  createFilterCheckbox(group, div);
+  createFilterCheckbox(group, divFilter);
 }
 
+div.appendChild(divFilter)
+
 // SORTING
+const divSorting = document.createElement("div");
+divSorting.classList.add("sub-div")
 const pSort = document.createElement("p");
 pSort.textContent = "Sort by: ";
 pSort.classList.add("sort");
-div.appendChild(pSort);
+divSorting.appendChild(pSort);
 
 for (const sorting of state.sorting) {
-  createSortingButton(sorting, div);
+  createSortingButton(sorting, divSorting);
 }
+
+div.appendChild(divSorting)
 
 parent.insertBefore(div, sibling.nextSibling);
 
@@ -144,6 +153,39 @@ function createFilterCheckbox(group, div) {
   div.appendChild(label);
 }
 
+function handleCheckboxChange() {
+  const filters = document.querySelectorAll(".filter");
+  const checkedCheckboxes = [];
+  const storeItems = document
+    .querySelector(".store--item-list")
+    .querySelectorAll("li");
+
+  filters.forEach((checkbox) => {
+    if (checkbox.checked) {
+      checkedCheckboxes.push(checkbox);
+    }
+  });
+
+  if (checkedCheckboxes.length === 0) {
+    for (const item of storeItems) {
+      item.style.display = "grid";
+    }
+  } else {
+    const activeFilters = [];
+    for (const checkbox of checkedCheckboxes) {
+      activeFilters.push(checkbox.alt);
+    }
+
+    for (const item of storeItems) {
+      if (activeFilters.includes(item.alt)) {
+        item.style.display = "grid";
+      } else {
+        item.style.display = "none";
+      }
+    }
+  }
+}
+
 function createSortingButton(group, div) {
   const radioButton = document.createElement("INPUT");
   radioButton.setAttribute("type", "radio");
@@ -174,14 +216,12 @@ function handleRadiobuttonChange(event) {
       itemsArray.sort((a, b) => {
         const aPrice = (state.items.find(item => item.id === a.id)).price;
         const bPrice = (state.items.find(item => item.id === b.id)).price;
-
         return aPrice > bPrice ? 1 : -1;
       });
     } else if (event.currentTarget.alt === "alphabetically") {
       itemsArray.sort((a, b) => {
         const aName = (state.items.find(item => item.id === a.id)).name;
         const bName = (state.items.find(item => item.id === b.id)).name;
-
         return aName > bName ? 1 : -1;
       });
     } else if (event.currentTarget.alt === "none") {
@@ -297,35 +337,3 @@ function removeFromCart(item) {
   ).toFixed(2)}`;
 }
 
-function handleCheckboxChange() {
-  const filters = document.querySelectorAll(".filter");
-  const checkedCheckboxes = [];
-  const storeItems = document
-    .querySelector(".store--item-list")
-    .querySelectorAll("li");
-
-  filters.forEach((checkbox) => {
-    if (checkbox.checked) {
-      checkedCheckboxes.push(checkbox);
-    }
-  });
-
-  if (checkedCheckboxes.length === 0) {
-    for (const item of storeItems) {
-      item.style.display = "grid";
-    }
-  } else {
-    const activeFilters = [];
-    for (const checkbox of checkedCheckboxes) {
-      activeFilters.push(checkbox.alt);
-    }
-
-    for (const item of storeItems) {
-      if (activeFilters.includes(item.alt)) {
-        item.style.display = "grid";
-      } else {
-        item.style.display = "none";
-      }
-    }
-  }
-}
