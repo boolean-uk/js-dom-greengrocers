@@ -78,11 +78,33 @@ function addToCart(item) {
     })
 }
 
+function removeFromCart(item) {
+  let pushedNew = false // To check if the item was already in cart or not
+  for (let i = 0; i < state.cart.length; i++) {
+    if (state.cart[i].item.name === item.name) {
+      if (state.cart[i].amount <= 0) {
+        state.cart.splice(i, 1)
+      }
+
+      state.cart[i] = {
+        item: item,
+        amount: state.cart[i].amount - 1
+      }
+    }
+  }
+
+}
+
 // Handle user clicks
 
-function handleClick(item) {
-  addToCart(item)
-  renderCart()
+function handleClick(val, item) {
+  if (val === 1) {
+    addToCart(item)
+    renderCart()
+  } else {
+    removeFromCart(item)
+    renderCart()
+  }
 }
 
 // Render the items
@@ -105,7 +127,7 @@ function renderShopItems() {
 
     let itemButton = document.createElement("button")
     itemButton.innerText = "Add to cart"
-    itemButton.addEventListener('click', (event) => handleClick(state.items[i]))
+    itemButton.addEventListener('click', (event) => handleClick(1, state.items[i]))
 
     itemLi.appendChild(itemDiv)
     itemLi.appendChild(itemButton)
@@ -118,34 +140,39 @@ function renderShopItems() {
 function renderCart() { 
   cartList.innerHTML = ""
   for (let i = 0; i < state.cart.length; i++) {
-    const cartLi = document.createElement("li")
-    const cartImg = document.createElement("img")
+    if (state.cart[i].amount > 0) {
+      
+      const cartLi = document.createElement("li")
+      const cartImg = document.createElement("img")
 
-    cartImg.setAttribute('class', 'cart--item-icon')
-    cartImg.setAttribute('src', 'assets/icons/' + state.cart[i].item.id + '.svg')
-    cartImg.setAttribute('alt', state.cart[i].item.name)
+      cartImg.setAttribute('class', 'cart--item-icon')
+      cartImg.setAttribute('src', 'assets/icons/' + state.cart[i].item.id + '.svg')
+      cartImg.setAttribute('alt', state.cart[i].item.name)
 
-    const cartP = document.createElement("p")
-    cartP.innerText = state.cart[i].item.name
+      const cartP = document.createElement("p")
+      cartP.innerText = state.cart[i].item.name
 
-    const cartButton1 = document.createElement("button")
-    cartButton1.setAttribute('class', 'quantity-btn remove-btn center')
-    cartButton1.innerText = '-'
+      const cartButton1 = document.createElement("button")
+      cartButton1.setAttribute('class', 'quantity-btn remove-btn center')
+      cartButton1.innerText = '-'
+      cartButton1.addEventListener('click', (event) => handleClick(-1, state.cart[i].item))
 
-    const cartButton2 = document.createElement("button")
-    cartButton2.setAttribute('class', 'quantity-text center')
-    cartButton2.innerText = state.cart[i].amount
+      const cartButton2 = document.createElement("button")
+      cartButton2.setAttribute('class', 'quantity-text center')
+      cartButton2.innerText = state.cart[i].amount
 
-    const cartButton3 = document.createElement("button")
-    cartButton3.setAttribute('class', 'quantity-btn add-btn center')
-    cartButton3.innerText = '+'
+      const cartButton3 = document.createElement("button")
+      cartButton3.setAttribute('class', 'quantity-btn add-btn center')
+      cartButton3.innerText = '+'
+      cartButton3.addEventListener('click', (event) => handleClick(1, state.cart[i].item))
 
-    cartLi.appendChild(cartImg)
-    cartLi.appendChild(cartP)
-    cartLi.appendChild(cartButton1)
-    cartLi.appendChild(cartButton2)
-    cartLi.appendChild(cartButton3)
-    cartList.appendChild(cartLi)
+      cartLi.appendChild(cartImg)
+      cartLi.appendChild(cartP)
+      cartLi.appendChild(cartButton1)
+      cartLi.appendChild(cartButton2)
+      cartLi.appendChild(cartButton3)
+      cartList.appendChild(cartLi)
+    }
   }
 
 }
