@@ -162,7 +162,6 @@ function renderCart() {
   cartList.innerHTML = ""
   for (let i = 0; i < state.cart.length; i++) {
     if (state.cart[i].amount > 0 && (filterList.includes(state.cart[i].item.name) || filterList.length === 0)) {
-      console.log(filterList + " hey " + state.cart[i].item.name + " poopoo " + filterList.includes(state.cart[i].item.name))
       const cartLi = document.createElement("li")
       const cartImg = document.createElement("img")
 
