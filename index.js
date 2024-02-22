@@ -74,14 +74,12 @@ const filter = {
 
   ]
 }
+const dropDown = initSelectType();
 const storeItemList = document.querySelector(".store--item-list");
-const filterByFruitButton = document.createElement("button");
-filterByFruitButton.setAttribute("class", "filter-button");
-filterByFruitButton.appendChild(document.createTextNode("Filter by fruit"));
-filterByFruitButton.addEventListener("click", toggleFilterByFruit);
+
 function renderStoreItems() {
   storeItemList.innerHTML = "";
-
+  
   // Render the store items
   const imageStoreItemArray = [];
   for (let i = 0; i < 10; i++) {
@@ -110,23 +108,63 @@ function renderStoreItems() {
   sortStoreItemsAlphabeticallyButton.appendChild(document.createTextNode("Sort items alphabetically"));
   sortStoreItemsAlphabeticallyButton.addEventListener("click", sortStoreItemsAlphabetically);
 
+  storeItemList.appendChild(dropDown);
   
-  
-  storeItemList.appendChild(filterByFruitButton);
   storeItemList.appendChild(sortStoreItemsAlphabeticallyButton);
 
+  
+ 
+
+
+  
+  
 
 }
 
+function initSelectType() {
+  const dropDown = document.createElement("select");
+  dropDown.setAttribute("class", "filter-dropdown");
+  dropDown.style.margin = "10px";
+  dropDown.addEventListener("change", filterItems);
+  const option = document.createElement("option");
+  option.setAttribute("value", "none");
+  option.appendChild(document.createTextNode("None"));
+  dropDown.appendChild(option);
 
-function toggleFilterByFruit() {
-  const filterByFruitButton = document.querySelector(".filter-button"); 
-  filterByFruitButton.classList.toggle("clicked"); 
-  const clicked = filterByFruitButton.classList.contains("clicked"); 
-  filterByFruitButton.style.backgroundColor = clicked ? "red" : "white"; 
-  filter.items = clicked ? ["beetroot", "carrot", "bell pepper", "eggplant", "berry", "blueberry"] : []; 
+  const optionBerry = document.createElement("option");
+  optionBerry.setAttribute("value", "Berry");
+  optionBerry.appendChild(document.createTextNode("Berry"));
+  dropDown.appendChild(optionBerry);
+
+  const optionFruit = document.createElement("option");
+  optionFruit.setAttribute("value", "Fruit");
+  optionFruit.appendChild(document.createTextNode("Fruit"));
+  dropDown.appendChild(optionFruit);
+
+  const optionVegetable = document.createElement("option");
+  optionVegetable.setAttribute("value", "Vegetable");
+  optionVegetable.appendChild(document.createTextNode("Vegetable"));
+  dropDown.appendChild(optionVegetable);
+  return dropDown;
+}
+
+function filterItems() {
+  const dropDown = document.querySelector(".filter-dropdown");
+  const selected = dropDown.options[dropDown.selectedIndex].value;
+  if (selected === "None") {
+      filter.items = [];
+  } else if (selected === "Fruit") {
+      filter.items = ["berry", "blueberry", "bell pepper", "eggplant", "beetroot", "carrot"];
+  }
+  else if(selected === "Berry"){
+      filter.items = ["bananas", "apple", "avocado", "apricot", "eggplant", "carrot", "beetroot", "bell pepper"];
+  }
+  else if(selected === "Vegetable"){
+      filter.items = ["bananas", "apple", "avocado", "apricot", "berry", "blueberry"];
+  }
   renderStoreItems();
 }
+
 
 
 
