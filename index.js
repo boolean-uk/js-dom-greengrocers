@@ -3,66 +3,67 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35,
-      group: "vegetable"
+      price: 0.1,
+      group: "vegetable",
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35,
-      group: "vegetable"
+      price: 0.15,
+      group: "vegetable",
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35,
-      group: "fruit"
+      price: 0.2,
+      group: "fruit",
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
-      group: "fruit"
+      group: "fruit",
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35,
-      group: "fruit"
+      price: 0.3,
+      group: "fruit",
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35,
-      group: "fruit"
+      price: 0.5,
+      group: "fruit",
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35,
-      group: "vegetable"
+      price: 0.45,
+      group: "vegetable",
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35,
-      group: "berry"
+      price: 0.4,
+      group: "berry",
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35,
-      group: "berry"
+      price: 0.05,
+      group: "berry",
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35,
-      group: "vegetable"
+      price: 1.35,
+      group: "vegetable",
     },
   ],
   cart: [],
-  groups: ["fruit", "vegetable", "berry"]
+  groups: ["fruit", "vegetable", "berry"],
+  sorting: ["none", "price", "alphabetically"],
 };
 
 const storeUl = document.querySelector(".store--item-list");
@@ -70,24 +71,35 @@ const cartUl = document.querySelector(".cart--item-list");
 
 const parent = document.querySelector("#store");
 const sibling = parent.querySelector("h1");
-const div = document.createElement("div")
+const div = document.createElement("div");
 
-const p = document.createElement("p")
-p.textContent = 'Filter by: '
-p.classList.add("filter")
-
-div.appendChild(p)
+// FILTERS
+const pFilter = document.createElement("p");
+pFilter.textContent = "Filter by: ";
+pFilter.classList.add("filter");
+div.appendChild(pFilter);
 
 for (const group of state.groups) {
   createFilterCheckbox(group, div);
 }
 
+// SORTING
+const pSort = document.createElement("p");
+pSort.textContent = "Sort by: ";
+pSort.classList.add("sort");
+div.appendChild(pSort);
+
+for (const sorting of state.sorting) {
+  createSortingButton(sorting, div);
+}
+
 parent.insertBefore(div, sibling.nextSibling);
 
-
+// POPULATE STORE
 for (const item of state.items) {
   const li = document.createElement("li");
-  li.alt = item.group
+  li.alt = item.group;
+  li.id = item.id
   const div = document.createElement("div");
   div.classList.add("store--item-icon");
 
@@ -113,21 +125,73 @@ function createFilterCheckbox(group, div) {
   checkbox.setAttribute("type", "checkbox");
   checkbox.classList.add("filter");
   checkbox.alt = group;
-  checkbox.setAttribute('id', `${group}-filter`);
+  checkbox.setAttribute("id", `${group}-filter`);
 
   checkbox.addEventListener("change", handleCheckboxChange);
 
   div.appendChild(checkbox);
 
-  const label = document.createElement('label');
-  label.setAttribute('for', `${group}-filter`);
-  if (group[group.length-1] === 'y') {
-    label.innerHTML = `${group[0].toUpperCase() + group.slice(1, group.length - 1)}ies`;
+  const label = document.createElement("label");
+  label.setAttribute("for", `${group}-filter`);
+  if (group[group.length - 1] === "y") {
+    label.innerHTML = `${
+      group[0].toUpperCase() + group.slice(1, group.length - 1)
+    }ies`;
   } else {
     label.innerHTML = `${group[0].toUpperCase() + group.slice(1)}s`;
   }
 
   div.appendChild(label);
+}
+
+function createSortingButton(group, div) {
+  const radioButton = document.createElement("INPUT");
+  radioButton.setAttribute("type", "radio");
+  radioButton.name = "sorting";
+  radioButton.classList.add("sort");
+  radioButton.alt = group;
+  radioButton.setAttribute("id", `${group}-sort`);
+  if (group === "none") {
+    radioButton.checked = true;
+  }
+
+  radioButton.addEventListener("change", handleRadiobuttonChange);
+
+  div.appendChild(radioButton);
+
+  const label = document.createElement("label");
+  label.setAttribute("for", `${group}-filter`);
+  label.innerHTML = group[0].toUpperCase() + group.slice(1);
+
+  div.appendChild(label);
+}
+
+function handleRadiobuttonChange(event) {
+  if (event.currentTarget.checked) {
+    const items = storeUl.querySelectorAll("li");
+    const itemsArray = Array.from(items);
+    if (event.currentTarget.alt === "price") {
+      itemsArray.sort((a, b) => {
+        const aPrice = (state.items.find(item => item.id === a.id)).price;
+        const bPrice = (state.items.find(item => item.id === b.id)).price;
+
+        return aPrice > bPrice ? 1 : -1;
+      });
+    } else if (event.currentTarget.alt === "alphabetically") {
+      itemsArray.sort((a, b) => {
+        const aName = (state.items.find(item => item.id === a.id)).name;
+        const bName = (state.items.find(item => item.id === b.id)).name;
+
+        return aName > bName ? 1 : -1;
+      });
+    } else if (event.currentTarget.alt === "none") {
+      itemsArray.sort((a, b) => {
+        return a.id > b.id ? 1 : -1;
+      });
+    }
+    items.forEach((item) => storeUl.removeChild(item));
+    itemsArray.forEach((item) => storeUl.appendChild(item));
+  }
 }
 
 function addToCart(item) {
@@ -141,7 +205,6 @@ function addToCart(item) {
     cost.textContent = `$${(
       Number(cost.textContent.slice(1)) + item.price
     ).toFixed(2)}`;
-
   } else {
     const span = document.querySelector(
       `.quantity-text--${item.name.replace(" ", "-")}`
@@ -169,7 +232,7 @@ function createListObject(item) {
   li.appendChild(p);
   li.appendChild(removeButton);
   li.appendChild(span);
-  li.appendChild(addButton)
+  li.appendChild(addButton);
 
   return li;
 }
@@ -234,35 +297,35 @@ function removeFromCart(item) {
   ).toFixed(2)}`;
 }
 
-
 function handleCheckboxChange() {
-  const filters = document.querySelectorAll(".filter")
+  const filters = document.querySelectorAll(".filter");
   const checkedCheckboxes = [];
-  const storeItems = document.querySelector(".store--item-list").querySelectorAll("li")
+  const storeItems = document
+    .querySelector(".store--item-list")
+    .querySelectorAll("li");
 
-  filters.forEach(checkbox => {
+  filters.forEach((checkbox) => {
     if (checkbox.checked) {
-        checkedCheckboxes.push(checkbox);
+      checkedCheckboxes.push(checkbox);
     }
-  })
+  });
 
   if (checkedCheckboxes.length === 0) {
     for (const item of storeItems) {
-      item.style.display = "grid"
+      item.style.display = "grid";
     }
   } else {
-    const activeFilters = []
+    const activeFilters = [];
     for (const checkbox of checkedCheckboxes) {
-      activeFilters.push(checkbox.alt)
+      activeFilters.push(checkbox.alt);
     }
 
     for (const item of storeItems) {
-      if ( activeFilters.includes(item.alt)) {
-        item.style.display = "grid"
+      if (activeFilters.includes(item.alt)) {
+        item.style.display = "grid";
       } else {
-        item.style.display = "none"
+        item.style.display = "none";
       }
     }
-
   }
 }
