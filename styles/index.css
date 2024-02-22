@@ -182,3 +182,53 @@ button {
     border-bottom: 2px solid #00675b;
   }
 }
+
+/*
+  Extension
+*/
+
+#filter-by--list {
+  background-color: #e7f4ea;
+  border-radius: 5px;
+  margin: 2px;
+
+  display: grid;
+
+  grid-template-rows: auto auto auto;
+
+  grid-auto-flow: column;
+  align-items: center;
+  padding: 5px;
+}
+
+#filter-by--title {
+  margin-bottom: -5px;
+}
+
+.filter-by--items + label {
+  background-color:ghostwhite;
+  color: rgb(161, 161, 161);
+
+  padding: 2%;
+  border-radius: 3px;
+
+  transition: 100ms;
+}
+
+.filter-by--items:hover + label {
+  background-color:rgb(251, 251, 255);
+  color: rgb(70, 70, 70);
+
+  transition: 170ms;
+}
+
+.filter-by--items:checked + label {
+  background-color: white;
+  color: black;
+  
+  transition: 100ms;
+}
+
+input[type="checkbox"]  {
+  display: none;
+}
