@@ -55,11 +55,40 @@ const state = {
 };
 
 const storeList = document.getElementById("store").children[1]
+const cartList  = document.getElementById("cart").children[1].children[0]
 
+// update data
+
+function addToCart(item) {
+
+  let pushedNew = false // To check if the item was already in cart or not
+    for (let i = 0; i < state.cart.length; i++) {
+      if (state.cart[i].item.name === item.name) {
+        state.cart[i] = {
+          item: item,
+          amount: state.cart[i].amount + 1
+        }
+
+        return true
+      }
+    }
+    state.cart.push({
+      item: item,
+      amount: 1
+    })
+}
+
+// Handle user clicks
+
+function handleClick(item) {
+  addToCart(item)
+  renderCart()
+}
 
 // Render the items
 
 function renderShopItems() {
+  storeList.innerHTML = ""
 
   for (let i = 0; i < state.items.length; i++) {
 
@@ -76,18 +105,54 @@ function renderShopItems() {
 
     let itemButton = document.createElement("button")
     itemButton.innerText = "Add to cart"
+    itemButton.addEventListener('click', (event) => handleClick(state.items[i]))
 
     itemLi.appendChild(itemDiv)
     itemLi.appendChild(itemButton)
 
-    
     storeList.appendChild(itemLi)
+  }
+
+}
+
+function renderCart() { 
+  cartList.innerHTML = ""
+  for (let i = 0; i < state.cart.length; i++) {
+    const cartLi = document.createElement("li")
+    const cartImg = document.createElement("img")
+
+    cartImg.setAttribute('class', 'cart--item-icon')
+    cartImg.setAttribute('src', 'assets/icons/' + state.cart[i].item.id + '.svg')
+    cartImg.setAttribute('alt', state.cart[i].item.name)
+
+    const cartP = document.createElement("p")
+    cartP.innerText = state.cart[i].item.name
+
+    const cartButton1 = document.createElement("button")
+    cartButton1.setAttribute('class', 'quantity-btn remove-btn center')
+    cartButton1.innerText = '-'
+
+    const cartButton2 = document.createElement("button")
+    cartButton2.setAttribute('class', 'quantity-text center')
+    cartButton2.innerText = state.cart[i].amount
+
+    const cartButton3 = document.createElement("button")
+    cartButton3.setAttribute('class', 'quantity-btn add-btn center')
+    cartButton3.innerText = '+'
+
+    cartLi.appendChild(cartImg)
+    cartLi.appendChild(cartP)
+    cartLi.appendChild(cartButton1)
+    cartLi.appendChild(cartButton2)
+    cartLi.appendChild(cartButton3)
+    cartList.appendChild(cartLi)
   }
 
 }
 
 function main() {
   renderShopItems()
+  renderCart()
 }
 
 main()
