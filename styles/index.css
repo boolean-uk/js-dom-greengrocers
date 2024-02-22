@@ -211,12 +211,22 @@ button {
 
   padding: 2%;
   border-radius: 3px;
+
+  transition: 100ms;
+}
+
+.filter-by--items:hover + label {
+  background-color:rgb(251, 251, 255);
+  color: rgb(70, 70, 70);
+
+  transition: 170ms;
 }
 
 .filter-by--items:checked + label {
   background-color: white;
-
   color: black;
+  
+  transition: 100ms;
 }
 
 input[type="checkbox"]  {
