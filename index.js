@@ -54,140 +54,109 @@ const state = {
   cart: []
 };
 
-const store = document.querySelector('.item-list')
-const tempArray = []
+const store = document.querySelector('.store--item-list');
+
+const cartContainer = document.querySelector('.cart--item-list-container');
+const total = document.getElementById('total-number');
+let sum = 0;
 
 const displayItems = () => {
   state.items.forEach(item => {
-    const card = document.createElement('li')
-    card.classList = 'store--item-list'
+    const card = createItemCard(item);
+    store.appendChild(card);
+  });
+};
 
-    const div = document.createElement('div')
-    div.classList = 'store--item-icon'
-    card.appendChild(div)
-    const img = document.createElement('img')
-    div.appendChild(img)
-    const button = document.createElement('button')
+const createItemCard = (item) => {
+  const card = document.createElement('li');
+  const img = document.createElement('img');
+  const imgContainer = document.createElement('div')
+  imgContainer.classList.add('store--item-icon')
+  img.src = `/assets/icons/${item.id}.svg`;
+  imgContainer.appendChild(img)
+  const button = document.createElement('button');
+  button.textContent = 'Add to cart';
+  button.addEventListener('click', () => addToCart(item));
 
-    button.id = `${item.id}`
-    button.textContent = 'Add to cart'
-    button.addEventListener('click', e => {
-      e.preventDefault();
-      tempArray.push(state.items.find(item => item.id === e.target.id))
-      addToCart()
-    })
+  card.appendChild(imgContainer);
+  card.appendChild(button);
 
-    img.src = `/assets/icons/${item.id}.svg`
-    // Build HTML together
-    card.appendChild(button)
-    store.appendChild(card)
-  })
-}
+  return card;
+};
 
-displayCart = () => {
-  // Creating HTML structure for cart
-  const cartContainer = document.querySelector('.cart--item-list-container')
-  const cart = document.querySelector('.cart--item-list')
-  cartContainer.appendChild(cart)
-}
+const addToCart = (item) => {
+  const existingItem = state.cart.find(cartItem => cartItem.id === item.id);
+  if (existingItem) {
+    existingItem.quantity++;
+  } else {
+    state.cart.push({ ...item, quantity: 1 });
+  }
+  renderCart();
+};
 
-
-const addToCart = () => {
-  
-  tempArray.forEach(item => { 
-    if (!item.hasOwnProperty('quantity')){
-      console.log(item)
-      item['quantity'] = 1; 
-    }
-  })
-
-  // Create quantities in objects
-  formatCart()
-  // To get products with quantity over 2 in same line
-  removeCart()
-
-  state.cart.forEach(item => {
-      const cartCard = document.createElement('li')
-      cartCard.classList = 'cart--item-list li'
-      const cart = document.querySelector('.cart--item-list')
-      cart.appendChild(cartCard)
-      
-      // Creating elements for product in cart
-      const img = document.createElement('img')
-      img.classList = 'cart--item-icon'
-      img.src = `/assets/icons/${item.id}.svg`
-      const name = document.createElement('p')
-      name.textContent = item.name
-      const rmBtn = document.createElement('button')
-      rmBtn.textContent = '-'
-      rmBtn.classList = 'quantity-btn remove-btn center'
-      const quantity = document.createElement('span')
-      quantity.classList = 'quantity-text center'
-      quantity.textContent = item.quantity
-      const addBtn = document.createElement('button')
-      addBtn.classList = 'quantity-btn add-btn center'
-      addBtn.textContent = '+'
-      addBtn.addEventListener('click', e => {
-        e.preventDefault();
-        item.quantity++
-        quantity.textContent = item.quantity
-      })
-      rmBtn.addEventListener('click', e => {
-        e.preventDefault();
-        item.quantity--
-        quantity.textContent = item.quantity
-        console.log(item.quantity)
-      })
-      
-      cartCard.id = `cart-item-${item.id}`
-
-      cartCard.appendChild(img)
-      cartCard.appendChild(name)
-      cartCard.append(rmBtn)
-      cartCard.append(quantity)
-      cartCard.append(addBtn)
-
-      const containerForItem = document.querySelector('.cart--item-list')
-      containerForItem.appendChild(cartCard)
-  })
-}
-
-
-const removeItem = (item) => {
-  const index = state.cart.indexOf(item);
+const removeFromCart = (item) => {
+  const index = state.cart.findIndex(cartItem => cartItem.id === item.id);
   if (index !== -1) {
-    state.cart.splice(index, 1);
-    const cartItem = document.querySelector(`#cart-item-${item.id}`);
-    if (cartItem) {
-      cartItem.remove();
+    state.cart[index].quantity--;
+    if (state.cart[index].quantity === 0) {
+      state.cart.splice(index, 1);
     }
   }
-  console.log(state.cart)
-}
+  renderCart();
+};
 
-const removeCart = () => {
-  const containerForItem = document.querySelector('.cart--item-list li')
-  if (containerForItem){
-    const cartItems = document.querySelectorAll('.cart--item-list li');
-    cartItems.forEach(item => {
-      item.remove();
-    });
-  }
-}
+const renderCart = () => {
+  const cartList = document.querySelector('.cart--item-list');
+  cartList.innerHTML = '';
+  state.cart.forEach(item => {
+    const cartCard = createCartCard(item);
+    cartList.appendChild(cartCard);
+  });
+  sumCart();
+};
 
-const formatCart = () => {
-  var occurences = {}
-  tempArray.forEach(item => {
-    const id = item.id;
-    if (occurences[id]){
-      occurences[id].quantity += item.quantity
-    } else {
-      occurences[id] = {...item}
-    }
-    state.cart = Object.values(occurences)
+const sumCart = () => {
+  sum = 0;
+  state.cart.forEach(item => {
+    sum += item.price*item.quantity
   })
+  total.textContent = `£${Math.round(sum * 100) / 100}`
 }
 
+const createCartCard = (item) => {
+  const cartCard = document.createElement('li');
+  cartCard.classList.add('cart--item-list', 'li');
+  cartCard.id = `cart-item-${item.id}`;
 
-displayItems()
-displayCart()
+  const img = document.createElement('img');
+  img.classList.add('cart--item-icon');
+  img.src = `/assets/icons/${item.id}.svg`;
+
+  const name = document.createElement('p');
+  name.textContent = item.name;
+
+  const rmBtn = document.createElement('button');
+  rmBtn.textContent = '-';
+  rmBtn.classList.add('quantity-btn', 'remove-btn', 'center');
+  rmBtn.addEventListener('click', () => removeFromCart(item));
+
+  const quantity = document.createElement('span');
+  quantity.classList.add('quantity-text', 'center');
+  quantity.textContent = item.quantity;
+
+  const addBtn = document.createElement('button');
+  addBtn.textContent = '+';
+  addBtn.classList.add('quantity-btn', 'add-btn', 'center');
+  addBtn.addEventListener('click', () => addToCart(item));
+
+  cartCard.appendChild(img);
+  cartCard.appendChild(name);
+  cartCard.appendChild(rmBtn);
+  cartCard.appendChild(quantity);
+  cartCard.appendChild(addBtn);
+
+  return cartCard;
+};
+
+displayItems();
+renderCart();
