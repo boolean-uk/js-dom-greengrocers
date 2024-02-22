@@ -78,7 +78,7 @@ function renderStoreItems() {
         button.setAttribute('type', 'button')
         button.textContent = 'Add to cart'
         button.addEventListener('click', function(){
-          addToCart(item)
+          addToCart(item, 1)
         })
       
         div.appendChild(img)
@@ -108,14 +108,20 @@ function renderCart() {
     const buttonRemove = document.createElement('button')
     buttonRemove.classList.add('quantity-btn', 'remove-btn', 'center')
     buttonRemove.textContent = '-'
+    buttonRemove.addEventListener('click', function() {
+      removeFromCart(item, item.quantity - 1)
+    })
 
     const quantity = document.createElement('span')
     quantity.classList.add('quantity-text', 'center')
-    quantity.textContent = item.quantity // TODO?
+    quantity.textContent = item.quantity 
 
     const buttonAdd = document.createElement('button')
     buttonAdd.classList.add('quantity-btn', 'add-btn', 'center')
     buttonAdd.textContent = '+'
+    buttonAdd.addEventListener('click', function(){
+      addToCart(item, item.quantity + 1)
+    })
 
     cartLi.appendChild(img)
     cartLi.appendChild(p)
@@ -127,19 +133,35 @@ function renderCart() {
   }
 }
 
-function addToCart(item) {
-  cartObj = item
-  cartObj.quantity = 1
-  state.cart.push(item)
+function addToCart(item, quantity) {
+  const itemIndex = state.cart.findIndex(cartItem => cartItem.id === item.id)
+
+  if (itemIndex !== -1){
+    state.cart[itemIndex].quantity = quantity
+  } else {
+    cartObj = {...item, quantity}
+    state.cart.push(cartObj)
+  }
+  
   renderCart()
+  displayTotal()
 }
 
-function registerQuantityButtons(){
+function removeFromCart(item, quantity){
+  const itemIndex = state.cart.findIndex(cartItem => cartItem.id === item.id)
+  if (quantity <= 0) {
+    state.cart.splice(itemIndex, 1)
+  } else {
+    state.cart[itemIndex].quantity = quantity
+  }
 
+  renderCart()
+  displayTotal()
 }
+
 
 function displayTotal(){
-  let totalCost = state.cart.reduce((total, item) => total + item.price, 0)
+  let totalCost = state.cart.reduce((total, item) => total + (item.price * item.quantity), 0)
   totalCost = totalCost.toFixed(2)
   total.textContent = `£${totalCost}`
 }
