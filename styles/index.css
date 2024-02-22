@@ -84,6 +84,13 @@ button {
   text-align: center;
 }
 
+.filterbuttons {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+
+
 .cart--item-list-container {
   min-width: 320px;
   height: 100%;
