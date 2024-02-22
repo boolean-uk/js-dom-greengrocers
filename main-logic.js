@@ -16,9 +16,43 @@ const createAllItems = (itemList) =>
     return itemList.map(i => createItem(i));
 }
 
+let currentSelection = state.items;
+
 document.getElementsByClassName('store--item-list')[0].innerHTML = 
     createAllItems(state.items).join('')
 
+let select = document.getElementById('filter');
+
+select.addEventListener("change", (event) =>{
+    if (event.target.value == 'all')  
+        currentSelection = state.items;
+
+    else
+        currentSelection = 
+            state.items.filter((item) => item.type == event.target.value);
+
+    document.getElementsByClassName('store--item-list')[0].innerHTML = 
+        createAllItems(currentSelection).join('')
+});
+
+let order = document.getElementById('order');
+
+order.addEventListener("change", (event) => {
+    switch(event.target.value){
+        case('alphabetically'):
+            currentSelection.sort((a, b) => (a.name > b.name) ? 1 : -1);
+            break;
+        case('price'):
+            currentSelection.sort(function(a, b){return a.price-b.price})
+            break;
+        default:
+            console.log("You should not be here?")
+    }
+    document.getElementsByClassName('store--item-list')[0].innerHTML = 
+        createAllItems(currentSelection).join('')
+});
+
+// cart
 const addItem = (elm) => {
     let item = state.items.find(s => s.name == elm.id);
     let element = document.getElementById(item.name+'_cart');

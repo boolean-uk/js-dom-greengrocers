@@ -9,10 +9,22 @@
     <title>Greengrocers</title>
     <script defer src="index.js"></script>
     <script defer src="main-logic.js"></script>
-  </head>
+
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
+      Filter: <select name="filter" id="filter">
+        <option value="all">all</option> 
+        <option value="vegetable">Vegetables</option>
+        <option value="berry">Berries</option>
+        <option value="fruit">Fruits</option>
+      </select>
+      Order: <select name="order" id="order">
+        <option value="none">None</option>
+        <option value="alphabetically">Alphabetically</option>
+        <option value="price">Price</option>
+      </select>
+    </head>
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
