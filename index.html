@@ -1,41 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Kind of the settings: -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/reset.css" />
     <link rel="stylesheet" href="styles/index.css" />
     <title>Greengrocers</title>
-    <script defer src="index.js"></script>
+    
   </head>
   <body>
+    
+       <!-- Filter buttons -->
+       <div class="filters">
+        <label><input type="checkbox" value="fru"> Fruit</label>
+        <label><input type="checkbox" value="veg"> Vegetable</label>
+         <!-- <button class="filter-btn" data-type="veg">Vegetable</button> -->
+         </div>
+
+    
     <header id="store">
+      <!-- Header -->
       <h1>Greengrocers</h1>
-      <ul class="item-list store--item-list">
+      <!-- NOTE: This means both .item-list AND .store--item-list -->
+      <ul class="item-list store--item-list"> 
         <!-- Take a look at store-item.html -->
+          
       </ul>
+      
+
     </header>
 
-    <main id="cart">
-      <h2>Your Cart</h2>
+    
+      <main id="cart">
+       
 
-      <div class="cart--item-list-container">
-        <ul class="item-list cart--item-list">
-          <!-- Take a look at cart-item.html -->
-        </ul>
-      </div>
-
-      <div class="total-section">
-        <div>
-          <h3>Total</h3>
-        </div>
-
-        <div>
-          <span class="total-number">£0.00</span>
-        </div>
-      </div>
+          
+          <!-- Cart item here: -->
+          <h2>Your Cart</h2>
+          
+          <div class="cart--item-list-container">
+            <ul class="item-list cart--item-list">
+              <!-- Take a look at cart-item.html -->
+              
+            </ul>
+          </div>
+          
+          
+          
+          
+          
+          <div class="total-section">
+            <div>
+              <h3>Total</h3>
+            </div>
+            
+            <div>
+              <span class="total-number"></span>
+            </div>
+          </div>
+          
+       
     </main>
+
+    
+
+
     <div>
       Icons made by
       <a href="https://www.flaticon.com/authors/icongeek26" title="Icongeek26">
@@ -46,5 +77,11 @@
         www.flaticon.com
       </a>
     </div>
+
+    <script defer src="src/index.js" type="module"></script>
+    <script defer src="src/html-items.js" type="module"></script>
+    <script defer src="src/cart-html.js" type="module"></script>
+    <script defer src="src/check-box.js" type="module"></script>
+    
   </body>
 </html>
