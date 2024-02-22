@@ -54,33 +54,25 @@ const state = {
   cart: []
 };
 
-const createStore = (poke) => {
-
-  let itemName = poke.name
+const createStore = (item) => 
+{
+  let itemName = item.name
   itemName = itemName.charAt(0).toUpperCase() + itemName.slice(1)
   
-  return `<li class="card">
-      <h2 class="card--title">${pokeName}</h2>
-      <img
-        width="256"
-        class="card--img"
-        src=${poke.sprites.other["official-artwork"].front_default}
-      />
-      <ul class="card--text">
-        <li>HP: ${poke.stats[0].base_stat}</li>
-        <li>ATTACK: ${poke.stats[1].base_stat}</li>
-        <li>DEFENSE: ${poke.stats[2].base_stat}</li>
-        <li>SPECIAL-ATTACK: ${poke.stats[3].base_stat}</li>
-        <li>SPECIAL-DEFENSE: ${poke.stats[4].base_stat}</li>
-        <li>SPEED: ${poke.stats[5].base_stat}</li>
-      </ul>
-    </li>`
+  return `<li>
+  <div class="store--item-icon">
+    <img src="assets/icons/${item.id}.svg" alt="beetroot" />
+  </div>
+  <button>Add to cart</button>
+</li>`
     
+}
+  
+  const createAllStoreItems = (storeList) => {
+      return storeList.map(p => createStore(p))
   }
   
-  const createAllPokes = (pokelist) => {
-      return pokelist.map(p => createPoke(p))
-  }
-  
-  document.getElementsByClassName('cards')[0].innerHTML = createAllPokes(data).join('')
+  document.getElementsByClassName('cards')[0].innerHTML = createAllStoreItems(state.items).join('')
+
+  console.log(state.items)
   
