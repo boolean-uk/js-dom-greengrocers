@@ -121,16 +121,15 @@ function renderCart(){
   let totalPrice = 0
   for(let i = 0; i < state.cart.length; i++){
     const cartLi = document.createElement('li')
-    const cartDiv = document.createElement('div')
-    cartDiv.classList.add('cart--item-icon')
 
     const image = document.createElement('img')
     image.setAttribute('src', `assets/icons/${state.cart[i].id}.svg`)
-    cartDiv.appendChild(image)
+    image.classList.add('cart--item-icon')
+    cartLi.appendChild(image)
 
     const name = document.createElement('p')
     name.textContent = state.cart[i].name
-    cartDiv.appendChild(name)
+    cartLi.appendChild(name)
 
     const decreaseButton = document.createElement('button')
     decreaseButton.textContent ='-'
@@ -139,12 +138,12 @@ function renderCart(){
       renderCart()
     })
     decreaseButton.classList.add('remove-btn', 'center', 'quantity-btn')
-    cartDiv.appendChild(decreaseButton)
+    cartLi.appendChild(decreaseButton)
 
     const quantity = document.createElement('p')
     quantity.textContent = `${state.cart[i].quantity}`
     quantity.classList.add('quantity-text', 'center')
-    cartDiv.appendChild(quantity)
+    cartLi.appendChild(quantity)
     
     const increaseButton = document.createElement('button')
     increaseButton.textContent ='+'
@@ -153,9 +152,9 @@ function renderCart(){
       renderCart()
     })
     increaseButton.classList.add('add-btn', 'center', 'quantity-btn')
-    cartDiv.appendChild(increaseButton)
+    cartLi.appendChild(increaseButton)
 
-    cartLi.appendChild(cartDiv)
+    
     cartListUL.appendChild(cartLi)
 
     const subtotal = state.cart[i].quantity * state.cart[i].price
