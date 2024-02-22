@@ -5,8 +5,14 @@ console.log(state.items[0]);
 const storeContainer = document.querySelector(".store--item-list");
 const cartContainer = document.querySelector(".cart--item-list");
 const total = document.querySelector(".total-number");
+const filterDropdown = document.getElementById("filter-drop-down")
 
-state.items.forEach((item) => {
+const itemData = state.items;
+
+
+function renderStore(data){
+storeContainer.innerHTML = "";
+data.forEach((item) => {
   // Create a container for each item
   const card = document.createElement("li");
   card.classList.add("item");
@@ -31,6 +37,8 @@ state.items.forEach((item) => {
   card.append(itemIcon, addButtonStore);
   storeContainer.appendChild(card);
 });
+}
+renderStore(itemData)
 
 function update() {
   cartContainer.innerHTML = "";
@@ -68,7 +76,6 @@ function update() {
 
     cardCart.append(img, itemName, buttonRemove, quantity, buttonAdd);
     cartContainer.appendChild(cardCart);
-    calculateTotalPrice()
   });
 }
 
@@ -85,6 +92,7 @@ function addItemToCart(itemId) {
     state.cart.push({ ...storeItem, quantity: 1 });
   }
   console.log(state.cart);
+  calculateTotalPrice()
   update();
 }
 
@@ -96,11 +104,10 @@ function removeItemInCart(itemId) {
     cartItem.quantity--;
     if (cartItem.quantity === 0) {
       const itemIndex = state.cart.indexOf(cartItem);
-      state.cart.pop(itemIndex, 1);
+      state.cart.splice(itemIndex, 1);
     }
   }
-
-  console.log(state.cart);
+  calculateTotalPrice()
   update();
 }
 
@@ -114,4 +121,26 @@ function calculateTotalPrice() {
     total.innerHTML = `£${totalPrice.toFixed(2)}`
 
 }
+
+// Filter type
+function filterType(){
+  const value = filterDropdown.value;
+  if(value === "All" ){
+    renderStore(itemData);
+  }
+  else if( value === "Fruit"){
+    const fruits = itemData.filter((item) => item.type === 'fruit')
+    renderStore(fruits);
+    console.log(fruits);
+
+  } else if(value === "Vegetable"){
+    const vegetables = itemData.filter((item) => item.type === 'vegetable')
+    renderStore(vegetables);
+    console.log(vegetables);
+
+  }
+}
+
+filterDropdown.addEventListener("change", filterType);
+
 
