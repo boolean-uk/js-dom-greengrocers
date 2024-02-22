@@ -58,16 +58,13 @@ const state = {
 
 // Select Root Elements
 const groceriesListUL = document.querySelector(".item-list.store--item-list");
+const cartListUL = document.querySelector(".item-list.cart--item-list");
+const cartItems = cartListUL.querySelector('li');
 
 // Function to create an Item list item
 function createItemListItem(item) {
   const itemLi = document.createElement('li');
   itemLi.classList.add('store--item-icon');
-
-  // const itemName = document.createElement('h2');
-  // itemName.classList.add('item--title');
-  // itemName.innerText = item.name;
-  // itemLi.appendChild(itemName);
 
   const itemImg = createItemImage(item.id);
   itemLi.appendChild(itemImg);
@@ -77,20 +74,23 @@ function createItemListItem(item) {
   return itemLi;
 }
 
+// Helper function to set image of list item
 function createItemImage(itemId) {
   const itemImg = document.createElement('img');
   itemImg.classList.add('card--img');
   itemImg.setAttribute('src', `assets/icons/${itemId}.svg`);
   itemImg.setAttribute('width', '100');
-  itemImg.setAttribute('height', '100')
+  // itemImg.setAttribute('height', '100');
   return itemImg;
 }
 
+// Helper function to set button of list item
 function createAddToCartButton(item) {
   const button = document.createElement('button');
   button.innerText = 'ADD TO CART';
   button.addEventListener('click', () => {
     console.log(`${item.name} added`);
+    addGroceryToCart(item);
   })
   return button;
 }
@@ -104,6 +104,100 @@ function renderGroceries() {
   });
 }
 
+// Helper function to update the total based on cart items
+function updateTotal() {
+  const totalNumberSpan = document.querySelector('.total-number');
+  const itemPrice = 0.35;
+  let totalQuantity = 0;
+
+  const cartItems = cartListUL.querySelectorAll('li');
+  cartItems.forEach(cartItem => {
+    totalQuantity += parseInt(cartItem.querySelector('span.quantity-text').innerText);
+  });
+
+  const total = totalQuantity * itemPrice;
+  const formattedTotal = total.toFixed(2);
+  totalNumberSpan.textContent = `£${formattedTotal}`;
+}
+
+// Helper function to check if item already exists in cart
+function checkIfCartContainsItem(item) {
+  let itemExists = false;
+  const cartItems = cartListUL.querySelectorAll('li');
+  cartItems.forEach(cartItem => {
+    const cartItemName = cartItem.querySelector('p').innerText;
+    if (cartItemName === item.name) {
+      cartItem.querySelector('span.quantity-text').innerText = parseInt(cartItem.querySelector('span.quantity-text').innerText) + 1;
+      itemExists = true;
+    }
+  });
+  return itemExists;
+}
+
+// Function to add item to cart
+function addGroceryToCart(item) {
+  if (checkIfCartContainsItem(item)) {
+    updateTotal();
+    console.log("already in cart");
+  } else {
+  const cartLi = document.createElement('li');
+  
+  const cartItemImg = createItemImage(item.id);
+  cartLi.appendChild(cartItemImg);
+
+  const cartItemName = document.createElement('p');
+  cartItemName.innerText = item.name;
+  cartLi.appendChild(cartItemName);
+  cartListUL.appendChild(cartLi);
+
+  const cardinalityItemSpan = createCardinalityItemSpan();
+  const decreaseButton = createDecreaseButton(item, cardinalityItemSpan);
+  const increaseButton = createIncreaseButton(item, cardinalityItemSpan)
+  
+  cartLi.appendChild(decreaseButton);
+  cartLi.appendChild(cardinalityItemSpan);
+  cartLi.appendChild(increaseButton);
+  updateTotal();
+  }
+}
+
+// Helper function to create span for cart item
+function createCardinalityItemSpan() {
+  const span = document.createElement('span');
+  span.classList.add('quantity-text', 'center');
+  span.innerText = 1;
+  return span;
+}
+
+// Helper function to create decrease button for cart item
+function createDecreaseButton(item, span) {
+  const button = document.createElement('button');
+  button.classList.add('quantity-btn', 'remove-btn', 'center');
+  button.innerText = '-';
+  button.addEventListener('click', () => {
+    console.log(`${item.name} decreased by 1`);
+    if (parseInt(span.innerText) > 1) {
+        span.innerText = parseInt(span.innerText) - 1;
+    } else {
+      button.parentElement.remove();
+    }
+    updateTotal();
+  })
+  return button;
+}
+
+// Helper function to create increase button for cart item
+function createIncreaseButton(item, span) {
+  const button = document.createElement('button');
+  button.classList.add('quantity-btn', 'add-btn', 'center');
+  button.innerText = '+';
+  button.addEventListener('click', () => {
+    console.log(`${item.name} increased by 1`);
+    span.innerText = parseInt(span.innerText) + 1;
+    updateTotal();
+  })
+  return button;
+}
 
 // Render
 function main () {
