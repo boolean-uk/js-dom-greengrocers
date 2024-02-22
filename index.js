@@ -71,14 +71,28 @@ const state = {
       quantity: 0
     }
   ],
-  cart: []
+  cart: [],
+  isSorted: false,
+  originaItemsOrder: []
 };
 
 const storeListUL = document.querySelector(".item-list.store--item-list")
 const cartListUL = document.querySelector(".item-list.cart--item-list")
 const totalNumber = document.querySelector(".total-number")
+const storeExtraDiv = document.querySelector('h1')
+const lineBreak = document.createElement('br');
+
+state.originaItemsOrder = state.items.slice();
+
+const sortAlphaButton = document.createElement('button')
+sortAlphaButton.innerText = "Sort alphabetically"
+
+storeExtraDiv.appendChild(lineBreak)
+storeExtraDiv.appendChild(sortAlphaButton)
 
 function renderStore() {
+
+  storeListUL.innerHTML = ""
 
   for(let i = 0; i < state.items.length; i++) {
 
@@ -108,43 +122,32 @@ function renderStore() {
       renderCart();  
       updateTotalPrice();
     })
-    
-    /* ATTEMPT AT EXTENSION EXERCISES
-
-    const filterFruitButton = document.createElement('button')
-    filterFruitButton.innerText = "Sort by fruit"
-
-    filterFruitButton.addEventListener('click', () => {
-
-    })
-
-    const filterVegetableButton = document.createElement('button')
-    filterVegetableButton.innerText = "Sort by vegetable"
-
-    filterVegetableButton.addEventListener('click', () => {
-
-    })
-
-    const sortAlphaButton = document.createElement('button')
-    sortAlphaButton.innerText = "Sort alphabetically"
-
-    sortAlphaButton.addEventListener('click', () => {
-      state.cart.sort()
-    }) */
 
     
     storeLi.appendChild(storeDiv)
     storeLi.appendChild(storeImg)
     storeLi.appendChild(storeButton)
 
-    //storeListUL.appendChild(filterFruitButton)
-    //storeListUL.appendChild(filterVegetableButton)
-    //storeListUL.appendChild(sortAlphaButton)
     storeListUL.appendChild(storeLi)
 
   }
 
+  storeExtraDiv.appendChild(storeListUL)
+
 }
+
+sortAlphaButton.addEventListener('click', () => {
+  if (!state.isSorted) {
+    state.items.sort((a, b) => a.name.localeCompare(b.name));
+    state.isSorted = true;
+    sortAlphaButton.innerText = "Unsort"
+  } else {
+    sortAlphaButton.innerText = "Sort alphabetically"
+    state.items = state.originaItemsOrder.slice();
+    state.isSorted = false;
+  }
+  renderStore()
+})
 
 function renderCart() {
 
