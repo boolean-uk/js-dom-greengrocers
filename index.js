@@ -57,6 +57,9 @@ const state = {
 const storeList = document.getElementById("store").children[1]
 const cartList  = document.getElementById("cart").children[1].children[0]
 const totalText = document.querySelector(".total-number")
+const mainSection = document.getElementById("cart")
+
+const filterList = []
 
 // update data
 
@@ -96,6 +99,17 @@ function removeFromCart(item) {
 
 }
 
+function filterItem(item) {
+  for (const i in filterList) {
+    if (filterList[i] === item.name) {
+      filterList.splice(i, 1)
+      return true
+    } 
+  }
+  filterList.push(item.name)
+  console.log("Select " + item.name)
+}
+
 // Handle user clicks
 
 function handleClick(val, item) {
@@ -106,6 +120,11 @@ function handleClick(val, item) {
     removeFromCart(item)
     renderCart()
   }
+}
+
+function handleSelect(item) {
+  filterItem(item)
+  renderCart()
 }
 
 // Render the items
@@ -142,8 +161,8 @@ function renderCart() {
   let total = 0
   cartList.innerHTML = ""
   for (let i = 0; i < state.cart.length; i++) {
-    if (state.cart[i].amount > 0) {
-      
+    if (state.cart[i].amount > 0 && (filterList.includes(state.cart[i].item.name) || filterList.length === 0)) {
+      console.log(filterList + " hey " + state.cart[i].item.name + " poopoo " + filterList.includes(state.cart[i].item.name))
       const cartLi = document.createElement("li")
       const cartImg = document.createElement("img")
 
@@ -179,11 +198,45 @@ function renderCart() {
     }
   }
   totalText.innerHTML = '£' + (Math.round(total * 100) / 100).toFixed(2)
+}
 
+function renderFilterList() {
+  // The list of items to filter by
+  const filterList = document.createElement("div")
+  filterList.setAttribute('id', 'filter-by--list')
+  // Title saying "Filter by" above list
+  const filterH5 = document.createElement("h5")
+  filterH5.setAttribute('id', 'filter-by--title')
+  filterH5.innerHTML = "Filter by"
+  mainSection.appendChild(filterH5)
+
+  // Add all the available items to the list
+  for (const i in state.items) {
+    const checkBoxDiv = document.createElement("div")
+
+    const checkBox = document.createElement("input")
+    checkBox.setAttribute('class', 'filter-by--items')
+    checkBox.setAttribute('type', 'checkbox')
+    checkBox.setAttribute('id', 'item-box--' + state.items[i].name)
+    checkBox.addEventListener('click', (event) => handleSelect(state.items[i]))
+
+    checkBoxDiv.appendChild(checkBox)
+
+    const checkBoxLabel = document.createElement("label")
+    checkBoxLabel.setAttribute('for', 'item-box--' + state.items[i].name)
+    checkBoxLabel.innerHTML = state.items[i].name
+
+    checkBoxDiv.appendChild(checkBoxLabel)
+
+    filterList.appendChild(checkBoxDiv)
+  }
+
+  mainSection.appendChild(filterList)
 }
 
 function main() {
   renderShopItems()
+  renderFilterList()
   renderCart()
 }
 
