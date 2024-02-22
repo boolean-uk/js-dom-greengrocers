@@ -59,7 +59,6 @@ const cartUl = document.querySelector(".cart--item-list");
 
 for (const item of state.items) {
   const li = document.createElement("li");
-  li.classList.add("item");
   const div = document.createElement("div");
   div.classList.add("store--item-icon");
 
@@ -74,7 +73,7 @@ for (const item of state.items) {
   button.textContent = "Add to cart";
 
   div.appendChild(img);
-  div.appendChild(button);
+  li.appendChild(button);
   li.appendChild(div);
 
   storeUl.appendChild(li);
@@ -91,7 +90,7 @@ function addToCart(item) {
     cost.textContent = `$${(
       Number(cost.textContent.slice(1)) + item.price
     ).toFixed(2)}`;
-    
+
   } else {
     const span = document.querySelector(
       `.quantity-text--${item.name.replace(" ", "-")}`
