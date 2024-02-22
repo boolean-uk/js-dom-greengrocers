@@ -3,6 +3,13 @@
 const cartList = document.querySelector(".cart--item-list")
 const storeList = document.querySelector(".store--item-list")
 
+//Get sorting buttons 
+const sortAlphabetticlyBtn = document.querySelector(".alphabeticalbtn")
+sortAlphabetticlyBtn.addEventListener('click', sortingAlphabetticly)
+
+const sortPriceBtn = document.querySelector(".pricebtn")
+sortPriceBtn.addEventListener('click', sortingOnPrice)
+
 
 main()
 
@@ -96,6 +103,7 @@ function updateCart(){
         cartItem.append(cartItemImage, cartItemName, removebtn, qty, addbtn)
 
         cartList.append(cartItem)
+        updateTotal()
 
         });
 }
@@ -125,5 +133,38 @@ function removeFromCart(itemId){
         state.cart.pop(state.cart.indexOf(cartItem))
     }
     updateCart()
+}
 
+function sortingAlphabetticly() {
+
+      // Sort the array alphabetically by the 'name' property
+      state.items.sort((a, b) => a.name.localeCompare(b.name));
+      storeList.innerHTML = ' '
+      createStoreList()
+      
+}
+
+function sortingOnPrice(){
+    console.log("price")
+    state.items.sort((a, b) => a.price - b.price);
+    storeList.innerHTML = ' '
+    createStoreList()
+
+}
+
+function updateTotal(){
+    let total = 0;
+
+    state.cart.forEach(cartItem => {
+        const item = state.items.find(item => item.id === cartItem.id);
+        if (item) {
+            total += item.price * cartItem.quantity;
+        }
+    });
+
+    // Assuming you have an element with the class "total-number" to display the total
+    const totalElement = document.querySelector(".total-number");
+    
+    // Update the HTML with the new total
+    totalElement.innerHTML = `£${total.toFixed(2)}`;
 }
