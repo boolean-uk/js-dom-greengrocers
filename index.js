@@ -13,27 +13,27 @@ const state = {
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.21
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.29
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.37
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.20
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.25
     },
     {
       id: "008-berry",
@@ -48,7 +48,7 @@ const state = {
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.40
     }
   ],
   cart: []
@@ -60,6 +60,9 @@ const cartList = document.querySelector('.cart--item-list')
 
 // Get total from html
 let total = document.querySelector('.total-number')
+
+// Get sort button from html
+const sortButton = document.querySelector('#sorting-button')
 
 
 function makeImageElement(item) {
@@ -207,10 +210,31 @@ function renderTotalCost() {
   total.innerText = '£' + totalNumber.toFixed(2)
 }
 
+function sortItems(sortingProperty) {
+  if (sortingProperty === 'price') {
+    state.items = state.items.sort((a, b) => a.price - b.price)
+  } else if (sortingProperty === 'alphabetic') {
+    state.items.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+  } else if (sortingProperty === 'alphabetic descending') {
+    state.items.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)).reverse()
+  }
+  console.log(state.items)
+  renderStoreItems()
+}
+
+function registerSorting() {
+  sortButton.addEventListener('click', () => {
+    const sortingProperty = document.querySelector('#sorting').value
+    console.log('Sort by: ' + sortingProperty)
+    sortItems(sortingProperty)
+  })
+}
+
 function main() {
   renderStoreItems()
   renderCartItems()
   renderTotalCost()
+  registerSorting()
 }
 
 main()
