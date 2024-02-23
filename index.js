@@ -3,52 +3,72 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
+
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
+
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
+
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
+
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
+
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
+
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
+
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
+
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
+
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
+
     }
   ],
   cart: []
@@ -64,6 +84,23 @@ document.addEventListener('DOMContentLoaded', function() {
   const cartItemList = document.querySelector('.cart--item-list');
   const totalNumber = document.querySelector('.total-number');
 
+  //Extension 1
+  const filterButtons = document.querySelectorAll('.filter-btn'); // Select all filter buttons
+
+  //Extension1
+  //Function to filter items by type
+  const filterItems = (type) => {
+    if (type === 'vegetable') {
+      return state.items.filter(item => item.type === 'vegetable');
+    } else if (type === 'fruit') {
+      return state.items.filter(item => item.type === 'fruit');
+    } else {
+      return state.items; // Return all items if the type is 'all'
+    }
+  };
+
+
+  /* TASK: CORE 
   // The populateStore() function iterates over the state.items array and creates HTML elements dynamically for each item, then it adds to the store list.
   function populateStore() {
     state.items.forEach(item => {
@@ -77,6 +114,38 @@ document.addEventListener('DOMContentLoaded', function() {
       storeItemList.appendChild(li);
     });
   }
+  */
+
+  
+  //Extension 1
+  // Function to populate the store with filtered items
+  const populateStore = (items) => {
+    storeItemList.innerHTML = '';
+    items.forEach(item => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div class="store--item-icon">
+          <img src="assets/icons/${item.id}.svg" alt="${item.name}" />
+        </div>
+        <button class="add-to-cart-btn" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}">Add to cart</button>
+      `;
+      storeItemList.appendChild(li);
+    });
+  };
+
+  
+  //Extension1  
+  //Function to setup filter button events
+  const setupFilterEvents = () => {
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const filterType = button.getAttribute('data-filter');
+        const filteredItems = filterItems(filterType);
+        populateStore(filteredItems);
+      });
+    });
+  };
+
 
   //This function adds a click event listener to the store item buttons.
   //When u click, it will extract item details from the button attributes and then it calls addToChart() function.
@@ -145,9 +214,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   //Remove Cart Item: This function removes an item from the cart array based on its ID.
   function removeCartItem(itemId) {
-    state.cart = state.cart.filter(item => item.id !== itemId);
-    renderCart();
+    const itemIndex = state.cart.findIndex(item => item.id === itemId);
+    if (itemIndex !== -1) {
+        const currentItem = state.cart[itemIndex];
+        if (currentItem.quantity === 1) {
+            state.cart.splice(itemIndex, 1); // Remove the item from the cart if its quantity is 1
+        } else {
+            currentItem.quantity--; // Decrease the quantity if it's more than 1
+        }
+        renderCart();
+    }
   }
+
 
   // This function increases the quantity of an item in the cart array based on its ID.
   function increaseCartItemQuantity(itemId) {
@@ -160,9 +238,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initialize the application, The init() function initializes the application by populating the store, setting up event listeners, rendering the initial cart, and starting the application.
   function init() {
-    populateStore();
+    populateStore(state.items);
     setupStoreEvents();
     setupCartEvents();
+    setupFilterEvents();
     renderCart();
   }
 
