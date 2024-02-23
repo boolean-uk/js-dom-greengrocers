@@ -176,6 +176,13 @@ button {
   font-weight: bold;
 }
 
+.store--buttons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
 @media only screen and (max-width: 450px) {
   .total-section {
     border-top: 2px solid #00675b;
