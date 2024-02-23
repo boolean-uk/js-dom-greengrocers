@@ -33,7 +33,7 @@ const state = {
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.55
     },
     {
       id: "008-berry",
@@ -43,12 +43,12 @@ const state = {
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.05
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.15
     }
   ],
   cart: []
@@ -72,7 +72,6 @@ function addTypeToExisting(){
 
 //Create other category
 function addNewProducts(){
-  
   let idCount = 10
   for(let i = 0; i < 10; i ++){
     let newProd = {}
@@ -98,6 +97,12 @@ function renderButtons(){
   const filterOtherButton = document.createElement('button')
   filterOtherButton.textContent = 'Filter other'
 
+  const sortAlph = document.createElement('button')
+  sortAlph.textContent = 'Sort A-Z'
+
+  const sortPrice = document.createElement('button')
+  sortPrice.textContent = 'Sort by price'
+
   //EventListeners
   showAllButton.addEventListener('click',() => {
     chosenType = ''
@@ -111,12 +116,20 @@ function renderButtons(){
     chosenType = 'other'
     renderStore()
   })
+  sortAlph.addEventListener('click',() => {
+    sortAlpha()
+  })
+  sortPrice.addEventListener('click',() => {
+    sortByPrice()
+  })
 
   const buttonDiv = document.createElement('div')
 
   buttonDiv.append(showAllButton)
   buttonDiv.append(filterFruitButton)
   buttonDiv.append(filterOtherButton)
+  buttonDiv.append(sortAlph)
+  buttonDiv.append(sortPrice)
   h1.append(buttonDiv)
 }
 
@@ -203,6 +216,17 @@ function renderTotalSpan(){
     totalCost += state.cart[i].price * state.cart[i].count
   }
   totalSpan.innerText = '£: '+ totalCost.toFixed(2)
+}
+
+//Sort list
+function sortAlpha(){
+  state.items = state.items.sort((a, b) => a.name.localeCompare(b.name))
+  renderStore()
+}
+
+function sortByPrice(){
+  state.items = state.items.sort((a, b) => a.price - b.price)
+  renderStore()
 }
 
 //Button functions
