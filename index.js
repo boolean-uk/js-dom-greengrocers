@@ -50,11 +50,12 @@ const state = {
       name: "eggplant",
       price: 0.35
     }
-  ],
-  cart: []
+  ]
 };
 
 const cartItems = {};
+
+let totalPrice = 0.00
 
 // Selected Root Element
 const storeItemListUL = document.querySelector(".store--item-list")
@@ -90,20 +91,64 @@ function createButtonForItem(itemLI, item) {
   const itemButton = document.createElement('button')
   itemButton.setAttribute('type', 'button')
   itemButton.textContent = 'ADD TO CART'
-  itemButton.addEventListener('click', () => {addItemToCart(itemLI, item)})
+  itemButton.addEventListener('click', () => {addItemToCart(item)})
   itemLI.appendChild(itemButton)
 }
 
-function addItemToCart(itemLI, item) {
+/** ------------------- Cart Items ------------------- **/
+
+function addItemToCart(item) {
   if (cartItems.hasOwnProperty(item.name)) {
-    cartItems[item.name] += 1
+    increaseItemAmount(item)
   } else {
-    cartItems[item.name] = 1
+    cartItems[item.name] = { quantity : 1 } 
+    increasePrice(item)
     createCartItem(item)
   }
-  console.log(cartItems)
 }
 
+
+/** --------------------------- Start -------------------------- **/
+/** --------------------- Updating the Cart -------------------- **/
+
+function increaseItemAmount(item) {
+  updateQuantityDisplay(item, 1)
+  increasePrice(item)
+}
+
+function decreaseItemAmount(item) {
+  if (cartItems[item.name].quantity - 1 === 0) {
+    cartItemListUL.removeChild(cartItems[item.name].listItem)
+    delete cartItems[item.name]
+  } else {
+    updateQuantityDisplay(item, -1)
+  }
+  decreasePrice(item)
+}
+
+function updateQuantityDisplay(item, number) {
+  const newQuantity = cartItems[item.name].quantity + number
+  cartItems[item.name].quantity = newQuantity
+  cartItems[item.name].displayer.textContent = newQuantity
+}
+
+function increasePrice(item) {
+  totalPrice += item.price
+  totalPrice = Math.round((totalPrice + Number.EPSILON) * 100) / 100
+  document.querySelector('.total-number').textContent = '£' + totalPrice
+}
+
+function decreasePrice(item) {
+  totalPrice -= item.price
+  totalPrice = Math.round((totalPrice + Number.EPSILON) * 100) / 100
+  document.querySelector('.total-number').textContent = '£' + totalPrice
+}
+/** --------------------- Updating the Cart -------------------- **/
+/** --------------------------- End ---------------------------- **/
+
+
+/** --------------------------- Start -------------------------- **/
+/** ------------------- Create new Cart Item ------------------- **/
 function createCartItem(item) {
   const itemLI = document.createElement('li')
 
@@ -129,17 +174,14 @@ function createImageForCartItem(itemLI, item, imageSrc) {
 function createButtonsForCartItem(itemLI, item) {
   const quantityDisplayer = document.createElement('span')
   quantityDisplayer.setAttribute('class', 'quantity-text center')
-  quantityDisplayer.textContent = cartItems[item.name]
-  quantityDisplayer.addEventListener('')
+  quantityDisplayer.textContent = 1
 
   const buttonMinus = document.createElement('button')
-  //buttonMinus.setAttribute('type', 'button')
   buttonMinus.setAttribute('class', 'quantity-btn remove-btn center')
   buttonMinus.textContent = '-'
-  buttonMinus.addEventListener('click', () => {increaseItemAmount(item, quantityDisplayer)})
+  buttonMinus.addEventListener('click', () => {decreaseItemAmount(item)})
   
   const buttonPlus = document.createElement('button')
-  //buttonPlus.setAttribute('type', 'button')
   buttonPlus.setAttribute('class', 'quantity-btn add-btn center')
   buttonPlus.textContent = '+'
   buttonPlus.addEventListener('click', () => {increaseItemAmount(item)})
@@ -147,24 +189,12 @@ function createButtonsForCartItem(itemLI, item) {
   itemLI.appendChild(buttonMinus)
   itemLI.appendChild(quantityDisplayer)
   itemLI.appendChild(buttonPlus)
-}
 
-function increaseItemAmount(item, quantityDisplayer) {
-  quantityDisplayer.textContent = 5
+  cartItems[item.name].displayer = quantityDisplayer
+  cartItems[item.name].listItem = itemLI
 }
-
-function decreaseItemAmount(item) {
-
-}
-
-function createOrUpdateQuantityDisplay(itemLI, item, quantity) {
-  if (quantity === 1) {
-    const quantityDisplayer = document.createElement('span')
-    quantityDisplayer.setAttribute('class', 'quantity-text center')
-    quantityDisplayer.textContent = cartItems[item.name]
-    itemLI.appendChild(quantityDisplayer)
-  }
-}
+/** ------------------- Create new Cart Item ------------------- **/
+/** ------------------------- End ------------------------------ **/
 
 function main() {
   renderStoreItems()
