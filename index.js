@@ -3,65 +3,119 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: "berry"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.1,
+      type: "berry"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     }
   ],
-  cart: []
+  cart: [],
+  types: ["vegetable", "fruit", "berry"]
 };
 
 const store = document.querySelector('.store--item-list');
 
 const cartContainer = document.querySelector('.cart--item-list-container');
 const total = document.getElementById('total-number');
+
 let sum = 0;
 
-const displayItems = () => {
-  state.items.forEach(item => {
+// Filter by type
+const container = document.querySelector('.filter-buttons')
+
+const typeButtons = () => {
+  const buttonAll = document.createElement('button')
+  buttonAll.id = 'all'
+  buttonAll.textContent = 'Show all'
+  container.appendChild(buttonAll)
+  buttonAll.addEventListener('click', e => {
+    displayItems(state.items)
+  })
+  state.types.forEach(type => {
+    const button = document.createElement('button')
+    button.id = (`${type}`)
+    button.textContent = `Filter by ${type}`
+    container.appendChild(button)
+    button.addEventListener('click', e => {
+      const filteredList = state.items.filter(item => item.type === e.target.id)
+      displayItems(filteredList)
+    })
+  })
+}
+
+// Sort by price and alphabetically
+const sort = () => {
+  const priceButton = document.createElement('button')
+  priceButton.textContent = "Cheapest"
+  container.appendChild(priceButton)
+  priceButton.addEventListener('click', e => {
+    const sortedList = [...state.items].sort((a, b) => a.price - b.price)
+    displayItems(sortedList)
+  })
+  const alphabetically = document.createElement('button')
+  alphabetically.textContent = "Alphabetically"
+  container.appendChild(alphabetically)
+  alphabetically.addEventListener('click', e => {
+    const sortedList = [...state.items].sort((a, b) => {return a.name.localeCompare(b.name)})
+      displayItems(sortedList)
+  })
+}
+
+const displayItems = (list) => {
+  store.innerHTML = ""
+  list.forEach(item => {
     const card = createItemCard(item);
     store.appendChild(card);
   });
@@ -158,5 +212,7 @@ const createCartCard = (item) => {
   return cartCard;
 };
 
-displayItems();
+displayItems(state.items);
 renderCart();
+typeButtons();
+sort();

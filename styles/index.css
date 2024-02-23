@@ -176,9 +176,14 @@ button {
   font-weight: bold;
 }
 
+.filter-buttons {
+  text-align: center;
+}
+
 @media only screen and (max-width: 450px) {
   .total-section {
     border-top: 2px solid #00675b;
     border-bottom: 2px solid #00675b;
   }
 }
+
