@@ -7,6 +7,7 @@ const cartContainer = document.querySelector(".cart--item-list");
 const total = document.querySelector(".total-number");
 const filterDropdown = document.getElementById("filter-drop-down")
 
+//  Retrive items data from the state
 const itemData = state.items;
 
 
@@ -131,14 +132,21 @@ function filterType(){
   else if( value === "Fruit"){
     const fruits = itemData.filter((item) => item.type === 'fruit')
     renderStore(fruits);
-    console.log(fruits);
+    //console.log(fruits);
 
   } else if(value === "Vegetable"){
     const vegetables = itemData.filter((item) => item.type === 'vegetable')
     renderStore(vegetables);
-    console.log(vegetables);
+    //console.log(vegetables);
 
   }
+  else if(value === "Alphabetic"){
+  const alphabetic = itemData.sort((itemOne, itemTwo) =>itemOne.name.localeCompare(itemTwo.name));
+  renderStore(alphabetic);
+  //console.log(alphabetic);
+  }
+
+  
 }
 
 filterDropdown.addEventListener("change", filterType);
