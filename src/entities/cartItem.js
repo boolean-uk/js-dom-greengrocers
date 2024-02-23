@@ -6,29 +6,29 @@ class CartItem {
         this.price = item.price
         this.quantity = 1
         this.imgURL = 'assets/icons/' + item.id + '.svg'
-        this.documentObject = null
+        this.documentObjects = null
     }
 
     getDocumentObject() {
-        if (this.documentObject === null) {
+        if (this.documentObjects === null) {
             this.#render()
         }
-        return this.documentObject.main
+        return this.documentObjects.main
     }
 
     removeDocumentObject() {
-        this.documentObject.main.remove()
-        this.documentObject = null
+        this.documentObjects.main.remove()
+        this.documentObjects = null
     }
 
     incrementQuantity() {
         this.quantity++
-        this.#updateRender();
+        this.#rerender();
     }
 
     decrementQuantity() {
         this.quantity = Math.max(this.quantity-1, 0)
-        this.#updateRender()
+        this.#rerender()
     }
 
     getTotalPrice() {
@@ -36,22 +36,22 @@ class CartItem {
     }
 
     #render() {
-        this.documentObject = {}
-        this.documentObject.main = document.createElement('li')
-        this.documentObject.img = this.#renderImg()
-        this.documentObject.name = this.#renderName()
-        this.documentObject.decrementButton = this.#renderDecrementButton()
-        this.documentObject.quantity = this.#renderQuantity()
-        this.documentObject.incrementButton = this.#renderIncrementButton()
-        this.documentObject.main.append(this.documentObject.img)
-        this.documentObject.main.append(this.documentObject.name)
-        this.documentObject.main.append(this.documentObject.decrementButton)
-        this.documentObject.main.append(this.documentObject.quantity)
-        this.documentObject.main.append(this.documentObject.incrementButton)
+        this.documentObjects = {}
+        this.documentObjects.main = document.createElement('li')
+        this.documentObjects.img = this.#renderImg()
+        this.documentObjects.name = this.#renderName()
+        this.documentObjects.decrementButton = this.#renderDecrementButton()
+        this.documentObjects.quantity = this.#renderQuantity()
+        this.documentObjects.incrementButton = this.#renderIncrementButton()
+        this.documentObjects.main.append(this.documentObjects.img)
+        this.documentObjects.main.append(this.documentObjects.name)
+        this.documentObjects.main.append(this.documentObjects.decrementButton)
+        this.documentObjects.main.append(this.documentObjects.quantity)
+        this.documentObjects.main.append(this.documentObjects.incrementButton)
     }
 
-    #updateRender() {
-        this.documentObject.quantity.innerText = this.quantity
+    #rerender() {
+        this.documentObjects.quantity.innerText = this.quantity
     }
 
     #renderImg() {

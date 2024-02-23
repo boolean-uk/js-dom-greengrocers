@@ -69,7 +69,7 @@ function insertStoreItems() {
   state.data.forEach(item => {
     const storeItem = new StoreItem(item)
     state.storeDocumentObject.append(storeItem.getDocumentObject())
-    storeItem.documentObject.addButton.addEventListener('click', function() {addToCart(storeItem.id)})
+    storeItem.documentObjects.addButton.addEventListener('click', function() {addToCart(storeItem.id)})
     state.storeItems.push(storeItem)
   })
 }
@@ -87,7 +87,7 @@ function addToCart(id) {
 function insertCartItem(id) {
   const cartItem = new CartItem(getItemDataById(id))
   state.cartDocumentObject.append(cartItem.getDocumentObject())
-  cartItem.documentObject.decrementButton.addEventListener('click', function() {
+  cartItem.documentObjects.decrementButton.addEventListener('click', function() {
     cartItem.decrementQuantity()
     if (cartItem.quantity === 0) {
       cartItem.removeDocumentObject()
@@ -95,13 +95,12 @@ function insertCartItem(id) {
     }
     updateTotalPrice()
   })
-  cartItem.documentObject.incrementButton.addEventListener('click', function() {
+  cartItem.documentObjects.incrementButton.addEventListener('click', function() {
     cartItem.incrementQuantity()
     updateTotalPrice()
   })
   state.cartItems.push(cartItem)
 }
-
 
 function updateTotalPrice() {
   state.totalPrice = 0

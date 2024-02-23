@@ -3,28 +3,28 @@ class StoreItem {
         this.id = item.id
         this.name = item.name
         this.imgURL = 'assets/icons/' + item.id + '.svg'
-        this.documentObject = null
+        this.documentObjects = null
     }
 
     getDocumentObject() {
-        if (this.documentObject === null) {
+        if (this.documentObjects === null) {
             this.#render()
         }
-        return this.documentObject.main
+        return this.documentObjects.main
     }
 
     removeDocumentObject() {
-        this.documentObject.main.remove()
-        this.documentObject = null
+        this.documentObjects.main.remove()
+        this.documentObjects = null
     }
 
     #render () {
-        this.documentObject = {}
-        this.documentObject.main = document.createElement('li')
-        this.documentObject.img = this.#renderImg()
-        this.documentObject.addButton = this.#renderAddButton()
-        this.documentObject.main.append(this.documentObject.img)
-        this.documentObject.main.append(this.documentObject.addButton)
+        this.documentObjects = {}
+        this.documentObjects.main = document.createElement('li')
+        this.documentObjects.img = this.#renderImg()
+        this.documentObjects.addButton = this.#renderAddButton()
+        this.documentObjects.main.append(this.documentObjects.img)
+        this.documentObjects.main.append(this.documentObjects.addButton)
     }
 
     #renderImg() {

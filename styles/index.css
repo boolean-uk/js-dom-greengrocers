@@ -1,4 +1,11 @@
 /* Typography */
+:root {
+  --store-green: #e7f4ea;
+  --store-dark-green: #d6fade;
+  --store-height: 40vh;
+  --store--nav-height: 4vh;
+  --cart-height: calc(100vh - (var(--store-height) + var(--store--nav-height)))
+}
 
 body {
   font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
@@ -13,22 +20,18 @@ h2 {
 
 button {
   padding: 0.25rem 0.5rem;
-
   text-transform: uppercase;
   font-size: 0.725rem;
-
   cursor: pointer;
 }
 
 /* Store */
 
 #store {
-  height: 40vh;
+  height: var(--store-height);
   padding: 1rem;
-
   overflow-y: scroll;
-
-  background-color: #e7f4ea;
+  background-color: var(--store-green)
 }
 
 #store h1 {
@@ -53,6 +56,23 @@ button {
   height: 125px;
 }
 
+.store--nav {
+  height: var(--store--nav-height);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--store-dark-green);
+  border-bottom: 1px solid grey;
+}
+
+.store--nav select {
+  width: 200px;
+  margin: 0.5rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 @media only screen and (max-width: 600px) {
   .store--item-list {
     grid-template-columns: repeat(3, 125px);
@@ -68,15 +88,12 @@ button {
 /* Cart */
 
 #cart {
-  height: 60vh;
+  height: var(--cart-height);
   padding: 1rem;
-
   display: grid;
   grid-template-rows: auto 1fr auto;
   grid-gap: 1rem;
   justify-content: center;
-
-  border-top: 2px solid #e7f4ea;
 }
 
 #cart h2 {
@@ -88,9 +105,7 @@ button {
   min-width: 320px;
   height: 100%;
   padding: 0 1rem;
-
   overflow-y: scroll;
-
   border-radius: 0.5rem;
   border: 2px solid #757575;
 }
@@ -103,14 +118,11 @@ button {
 
 .cart--item-list li {
   padding: 1rem 0;
-
   display: grid;
   grid-template-columns: 24px minmax(150px, 1fr) repeat(3, auto);
   grid-gap: 0.5rem;
   align-items: center;
-
   border-bottom: 1px dotted #000000;
-
   font-size: 1.25rem;
 }
 
@@ -131,9 +143,7 @@ button {
   width: 20px;
   height: 20px;
   padding: 0;
-
   border-radius: 0.25rem;
-
   font-weight: bold;
 }
 
@@ -152,11 +162,9 @@ button {
 .quantity-text {
   width: 24px;
   height: 24px;
-
   border-radius: 0.25rem;
   border: 2px solid #757575;
   color: #757575;
-
   text-align: center;
   font-size: 0.75rem;
   font-weight: bold;
@@ -166,7 +174,6 @@ button {
 
 .total-section {
   padding: 0.5rem 1rem;
-
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
