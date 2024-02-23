@@ -11,6 +11,11 @@
   </head>
   <body>
     <header id="store">
+      <p style="position: absolute;">Sort By: </p>
+      <select style="height: min-content; position: absolute; left: 80px;" name="sort" class="sort_order" onchange="onSortRequest(this)">
+        
+      </select>
+
       <h1>Greengrocers</h1>
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
@@ -19,7 +24,6 @@
 
     <main id="cart">
       <h2>Your Cart</h2>
-
       <div class="cart--item-list-container">
         <ul class="item-list cart--item-list">
           <!-- Take a look at cart-item.html -->
