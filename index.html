@@ -12,32 +12,56 @@
 </head>
 
 <body>
-  <header id="store">
-    <h1>Greengrocers</h1>
-    <ul class="item-list store--item-list">
-      <!-- Take a look at store-item.html -->
-    </ul>
-  </header>
+  <div class="layout-container">
+    <header id="store">
+      <h1>Greengrocers</h1>
 
-  <main id="cart">
-    <h2>Your Cart</h2>
+      <div class="filter-sort-container">
+        <div class="select-group">
+          <label for="filter-type">Filter by Type:</label>
+          <select id="filter-type">
+            <option value="all">All</option>
+            <option value="fruit">Fruits</option>
+            <option value="vegetable">Vegetables</option>
+          </select>
+        </div>
 
-    <div class="cart--item-list-container">
-      <ul class="item-list cart--item-list">
-        <!-- Take a look at cart-item.html -->
+        <div class="select-group">
+          <label for="sort-options">Sort by:</label>
+          <select id="sort-options">
+            <option value="price-asc">Price (Low to High)</option>
+            <option value="price-desc">Price (High to Low)</option>
+            <option value="alpha-asc">Alphabetical (A-Z)</option>
+            <option value="alpha-desc">Alphabetical (Z-A)</option>
+          </select>
+        </div>
+      </div>
+
+
+      <ul class="item-list store--item-list">
       </ul>
-    </div>
+    </header>
 
-    <div class="total-section">
-      <div>
-        <h3>Total</h3>
+    <main id="cart">
+      <h2>Your Cart</h2>
+
+      <div class="cart--totals-container">
+        <div class="total-section">
+          <div>
+            <h3>Total</h3>
+          </div>
+          <div>
+            <span class="total-number">£0.00</span>
+          </div>
+        </div>
       </div>
 
-      <div>
-        <span class="total-number">£0.00</span>
+      <div class="cart--item-list-container">
+        <ul class="item-list cart--item-list">
+        </ul>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
   <div>
     Icons made by
     <a href="https://www.flaticon.com/authors/icongeek26" title="Icongeek26">
