@@ -40,6 +40,8 @@ button {
   grid-template-columns: repeat(4, 125px);
   grid-gap: 1rem;
   justify-content: center;
+  padding-left: 50vw;
+  position: relative;
 }
 
 .store--item-list li {
@@ -53,6 +55,14 @@ button {
   height: 125px;
 }
 
+.sortItems {
+  display: block;
+  place-items: center;
+  position: absolute;
+  z-index: 10;
+}
+
+
 @media only screen and (max-width: 600px) {
   .store--item-list {
     grid-template-columns: repeat(3, 125px);
@@ -64,6 +74,7 @@ button {
     grid-template-columns: repeat(2, 125px);
   }
 }
+
 
 /* Cart */
 
