@@ -4,60 +4,70 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
+      type: 'veggie',
       img: 'assets/icons/001-beetroot.svg'
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
+      type: 'veggie',
       img: 'assets/icons/002-carrot.svg'
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
+      type: 'fruit',
       img: 'assets/icons/003-apple.svg'
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
+      type: 'fruit',
       img: 'assets/icons/004-apricot.svg'
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
+      type: 'veggie',
       img: 'assets/icons/005-avocado.svg'
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
+      type: 'fruit',
       img: 'assets/icons/006-bananas.svg'
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
+      type: 'veggie',
       img: 'assets/icons/007-bell-pepper.svg'
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
+      type: 'berry',
       img: 'assets/icons/008-berry.svg'
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
+      type: 'berry',
       img: 'assets/icons/009-blueberry.svg'
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
+      type: 'veggie',
       img: 'assets/icons/010-eggplant.svg'
     }
   ],
@@ -104,7 +114,7 @@ function runCommand(id) {
 
 function cartOutput() {
   console.log("itemOutput")
-  cartList.innerHTML = ""; 
+  cartList.innerHTML = " "; 
   state.cart.forEach(item => {
     const listLi = document.createElement('li');
 
@@ -153,30 +163,58 @@ function deleteItem(id){
     }
 
 
-function itemOutput() {
-  list.innerHTML = ""; 
-  state.items.forEach(item => {
-    const listCard = document.createElement('li');
-    listCard.setAttribute('id', item.id);
+    function itemOutput() {
+      const selectedType = document.getElementById("itemFilter").value;
+      list.innerHTML = ""; 
+    
+      const filteredItems = selectedType === "all" ? state.items : state.items.filter(item => item.type === selectedType);
+    
+      filteredItems.forEach(item => {
 
-    const newImage = document.createElement('img');
-    newImage.setAttribute('alt', item.name);
-    newImage.src = item.img;
+        const listCard = document.createElement('li');
+        listCard.setAttribute('class', 'item');
 
-    const listPrice = document.createElement('p');
-    listPrice.innerHTML = item.price;
+        const newImage = document.createElement('img');
+        newImage.setAttribute('class', 'item-image');
+        newImage.setAttribute('src', item.img);
+        newImage.setAttribute('alt', item.name);
+        listCard.appendChild(newImage);
+    
+        const itemName = document.createElement('h3');
+        itemName.innerText = item.name;
+        listCard.appendChild(itemName);
 
-    const listBtn = document.createElement('button');
-    listBtn.setAttribute('class', 'btn');
-    listBtn.onclick = function() { runCommand(item.id); };
-    listBtn.innerHTML = 'Buy';
+        const itemPrice = document.createElement('p');
+        itemPrice.innerText = `£${item.price.toFixed(2)}`;
+        listCard.appendChild(itemPrice);
+    
+        const buyButton = document.createElement('button');
+        buyButton.setAttribute('class', 'buy-btn');
+        buyButton.innerText = 'Buy';
+        buyButton.onclick = function() { runCommand(item.id); };
+        listCard.appendChild(buyButton);
 
-    listCard.appendChild(newImage);
-    listCard.appendChild(listPrice);
-    listCard.appendChild(listBtn);
-    list.appendChild(listCard);
+        list.appendChild(listCard);
+      });
+    }
+    
+
+function populateFilterDropdown() {
+  const itemFilter = document.getElementById("itemFilter");
+  const uniqueTypes = Array.from(new Set(state.items.map(item => item.type)));
+
+  uniqueTypes.forEach(type => {
+    const option = document.createElement('option');
+    option.value = type;
+    option.innerText = type.charAt(0).toUpperCase() + type.slice(1);
+    itemFilter.appendChild(option);
   });
 }
+function setupFilterListener() {
+  const itemFilter = document.getElementById("itemFilter");
+  itemFilter.addEventListener('change', itemOutput);
+}
+
 
 function calculateTotal(){
   let sum = 0;
@@ -188,6 +226,8 @@ function calculateTotal(){
 
 function main() {
   console.log("Initializing the application...");
+  populateFilterDropdown();
+  setupFilterListener();
   itemOutput(); 
 }
 
