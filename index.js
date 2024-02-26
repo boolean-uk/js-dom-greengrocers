@@ -4,51 +4,61 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
+      group: "vegetable",
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
+      group: "vegetable",
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
+      group: "fruit",
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
+      group: "fruit",
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
+      group: "vegetable",
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
+      group: "fruit",
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
+      group: "vegetable",
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
+      group: "fruit",
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
+      group: "fruit",
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
+      group: "vegetable",
     },
   ],
   cart: [],
@@ -57,15 +67,25 @@ const state = {
 // Selected Root Elements
 const storeItemListUL = document.querySelector(".store--item-list");
 const cartItemListUL = document.querySelector(".cart--item-list");
-const total = document.querySelector(".total-number")
+const total = document.querySelector(".total-number");
+const store = document.querySelector("#store");
+let vegetablesOnly = false
+let fruitsOnly = false
 
 function renderItems() {
   // Reset all of the items
   storeItemListUL.innerHTML = "";
+
   // Loop through the data create a new li element for each
   for (let i = 0; i < state.items.length; i++) {
     // Get the current item
     const item = state.items[i];
+
+    // only show right group
+    if ((vegetablesOnly && item.group !== 'vegetable') || (fruitsOnly && item.group !== 'fruit')) {
+      continue
+    }
+    console.log("filtered: " + item.name)
 
     // Create a <li></li> for the item
     const storeItemLi = document.createElement("li");
@@ -90,8 +110,10 @@ function renderItems() {
     addButton.addEventListener("click", () => {
       addItemToStateCart(item);
       //add to total
-      const oldTotal = parseFloat(total.innerText.substring(1, total.innerText.length))
-      total.innerText = '£' + (oldTotal + item.price)
+      const oldTotal = parseFloat(
+        total.innerText.substring(1, total.innerText.length)
+      );
+      total.innerText = "£" + (oldTotal + item.price).toFixed(2);
     });
 
     // Add the list item to the list
@@ -113,7 +135,6 @@ function addItemToStateCart(item) {
   }
   if (!found) {
     item.quantity = 1;
-    console.log(item)
     state.cart.push(item);
   }
 
@@ -125,7 +146,7 @@ function createCartItemLi() {
   // Reset all of the items
   cartItemListUL.innerHTML = "";
 
-  console.log(state.cart)
+  console.log(state.cart);
 
   //för varje element, skapa det igen
   for (let i = 0; i < state.cart.length; i++) {
@@ -154,17 +175,18 @@ function createCartItemLi() {
     // create eventlistener to button
     decrementButton.addEventListener("click", () => {
       // om den klickas ska quantity i state.cart bli minus ett
-      const index = state.cart.findIndex(item => item.id === item.id);
+      const index = state.cart.findIndex((item) => item.id === item.id);
       state.cart[index].quantity--;
       //span ska minska med 1
       const span = cartItemLi.querySelector(".quantity-text");
       const quantity = parseInt(span.innerText);
       span.innerText = quantity - 1;
 
-      //minska total
-      const oldTotal = parseFloat(total.innerText.substring(1, total.innerText.length))
-      console.log(oldTotal)
-      total.innerText = '£' + (oldTotal - item.price)
+      //minska total med två decimaler
+      const oldTotal = parseFloat(
+        total.innerText.substring(1, total.innerText.length)
+      );
+      total.innerText = "£" + (oldTotal - item.price).toFixed(2);
 
       // om quantity = 0 ska detta element tas bort ur state cart och html view
       if (state.cart[index].quantity === 0) {
@@ -176,7 +198,7 @@ function createCartItemLi() {
     // Create span
     const span = document.createElement("span");
     span.setAttribute("class", "quantity-text");
-    span.innerText = 1;
+    span.innerText = item.quantity;
     cartItemLi.appendChild(span);
 
     // Create increment button
@@ -186,18 +208,18 @@ function createCartItemLi() {
     cartItemLi.appendChild(incrementButton);
     incrementButton.addEventListener("click", () => {
       // om den klickas ska quantity i state.cart bli plus ett
-      const index = state.cart.findIndex(item => item.id === item.id);
+      const index = state.cart.findIndex((item) => item.id === item.id);
       state.cart[index].quantity++;
-      console.log("quantity " + item.quantity)
       // uppdatera span
       const span = cartItemLi.querySelector(".quantity-text");
       const quantity = parseInt(span.innerText);
       span.innerText = quantity + 1;
 
-      //öka total 
-      const oldTotal = parseFloat(total.innerText.substring(1, total.innerText.length))
-      console.log(oldTotal)
-      total.innerText = '£' + (oldTotal + item.price)
+      //öka total
+      const oldTotal = parseFloat(
+        total.innerText.substring(1, total.innerText.length)
+      );
+      total.innerText = "£" + (oldTotal + item.price).toFixed(2);
     });
 
     // Add to html view
@@ -205,8 +227,50 @@ function createCartItemLi() {
   }
 }
 
+function renderButtons() {
+  const vegetableButton = document.createElement("button");
+  vegetableButton.style.width = "100px";
+  vegetableButton.style.height = "50px";
+  vegetableButton.innerText = 'vegetables only'
+  vegetableButton.addEventListener("click", () => {
+    // cannot have both fruits and vegetables only
+    if(fruitsOnly) {
+      return
+    }
+    if (vegetablesOnly === true) {
+      vegetablesOnly = false
+    }
+    else {
+      vegetablesOnly = true
+    }
+    //re-render
+    renderItems();
+  });
+  store.appendChild(vegetableButton);
+
+  const fruitButton = document.createElement("button");
+  fruitButton.style.width = "100px";
+  fruitButton.style.height = "50px";
+  fruitButton.innerText = 'fruits only'
+  fruitButton.addEventListener("click", () => {
+    if (vegetablesOnly) {
+      return
+    }
+    if (fruitsOnly === true) {
+      fruitsOnly = false
+    }
+    else {
+      fruitsOnly = true
+    }
+    //re-render
+    renderItems();
+  });
+  store.appendChild(fruitButton);
+}
+
 // Intial Render
 function main() {
+  renderButtons();
   renderItems();
 }
 
