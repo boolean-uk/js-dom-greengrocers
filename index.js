@@ -54,6 +54,7 @@ const state = {
   storeDocumentObject: document.getElementsByClassName('store--item-list')[0],
   cartDocumentObject: document.getElementsByClassName('cart--item-list')[0],
   totalPriceDocumentObject: document.getElementsByClassName('total-number')[0],
+  sortByDocumentObject: document.getElementById('sortBy'),
   storeItems: [],
   cartItems: [],
   totalPrice: 0
@@ -62,16 +63,25 @@ const state = {
 init()
 
 function init() {
-  insertStoreItems()
+  insertStoreItems(state.data)
+  addSortByEventListener()
 }
 
-function insertStoreItems() {
-  state.data.forEach(item => {
+function insertStoreItems(data) {
+  data.forEach(item => {
     const storeItem = new StoreItem(item)
     state.storeDocumentObject.append(storeItem.getDocumentObject())
     storeItem.documentObjects.addButton.addEventListener('click', function() {addToCart(storeItem.id)})
     state.storeItems.push(storeItem)
   })
+}
+
+function rerenderStoreItems(data) {
+  state.storeItems.forEach(item => {
+    item.removeDocumentObject()
+  })
+  state.storeItems = []
+  insertStoreItems(data)
 }
 
 function addToCart(id) {
@@ -82,6 +92,29 @@ function addToCart(id) {
     insertCartItem(id)
   }
   updateTotalPrice()
+}
+
+
+function addSortByEventListener() {
+  addSelectOptions(state.sortByDocumentObject, ['name', 'price'])
+  state.sortByDocumentObject.addEventListener('change', function() {
+    switch(state.sortByDocumentObject.value) {
+      case 'name':
+        rerenderStoreItems(state.data.sort((a, b) => a.name.localeCompare(b.name)))
+        break
+      case 'price':
+        rerenderStoreItems(state.data.sort((a, b) => a.price - b.price))
+        break
+    }
+  })
+}
+
+function addSelectOptions(selectObject, options) {
+  let innerHTML = ""
+  options.forEach(option => {
+    innerHTML += "<option value=" + option + ">" + option + "</option>"
+  })
+  selectObject.innerHTML = selectObject.innerHTML + innerHTML
 }
 
 function insertCartItem(id) {
