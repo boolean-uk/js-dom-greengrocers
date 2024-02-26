@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="styles/index.css" />
     <title>Greengrocers</title>
     <script defer src="index.js"></script>
+    <script src="src/entities/storeItem.js"></script>
+    <script src="src/entities/cartItem.js"></script>
   </head>
   <body>
     <header id="store">
@@ -16,7 +18,14 @@
         <!-- Take a look at store-item.html -->
       </ul>
     </header>
-
+    <nav class="store--nav">
+      <select id="filterBy" name="filterBy">
+        <option value="">--Category--</option>
+      </select>
+      <select id="sortBy" name="sortBy">
+        <option value="">--Sort by--</option>
+      </select>
+    </nav>
     <main id="cart">
       <h2>Your Cart</h2>
 
