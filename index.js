@@ -53,3 +53,133 @@ const state = {
   ],
   cart: []
 };
+
+const storeList = document.querySelector('.store--item-list')
+const cartList = document.querySelector('.cart--item-list')
+const assets = [
+  'assets/icons/001-beetroot.svg', 
+  'assets/icons/002-carrot.svg',
+  'assets/icons/003-apple.svg',
+  'assets/icons/004-apricot.svg',
+  'assets/icons/005-avocado.svg',
+  'assets/icons/006-bananas.svg',
+  'assets/icons/007-bell-pepper.svg',
+  'assets/icons/008-berry.svg',
+  'assets/icons/009-blueberry.svg',
+  'assets/icons/010-eggplant.svg'
+]
+
+for (let i = 0; i < assets.length; i++) {
+  const storeItem = document.createElement('li')
+
+  const storeIcon = document.createElement('div')
+  storeIcon.classList.add('store--item-icon')
+  storeItem.append(storeIcon)
+
+  const itemImage = document.createElement('img')
+  itemImage.setAttribute('src', assets[i])
+  storeIcon.append(itemImage)
+
+  const addToCart = document.createElement('button')
+  addToCart.innerText = 'Add to cart'
+  storeItem.append(addToCart)
+
+  storeList.append(storeItem)
+}
+
+const addToCartButtons = document.querySelectorAll('.store--item-list button')
+
+addToCartButtons.forEach((button, index) => {
+  button.addEventListener('click', () => {
+    const selectedItem = state.items[index]
+    const existingCartItemIndex = state.cart.findIndex(item => item.id === selectedItem.id)
+
+    if (existingCartItemIndex !== -1) {
+      state.cart[existingCartItemIndex].quantity++
+    } else {
+      state.cart.push({
+        id: selectedItem.id,
+        name: selectedItem.name,
+        price: selectedItem.price,
+        quantity: 1
+      })
+    }
+
+    render()
+  })
+})
+
+function render() {
+  cartList.innerHTML = ''
+
+  state.cart.forEach(item => {
+    const cartItem = document.createElement('li')
+
+    const cartImage = document.createElement('img')
+    cartImage.classList.add('cart--item-icon')
+    cartImage.setAttribute('src', `assets/icons/${item.id}.svg`)
+    cartItem.append(cartImage)
+
+    const itemName = document.createElement('p')
+    itemName.innerText = item.name
+    cartItem.append(itemName)
+
+    const removeBtn = document.createElement('button')
+    removeBtn.classList.add('quantity-btn', 'remove-btn', 'center')
+    removeBtn.innerText = '-'
+    cartItem.append(removeBtn)
+  
+    const itemQuantity = document.createElement('span')
+    itemQuantity.classList.add('quantity-text', 'center')
+    itemQuantity.textContent = item.quantity
+    cartItem.append(itemQuantity)
+  
+    removeBtn.addEventListener('click', () => {
+      if (item.quantity > 1) {
+        item.quantity--
+        itemQuantity.textContent = item.quantity
+      } else {
+        const itemIndex = state.cart.findIndex(cartItem => cartItem.id === item.id)
+        state.cart.splice(itemIndex, 1)
+        cartItem.remove()
+      }
+
+      newTotalPrice()
+    })
+  
+    const addBtn = document.createElement('button')
+    addBtn.classList.add('quantity-btn', 'add-btn', 'center')
+    addBtn.innerText = '+'
+    cartItem.append(addBtn)
+  
+    addBtn.addEventListener('click', () => {
+      const itemIndex = state.cart.findIndex(cartItem => cartItem.id === item.id)
+      if (itemIndex !== -1) {
+        state.cart[itemIndex].quantity++
+        itemQuantity.textContent = state.cart[itemIndex].quantity
+
+        newTotalPrice()
+      }
+    })
+    
+    cartList.append(cartItem)
+  })
+
+  newTotalPrice()
+}
+
+function calculateTotalPrice() {
+  let priceAtTheMoment = 0
+  state.cart.forEach(item => {
+    priceAtTheMoment += item.price * item.quantity
+  })
+  return priceAtTheMoment.toFixed(2)
+
+}
+
+function newTotalPrice() {
+  const totalNum = document.querySelector('.total-number')
+  totalNum.textContent = `£ ${calculateTotalPrice()}`
+}
+
+render()
