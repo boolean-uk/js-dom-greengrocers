@@ -94,7 +94,6 @@ function makeAddToCartButton(item, index) {
 }
 
 function addItemToCart(item, index) {
-  cartItemList.innerHTML = ''
   const containsItem = state.items.find(productItem => productItem.id === state.items[index].id)
   
   if (!state.cart.includes(containsItem)) {
@@ -104,19 +103,21 @@ function addItemToCart(item, index) {
   } else {
     const containsItemInCart = state.cart.find(productItem => productItem.id === state.items[index].id)
     containsItemInCart.quantity += 1
-    console.log(containsItemInCart)
   }
   
-  state.cart.forEach((product) => {
-    const newItemInCart = createNewCartItem(product)
-  })
-
-  console.log(state.cart)
+  updateCart()
   
 }
 
+function updateCart(item, index) {
+  cartItemList.innerHTML = ''
+
+  state.cart.forEach((product) => {
+    const newItemInCart = createNewCartItem(product)
+  })
+}
+
 function createNewCartItem(product) {
-  
   const cartItem = document.createElement('li')
   const cartImage = document.createElement('img')
   const cartItemName = document.createElement('p')
@@ -144,7 +145,24 @@ function createNewCartItem(product) {
 
   cartItemList.append(cartItem)
 
+  plusButton.addEventListener('click', () => addMoreItems(product))
+  minusButton.addEventListener('click', () => removeItems(product))
+
   return cartItem
+}
+
+function addMoreItems(product) {
+  product.quantity += 1
+  updateCart()
+}
+
+function removeItems(product) {
+  product.quantity -= 1
+  
+  if (product.quantity === 0) {
+    state.cart.splice(state.cart.findIndex(productItem => productItem.id === product.id), 1)
+  }
+  updateCart()
 }
 
 function makeAddOrRemoveCartButton() {
