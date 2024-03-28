@@ -54,16 +54,14 @@ const state = {
   cart: []
 };
 
-const imgArray = ['001-beetroot.svg', '002-carrot.svg', '003-apple.svg', '004-apricot.svg', '005-avocado.svg', '006-bananas.svg', '007-bell-pepper.svg', '008-berry.svg', '009-blueberry.svg', '010-eggplant.svg']
-
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const total = document.querySelector('.total-number')
-let cartQuantity = 1
 
 function addItemToStore() {
+  
   state.items.forEach((item, index) => {
-    cartItemList.innerHTML = ''
+    
     const storeItem = document.createElement('li')
     const storeItemDiv = document.createElement('div')
     const storeItemImage = addImage(item, index)
@@ -76,15 +74,13 @@ function addItemToStore() {
     storeItem.append(addToCartButton)
 
     storeItemList.append(storeItem)
-  });
+  })
 }
 
-addItemToStore()
-
-function addImage(item, index) {
+function addImage(item) {
   const storeItemImage = document.createElement('img')
   storeItemImage.setAttribute('alt', item.name)
-  storeItemImage.setAttribute('src', './assets/icons/' + imgArray[index])
+  storeItemImage.setAttribute('src', `./assets/icons/${item.id}.svg`)
 
   return storeItemImage
 }
@@ -98,22 +94,47 @@ function makeAddToCartButton(item, index) {
 }
 
 function addItemToCart(item, index) {
+  cartItemList.innerHTML = ''
+  const containsItem = state.items.find(productItem => productItem.id === state.items[index].id)
+  
+  if (!state.cart.includes(containsItem)) {
+    state.cart.push(item)
+    state.cart[state.cart.length -1].quantity = 1
+    
+  } else {
+    const containsItemInCart = state.cart.find(productItem => productItem.id === state.items[index].id)
+    containsItemInCart.quantity += 1
+    console.log(containsItemInCart)
+  }
+  
+  state.cart.forEach((product) => {
+    const newItemInCart = createNewCartItem(product)
+  })
+
+  console.log(state.cart)
+  
+}
+
+function createNewCartItem(product) {
+  
   const cartItem = document.createElement('li')
-  const cartImage = addImage(item, index)
+  const cartImage = document.createElement('img')
   const cartItemName = document.createElement('p')
   const minusButton = makeAddOrRemoveCartButton()
   const plusButton = makeAddOrRemoveCartButton()
   const quantity = document.createElement('span')
 
   cartImage.classList.add('cart--item-icon')
-  cartItemName.innerText = item.name
+  cartItemName.innerText = product.name
+  cartImage.setAttribute('alt', product.name)
+  cartImage.setAttribute('src', `./assets/icons/${product.id}.svg`)
   minusButton.classList.add('remove-btn')
   minusButton.innerText = '-'
   plusButton.classList.add('add-btn')
   plusButton.innerText = '+'
   quantity.classList.add('quantity-text')
   quantity.classList.add('center')
-  quantity.innerText = cartQuantity  
+  quantity.innerText = product.quantity 
 
   cartItem.append(cartImage)
   cartItem.append(cartItemName)
@@ -121,10 +142,9 @@ function addItemToCart(item, index) {
   cartItem.append(quantity)
   cartItem.append(plusButton)
 
-  state.cart.push(item)
-
-  console.log(state.cart)
   cartItemList.append(cartItem)
+
+  return cartItem
 }
 
 function makeAddOrRemoveCartButton() {
@@ -134,3 +154,5 @@ function makeAddOrRemoveCartButton() {
 
   return addButton
 }
+
+addItemToStore()
