@@ -63,12 +63,12 @@ const cartContainer = document.querySelector('.cart--item-list-container')
 const listItemsInCart = document.querySelector('.item-list.cart--item-list')
 const totalSection = document.querySelector('.total-section')
 const totalNumber = document.querySelector('.total-number')
-
+const cart = state.cart
 
 
 function creteItemsInHeader() {
   for(let i = 0; i < state.items.length; i++) {
-  const loopItems = state.items[i]
+  const groceryItem = state.items[i]
 
   
   const listItem = document.createElement('li');
@@ -78,8 +78,8 @@ function creteItemsInHeader() {
   listItem.append(itemIconContainer)
 
     
-  createItemImage(loopItems)
-  const imageOfItems = createItemImage(loopItems)
+  createItemImage(groceryItem)
+  const imageOfItems = createItemImage(groceryItem)
   listItem.append(imageOfItems)
   
     
@@ -87,7 +87,7 @@ function creteItemsInHeader() {
   addToCartButton.innerText = 'Add to cart'
   listItem.append(addToCartButton)
 
-  addToCartButton.addEventListener('click', () => {createCartItems(loopItems)})
+  addToCartButton.addEventListener('click', () => {createCartItems(groceryItem)})
 
   }  
 }
@@ -96,68 +96,68 @@ creteItemsInHeader()
 
 
 
-function createItemImage(loopItems) {
+function createItemImage(groceryItem) {
   const itemImage = document.createElement('img')
-  itemImage.alt = (`${loopItems.name}`)
-  itemImage.setAttribute('src', `assets/icons/${loopItems.id}.svg`)
+  itemImage.alt = (`${groceryItem.name}`)
+  itemImage.setAttribute('src', `assets/icons/${groceryItem.id}.svg`)
   return itemImage
 }
 
 
 
 
-function createCartItems(loopItems) {
+function createCartItems(groceryItem) {
   const listItem = document.createElement('li')
   
-  createItemImage(loopItems)
-  const imageOfItems = createItemImage(loopItems)
+  createItemImage(groceryItem)
+  const imageOfItems = createItemImage(groceryItem)
   listItem.append(imageOfItems)
 
 
 
   const itemName = document.createElement('p')
-  itemName.innerText = loopItems.name
+  itemName.innerText = groceryItem.name
   listItem.append(itemName)
 
 
 
   const removeBtn = document.createElement('button')
   removeBtn.classList = 'quantity-btn remove-btn center'
+  removeBtn.innerText = '-'
   listItem.append(removeBtn)
 
-  const addBtn = document.createElement('button')
-  addBtn.classList = 'quantity-btn add-btn center'
-  listItem.append(addBtn)
 
-
-
+  
   const quantityInCart = document.createElement('span')
   quantityInCart.classList = 'quantity-text center'
 
-  const itemsInCart = state.cart.push(loopItems.name)
-  const numOfItemsInCart = countItems(loopItems)
-  
+  const itemsInCart = cart.push(groceryItem)
+  const numOfItemsInCart = countItems(groceryItem)
+
   quantityInCart.innerText = numOfItemsInCart
-  console.log(itemsInCart)
-  console.log(numOfItemsInCart)
   listItem.append(quantityInCart)
 
 
-  
+
+  const addBtn = document.createElement('button')
+  addBtn.classList = 'quantity-btn add-btn center'
+  addBtn.innerText = '+'
+  listItem.append(addBtn)
+
+
   listItemsInCart.append(listItem)
   cartContainer.append(listItemsInCart)
 }
 
 
-function countItems(loopItems) {
-  const totalItems = 0
-  for (let i = 0; i < state.cart.length; i++) {
-    if (loopItems === state.cart[i]) {
-      totalItems += 1
-      return totalItems
-  
+function countItems(groceryItem) {
+  let totalOfEachItem = 0
+
+  for (let i = 0; i < cart.length; i++) {
+    if (groceryItem === cart[i]) {
+      totalOfEachItem += 1
     }
-    
+    return totalOfEachItem
   }
-  
+  return totalOfEachItem
 }
