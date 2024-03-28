@@ -97,6 +97,11 @@ function renderCartItems() {
 }
 
 function addToCart(itemData) {
+  const exists = state.cart.find((item) => {return item.id === itemData.id})
+  if (exists !== undefined) {
+    adjustQuantity(itemData.id, 1)
+    return
+  }
       state.cart.push({...itemData, quantity: 1})
       renderCartItems()
       renderTotal()
@@ -109,9 +114,14 @@ function renderTotal() {
 }
 
 function adjustQuantity(itemId, quantity) {
-          const newCart = state.cart.map((item) => {return item.id === itemId? {...item, quantity: item.quantity + quantity}:item}).filter((item) => {return item.quantity > 0})
-          state.cart = newCart
-          renderCartItems()
+  const newCart = state.cart.map((item) => {
+    return item.id === itemId ? { ...item, quantity: item.quantity + quantity } : item;
+  }).filter((item) => {
+    return item.quantity > 0;
+  });
+  state.cart = newCart;
+  renderCartItems();
+  renderTotal();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
