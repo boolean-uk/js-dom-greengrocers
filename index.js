@@ -53,3 +53,46 @@ const state = {
   ],
   cart: []
 };
+
+
+
+const pageHeader = document.querySelector('#store')
+const listOfItemsToBuy = document.querySelector('.item-list.store--item-list')
+const main = document.querySelector('#cart')
+const cartContainer = document.querySelector('.cart--item-list-container')
+const listItemsInCart = document.querySelector('.item-list.cart--item-list')
+const totalSection = document.querySelector('.total-section')
+const totalNumber = document.querySelector('.total-number')
+
+
+
+// function loopThroughItems() {
+//   for(let i = 0; i < state.items.length; i++) {
+//     createItemCards(state.items[i])
+//   }
+// }
+
+// function createItemCards(state.items[i]) {
+  
+
+// }
+for(let i = 0; i < state.items.length; i++) {
+  const listItem = document.createElement('li');     listOfItemsToBuy.append(listItem)
+
+  const itemIconContainer = document.createElement('div');itemIconContainer.classList.add('store--item-icon')
+  listItem.append(itemIconContainer)
+  
+  const itemImage = document.createElement('img')
+  itemImage.alt = (`${state.items[i].name}`)
+  itemImage.setAttribute('src', `assets/icons/${state.items[i].id}.svg`)
+  listItem.append(itemImage)
+  
+  const addToCartButton = document.createElement('button')
+  addToCartButton.innerText = 'Add to cart'
+  listItem.append(addToCartButton)
+}  
+
+
+
+
+
