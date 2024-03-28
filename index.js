@@ -58,6 +58,8 @@ const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const total = document.querySelector('.total-number')
 
+
+
 function addItemToStore() {
   
   state.items.forEach((item, index) => {
@@ -109,12 +111,21 @@ function addItemToCart(item, index) {
   
 }
 
-function updateCart(item, index) {
-  cartItemList.innerHTML = ''
+let totalCost = 0
 
+function updateCart() {
+  cartItemList.innerHTML = ''
+  
+  totalCost = 0
   state.cart.forEach((product) => {
     const newItemInCart = createNewCartItem(product)
+    const totalProductCost = calculateTotal(product)
   })
+  total.innerText = '£' + Math.round((totalCost) *100) / 100
+}
+
+function calculateTotal(product) {
+  totalCost += Math.round((product.quantity * product.price) *100) /100
 }
 
 function createNewCartItem(product) {
@@ -172,5 +183,7 @@ function makeAddOrRemoveCartButton() {
 
   return addButton
 }
+
+
 
 addItemToStore()
