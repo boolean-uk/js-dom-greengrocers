@@ -27,12 +27,29 @@ button {
   padding: 1rem;
 
   overflow-y: scroll;
-
+  display: grid;
   background-color: #e7f4ea;
 }
 
 #store h1 {
   text-align: center;
+}
+
+select, label {
+  place-self: center;
+}
+
+select {
+  margin-bottom: 10px;
+}
+
+.sortHeader {
+  place-self: center;
+}
+
+.button-container {
+  place-self: center;
+  margin-bottom: 10px;
 }
 
 .store--item-list {

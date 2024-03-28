@@ -12,6 +12,18 @@
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
+      <label for="filter">Filter:</label>
+      <select name="filter" id="filter" placeholder="Choose">
+        <option value="all" selected>All</option>
+        <option value="vegetable">Vegetables</option>
+        <option value="fruit">Fruit</option>
+      </select>
+       <span class="sortHeader">Sort</span>
+       <div class="button-container">
+        <button class="sortButtons" id="sortByName-button">By Name</button>
+        <button class="sortButtons" id="sortByPrice-button">By Price</button>
+      </div>
+
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
