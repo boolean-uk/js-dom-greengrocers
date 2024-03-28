@@ -85,9 +85,9 @@ function renderCartItems() {
         <img class="cart--item-icon" src="assets/icons/${item.id}.svg" alt="${item.name}" />
         <p class="item-name">${item.name}</p>
         <div class="quantity-controls">
-          <button class="quantity-btn remove-btn" data-id="${item.id}">-</button>
+          <button onclick="adjustQuantity('${item.id}', -1)" class="quantity-btn remove-btn" data-id="${item.id}">-</button>
           <span class="quantity-text">${item.quantity}</span>
-          <button class="quantity-btn add-btn" data-id="${item.id}">+</button>
+          <button onclick="adjustQuantity('${item.id}', 1)"  class="quantity-btn add-btn" data-id="${item.id}">+</button>
         </div>
       </li>
     `;
@@ -96,10 +96,22 @@ function renderCartItems() {
   });
 }
 
+function addToCart(itemData) {
+      state.cart.push({...itemData, quantity: 1})
+      renderCartItems()
+      renderTotal()
+}
+
 function renderTotal() {
   const totalElement = document.querySelector(".total-number");
   const total = state.cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   totalElement.textContent = `£${total.toFixed(2)}`;
+}
+
+function adjustQuantity(itemId, quantity) {
+          const newCart = state.cart.map((item) => {return item.id === itemId? {...item, quantity: item.quantity + quantity}:item}).filter((item) => {return item.quantity > 0})
+          state.cart = newCart
+          renderCartItems()
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -110,21 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".add-to-cart-btn").forEach(button => {
     button.addEventListener("click", () => {
       const itemId = button.getAttribute("data-id");
-      addToCart(itemId);
+      const itemData = state.items.find((item) => {return item.id === itemId})
+      addToCart(itemData);
     });
   });
 
-  document.querySelectorAll(".remove-btn").forEach(button => {
-    button.addEventListener("click", () => {
-      const itemId = button.getAttribute("data-id");
-      adjustQuantity(itemId, -1);
-    });
-  });
-
-  document.querySelectorAll(".add-btn").forEach(button => {
-    button.addEventListener("click", () => {
-      const itemId = button.getAttribute("data-id");
-      adjustQuantity(itemId, 1);
-    });
-  });
 });
