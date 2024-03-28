@@ -80,10 +80,9 @@ function showStoreItems(){
     const divItem = document.createElement('div')
     divItem.classList.add('store--item-icon')
 
-    const image = createImage(items)
-    const button = createButton()
+    const image = createStoreImage(items)
+    const button = createStoreButton()
 
-    showCartItems(items)
 
     divItem.append(image)
     liItem.append(divItem, button)
@@ -91,7 +90,7 @@ function showStoreItems(){
   };
 }
 
-function createImage(items){
+function createStoreImage(items){
   const image = document.createElement('img')
     image.setAttribute('src',`./assets/icons/${items[element].id}.svg`)
     image.setAttribute('alt',`${items[element].name}`)
@@ -99,7 +98,7 @@ function createImage(items){
     return image
 }
 
-function createButton(){
+function createStoreButton(){
   const button = document.createElement('button')
   button.innerText = 'Add to cart'
   return button
@@ -108,45 +107,54 @@ function createButton(){
 function showCartItems(items){
 
   const liItem = document.createElement('li')
+  const image = createCartImage(items)
+  const pName = createCartPName (items) 
+  const buttonMinus = createMinusButton()
+  const span = createSpan()
+  const buttonPlus = createPlusButton()
+  
+  liItem.append(image, pName, buttonMinus, span, buttonPlus)
+  cartItemList.append(liItem)
+}
+
+function createCartImage(items) {
   const image = document.createElement('img')
   image.classList.add('cart--item-icon')
   image.setAttribute('src',`./assets/icons/${items[element].id}.svg`)
   image.setAttribute('alt',`${items[element].name}`)
+  return image
+}
+
+function createCartPName (items) {
   const pName = document.createElement('p')
   pName.innerText = items[element].name
+  return pName
+}
 
+function createSpan() {
+  const span = document.createElement('span')
+  span.innerText = 1
+  span.classList.add('quantity-text')
+  span.classList.add('center')
+  return span
+}
+
+function createMinusButton(){
   const buttonMinus = document.createElement('button')
   buttonMinus.classList.add('quantity-btn')
   buttonMinus.classList.add('remove-btn')
   buttonMinus.classList.add('center')
   buttonMinus.innerText = '-'
+  return buttonMinus
+}
 
-  const span = document.createElement('span')
-  span.innerText = 1
-  span.classList.add('quantity-text')
-  span.classList.add('center')
-
+function createPlusButton(){
   const buttonPlus = document.createElement('button')
   buttonPlus.classList.add('quantity-btn')
   buttonPlus.classList.add('add-btn')
   buttonPlus.classList.add('center')
   buttonPlus.innerText = '+'
-  
-  liItem.append(image, pName, buttonMinus, span, buttonPlus)
-  cartItemList.append(liItem)
-  
-  console.log(buttonPlus)
-//   <li>
-//   <img
-//     class="cart--item-icon"
-//     src="assets/icons/001-beetroot.svg"
-//     alt="beetroot"
-//   />
-//   <p>beetroot</p>
-//   <button class="quantity-btn remove-btn center">-</button>
-//   <span class="quantity-text center">1</span>
-//   <button class="quantity-btn add-btn center">+</button>
-// </li>
+  return buttonPlus
 }
 
 render()
