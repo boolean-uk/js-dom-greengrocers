@@ -57,11 +57,9 @@ const state = {
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const total = document.querySelector('.total-number')
-
-
+let totalCost = 0
 
 function addItemToStore() {
-  
   state.items.forEach((item, index) => {
     
     const storeItem = document.createElement('li')
@@ -108,10 +106,7 @@ function addItemToCart(item, index) {
   }
   
   updateCart()
-  
 }
-
-let totalCost = 0
 
 function updateCart() {
   cartItemList.innerHTML = ''
@@ -121,11 +116,11 @@ function updateCart() {
     const newItemInCart = createNewCartItem(product)
     const totalProductCost = calculateTotal(product)
   })
-  total.innerText = '£' + Math.round((totalCost) *100) / 100
+  total.innerText = '£' + Math.round((totalCost) * 100) / 100
 }
 
 function calculateTotal(product) {
-  totalCost += Math.round((product.quantity * product.price) *100) /100
+  totalCost += product.quantity * product.price
 }
 
 function createNewCartItem(product) {
@@ -183,7 +178,5 @@ function makeAddOrRemoveCartButton() {
 
   return addButton
 }
-
-
 
 addItemToStore()
