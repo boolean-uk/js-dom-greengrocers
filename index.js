@@ -66,33 +66,98 @@ const totalNumber = document.querySelector('.total-number')
 
 
 
-// function loopThroughItems() {
-//   for(let i = 0; i < state.items.length; i++) {
-//     createItemCards(state.items[i])
-//   }
-// }
+function creteItemsInHeader() {
+  for(let i = 0; i < state.items.length; i++) {
+  const loopItems = state.items[i]
 
-// function createItemCards(state.items[i]) {
   
-
-// }
-for(let i = 0; i < state.items.length; i++) {
-  const listItem = document.createElement('li');     listOfItemsToBuy.append(listItem)
-
+  const listItem = document.createElement('li');
+  listOfItemsToBuy.append(listItem)
+  
   const itemIconContainer = document.createElement('div');itemIconContainer.classList.add('store--item-icon')
   listItem.append(itemIconContainer)
+
+    
+  createItemImage(loopItems)
+  const imageOfItems = createItemImage(loopItems)
+  listItem.append(imageOfItems)
   
-  const itemImage = document.createElement('img')
-  itemImage.alt = (`${state.items[i].name}`)
-  itemImage.setAttribute('src', `assets/icons/${state.items[i].id}.svg`)
-  listItem.append(itemImage)
-  
+    
   const addToCartButton = document.createElement('button')
   addToCartButton.innerText = 'Add to cart'
   listItem.append(addToCartButton)
-}  
+
+  addToCartButton.addEventListener('click', () => {createCartItems(loopItems)})
+
+  }  
+}
+
+creteItemsInHeader()
+
+
+
+function createItemImage(loopItems) {
+  const itemImage = document.createElement('img')
+  itemImage.alt = (`${loopItems.name}`)
+  itemImage.setAttribute('src', `assets/icons/${loopItems.id}.svg`)
+  return itemImage
+}
 
 
 
 
+function createCartItems(loopItems) {
+  const listItem = document.createElement('li')
+  
+  createItemImage(loopItems)
+  const imageOfItems = createItemImage(loopItems)
+  listItem.append(imageOfItems)
 
+
+
+  const itemName = document.createElement('p')
+  itemName.innerText = loopItems.name
+  listItem.append(itemName)
+
+
+
+  const removeBtn = document.createElement('button')
+  removeBtn.classList = 'quantity-btn remove-btn center'
+  listItem.append(removeBtn)
+
+  const addBtn = document.createElement('button')
+  addBtn.classList = 'quantity-btn add-btn center'
+  listItem.append(addBtn)
+
+
+
+  const quantityInCart = document.createElement('span')
+  quantityInCart.classList = 'quantity-text center'
+
+  const itemsInCart = state.cart.push(loopItems.name)
+  const numOfItemsInCart = countItems(loopItems)
+  
+  quantityInCart.innerText = numOfItemsInCart
+  console.log(itemsInCart)
+  console.log(numOfItemsInCart)
+  listItem.append(quantityInCart)
+
+
+  
+  listItemsInCart.append(listItem)
+  cartContainer.append(listItemsInCart)
+}
+
+
+function countItems(loopItems) {
+  const totalItems = 0
+  for (let i = 0; i < state.cart.length; i++) {
+    if (loopItems === state.cart[i]) {
+      totalItems += 1
+      return totalItems
+  
+    }
+    
+  }
+  
+}
