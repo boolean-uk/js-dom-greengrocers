@@ -59,9 +59,11 @@ const imgArray = ['001-beetroot.svg', '002-carrot.svg', '003-apple.svg', '004-ap
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const total = document.querySelector('.total-number')
+let cartQuantity = 1
 
 function addItemToStore() {
   state.items.forEach((item, index) => {
+    cartItemList.innerHTML = ''
     const storeItem = document.createElement('li')
     const storeItemDiv = document.createElement('div')
     const storeItemImage = addImage(item, index)
@@ -99,12 +101,36 @@ function addItemToCart(item, index) {
   const cartItem = document.createElement('li')
   const cartImage = addImage(item, index)
   const cartItemName = document.createElement('p')
+  const minusButton = makeAddOrRemoveCartButton()
+  const plusButton = makeAddOrRemoveCartButton()
+  const quantity = document.createElement('span')
 
   cartImage.classList.add('cart--item-icon')
   cartItemName.innerText = item.name
+  minusButton.classList.add('remove-btn')
+  minusButton.innerText = '-'
+  plusButton.classList.add('add-btn')
+  plusButton.innerText = '+'
+  quantity.classList.add('quantity-text')
+  quantity.classList.add('center')
+  quantity.innerText = cartQuantity  
 
   cartItem.append(cartImage)
   cartItem.append(cartItemName)
+  cartItem.append(minusButton)
+  cartItem.append(quantity)
+  cartItem.append(plusButton)
 
+  state.cart.push(item)
+
+  console.log(state.cart)
   cartItemList.append(cartItem)
+}
+
+function makeAddOrRemoveCartButton() {
+  const addButton = document.createElement('button')
+  addButton.classList.add('quantity-btn')
+  addButton.classList.add('center')
+
+  return addButton
 }
