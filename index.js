@@ -53,3 +53,99 @@ const state = {
   ],
   cart: []
 };
+
+const itemList = document.querySelector(".store--item-list")
+const cartContainer = document.querySelector(".cart--item-list-container")
+const cartList = document.querySelector(".cart--item-list")
+const total = document.querySelector("total-number")
+
+
+function createListItem(element) {
+  const listItem = document.createElement("li")
+  
+  const itemContainer = document.createElement("div")
+  itemContainer.className = "store--item-icon"
+  
+  const image = document.createElement("img")
+  image.src = `./assets/icons/${element.id}.svg`
+  image.alt = element.name
+  
+  const button = document.createElement("button")
+  button.innerHTML = "Add to cart"
+  button.addEventListener('click', (event) => {
+    selection = event.currentTarget.previousElementSibling.firstChild.alt
+    addCartItem(selection)
+    render()
+  })
+
+  itemContainer.append(image)
+  listItem.append(itemContainer)
+  listItem.append(button)
+  return listItem
+}
+
+function render() {
+  state.items.forEach(element => {
+    const listItem = createListItem(element)
+    itemList.append(listItem)
+  })
+
+
+  state.cart.forEach(element => {
+    const cartItem = createCartItem(element)
+    cartList.append(cartItem)
+  })
+
+}
+
+function createCartItem(element) {
+  const cartItem = document.createElement("li")
+  
+  const image = document.createElement("img")
+  image.src = `./assets/icons/${element.id}.svg`
+  image.alt = element.name
+  
+  const p = document.createElement("p")
+  p.innerHTML = element.name
+  
+  const buttonRemove = document.createElement("button")
+  buttonRemove.className = "quantity-btn remove-btn center"
+  buttonRemove.innerHTML = "-"
+  
+  const totalQuantity = document.createElement("span")
+  totalQuantity.className = "quantity-text center"
+  totalQuantity.innerHTML = element.quantity
+  
+  const buttonAdd = document.createElement("button")
+  buttonAdd.className = "quantity-btn add-btn center"
+  buttonAdd.innerHTML = "+"
+
+  cartItem.append(image)
+  cartItem.append(p)
+  cartItem.append(buttonRemove)
+  cartItem.append(total)
+  cartItem.append(buttonAdd)
+
+  return cartItem
+}
+
+function addCartItem(item) {
+  const element = state.items.find(e => (e.name === item))
+  
+  if(!element){
+    throw new Error("this is not a valid item")
+  }
+
+  const cartElement = state.cart.find(e => (e.name === item))
+
+  if(!cartElement) {
+    const newCartElement = structuredClone(element)
+    newCartElement.quantity = 1
+    state.cart.push(cartElement)
+  } else {
+    cartElement.quantity++
+  }
+
+}
+
+render()
