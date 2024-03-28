@@ -66,8 +66,8 @@ const totalNbr = document.querySelector('.total-number')
 // for ul card and ul store
 const itemList = document.querySelector('.item-list')
 
+const itemsInCart = state.cart
 function render() {
-
   showStoreItems()
   
 }
@@ -77,12 +77,12 @@ function showStoreItems(){
   for(element in items) {
     const liItem = document.createElement('li')
     liItem.style.listStyleType = 'none'
+
     const divItem = document.createElement('div')
     divItem.classList.add('store--item-icon')
 
     const image = createStoreImage(items)
-    const button = createStoreButton()
-
+    const button = createStoreButton(items, element)
 
     divItem.append(image)
     liItem.append(divItem, button)
@@ -98,26 +98,43 @@ function createStoreImage(items){
     return image
 }
 
-function createStoreButton(){
+function createStoreButton(itemName, element){
   const button = document.createElement('button')
   button.innerText = 'Add to cart'
+  button.addEventListener('click', () => addItem(itemName, element))
   return button
 }
 
-function showCartItems(items){
+function addItem(itemName, element) {
 
+  const newItem = itemName[element]
+  console.log(itemsInCart)
+  const existingItem = itemsInCart.find(item => {
+    item.id === newItem.id
+  })
+
+  if(existingItem){
+  } else {
+    itemsInCart.push(itemName[element])
+    showCartItems(itemName, element)
+  }  
+  // console.log(newItem)
+}
+function showCartItems(items, element){
+  
+  const pName = createCartPName (items, element) 
+ 
   const liItem = document.createElement('li')
-  const image = createCartImage(items)
-  const pName = createCartPName (items) 
+  const image = createCartImage(items, element)
   const buttonMinus = createMinusButton()
   const span = createSpan()
   const buttonPlus = createPlusButton()
-  
+
   liItem.append(image, pName, buttonMinus, span, buttonPlus)
   cartItemList.append(liItem)
 }
 
-function createCartImage(items) {
+function createCartImage(items, element) {
   const image = document.createElement('img')
   image.classList.add('cart--item-icon')
   image.setAttribute('src',`./assets/icons/${items[element].id}.svg`)
@@ -125,7 +142,7 @@ function createCartImage(items) {
   return image
 }
 
-function createCartPName (items) {
+function createCartPName (items, element) {
   const pName = document.createElement('p')
   pName.innerText = items[element].name
   return pName
@@ -157,4 +174,7 @@ function createPlusButton(){
   return buttonPlus
 }
 
+function checkForItem(itemName,element){
+  
+}
 render()
