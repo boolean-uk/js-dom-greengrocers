@@ -92,7 +92,7 @@ const buildStoreItem = (item) => {
       increaseCartQuantity(item);
     }
     updatePrice();
-    render();
+    renderCart();
   });
   li.append(button);
   storeItemList.append(li);
@@ -135,7 +135,7 @@ const buildCartItem = (item) => {
 const increaseCartQuantity = (item) => {
   item.noInCart++;
   updatePrice();
-  render();
+  renderCart();
 };
 
 const decreaseCartQuantity = (item) => {
@@ -144,7 +144,7 @@ const decreaseCartQuantity = (item) => {
     state.cart.splice(state.cart.indexOf(item), 1);
   }
   updatePrice();
-  render();
+  renderCart();
 };
 
 // Update price
@@ -158,9 +158,8 @@ const updatePrice = () => {
 };
 
 // Filter items
-
 filterDropDown.addEventListener("change", () => {
-  render();
+  render(state.items);
 });
 
 // Sort items
@@ -168,9 +167,9 @@ const sortNameButton = document.querySelector('#sortByName-button')
 const sortPriceButton = document.querySelector('#sortByPrice-button')
 
 sortNameButton.addEventListener('click', () => {
-  console.log(state.items)
   const alphabeticalItems = state.items.toSorted((a, b) => a.name.localeCompare(b.name))
   console.log(alphabeticalItems)
+  render(alphabeticalItems)
 })
 
 sortPriceButton.addEventListener('click', () => {
@@ -178,33 +177,35 @@ sortPriceButton.addEventListener('click', () => {
   render(pricedItems)
 })
 
-
-
-//Render the page
+//Render the product list
 const render = (input) => {
   storeItemList.innerHTML = "";
-  cartItemList.innerHTML = "";
-
+  
 
   if (filterDropDown.value === 'all') {
-     state.items.forEach(buildStoreItem)
+     input.forEach(buildStoreItem)
   }
 
   if (filterDropDown.value === 'vegetable') {
-    const justVeg = state.items.filter(
+    const justVeg = input.filter(
       (item) => item.category === 'vegetable'
     );
     justVeg.forEach(buildStoreItem)
   }
 
   if (filterDropDown.value === 'fruit') {
-    const justFruit = state.items.filter(
+    const justFruit = input.filter(
       (item) => item.category === 'fruit'
     );
     justFruit.forEach(buildStoreItem)
   }
-
-    state.cart.forEach(buildCartItem);
 };
 
-render();
+//Render the cart
+const renderCart = () => {
+  cartItemList.innerHTML = "";
+  state.cart.forEach(buildCartItem);
+}
+
+
+render(state.items);
