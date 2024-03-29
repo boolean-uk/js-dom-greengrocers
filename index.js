@@ -85,22 +85,26 @@ function createListItem(element) {
 }
 
 function render() {
+  itemList.innerHTML = ""
+  cartList.innerHTML =""
+  
   state.items.forEach(element => {
     const listItem = createListItem(element)
     itemList.append(listItem)
   })
 
 
-  state.cart.forEach(element => {
-    const cartItem = createCartItem(element)
+  state.cart.forEach((element, index) => {
+    const cartItem = createCartItem(element, index)
     cartList.append(cartItem)
   })
 
 }
 
-function createCartItem(element) {
+function createCartItem(element , index) {
   const cartItem = document.createElement("li")
-  
+
+
   const image = document.createElement("img")
   image.src = `./assets/icons/${element.id}.svg`
   image.alt = element.name
@@ -111,6 +115,13 @@ function createCartItem(element) {
   const buttonRemove = document.createElement("button")
   buttonRemove.className = "quantity-btn remove-btn center"
   buttonRemove.innerHTML = "-"
+  buttonRemove.addEventListener('click', (e) => {
+    element.quantity--
+    if(element.quantity < 1) {
+      state.cart.splice(index, 1)
+    }
+    render()
+  })
   
   const totalQuantity = document.createElement("span")
   totalQuantity.className = "quantity-text center"
@@ -119,11 +130,15 @@ function createCartItem(element) {
   const buttonAdd = document.createElement("button")
   buttonAdd.className = "quantity-btn add-btn center"
   buttonAdd.innerHTML = "+"
+  buttonAdd.addEventListener('click', () => {
+    element.quantity++
+    render()
+  })
 
   cartItem.append(image)
   cartItem.append(p)
   cartItem.append(buttonRemove)
-  cartItem.append(total)
+  cartItem.append(totalQuantity)
   cartItem.append(buttonAdd)
 
   return cartItem
@@ -131,20 +146,22 @@ function createCartItem(element) {
 
 function addCartItem(item) {
   const element = state.items.find(e => (e.name === item))
-  
+
   if(!element){
     throw new Error("this is not a valid item")
   }
 
   const cartElement = state.cart.find(e => (e.name === item))
+  isInCart = !cartElement
 
-  if(!cartElement) {
+  if(isInCart) {
     const newCartElement = structuredClone(element)
     newCartElement.quantity = 1
-    state.cart.push(cartElement)
+    state.cart.push(newCartElement)
   } else {
     cartElement.quantity++
   }
+
 
 }
 
