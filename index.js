@@ -50,6 +50,213 @@ const state = {
       name: "eggplant",
       price: 0.35
     }
-  ],
-  cart: []
+  ]
 };
+
+const initItems = () => state.items.forEach(item => {
+  item.quantity = 0
+  // to have different prices in tests I wrote a real life simulation of what it feels like looking at prices of fruit and veggies
+  item.price = newSurprisePrice().toFixed(2)
+  item.total = function() {
+    return this.quantity * this.price
+  }
+  item.category = category(item.name)
+})
+
+const newSurprisePrice = () => 1 + Math.random() + Math.random() / 100
+
+const clearDisplayItems = () => {
+  const itemDisplaySection = document.querySelectorAll("header#store ul.item-list li")
+  itemDisplaySection.forEach(item => item.remove())
+}
+
+const displayItems = () => {
+  clearDisplayItems()
+  const itemDisplaySection = document.querySelector("header#store ul.item-list")
+
+  sortBy()
+  
+  state.items.forEach((item) => {
+    
+    if (filter.length !== 0 && item.category !== filter) return
+
+    const li = document.createElement("li")
+    
+    const img = document.createElement("img")
+    img.class = "cart-item-icon"
+    img.src = "assets/icons/" + item.id + ".svg"
+  
+    li.appendChild(img)
+    
+    const pName = document.createElement("p")
+    pName.innerText = item.name.toUpperCase()
+    li.appendChild(pName)
+
+    const pPrice = document.createElement("p")
+    pPrice.innerText = "£" + item.price
+    li.appendChild(pPrice) 
+    
+    const buttonAddToCart = document.createElement("button")
+    buttonAddToCart.innerText = "Add to cart"
+    buttonAddToCart.addEventListener("click", () => changeItemAmount(item, 1))
+    li.appendChild(buttonAddToCart)
+
+    itemDisplaySection.appendChild(li)
+  })
+}
+
+const clearCartItems = () => {
+  const cartItems = document.querySelectorAll("main#cart ul.cart--item-list li")
+  cartItems.forEach(item => item.remove())
+}
+
+const displayCartItems = () => {
+  clearCartItems()
+  const cartDisplay = document.querySelector("main#cart ul.cart--item-list")
+
+  state.items.forEach((item) => {
+    if (item.quantity === 0) return
+
+    const li = document.createElement("li")
+    
+    const img = document.createElement("img")
+    img.class = "cart-item-icon"
+    img.src = "assets/icons/" + item.id + ".svg"
+    img.alt = item.val
+    
+    const p = document.createElement("p")
+    p.innerText = item.name
+    li.appendChild(img)
+    li.appendChild(p)
+
+    const buttonRemove = document.createElement("button")
+    buttonRemove.class = "quantity-btn remove-btn center"
+    buttonRemove.innerText = "-"
+    li.appendChild(buttonRemove)
+    buttonRemove.addEventListener("click", () => changeItemAmount(item, -1))
+    
+    const quantity = document.createElement("span")
+    quantity.class = "quantity-text center"
+    quantity.innerText = item.quantity
+    li.appendChild(quantity)
+    
+    const buttonAdd = document.createElement("button")
+    buttonAdd.class = "quantity-btn add-btn center"
+    buttonAdd.innerText = "+"
+    buttonAdd.addEventListener("click", () => changeItemAmount(item, 1))
+
+    li.appendChild(buttonAdd)
+
+    cartDisplay.appendChild(li)
+  })
+}
+
+const calcCartTotal = () => state.items.reduce((sum, item) => sum + item.total(), 0)
+
+const refreshCartTotalDisplay = () => {
+  const total = document.querySelector("span.total-number")
+  total.innerText = "£" + calcCartTotal().toFixed(2)
+}
+
+const category = (productName) => {
+  const fruitArr = ["apple",
+    "apricot",
+    "bananas",
+    "berry",
+    "blueberry"]
+
+  const vegetablesArr = ["beetroot",
+    "carrot",
+    "avocado",
+    "bell pepper",
+    "eggplant"]
+
+  if (fruitArr.includes(productName)) return "fruits"
+  if (vegetablesArr.includes(productName)) return "vegetables"
+}
+
+let filter = ""
+const changeFilterValue = (filterName) => {
+  filter = filterName
+  displayItems()
+}
+
+const constructFilters = () => {
+  const aside = document.querySelector("header#store aside section.filter")
+  
+  const fruitFilter = document.createElement("button")
+  fruitFilter.innerText = "Fruits"
+  fruitFilter.addEventListener("click", () => changeFilterValue("fruits"))
+
+  const vegetablesFilter = document.createElement("button")
+  vegetablesFilter.innerText = "Vegetables"
+  vegetablesFilter.addEventListener("click", () => changeFilterValue("vegetables"))
+  
+  const resetFilterButton = document.createElement("button")
+  resetFilterButton.innerText = "Reset"
+  resetFilterButton.addEventListener("click", () => changeFilterValue(""))
+  
+  aside.appendChild(fruitFilter)
+  aside.appendChild(vegetablesFilter)
+  aside.appendChild(resetFilterButton)
+}
+
+const sorting = {
+  value: "price",
+  order: "asc"
+}
+
+const flipSortingValue = () => sorting.value === "price" ? sorting.value = "name" : sorting.value = "price"
+const flipSortingOrder = () => sorting.order === "asc" ? sorting.order = "desc" : sorting.order = "asc"
+
+const constructSorting = () => {
+  const aside = document.querySelector("header#store aside section.sort")
+
+  const sortingValueButton = document.createElement("button")
+  sortingValueButton.innerText = sorting.value
+  sortingValueButton.addEventListener("click", () => {
+    flipSortingValue()
+    sortingValueButton.innerText = sorting.value
+    displayItems()
+  })
+
+  const sortingOrderButton = document.createElement("button")
+  sortingOrderButton.innerText = sorting.order
+  sortingOrderButton.addEventListener("click", () => {
+    flipSortingOrder()
+    sortingOrderButton.innerText = sorting.order
+    displayItems()
+  })
+
+  aside.appendChild(sortingValueButton)
+  aside.appendChild(sortingOrderButton)
+}
+
+const sortBy = () => {
+  
+  // asc = default
+  const mode = sorting.order === "asc" ? 1 : -1
+
+  state.items.sort((a, b) => {
+    if (a[sorting.value] < b[sorting.value]) {
+      return -1 * mode
+    } 
+    if (a[sorting.value] > b[sorting.value]) {
+      return 1 * mode
+    }
+
+    return 0
+  })
+}
+
+const changeItemAmount = (item, quantity) => {
+  item.quantity + quantity >= 0 ? item.quantity += quantity : item.remove()
+  displayCartItems()
+  refreshCartTotalDisplay()
+}
+
+constructFilters()
+constructSorting()
+initItems()
+displayItems()
+displayCartItems()
