@@ -59,6 +59,23 @@ const cartContainer = document.querySelector(".cart--item-list-container")
 const cartList = document.querySelector(".cart--item-list")
 const total = document.querySelector(".total-number")
 
+function capitlisation(inputString) {
+  if (typeof inputString !== "string") {
+    throw console.error("Not a string")
+  }
+
+  const splitString = inputString.split("")
+  splitString[0] = splitString[0].toUpperCase()
+  splitString.forEach( (element, index) => {
+    if(element === " ") {
+      splitString[index+1] = splitString[index+1].toUpperCase()
+    }
+  })
+
+  const outputString = splitString.join("")
+  return outputString
+}
+
 
 function createListItem(element) {
   const listItem = document.createElement("li")
@@ -81,6 +98,7 @@ function createListItem(element) {
   itemContainer.append(image)
   listItem.append(itemContainer)
   listItem.append(button)
+
   return listItem
 }
 
@@ -105,8 +123,6 @@ function render() {
 
   total.innerHTML = '£' + runningTotal.toFixed(2)
 
-
-  
 }
 
 function createCartItem(element , index) {
@@ -118,11 +134,12 @@ function createCartItem(element , index) {
   image.alt = element.name
   
   const p = document.createElement("p")
-  p.innerHTML = element.name
+  p.innerHTML = capitlisation(element.name)
   
   const buttonRemove = document.createElement("button")
   buttonRemove.className = "quantity-btn remove-btn center"
   buttonRemove.innerHTML = "-"
+  
   buttonRemove.addEventListener('click', (e) => {
     element.quantity--
     if(element.quantity < 1) {
@@ -138,6 +155,7 @@ function createCartItem(element , index) {
   const buttonAdd = document.createElement("button")
   buttonAdd.className = "quantity-btn add-btn center"
   buttonAdd.innerHTML = "+"
+  
   buttonAdd.addEventListener('click', () => {
     element.quantity++
     render()
