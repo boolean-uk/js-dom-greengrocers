@@ -57,7 +57,7 @@ const state = {
 const itemList = document.querySelector(".store--item-list")
 const cartContainer = document.querySelector(".cart--item-list-container")
 const cartList = document.querySelector(".cart--item-list")
-const total = document.querySelector("total-number")
+const total = document.querySelector(".total-number")
 
 
 function createListItem(element) {
@@ -86,8 +86,10 @@ function createListItem(element) {
 
 function render() {
   itemList.innerHTML = ""
-  cartList.innerHTML =""
+  cartList.innerHTML = ""
   
+  let runningTotal = 0 
+
   state.items.forEach(element => {
     const listItem = createListItem(element)
     itemList.append(listItem)
@@ -97,8 +99,14 @@ function render() {
   state.cart.forEach((element, index) => {
     const cartItem = createCartItem(element, index)
     cartList.append(cartItem)
+
+    runningTotal += element.price * element.quantity
   })
 
+  total.innerHTML = '£' + runningTotal.toFixed(2)
+
+
+  
 }
 
 function createCartItem(element , index) {
