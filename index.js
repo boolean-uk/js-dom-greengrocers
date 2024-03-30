@@ -355,7 +355,6 @@ const valid = (productName, productPrice, productPic) => {
 //Report form validity
 const reportValidity = (boolean) => {
   const reportP = document.querySelector('#form-validation-message')
-  console.log(reportP)
   if (boolean) {
     reportP.style.color = "green"
     reportP.innerText = "Item added successfully!"
