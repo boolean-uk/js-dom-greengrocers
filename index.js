@@ -131,7 +131,7 @@ function createCartItems(groceryItem) {
   const quantityInCart = document.createElement('span')
   quantityInCart.classList = 'quantity-text center'
 
-  const itemsInCart = cart.push(groceryItem)
+  cart.push(groceryItem)
   const numOfItemsInCart = countItems(groceryItem)
 
   quantityInCart.innerText = numOfItemsInCart
@@ -151,13 +151,15 @@ function createCartItems(groceryItem) {
 
 
 function countItems(groceryItem) {
+  
   let totalOfEachItem = 0
+  const groceryItemId = groceryItem.id
 
-  for (let i = 0; i < cart.length; i++) {
-    if (groceryItem === cart[i]) {
+  const checkItemsInCart = cart.map((element) => {
+    if (element.id === groceryItemId) {
       totalOfEachItem += 1
     }
     return totalOfEachItem
-  }
+  })
   return totalOfEachItem
 }
