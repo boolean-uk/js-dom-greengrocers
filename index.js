@@ -70,14 +70,15 @@ const total = document.querySelector('.total-number')
 const store = document.querySelector('#store')
 let totalCost = 0
 
-function addItemToStore() {
-  const createFilterButton = createStoreFilter()
-  state.items.forEach((item, index) => {
+function addItemToStore(products) {
+  storeItemList.innerHTML = ''
+  console.log(products)
+  products.forEach((item, index) => {
     
     const storeItem = document.createElement('li')
     const storeItemDiv = document.createElement('div')
     const storeItemImage = addImage(item, index)
-    const addToCartButton = makeAddToCartButton(item, index)
+    const addToCartButton = makeAddToCartButton(products, item, index)
 
     storeItemDiv.classList.add('store--item-icon')
 
@@ -87,8 +88,6 @@ function addItemToStore() {
 
     storeItemList.append(storeItem)
   })
-
-  store.prepend(createFilterButton)
 }
 
 function addImage(item) {
@@ -99,23 +98,25 @@ function addImage(item) {
   return storeItemImage
 }
 
-function makeAddToCartButton(item, index) {
+function makeAddToCartButton(products, item, index) {
   const addToCartButton = document.createElement('button')
   addToCartButton.innerText = 'Add to cart'
-  addToCartButton.addEventListener('click', () => addItemToCart(item, index))
+  addToCartButton.addEventListener('click', () => addItemToCart(products, item, index))
+
+  updateCart()
 
   return addToCartButton
 }
 
-function addItemToCart(item, index) {
-  const containsItem = state.items.find(productItem => productItem.id === state.items[index].id)
+function addItemToCart(products, item, index) {
+  const containsItem = products.find(productItem => productItem.id === products[index].id)
   
   if (!state.cart.includes(containsItem)) {
     state.cart.push(item)
     state.cart[state.cart.length -1].quantity = 1
     
   } else {
-    const containsItemInCart = state.cart.find(productItem => productItem.id === state.items[index].id)
+    const containsItemInCart = state.cart.find(productItem => productItem.id === products[index].id)
     containsItemInCart.quantity += 1
   }
   
@@ -193,30 +194,53 @@ function makeAddOrRemoveCartButton() {
   return addButton
 }
 
-function createStoreFilter() {
+function makeFilter() {
   const div = document.createElement('div')
   const filterLabel = document.createElement('label')
-  const selectFilter = document.createElement('select')
-  const defaultFilter = document.createElement('option')
-  const filterOnType = document.createElement('option')
+  const createFilterButton = createStoreFilter()
 
   filterLabel.innerText = 'Filter'
-  defaultFilter.setAttribute('value', 'default')
-  defaultFilter.innerText = ' '
-  filterOnType.setAttribute('value', 'type')
-  filterOnType.innerText = 'Type'
-
-  selectFilter.append(defaultFilter)
-  selectFilter.append(filterOnType)
 
   div.append(filterLabel)
-  div.append(selectFilter)
+  div.append(createFilterButton)
 
-  return div
+  store.prepend(div)
 }
 
-function filterStoreItems() {
+function createStoreFilter() {
+  const selectFilter = document.createElement('select')
+  const defaultFilter = document.createElement('option')
+  const filterOnVegetable = document.createElement('option')
+  const filterOnFruit = document.createElement('option')
+  
+  defaultFilter.setAttribute('value', 'default')
+  defaultFilter.innerText = ' '
+  filterOnVegetable.setAttribute('value', 'vegetable')
+  filterOnVegetable.innerText = 'Vegetable'
+  filterOnFruit.setAttribute('value', 'fruit')
+  filterOnFruit.innerText = 'Fruit'
 
+  selectFilter.append(defaultFilter)
+  selectFilter.append(filterOnVegetable)
+  selectFilter.append(filterOnFruit)
+
+  selectFilter.addEventListener('change', () => filterStoreItems(selectFilter.value))
+
+  return selectFilter
 }
 
-addItemToStore()
+function filterStoreItems(value) {
+  if (value === 'vegetable') {
+    const vegetables = state.items.filter((item) => item.type === 'vegetable')
+    addItemToStore(vegetables)
+  } else if (value === 'fruit') {
+    const fruits = state.items.filter((item) => item.type === 'fruit')
+    addItemToStore(fruits)
+  } else {
+    addItemToStore(state.items)
+  }
+  
+}
+
+makeFilter()
+addItemToStore(state.items)
