@@ -78,7 +78,9 @@ const buildStoreItem = (item) => {
   const img = document.createElement("img");
   if (item.picURL) {
     img.setAttribute("src", `${item.picURL}`);
-  } else {img.setAttribute("src", `assets/icons/${item.id}.svg`)};
+  } else {
+    img.setAttribute("src", `assets/icons/${item.id}.svg`);
+  }
   img.setAttribute("alt", `${item.name}`);
 
   div.append(img);
@@ -108,7 +110,9 @@ const buildCartItem = (item) => {
   img.setAttribute("class", "cart--item-icon");
   if (item.picURL) {
     img.setAttribute("src", `${item.picURL}`);
-  } else {img.setAttribute("src", `assets/icons/${item.id}.svg`)};
+  } else {
+    img.setAttribute("src", `assets/icons/${item.id}.svg`);
+  }
   img.setAttribute("alt", `${item.name}`);
   li.append(img);
 
@@ -295,34 +299,68 @@ document.body.addEventListener("click", (event) => {
     cancelButton.addEventListener("click", (event) => {
       event.preventDefault();
       const formSection = document.querySelector("#add-product-form");
-      formSection.innerHTML = ""
+      formSection.innerHTML = "";
     });
 
-    const addButton = document.querySelector('#add-product-button')
-    addButton.addEventListener('click', (event) => {
+    const addButton = document.querySelector("#add-product-button");
+    addButton.addEventListener("click", (event) => {
       event.preventDefault();
-      submitForm()
-    })
+      submitForm();
+    });
   }
-})
+});
 
 //Add new product
 const submitForm = () => {
-  const productName = document.querySelector('#name-input').value
-  const productPrice = Number(document.querySelector('#price-input').value).toFixed(2)
-  const productCategory = document.querySelector('#category-dropdown').value
-  const productPic = document.querySelector('#pic-input').value
+  const productName = document.querySelector("#name-input").value;
+  const productPrice = Number(
+    document.querySelector("#price-input").value
+  ).toFixed(2);
+  const productCategory = document.querySelector("#category-dropdown").value;
+  const productPic = document.querySelector("#pic-input").value;
 
-  const productObject = {}
-  productObject.id = `0${state.items.length + 1}-${productName}`
-  productObject.name = productName
-  productObject.price = productPrice
-  productObject.category = productCategory
-  productObject.picURL = productPic
- 
-  state.items.push(productObject)
-  render(state.items)
+  if (!valid(productName, productPrice, productPic)) {
+    reportValidity(false)
+    return
+  }
+
+  const productObject = {};
+  productObject.id = `0${state.items.length + 1}-${productName}`;
+  productObject.name = productName;
+  productObject.price = productPrice;
+  productObject.category = productCategory;
+  productObject.picURL = productPic;
+
+  state.items.push(productObject);
+  render(state.items);
   const formSection = document.querySelector("#add-product-form");
-  formSection.innerHTML = ""
-}
+  formSection.innerHTML = "";
+  reportValidity(true)
+};
 
+// Validate form input
+const valid = (productName, productPrice, productPic) => {
+  if (productName.length === 0) {
+    return false;
+  }
+  if (!productPrice > 0) {
+    return false;
+  }
+  if (productPic.length === 0) {
+    return false;
+  }
+  return true;
+};
+
+//Report form validity
+const reportValidity = (boolean) => {
+  const reportP = document.querySelector('#form-validation-message')
+  console.log(reportP)
+  if (boolean) {
+    reportP.style.color = "green"
+    reportP.innerText = "Item added successfully!"
+  } else {
+    reportP.style.color = "red"
+    reportP.innerText = "Looks like you're missing some info!"
+  }
+}
