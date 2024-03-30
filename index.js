@@ -9,7 +9,7 @@ const state = {
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.10,
+      price: 0.1,
       category: "vegetable",
     },
     {
@@ -21,7 +21,7 @@ const state = {
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.20,
+      price: 0.2,
       category: "fruit",
     },
     {
@@ -33,7 +33,7 @@ const state = {
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.70,
+      price: 0.7,
       category: "fruit",
     },
     {
@@ -45,7 +45,7 @@ const state = {
     {
       id: "008-berry",
       name: "berry",
-      price: 0.40,
+      price: 0.4,
       category: "fruit",
     },
     {
@@ -57,7 +57,7 @@ const state = {
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.50,
+      price: 0.5,
       category: "vegetable",
     },
   ],
@@ -163,41 +163,38 @@ filterDropDown.addEventListener("change", () => {
 });
 
 // Sort items
-const sortNameButton = document.querySelector('#sortByName-button')
-const sortPriceButton = document.querySelector('#sortByPrice-button')
+const sortNameButton = document.querySelector("#sortByName-button");
+const sortPriceButton = document.querySelector("#sortByPrice-button");
 
-sortNameButton.addEventListener('click', () => {
-  const alphabeticalItems = state.items.toSorted((a, b) => a.name.localeCompare(b.name))
-  console.log(alphabeticalItems)
-  render(alphabeticalItems)
-})
+sortNameButton.addEventListener("click", () => {
+  const alphabeticalItems = state.items.toSorted((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+  console.log(alphabeticalItems);
+  render(alphabeticalItems);
+});
 
-sortPriceButton.addEventListener('click', () => {
-  const pricedItems = state.items.toSorted((a, b) => a.price - b.price)
-  render(pricedItems)
-})
+sortPriceButton.addEventListener("click", () => {
+  const pricedItems = state.items.toSorted((a, b) => a.price - b.price);
+  render(pricedItems);
+});
 
 //Render the product list
 const render = (input) => {
   storeItemList.innerHTML = "";
-  
 
-  if (filterDropDown.value === 'all') {
-     input.forEach(buildStoreItem)
+  if (filterDropDown.value === "all") {
+    input.forEach(buildStoreItem);
   }
 
-  if (filterDropDown.value === 'vegetable') {
-    const justVeg = input.filter(
-      (item) => item.category === 'vegetable'
-    );
-    justVeg.forEach(buildStoreItem)
+  if (filterDropDown.value === "vegetable") {
+    const justVeg = input.filter((item) => item.category === "vegetable");
+    justVeg.forEach(buildStoreItem);
   }
 
-  if (filterDropDown.value === 'fruit') {
-    const justFruit = input.filter(
-      (item) => item.category === 'fruit'
-    );
-    justFruit.forEach(buildStoreItem)
+  if (filterDropDown.value === "fruit") {
+    const justFruit = input.filter((item) => item.category === "fruit");
+    justFruit.forEach(buildStoreItem);
   }
 };
 
@@ -205,7 +202,109 @@ const render = (input) => {
 const renderCart = () => {
   cartItemList.innerHTML = "";
   state.cart.forEach(buildCartItem);
-}
-
+};
 
 render(state.items);
+
+//Build form
+const buildForm = () => {
+  const formSection = document.querySelector("#add-product-form");
+
+  const nameP = document.createElement("p");
+  nameP.classList.add("form-title");
+  nameP.innerText = "Name of Item";
+  formSection.append(nameP);
+
+  const nameInput = document.createElement("input");
+  nameInput.classList.add("form-input");
+  nameInput.type = "text";
+  nameInput.placeholder = "Enter product name";
+  nameInput.setAttribute("id", "name-input");
+  formSection.append(nameInput);
+
+  const priceP = document.createElement("p");
+  priceP.classList.add("form-title");
+  priceP.innerText = "Price of Item";
+  formSection.append(priceP);
+
+  const priceInput = document.createElement("input");
+  priceInput.classList.add("form-input");
+  priceInput.type = "text";
+  priceInput.placeholder = "Enter product price";
+  priceInput.setAttribute("id", "price-input");
+  formSection.append(priceInput);
+
+  const categoryP = document.createElement("p");
+  categoryP.classList.add("form-title");
+  categoryP.innerText = "Select Category";
+  formSection.append(categoryP);
+
+  const categoryDropdown = document.createElement("select");
+  categoryDropdown.setAttribute("id", "category-dropdown");
+  formSection.append(categoryDropdown);
+
+  const vegOption = document.createElement("option");
+  vegOption.value = "vegetable";
+  vegOption.innerText = "Vegetable";
+  categoryDropdown.append(vegOption);
+
+  const fruitOption = document.createElement("option");
+  fruitOption.value = "fruit";
+  fruitOption.innerText = "Fruit";
+  categoryDropdown.append(fruitOption);
+
+  const picP = document.createElement("p");
+  picP.classList.add("form-title");
+  picP.innerText = "Picture URL";
+  formSection.append(picP);
+
+  const picInput = document.createElement("input");
+  picInput.classList.add("form-input");
+  picInput.type = "text";
+  picInput.placeholder = "Enter picture URL";
+  picInput.setAttribute("id", "pic-input");
+  formSection.append(picInput);
+
+  const addButton = document.createElement("button");
+  addButton.setAttribute("id", "add-product-button");
+  addButton.innerText = "Add";
+  formSection.append(addButton);
+
+  const cancelButton = document.createElement("button");
+  cancelButton.setAttribute("id", "cancel-button");
+  cancelButton.innerText = "Cancel";
+  formSection.append(cancelButton);
+};
+
+//Display form
+const addNewProductButton = document.querySelector("#add-new-button");
+addNewProductButton.addEventListener("click", (event) => {
+  const formSection = document.querySelector("#add-product-form");
+  formSection.innerHTML = "";
+  buildForm();
+});
+
+//Activate new 'Cancel' and 'Add' buttons
+document.body.addEventListener("click", (event) => {
+  if (event.target.matches("#add-new-button")) {
+    const cancelButton = document.querySelector("#cancel-button");
+    cancelButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      const formSection = document.querySelector("#add-product-form");
+      formSection.innerHTML = ""
+    });
+
+    const addButton = document.querySelector('#add-product-button')
+    addButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      console.log('in')
+      submitForm()
+    })
+  }
+})
+
+//Add new product
+const submitForm = () => {
+  const productName = document.querySelector('#name-input').value
+  console.log(productName)
+}

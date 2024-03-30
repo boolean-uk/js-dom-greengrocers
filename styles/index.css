@@ -193,6 +193,33 @@ select {
   font-weight: bold;
 }
 
+#add-new-section {
+  display: grid;
+  margin-bottom: 25px;
+}
+
+#add-new-button {
+  place-self: center;
+  width: auto;
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
+
+#add-new-section * {
+ place-self: center;
+ margin-bottom: 5px;
+ width: 300px;
+}
+
+#add-product-form {
+  display: grid;
+  margin: 10px;
+  padding: 10px;
+  width: 350px;
+}
+
+
+
 @media only screen and (max-width: 450px) {
   .total-section {
     border-top: 2px solid #00675b;
