@@ -119,31 +119,39 @@ function createCartItems(groceryItem) {
   itemName.innerText = groceryItem.name
   listItem.append(itemName)
 
-
+  
 
   const removeBtn = document.createElement('button')
   removeBtn.classList = 'quantity-btn remove-btn center'
   removeBtn.innerText = '-'
   listItem.append(removeBtn)
 
-
+  removeBtn.addEventListener('click', () => {countItems(groceryItem)})
+  
   
   const quantityInCart = document.createElement('span')
   quantityInCart.classList = 'quantity-text center'
 
+  const groceryTotal = cartTotal()
+  totalNumber.innerText = `£${groceryTotal}`
+
+  
   cart.push(groceryItem)
   const numOfItemsInCart = countItems(groceryItem)
 
   quantityInCart.innerText = numOfItemsInCart
   listItem.append(quantityInCart)
 
-
+  
 
   const addBtn = document.createElement('button')
   addBtn.classList = 'quantity-btn add-btn center'
   addBtn.innerText = '+'
   listItem.append(addBtn)
 
+  addBtn.addEventListener('click', () => {
+    countItems(groceryItem)})
+  
 
   listItemsInCart.append(listItem)
   cartContainer.append(listItemsInCart)
@@ -162,4 +170,14 @@ function countItems(groceryItem) {
     return totalOfEachItem
   })
   return totalOfEachItem
+}
+
+
+function cartTotal() {
+  let groceryCartTotal = totalNumber
+  const checkItemPrices = cart.map((element) => {
+    groceryCartTotal += element.price 
+  })
+  console.log(groceryCartTotal)
+  return groceryCartTotal
 }
