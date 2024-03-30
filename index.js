@@ -135,7 +135,7 @@ function createCartItems(groceryItem) {
   const groceryTotal = cartTotal()
   totalNumber.innerText = `£${groceryTotal}`
 
-  
+
   cart.push(groceryItem)
   const numOfItemsInCart = countItems(groceryItem)
 
@@ -174,7 +174,7 @@ function countItems(groceryItem) {
 
 
 function cartTotal() {
-  let groceryCartTotal = totalNumber
+  let groceryCartTotal = 0.35
   const checkItemPrices = cart.map((element) => {
     groceryCartTotal += element.price 
   })
