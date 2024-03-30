@@ -76,7 +76,9 @@ const buildStoreItem = (item) => {
   div.setAttribute("class", "store--item-icon");
 
   const img = document.createElement("img");
-  img.setAttribute("src", `assets/icons/${item.id}.svg`);
+  if (item.picURL) {
+    img.setAttribute("src", `${item.picURL}`);
+  } else {img.setAttribute("src", `assets/icons/${item.id}.svg`)};
   img.setAttribute("alt", `${item.name}`);
 
   div.append(img);
@@ -104,7 +106,9 @@ const buildCartItem = (item) => {
 
   const img = document.createElement("img");
   img.setAttribute("class", "cart--item-icon");
-  img.setAttribute("src", `assets/icons/${item.id}.svg`);
+  if (item.picURL) {
+    img.setAttribute("src", `${item.picURL}`);
+  } else {img.setAttribute("src", `assets/icons/${item.id}.svg`)};
   img.setAttribute("alt", `${item.name}`);
   li.append(img);
 
@@ -297,7 +301,6 @@ document.body.addEventListener("click", (event) => {
     const addButton = document.querySelector('#add-product-button')
     addButton.addEventListener('click', (event) => {
       event.preventDefault();
-      console.log('in')
       submitForm()
     })
   }
@@ -306,5 +309,20 @@ document.body.addEventListener("click", (event) => {
 //Add new product
 const submitForm = () => {
   const productName = document.querySelector('#name-input').value
-  console.log(productName)
+  const productPrice = Number(document.querySelector('#price-input').value).toFixed(2)
+  const productCategory = document.querySelector('#category-dropdown').value
+  const productPic = document.querySelector('#pic-input').value
+
+  const productObject = {}
+  productObject.id = `0${state.items.length + 1}-${productName}`
+  productObject.name = productName
+  productObject.price = productPrice
+  productObject.category = productCategory
+  productObject.picURL = productPic
+ 
+  state.items.push(productObject)
+  render(state.items)
+  const formSection = document.querySelector("#add-product-form");
+  formSection.innerHTML = ""
 }
+
