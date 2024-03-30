@@ -126,7 +126,7 @@ function createCartItems(groceryItem) {
   removeBtn.innerText = '-'
   listItem.append(removeBtn)
 
-  removeBtn.addEventListener('click', () => {countItems(groceryItem)})
+  
   
   
   const quantityInCart = document.createElement('span')
@@ -142,6 +142,8 @@ function createCartItems(groceryItem) {
   quantityInCart.innerText = numOfItemsInCart
   listItem.append(quantityInCart)
 
+
+  removeBtn.addEventListener('click', () => {subtractItemFromCart(numOfItemsInCart)})
   
 
   const addBtn = document.createElement('button')
@@ -150,8 +152,7 @@ function createCartItems(groceryItem) {
   listItem.append(addBtn)
 
   addBtn.addEventListener('click', () => {
-    countItems(groceryItem)})
-  
+  cartTotal()})
 
   listItemsInCart.append(listItem)
   cartContainer.append(listItemsInCart)
@@ -176,8 +177,23 @@ function countItems(groceryItem) {
 function cartTotal() {
   let groceryCartTotal = 0.35
   const checkItemPrices = cart.map((element) => {
-    groceryCartTotal += element.price 
+    groceryCartTotal += element.price
   })
-  console.log(groceryCartTotal)
-  return groceryCartTotal
+  return groceryCartTotal.toFixed(2)
+}
+
+
+function subtractItemFromCart(numOfItemsInCart) {
+  let itemInCart = numOfItemsInCart
+  
+    if (numOfItemsInCart > 1) {
+      itemInCart --
+    } else {
+      removeItemFromCart()
+    }
+}
+
+function removeItemFromCart() {
+  const removeListItem = element.remove('li')
+  return removeListItem
 }
