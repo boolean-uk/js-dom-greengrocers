@@ -242,5 +242,37 @@ function filterStoreItems(value) {
   
 }
 
+function makeSorting() {
+  const div = document.createElement('div')
+  const sortingLabel = document.createElement('label')
+  const createSortingButton = createStoreSorting()
+
+  sortingLabel.innerText = 'Sort'
+
+  div.append(sortingLabel)
+  div.append(createSortingButton)
+
+  store.prepend(div)
+}
+
+function createStoreSorting() {
+  const selectSorting = document.createElement('select')
+  const defaultSorting = document.createElement('option')
+  const sortAlphabetically = document.createElement('option')
+  
+  defaultSorting.setAttribute('value', 'default')
+  defaultSorting.innerText = ' '
+  sortAlphabetically.setAttribute('value', 'alphabetically')
+  sortAlphabetically.innerText = 'Alphabetically'
+
+  selectSorting.append(defaultSorting)
+  selectSorting.append(sortAlphabetically)
+
+  // selectFilter.addEventListener('change', () => filterStoreItems(selectFilter.value))
+
+  return selectSorting
+}
+
+makeSorting()
 makeFilter()
 addItemToStore(state.items)
