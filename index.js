@@ -214,7 +214,7 @@ const renderCart = () => {
 
 render(state.items);
 
-//Build form
+//Build form to add new product
 const buildForm = () => {
   const formSection = document.querySelector("#add-product-form");
 
@@ -292,19 +292,22 @@ addNewProductButton.addEventListener("click", (event) => {
   buildForm();
 });
 
-//Activate new 'Cancel' and 'Add' buttons
+//Add listeners to new 'Cancel' and 'Add' buttons
 document.body.addEventListener("click", (event) => {
   if (event.target.matches("#add-new-button")) {
     const cancelButton = document.querySelector("#cancel-button");
     cancelButton.addEventListener("click", (event) => {
       event.preventDefault();
       const formSection = document.querySelector("#add-product-form");
+      const reportP = document.querySelector("#form-validation-message");
+      reportP.innerText = "";
       formSection.innerHTML = "";
     });
 
     const addButton = document.querySelector("#add-product-button");
     addButton.addEventListener("click", (event) => {
       event.preventDefault();
+
       submitForm();
     });
   }
@@ -320,8 +323,8 @@ const submitForm = () => {
   const productPic = document.querySelector("#pic-input").value;
 
   if (!valid(productName, productPrice, productPic)) {
-    reportValidity(false)
-    return
+    reportValidity(false);
+    return;
   }
 
   const productObject = {};
@@ -333,9 +336,10 @@ const submitForm = () => {
 
   state.items.push(productObject);
   render(state.items);
+
   const formSection = document.querySelector("#add-product-form");
   formSection.innerHTML = "";
-  reportValidity(true)
+  reportValidity(true);
 };
 
 // Validate form input
@@ -354,12 +358,12 @@ const valid = (productName, productPrice, productPic) => {
 
 //Report form validity
 const reportValidity = (boolean) => {
-  const reportP = document.querySelector('#form-validation-message')
+  const reportP = document.querySelector("#form-validation-message");
   if (boolean) {
-    reportP.style.color = "green"
-    reportP.innerText = "Item added successfully!"
+    reportP.style.color = "green";
+    reportP.innerText = "Item added successfully!";
   } else {
-    reportP.style.color = "red"
-    reportP.innerText = "Looks like you're missing some info!"
+    reportP.style.color = "red";
+    reportP.innerText = "Looks like you're missing some info!";
   }
-}
+};

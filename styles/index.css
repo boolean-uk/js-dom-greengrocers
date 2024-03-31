@@ -1,7 +1,7 @@
 /* Typography */
 
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif;
 }
 
 h1,
@@ -35,7 +35,8 @@ button {
   text-align: center;
 }
 
-select, label {
+select,
+label {
   place-self: center;
 }
 
@@ -206,9 +207,9 @@ select {
 }
 
 #add-new-section * {
- place-self: center;
- margin-bottom: 5px;
- width: 300px;
+  place-self: center;
+  margin-bottom: 5px;
+  width: 300px;
 }
 
 #add-product-form {
@@ -219,8 +220,8 @@ select {
 }
 
 #form-validation-message {
-text-align: center;}
-
+  text-align: center;
+}
 
 @media only screen and (max-width: 450px) {
   .total-section {
