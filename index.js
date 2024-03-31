@@ -244,7 +244,7 @@ const buildForm = () => {
 
   const categoryP = document.createElement("p");
   categoryP.classList.add("form-title");
-  categoryP.innerText = "Select Category";
+  categoryP.innerText = "Category";
   formSection.append(categoryP);
 
   const categoryDropdown = document.createElement("select");
@@ -307,7 +307,6 @@ document.body.addEventListener("click", (event) => {
     const addButton = document.querySelector("#add-product-button");
     addButton.addEventListener("click", (event) => {
       event.preventDefault();
-
       submitForm();
     });
   }
@@ -356,7 +355,7 @@ const valid = (productName, productPrice, productPic) => {
   return true;
 };
 
-//Report form validity
+//Report input validity
 const reportValidity = (boolean) => {
   const reportP = document.querySelector("#form-validation-message");
   if (boolean) {
