@@ -361,8 +361,11 @@ const reportValidity = (boolean) => {
   if (boolean) {
     reportP.style.color = "green";
     reportP.innerText = "Item added successfully!";
+    setTimeout(() => {
+      reportP.innerText = "";
+    }, 3000);
   } else {
     reportP.style.color = "red";
-    reportP.innerText = "Looks like you're missing some info!";
+    reportP.innerText = "Looks like you're missing some info, please try again.";
   }
 };
