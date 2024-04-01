@@ -3,52 +3,62 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: "fruit"
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: "vegetable"
     }
   ],
   cart: []
@@ -58,6 +68,12 @@ const itemList = document.querySelector(".store--item-list")
 const cartContainer = document.querySelector(".cart--item-list-container")
 const cartList = document.querySelector(".cart--item-list")
 const total = document.querySelector(".total-number")
+const storeFilter = document.querySelector("#catagories")
+
+
+storeFilter.addEventListener('change', () => {
+  render()
+})
 
 function capitlisation(inputString) {
   if (typeof inputString !== "string") {
@@ -108,9 +124,17 @@ function render() {
   
   let runningTotal = 0 
 
+  
+
   state.items.forEach(element => {
-    const listItem = createListItem(element)
-    itemList.append(listItem)
+    if(storeFilter.value === "all" || storeFilter.value === "vegetables"  && element.type === "vegetable"){
+      const listItem = createListItem(element)
+      itemList.append(listItem)
+    } else if(storeFilter.value === "all" || storeFilter.value === "fruit"  && element.type === "fruit") {
+      const listItem = createListItem(element)
+      itemList.append(listItem)
+    }
+    
   })
 
 
