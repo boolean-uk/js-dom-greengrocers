@@ -13,22 +13,40 @@
 
 <body>
   <header id="store">
-      <h1>Greengrocers</h1>
-      <select name="catagories" id="catagories">
-        <option value="all">All</option>
-        <option value="fruit">Fruit</option>
-        <option value="vegetables">Vegetables</option>
-      </select>
-      
-      <select name="sort" id="sort">
-        <option value="default">Popularity</option>
-        <option value="price-low-high">Price(Low to High)</option>
-        <option value="price-high-low">Price(High to Low)</option>
-      </select>
+    <h1>Greengrocers</h1>
+    <select name="catagories" id="catagories">
+      <option value="all">All</option>
+      <option value="fruit">Fruit</option>
+      <option value="vegetables">Vegetables</option>
+    </select>
+
+    <select name="sort" id="sort">
+      <option value="default">Popularity</option>
+      <option value="price-low-high">Price(Low to High)</option>
+      <option value="price-high-low">Price(High to Low)</option>
+    </select>
     <ul class="item-list store--item-list">
       <!-- Take a look at store-item.html -->
     </ul>
 
+    <button id="add-new-item">Add New Item</button>
+
+    <div class="new-item-container">
+      <form id="new-item">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name">
+
+        <label for="price">Price</label>
+        <input type="number" name="price" id="price">
+
+        <select name="type" id="type">
+          <option value="fruit">Fruit</option>
+          <option value="vegetables">Vegetables</option>
+        </select>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   </header>
 
   <main id="cart">

@@ -176,6 +176,22 @@ button {
   font-weight: bold;
 }
 
+/* New Item Form */
+
+.new-item-container {
+  position: absolute;
+  top:25%;
+  background-color: skyblue;
+  left: 10%;
+  display: none;
+}
+
+#new-item {
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+}
+
 @media only screen and (max-width: 450px) {
   .total-section {
     border-top: 2px solid #00675b;

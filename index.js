@@ -70,6 +70,9 @@ const cartList = document.querySelector(".cart--item-list")
 const total = document.querySelector(".total-number")
 const storeFilter = document.querySelector("#catagories")
 const sortSelect = document.querySelector("#sort")
+const addItemButton = document.querySelector("#add-new-item")
+const newItemContainer = document.querySelector(".new-item-container")
+const newItemForm = document.querySelector("#new-item")
 
 
 storeFilter.addEventListener('change', () => {
@@ -79,6 +82,40 @@ storeFilter.addEventListener('change', () => {
 sortSelect.addEventListener('change', () => {
   render()
 })
+
+addItemButton.addEventListener('click', () => {
+  newItemContainer.style.display = "unset"
+})
+
+newItemForm.addEventListener("submit", (e) => {
+  e.preventDefault()
+  formSubmit(e.currentTarget)
+})
+
+function formSubmit(form){
+  const itemName = form.querySelector("#name").value
+  const itemPrice = form.querySelector("#price").value
+  const itemType = form.querySelector('#type').value
+
+  let constructID = toString(state.items.length)
+  while(constructID.length < 3) {
+    constructID = "0" + constructID
+  }
+
+  state.items.push({
+    id: constructID + "-" + itemName,
+    name: itemName,
+    price: itemPrice,
+    type: itemType
+  })
+
+  form.querySelector("#name").value = ""
+  form.querySelector("#price").value = ""
+
+  render()
+
+  newItemContainer.style.display = "none"
+}
 
 function capitlisation(inputString) {
   if (typeof inputString !== "string") {
