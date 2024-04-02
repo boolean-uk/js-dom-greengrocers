@@ -74,6 +74,7 @@ const buildStoreItem = (item) => {
 
   const div = document.createElement("div");
   div.setAttribute("class", "store--item-icon");
+  li.append(div);
 
   const img = document.createElement("img");
   if (item.picURL) {
@@ -82,9 +83,7 @@ const buildStoreItem = (item) => {
     img.setAttribute("src", `assets/icons/${item.id}.svg`);
   }
   img.setAttribute("alt", `${item.name}`);
-
   div.append(img);
-  li.append(div);
 
   const button = document.createElement("button");
   button.innerText = "Add to cart";
@@ -117,6 +116,7 @@ const buildCartItem = (item) => {
   li.append(img);
 
   const p = document.createElement("p");
+  p.setAttribute("id", "in-cart-product-name")
   p.innerText = `${item.name}`;
   li.append(p);
 
@@ -158,11 +158,11 @@ const decreaseCartQuantity = (item) => {
 // Update price
 const updatePrice = () => {
   const priceText = document.querySelector(".total-number");
-  let runningTotal = 0;
+  let total = 0;
   state.cart.forEach((element) => {
-    runningTotal += element.price * element.noInCart;
+    total += element.price * element.noInCart;
   });
-  priceText.innerText = `£${runningTotal.toFixed(2)}`;
+  priceText.innerText = `£${total.toFixed(2)}`;
 };
 
 // Filter items
@@ -187,19 +187,17 @@ sortPriceButton.addEventListener("click", () => {
   render(pricedItems);
 });
 
-//Render the product list
+//Render  product list
 const render = (input) => {
   storeItemList.innerHTML = "";
 
   if (filterDropDown.value === "all") {
     input.forEach(buildStoreItem);
   }
-
   if (filterDropDown.value === "vegetable") {
     const justVeg = input.filter((item) => item.category === "vegetable");
     justVeg.forEach(buildStoreItem);
   }
-
   if (filterDropDown.value === "fruit") {
     const justFruit = input.filter((item) => item.category === "fruit");
     justFruit.forEach(buildStoreItem);

@@ -132,6 +132,10 @@ select {
   font-size: 1.25rem;
 }
 
+#in-cart-product-name::first-letter {
+  text-transform: uppercase;
+}
+
 .cart--item-list li:last-child {
   border-bottom: none;
 }
