@@ -75,7 +75,6 @@ for(i in tempItems){
 
 let itemsInCart = state.cart
 const itemsList = state.items
-
 function render() {
 
   showStoreItems()
@@ -100,7 +99,6 @@ function createStoreImage(items){
   const image = document.createElement('img')
     image.setAttribute('src',`./assets/icons/${items[element].id}.svg`)
     image.setAttribute('alt',`${items[element].name}`)
-    
     return image
 }
 
@@ -134,10 +132,26 @@ function addItem(itemName, element) {
 }
 
 function showCartItems(items){
+
   cartItemList.innerHTML = ''
+  totalNbr.innerHTML = ''
+  let totalPrice = 0
   for(element in items){
     if(items[element].number === 0 ){
       items.splice(element,1)
+      const pName = createCartPName (items[element]) 
+      const liItem = document.createElement('li')
+      const image = createCartImage(items[element])
+      const buttonMinus = createMinusButton(items,element)
+      const span = createSpan(items[element])
+      const buttonPlus = createPlusButton(items , element)
+
+      let totalValue = items[element].price * items[element].number
+      
+      totalNbr.innerText = `£ : ${totalValue.toFixed(2)}`
+      
+      liItem.append(image, pName, buttonMinus, span, buttonPlus)
+      cartItemList.append(liItem)
     } else {
       const pName = createCartPName (items[element]) 
       const liItem = document.createElement('li')
@@ -145,6 +159,11 @@ function showCartItems(items){
       const buttonMinus = createMinusButton(items,element)
       const span = createSpan(items[element])
       const buttonPlus = createPlusButton(items , element)
+
+      const value = items[element].price * items[element].number
+      totalPrice +=value
+      
+      totalNbr.innerText = `£ : ${totalPrice.toFixed(2)}`
       liItem.append(image, pName, buttonMinus, span, buttonPlus)
       cartItemList.append(liItem)
     } 
