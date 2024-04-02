@@ -23,6 +23,15 @@ button {
 /* Store */
 
 #store {
+  display: grid;
+  grid-template: 
+    'h1'
+    'filter' 50px
+    'item-list';
+  gap: 1rem;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
   height: 40vh;
   padding: 1rem;
 
@@ -43,14 +52,54 @@ button {
 }
 
 .store--item-list li {
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   grid-row-gap: 0.5rem;
+}
+
+.store--item-list li button {
+  justify-self: center;
+  text-align: center;
+  width: 100px;
+  padding: 0.25rem 0.5rem;
+  text-transform: uppercase;
+  font-size: 0.725rem;
+  cursor: pointer;
 }
 
 .store--item-icon {
   width: 125px;
   height: 125px;
+}
+
+.show {
+  display: block;
+  justify-content: center;
+}
+
+.filter {
+  display: grid;
+  grid-area: filter;
+  justify-items: center;
+  grid-template-columns: 90px 100px 75px;
+  gap: 1rem;
+  list-style-type: none;
+}
+
+.filter button {
+  border: none;
+  background-color: white;
+  color: black;
+  padding: 9px 18px;
+  border-radius: 25px;
+}
+
+.filter button:hover {
+  background-color: black;
+  color: white;
 }
 
 @media only screen and (max-width: 600px) {
