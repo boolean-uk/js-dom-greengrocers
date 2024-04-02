@@ -9,9 +9,22 @@
     <title>Greengrocers</title>
     <script defer src="index.js"></script>
   </head>
+
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
+      <div class="filter">
+        <button class="add-item">➕</button>
+        <button class="all">All Products</button>
+        <button class="vegetables">Vegetables</button>
+        <button class="fruits">Fruits</button>
+        <select name="" id="sorted-list">
+          <option value="">Sort Items By</option>
+          <option value="name">Name (a - z)</option>
+          <option value="price-asce">Price (asce)</option>
+          <option value="price-desc">Price (desc)</option>
+        </select>
+      </div>
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
@@ -36,6 +49,7 @@
         </div>
       </div>
     </main>
+
     <div>
       Icons made by
       <a href="https://www.flaticon.com/authors/icongeek26" title="Icongeek26">
@@ -45,6 +59,29 @@
       <a href="https://www.flaticon.com/" title="Flaticon">
         www.flaticon.com
       </a>
+    </div>
+    <div class="form">
+      <form action="">
+        <h2>ADD ITEMS TO THE STORE</h2>
+        <label for="id">ID</label>
+        <input id="id" type="text" required />
+
+        <label for="name">Name</label>
+        <input id="name" type="text" required />
+
+        <label for="price">Price</label>
+        <input id="price" type="text" required />
+
+        <label for="type">Type</label>
+        <input id="type" type="text" required />
+
+        <input type="submit" value="ADD" />
+      </form>
+
+      <div class="buttons">
+        <button class="close">CLOSE</button>
+        <button class="reset">RESET</button>
+      </div>
     </div>
   </body>
 </html>
