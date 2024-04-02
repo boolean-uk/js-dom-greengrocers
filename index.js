@@ -3,7 +3,7 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35,
+      price: 1.35,
       type: "vegetable"
     },
     {
@@ -15,7 +15,7 @@ const state = {
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35,
+      price: 0.75,
       type: "fruit"
     },
     {
@@ -39,13 +39,13 @@ const state = {
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35,
+      price: 0.25,
       type: "vegetable"
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35,
+      price: 0.15,
       type: "fruit"
     },
     {
@@ -57,7 +57,7 @@ const state = {
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35,
+      price: 0.65,
       type: "vegetable"
     }
   ],
@@ -69,9 +69,14 @@ const cartContainer = document.querySelector(".cart--item-list-container")
 const cartList = document.querySelector(".cart--item-list")
 const total = document.querySelector(".total-number")
 const storeFilter = document.querySelector("#catagories")
+const sortSelect = document.querySelector("#sort")
 
 
 storeFilter.addEventListener('change', () => {
+  render()
+})
+
+sortSelect.addEventListener('change', () => {
   render()
 })
 
@@ -92,6 +97,27 @@ function capitlisation(inputString) {
   return outputString
 }
 
+
+function sortingPopular(a, b) {
+  const firstCompare = Number(a.id.split("-")[0])
+  const secondCompare = Number(b.id.split("-")[0])
+
+  return firstCompare - secondCompare
+}
+
+function sortPriceHL(a, b) {
+  const firstCompare = a.price
+  const secondCompare = b.price
+
+  return firstCompare - secondCompare
+}
+
+function sortPriceLH(a, b) {
+  const firstCompare = a.price
+  const secondCompare = b.price
+
+  return secondCompare - firstCompare
+}
 
 function createListItem(element) {
   const listItem = document.createElement("li")
@@ -124,7 +150,13 @@ function render() {
   
   let runningTotal = 0 
 
-  
+  if (sortSelect.value === "default") {
+    state.items.sort(sortingPopular)
+  } else if (sortSelect.value === "price-low-high") {
+    state.items.sort(sortPriceLH)
+  } else if (sortSelect.value === "price-high-low") {
+    state.items.sort(sortPriceHL)
+  }
 
   state.items.forEach(element => {
     if(storeFilter.value === "all" || storeFilter.value === "vegetables"  && element.type === "vegetable"){
