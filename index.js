@@ -300,6 +300,7 @@ function addNewItem() {
 
 function createForm() {
   const form = document.createElement('form')
+  const h2 = document.createElement('h2')
   const addItemButton = document.createElement('button')
   const itemIdLabel = document.createElement('label')
   const itemNameLabel = document.createElement('label')
@@ -314,6 +315,7 @@ function createForm() {
 
   form.classList.add('form')
   addItemButton.innerText = 'Add'
+  h2.innerText = 'Add new item to store'
   itemIdLabel.innerText = 'Item ID'
   itemIdLabel.classList.add('label')
   itemNameLabel.innerText = 'Item name'
@@ -335,6 +337,7 @@ function createForm() {
   itemTypeFruit.setAttribute('value', 'fruit')
   itemTypeFruit.innerText = 'Fruit'
 
+  form.append(h2)
   form.append(itemIdLabel)
   form.append(itemIdInput)
   form.append(itemNameLabel)
