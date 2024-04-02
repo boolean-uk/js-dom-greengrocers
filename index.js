@@ -328,6 +328,7 @@ function createForm() {
   itemNameInput.required = true
   itemPriceInput.setAttribute('type', 'number')
   itemPriceInput.required = true
+  itemPriceInput.setAttribute('step', '.01')
   itemTypeSelect.classList.add('form-select')
   itemTypeVegetable.setAttribute('value', 'vegetable')
   itemTypeVegetable.innerText = 'Vegetable'
@@ -347,8 +348,22 @@ function createForm() {
   form.append(addItemButton)
 
   body.append(form)
-}
 
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
+    form.style.display = 'none'
+
+    const newItemObject = {}
+    newItemObject.id = itemIdInput.value
+    newItemObject.name = itemNameInput.value
+    newItemObject.price = itemPriceInput.value
+    newItemObject.type = itemTypeSelect.value
+
+    state.items.push(newItemObject)
+    
+    addItemToStore(state.items)
+  })
+}
 
 // Call functions
 addNewItem()
