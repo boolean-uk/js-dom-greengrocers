@@ -66,24 +66,30 @@ const totalNbr = document.querySelector('.total-number')
 // for ul card and ul store
 const itemList = document.querySelector('.item-list')
 
-const itemsInCart = state.cart
+const objectNo = { number : 0}
+tempItems = state.items
+
+for(i in tempItems){
+  tempItems[i] = Object.assign(tempItems[i], objectNo)
+}
+
+let itemsInCart = state.cart
+const itemsList = state.items
+
 function render() {
+
   showStoreItems()
   
 }
 
 function showStoreItems(){
-  const items = state.items
-  for(element in items) {
+  for(element in itemsList) {
     const liItem = document.createElement('li')
     liItem.style.listStyleType = 'none'
-
     const divItem = document.createElement('div')
     divItem.classList.add('store--item-icon')
-
-    const image = createStoreImage(items)
-    const button = createStoreButton(items, element)
-
+    const image = createStoreImage(itemsList)
+    const button = createStoreButton(itemsList, element)
     divItem.append(image)
     liItem.append(divItem, button)
     storeItemList.append(liItem)
@@ -101,59 +107,72 @@ function createStoreImage(items){
 function createStoreButton(itemName, element){
   const button = document.createElement('button')
   button.innerText = 'Add to cart'
-  button.addEventListener('click', () => addItem(itemName, element))
+  button.addEventListener('click', () =>
+   addItem(itemName, element))
+  
   return button
 }
 
 function addItem(itemName, element) {
+  let newItem = itemName[element]
 
-  const newItem = itemName[element]
-  console.log(itemsInCart)
   const existingItem = itemsInCart.find(item => {
-    item.id === newItem.id
+    if(item.name === newItem.name) {
+      return true
+    }
+    else {
+      return false
+    }
   })
-
-  if(existingItem){
-  } else {
-    itemsInCart.push(itemName[element])
-    showCartItems(itemName, element)
-  }  
-  // console.log(newItem)
-}
-function showCartItems(items, element){
   
-  const pName = createCartPName (items, element) 
- 
-  const liItem = document.createElement('li')
-  const image = createCartImage(items, element)
-  const buttonMinus = createMinusButton()
-  const span = createSpan()
-  const buttonPlus = createPlusButton()
-
-  liItem.append(image, pName, buttonMinus, span, buttonPlus)
-  cartItemList.append(liItem)
+  if(existingItem){
+    newItem.number++
+    showCartItems(itemsInCart)
+  } else {
+    newItem.number++
+    itemsInCart.push(newItem)
+    showCartItems(itemsInCart)
+  }  
 }
 
-function createCartImage(items, element) {
+function showCartItems(items){
+
+  cartItemList.innerHTML = ''
+  for(index in items){
+    const pName = createCartPName (items[index]) 
+    const liItem = document.createElement('li')
+    const image = createCartImage(items[index])
+    const buttonMinus = createMinusButton()
+    const span = createSpan(items[index])
+    const buttonPlus = createPlusButton()
+    liItem.append(image, pName, buttonMinus, span, buttonPlus)
+    cartItemList.append(liItem)
+  }
+  console.log(itemsInCart)
+}
+
+function createCartImage(items) {
   const image = document.createElement('img')
   image.classList.add('cart--item-icon')
-  image.setAttribute('src',`./assets/icons/${items[element].id}.svg`)
-  image.setAttribute('alt',`${items[element].name}`)
+  image.setAttribute('src',`./assets/icons/${items.id}.svg`)
+  image.setAttribute('alt',`${items.name}`)
   return image
 }
 
-function createCartPName (items, element) {
+function createCartPName (items) {
   const pName = document.createElement('p')
-  pName.innerText = items[element].name
+  pName.innerText = items.name
   return pName
 }
 
-function createSpan() {
+function createSpan(item) {
+  
   const span = document.createElement('span')
-  span.innerText = 1
+  span.innerText = item.number
   span.classList.add('quantity-text')
   span.classList.add('center')
   return span
+
 }
 
 function createMinusButton(){
@@ -174,7 +193,4 @@ function createPlusButton(){
   return buttonPlus
 }
 
-function checkForItem(itemName,element){
-  
-}
 render()
