@@ -109,13 +109,11 @@ function createStoreButton(itemName, element){
   button.innerText = 'Add to cart'
   button.addEventListener('click', () =>
    addItem(itemName, element))
-  
   return button
 }
 
 function addItem(itemName, element) {
   let newItem = itemName[element]
-
   const existingItem = itemsInCart.find(item => {
     if(item.name === newItem.name) {
       return true
@@ -136,19 +134,21 @@ function addItem(itemName, element) {
 }
 
 function showCartItems(items){
-
   cartItemList.innerHTML = ''
-  for(index in items){
-    const pName = createCartPName (items[index]) 
-    const liItem = document.createElement('li')
-    const image = createCartImage(items[index])
-    const buttonMinus = createMinusButton()
-    const span = createSpan(items[index])
-    const buttonPlus = createPlusButton()
-    liItem.append(image, pName, buttonMinus, span, buttonPlus)
-    cartItemList.append(liItem)
+  for(element in items){
+    if(items[element].number === 0 ){
+      items.splice(element,1)
+    } else {
+      const pName = createCartPName (items[element]) 
+      const liItem = document.createElement('li')
+      const image = createCartImage(items[element])
+      const buttonMinus = createMinusButton(items,element)
+      const span = createSpan(items[element])
+      const buttonPlus = createPlusButton(items , element)
+      liItem.append(image, pName, buttonMinus, span, buttonPlus)
+      cartItemList.append(liItem)
+    } 
   }
-  console.log(itemsInCart)
 }
 
 function createCartImage(items) {
@@ -166,30 +166,38 @@ function createCartPName (items) {
 }
 
 function createSpan(item) {
-  
   const span = document.createElement('span')
   span.innerText = item.number
   span.classList.add('quantity-text')
   span.classList.add('center')
   return span
-
 }
 
-function createMinusButton(){
+function createMinusButton(item,element){
   const buttonMinus = document.createElement('button')
   buttonMinus.classList.add('quantity-btn')
   buttonMinus.classList.add('remove-btn')
   buttonMinus.classList.add('center')
   buttonMinus.innerText = '-'
+  buttonMinus.addEventListener('click', () =>{
+    item[element].number--
+    showCartItems(itemsInCart)
+  })
   return buttonMinus
+  
 }
 
-function createPlusButton(){
+function createPlusButton(item,element){
   const buttonPlus = document.createElement('button')
   buttonPlus.classList.add('quantity-btn')
   buttonPlus.classList.add('add-btn')
   buttonPlus.classList.add('center')
   buttonPlus.innerText = '+'
+  buttonPlus.addEventListener('click', () => {
+    
+    item[element].number++
+    showCartItems(itemsInCart)
+  })
   return buttonPlus
 }
 
