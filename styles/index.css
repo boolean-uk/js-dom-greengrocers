@@ -1,7 +1,7 @@
 /* Typography */
 
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif;
 }
 
 h1,
@@ -27,12 +27,30 @@ button {
   padding: 1rem;
 
   overflow-y: scroll;
-
+  display: grid;
   background-color: #e7f4ea;
 }
 
 #store h1 {
   text-align: center;
+}
+
+select,
+label {
+  place-self: center;
+}
+
+select {
+  margin-bottom: 10px;
+}
+
+.sortHeader {
+  place-self: center;
+}
+
+.button-container {
+  place-self: center;
+  margin-bottom: 10px;
 }
 
 .store--item-list {
@@ -114,6 +132,10 @@ button {
   font-size: 1.25rem;
 }
 
+#in-cart-product-name::first-letter {
+  text-transform: uppercase;
+}
+
 .cart--item-list li:last-child {
   border-bottom: none;
 }
@@ -174,6 +196,35 @@ button {
 
 .total-number {
   font-weight: bold;
+}
+
+#add-new-section {
+  display: grid;
+  margin-bottom: 25px;
+}
+
+#add-new-button {
+  place-self: center;
+  width: auto;
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
+
+#add-new-section * {
+  place-self: center;
+  margin-bottom: 5px;
+  width: 300px;
+}
+
+#add-product-form {
+  display: grid;
+  margin: 10px;
+  padding: 10px;
+  width: 350px;
+}
+
+#form-validation-message {
+  text-align: center;
 }
 
 @media only screen and (max-width: 450px) {
