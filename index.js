@@ -268,11 +268,21 @@ function createStoreSorting() {
   selectSorting.append(defaultSorting)
   selectSorting.append(sortAlphabetically)
 
-  // selectFilter.addEventListener('change', () => filterStoreItems(selectFilter.value))
+  selectSorting.addEventListener('change', () => sortStoreItems(selectSorting.value))
 
   return selectSorting
+}
+
+function sortStoreItems(value) {
+  if (value === 'alphabetically') {
+    state.items.sort(function(a, b) {
+      return a.name.localeCompare(b.name)
+    })
+    addItemToStore(state.items)
+  }
 }
 
 makeSorting()
 makeFilter()
 addItemToStore(state.items)
+
