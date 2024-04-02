@@ -3,54 +3,65 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: 'VEG'
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: 'VEG'
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: 'FRUIT'
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: 'FRUIT'
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: 'VEG'
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: 'FRUIT'
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: 'VEG'
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: 'FRUIT'
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: 'FRUIT'
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: 'VEG'
     }
   ],
+  filter: "ALL",
   cart: []
 };
 
@@ -59,7 +70,8 @@ function renderStoreItems() {
   const itemList = document.querySelector(".store--item-list");
   itemList.innerHTML = ""; 
 
-  state.items.forEach(item => {
+  const filterStore = state.items.filter(filterCartItems)
+ filterStore.forEach(item => {
     const itemHTML = `
       <li class="store-item">
         <div class="store--item-icon">
@@ -75,11 +87,26 @@ function renderStoreItems() {
   });
 }
 
+function filterCartItems(item) {
+  if (state.filter === 'ALL') {
+    return true
+  }
+  if (state.filter === 'VEG' && item.type === 'VEG') {
+    return true
+  }
+  if (state.filter === 'FRUIT' && item.type === 'FRUIT') {
+    return true
+  }
+  
+  console.log('item.text', item.type)
+  return false
+}
+
 function renderCartItems() {
   const cartItemList = document.querySelector(".cart--item-list");
   cartItemList.innerHTML = "";
-
-  state.cart.forEach(item => {
+ 
+state.cart.forEach(item => {
     const cartItemHTML = `
       <li class="cart-item">
         <img class="cart--item-icon" src="assets/icons/${item.id}.svg" alt="${item.name}" />
@@ -94,6 +121,12 @@ function renderCartItems() {
 
     cartItemList.innerHTML += cartItemHTML;
   });
+}
+
+function setFilter(filterType) {
+  console.log(filterType)
+  state.filter = filterType;
+  renderStoreItems()
 }
 
 function addToCart(itemData) {
