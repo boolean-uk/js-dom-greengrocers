@@ -1,7 +1,7 @@
 /* Typography */
 
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif;
 }
 
 h1,
@@ -9,15 +9,128 @@ h2 {
   margin-bottom: 1rem;
 }
 
+/* Filter and sorting list*/
+.filter {
+  margin: 0 auto;
+  margin-bottom: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
 /* Buttons */
-
-button {
+button,
+select {
   padding: 0.25rem 0.5rem;
-
+  background-color: #efefef;
+  border-width: 1px;
   text-transform: uppercase;
   font-size: 0.725rem;
 
   cursor: pointer;
+}
+
+select {
+  padding: 0.4rem 0.5rem;
+}
+
+select:focus {
+  outline: none;
+}
+
+/*  Form  */
+.form {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+
+  max-width: 400px;
+  min-width: 320px;
+  padding: 20px 10px;
+
+  color: #757575;
+  background-color: #acd6d3;
+
+  border-radius: 7px;
+  filter: drop-shadow(0px 10px 10px #0009);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 700ms;
+}
+
+.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+form h2 {
+  font-size: 20px;
+  text-align: center;
+}
+
+input[type="submit"] {
+  color: #efefef;
+  background-color: #388e3c;
+
+  padding: 5px 0;
+  margin-top: 20px;
+
+  cursor: pointer;
+  border: none;
+  transition: opacity 300ms;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 10px;
+}
+
+.close,
+.reset {
+  all: unset;
+
+  font-size: 18px;
+  text-align: center;
+  background-color: #ffee38;
+
+  padding: 5px 0;
+  cursor: pointer;
+  transition: opacity 300ms;
+}
+
+.reset {
+  opacity: 0.5;
+}
+
+.active {
+  opacity: 1;
+}
+
+input[type="submit"]:hover,
+.close:hover,
+.reset:hover {
+  opacity: 0.8;
+}
+
+.close {
+  color: #efefef;
+  background-color: #e34d4d;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  border: none;
+  border-bottom: 1.5px solid #efefef;
+  background-color: transparent;
+}
+
+input:focus {
+  outline: none;
+  border-color: #388e3c;
 }
 
 /* Store */
@@ -49,6 +162,12 @@ button {
 }
 
 .store--item-icon {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.store--item-icon img {
   width: 125px;
   height: 125px;
 }
