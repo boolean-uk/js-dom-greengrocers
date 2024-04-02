@@ -64,20 +64,22 @@ const state = {
   cart: []
 };
 
+// Create all global variables
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const total = document.querySelector('.total-number')
 const store = document.querySelector('#store')
 let totalCost = 0
 
+//  Create the store items
 function addItemToStore(products) {
   storeItemList.innerHTML = ''
-  console.log(products)
+
   products.forEach((item, index) => {
     
     const storeItem = document.createElement('li')
     const storeItemDiv = document.createElement('div')
-    const storeItemImage = addImage(item, index)
+    const storeItemImage = addImage(item)
     const addToCartButton = makeAddToCartButton(products, item, index)
 
     storeItemDiv.classList.add('store--item-icon')
@@ -123,6 +125,7 @@ function addItemToCart(products, item, index) {
   updateCart()
 }
 
+// Create cart items
 function updateCart() {
   cartItemList.innerHTML = ''
   
@@ -194,6 +197,7 @@ function makeAddOrRemoveCartButton() {
   return addButton
 }
 
+// Filter store items
 function makeFilter() {
   const div = document.createElement('div')
   const filterLabel = document.createElement('label')
@@ -239,9 +243,9 @@ function filterStoreItems(value) {
   } else {
     addItemToStore(state.items)
   }
-  
 }
 
+// Sort store items
 function makeSorting() {
   const div = document.createElement('div')
   const sortingLabel = document.createElement('label')
