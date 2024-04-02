@@ -69,6 +69,7 @@ const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const total = document.querySelector('.total-number')
 const store = document.querySelector('#store')
+const body = document.querySelector('body')
 let totalCost = 0
 
 //  Create the store items
@@ -286,6 +287,71 @@ function sortStoreItems(value) {
   }
 }
 
+// Create form
+function addNewItem() {
+  const newItemButton = document.createElement('button')
+
+  newItemButton.innerText = 'Add item'
+
+  store.prepend(newItemButton)
+
+  newItemButton.addEventListener('click', () => createForm())
+}
+
+function createForm() {
+  const form = document.createElement('form')
+  const addItemButton = document.createElement('button')
+  const itemIdLabel = document.createElement('label')
+  const itemNameLabel = document.createElement('label')
+  const itemPriceLabel = document.createElement('label')
+  const itemTypeLabel = document.createElement('label')
+  const itemIdInput = document.createElement('input')
+  const itemNameInput = document.createElement('input')
+  const itemPriceInput = document.createElement('input')
+  const itemTypeSelect = document.createElement('select')
+  const itemTypeVegetable =  document.createElement('option')
+  const itemTypeFruit =  document.createElement('option')
+
+  form.classList.add('form')
+  addItemButton.innerText = 'Add'
+  itemIdLabel.innerText = 'Item ID'
+  itemIdLabel.classList.add('label')
+  itemNameLabel.innerText = 'Item name'
+  itemNameLabel.classList.add('label')
+  itemPriceLabel.innerText = 'Item price'
+  itemPriceLabel.classList.add('label')
+  itemTypeLabel.innerText = 'Item type'
+  itemTypeLabel.classList.add('label')
+  itemIdInput.setAttribute('type', 'text')
+  itemIdInput.required = true
+  itemNameInput.setAttribute('type', 'text')
+  itemNameInput.required = true
+  itemPriceInput.setAttribute('type', 'number')
+  itemPriceInput.required = true
+  itemTypeSelect.classList.add('form-select')
+  itemTypeVegetable.setAttribute('value', 'vegetable')
+  itemTypeVegetable.innerText = 'Vegetable'
+  itemTypeFruit.setAttribute('value', 'fruit')
+  itemTypeFruit.innerText = 'Fruit'
+
+  form.append(itemIdLabel)
+  form.append(itemIdInput)
+  form.append(itemNameLabel)
+  form.append(itemNameInput)
+  form.append(itemPriceLabel)
+  form.append(itemPriceInput)
+  form.append(itemTypeLabel)
+  form.append(itemTypeSelect)
+  itemTypeSelect.append(itemTypeVegetable)
+  itemTypeSelect.append(itemTypeFruit)
+  form.append(addItemButton)
+
+  body.append(form)
+}
+
+
+// Call functions
+addNewItem()
 makeSorting()
 makeFilter()
 addItemToStore(state.items)
