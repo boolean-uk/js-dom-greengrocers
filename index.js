@@ -103,10 +103,25 @@ function createItemImage(groceryItem) {
   return itemImage
 }
 
-
+// function checkItemIsAlreadyInCart(groceryItem) {
+//   const groceryItemId = groceryItem.id
+//   const checkItemsInCart = cart.find((element) => 
+//     element.id === groceryItemId
+//   ) 
+//   if (checkItemsInCart === undefined) {
+//     cart.push(groceryItem)
+//     createCartItems(groceryItem)
+//   } else {
+//     cart.push(groceryItem)
+//     countItems(groceryItem)
+//     createNumberInCart(groceryItem, listItem)
+//   }
+// }
 
 
 function createCartItems(groceryItem) {
+  cart.push(groceryItem)
+
   const listItem = document.createElement('li')
   
   createItemImage(groceryItem)
@@ -127,23 +142,22 @@ function createCartItems(groceryItem) {
   listItem.append(removeBtn)
 
   
-  
-  
   const quantityInCart = document.createElement('span')
   quantityInCart.classList = 'quantity-text center'
 
   const groceryTotal = cartTotal()
   totalNumber.innerText = `£${groceryTotal}`
 
-
-  cart.push(groceryItem)
   const numOfItemsInCart = countItems(groceryItem)
 
   quantityInCart.innerText = numOfItemsInCart
   listItem.append(quantityInCart)
 
 
-  removeBtn.addEventListener('click', () => {subtractItemFromCart(numOfItemsInCart)})
+  removeBtn.addEventListener('click', () => {subtractItemFromCart(numOfItemsInCart, groceryItem, listItem)})
+  removeBtn.addEventListener('click', () => {
+    cartTotal()
+  })
   
 
   const addBtn = document.createElement('button')
@@ -152,48 +166,52 @@ function createCartItems(groceryItem) {
   listItem.append(addBtn)
 
   addBtn.addEventListener('click', () => {
-  cartTotal()})
+  countItems(groceryItem)})
 
   listItemsInCart.append(listItem)
   cartContainer.append(listItemsInCart)
 }
 
 
+
 function countItems(groceryItem) {
   
   let totalOfEachItem = 0
   const groceryItemId = groceryItem.id
-
-  const checkItemsInCart = cart.map((element) => {
-    if (element.id === groceryItemId) {
-      totalOfEachItem += 1
-    }
+  const checkItemsInCart = cart.forEach((element) => {
+    if (element.id === groceryItemId && totalOfEachItem++)
     return totalOfEachItem
   })
+  console.log(cart, totalOfEachItem)
   return totalOfEachItem
 }
 
 
 function cartTotal() {
-  let groceryCartTotal = 0.35
-  const checkItemPrices = cart.map((element) => {
+  let groceryCartTotal = 0.00
+  const checkItemPrices = cart.forEach((element) => {
+    element.price === 0.35
     groceryCartTotal += element.price
   })
   return groceryCartTotal.toFixed(2)
 }
 
 
-function subtractItemFromCart(numOfItemsInCart) {
+function subtractItemFromCart(numOfItemsInCart, groceryItem, listItem) {
   let itemInCart = numOfItemsInCart
   
-    if (numOfItemsInCart > 1) {
+    if (numOfItemsInCart >= 2) {
       itemInCart --
+      cart.splice(groceryItem)
+      console.log(cart)
     } else {
-      removeItemFromCart()
+      removeItemFromCart(listItem, groceryItem)
     }
+    cartTotal()
 }
 
-function removeItemFromCart() {
-  const removeListItem = element.remove('li')
-  return removeListItem
+function removeItemFromCart(listItem, groceryItem) {
+  const removeListItem = listItem.remove('li')
+  cart.splice(groceryItem)
+  return cartTotal()
 }
