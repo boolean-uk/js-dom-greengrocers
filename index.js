@@ -87,7 +87,7 @@ function creteItemsInHeader() {
   addToCartButton.innerText = 'Add to cart'
   listItem.append(addToCartButton)
 
-  addToCartButton.addEventListener('click', () =>{createCartItems(groceryItem)})
+  addToCartButton.addEventListener('click', () =>{addItemsToCart(groceryItem)})
 
   }  
 }
@@ -103,29 +103,8 @@ function createItemImage(groceryItem) {
   return itemImage
 }
 
-function checkItemIsAlreadyInCart(groceryItem) {
-  const groceryItemId = groceryItem.id
-  const checkItemsInCart = cart.find((element) => 
-    element.id === groceryItemId
-  ) 
-  if (checkItemsInCart === undefined) {
-    cart.push(groceryItem)
-    createCartItems(groceryItem)
-  } else {
-    cart.push(groceryItem)
-    countItems(groceryItem)
-  }
-}
 
-// Add item 
-// check if itme is already there 
-// if item is there
-//   get item count and update the list 
-
-
-function createCartItems(groceryItem) {
-  // Is itme in thd cart
-  
+function addItemsToCart(groceryItem) {
   cart.push(groceryItem)
   const groceryItemId = groceryItem.id
   const checkItemsInCart = cart.find((element) => {
@@ -134,7 +113,13 @@ function createCartItems(groceryItem) {
     if (checkItemsInCart) {
       cart.push(groceryItem)
       countItems(groceryItem)
-    } else {
+}
+else {createCartItems(groceryItem)}
+}
+
+
+function createCartItems(groceryItem) {
+
 
     const listItem = document.createElement('li')
     
@@ -182,7 +167,7 @@ function createCartItems(groceryItem) {
     listItemsInCart.innerHTML = ''
     listItemsInCart.append(listItem)
     cartContainer.append(listItemsInCart)
-    }
+  
   }
 
 
@@ -211,7 +196,7 @@ function cartTotal() {
 
 
 function subtractItemFromCart(numOfItemsInCart, groceryItem, listItem) {
-  cart.splice(groceryItem)
+    cart.splice(1, 1)
 
     if (numOfItemsInCart >= 2)
       createCartItems(groceryItem)
