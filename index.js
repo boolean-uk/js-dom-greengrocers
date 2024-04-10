@@ -130,9 +130,12 @@ function removeFromCart(itemId) {
 
 function updateCart() {
   // Calculate the total cost of the cart
-  const total = state.cart.reduce((total, cartItem) => {
-    return total + cartItem.item.price * cartItem.quantity
-  }, 0)
+  let total = 0
+  for (let i = 0; i < state.cart.length; i++) {
+    const itemPriceAndQ = state.cart[i]
+    total = total + itemPriceAndQ.price * itemPriceAndQ.quantity
+    console.log(b)
+  }
 
   // Update the total number display
   const totalNumber = document.querySelector(".total-number")
@@ -168,7 +171,6 @@ function updateCart() {
     removeButton.addEventListener("click", (event) => {
       removeFromCart(item.item.id)
     })
-    
 
     li.appendChild(icon)
     li.appendChild(name)
