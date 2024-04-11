@@ -4,49 +4,41 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
-      type: "vegetables"
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
-      type: "vegetables"
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
-      type: "fruits"
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
-      type: "fruits"
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
-      type: "fruits"
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
-      type: "fruits"
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
-      type: "vegetables"
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
-      type: "fruits"
     },
     {
       id: "009-blueberry",
@@ -58,7 +50,6 @@ const state = {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
-      type: "vegetables"
     }
   ],
   cart: []
@@ -132,13 +123,13 @@ function updateCart() {
   // Calculate the total cost of the cart
   let total = 0
   for (let i = 0; i < state.cart.length; i++) {
-    const itemPriceAndQ = state.cart[i]
-    total = total + itemPriceAndQ.price * itemPriceAndQ.quantity
-    console.log(b)
+    total += state.cart[i].item.price * state.cart[i].quantity
   }
+
 
   // Update the total number display
   const totalNumber = document.querySelector(".total-number")
+  // totalNumber.innerHTML = ""
   totalNumber.textContent = `£${total.toFixed(2)}`
 
   // Update the cart display
