@@ -73,7 +73,9 @@ function myCart() { //I created myCart function
             } else { //else
                 cart.splice(index, 1) // reduce it by 1 
                 listCart.remove() //remove the li
+               
             }
+            updateCartTotal()
         })
 
         addCartButton.addEventListener('click', () => { //another eventListener
@@ -86,16 +88,29 @@ function myCart() { //I created myCart function
     });
 }
 
+    
+function updateCartTotal() {
+    const totalPriceElement = document.querySelector('.total-number')
+    let totalPrice = 0
+
+    cart.forEach(cartItem => {
+        totalPrice += cartItem.item.price * cartItem.count
+    })
+
+    totalPriceElement.textContent = `£${totalPrice.toFixed(2)}`
+}
+
  function addToCart(itemToAdd) { //I created another function addToCartand added itemToAdd as argument
         const existingCartItem = cart.find(cartItem => cartItem.item.id === itemToAdd.id) //Inside cart I found cartItem, and set cartItem.item.id to itemToAa.id, so as to now have same value
         if (existingCartItem) { //Now, If statement 
             
             existingCartItem.count++ //says, if item already exists in cart, increase count
         } else { //else
-            
-            cart.push({item: itemToAdd, count: 1}) //// If item doesn't exist in cart, add it with count 1
+            const newItem = {...itemToAdd, price: 3}
+            cart.push({item: newItem, count: 1}) //// If item doesn't exist in cart, add it with count 1
         }
         console.log(cart)
+        updateCartTotal()
         myCart() //called cart again to make it work
     }
 
