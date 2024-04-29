@@ -35,7 +35,7 @@ function myCart() { //I created myCart function
 
     cartList.innerHTML = '' //set cartList empty
 
-    cart.forEach((cartItem, index) => { //I did forEach loop, and passed cartItem as an argument
+    cart.forEach((cartItem, index) => { //I did forEach loop, and passed cartItem andindex a parameter
         const listCart = document.createElement('li') //created li element
         const cartImage = document.createElement('img') //did same for image
         cartImage.classList.add('cart--item-icon') // added class Cart Item Icon
@@ -84,8 +84,11 @@ function myCart() { //I created myCart function
             }
             cartItem.count++ // addCartButton should add 1
             cartSpan.textContent = cartItem.count // same logic to  cartSpan.textContent
-        });
-    });
+
+            updateCartTotal()
+        })
+        
+    })
 }
 
     
@@ -100,7 +103,7 @@ function updateCartTotal() {
     totalPriceElement.textContent = `£${totalPrice.toFixed(2)}`
 }
 
- function addToCart(itemToAdd) { //I created another function addToCartand added itemToAdd as argument
+ function addToCart(itemToAdd) { //I created another function addToCartand added itemToAdd as a parameter 
         const existingCartItem = cart.find(cartItem => cartItem.item.id === itemToAdd.id) //Inside cart I found cartItem, and set cartItem.item.id to itemToAa.id, so as to now have same value
         if (existingCartItem) { //Now, If statement 
             
