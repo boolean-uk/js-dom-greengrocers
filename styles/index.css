@@ -196,3 +196,21 @@ button {
   top: 10px;
   right: 10px;
 }
+
+#new-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;}
+
+#new-item {
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  background-color: white;
+  width: 30vw;
+  height: 35vh;
+  border: 1px solid black;
+  flex-direction: column;
+  justify-content: space-around;
+  display: none;
+}

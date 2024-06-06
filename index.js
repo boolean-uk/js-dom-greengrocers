@@ -92,7 +92,11 @@ function renderInv() {
     let invIconDiv = document.createElement('div')
     invIconDiv.classList.add('store--item-icon')
     let invIconImg = document.createElement('img')
+    try {
     invIconImg.setAttribute('src', `assets/icons/${itemID}.svg`)
+    } catch (error) {
+      invIconImg.setAttribute('alt', 'Image not found')
+    }
     invIconDiv.appendChild(invIconImg)
     invItem.appendChild(invIconDiv)
 
@@ -191,7 +195,7 @@ const alphButton = document.createElement('button')
 alphButton.textContent = 'Sort / Unsort Alphabetical'
 extButtonsSection.appendChild(alphButton)
 const filterFruit = document.createElement('button')
-filterFruit.textContent = 'Hide / Show Fruit '
+filterFruit.textContent = 'Hide / Show Fruit'
 extButtonsSection.appendChild(filterFruit)
 const filterVeg = document.createElement('button')
 filterVeg.textContent = 'Hide / Show Veg'
@@ -231,3 +235,28 @@ filterVeg.addEventListener('click', () => {
     renderInv()
   }
 })
+
+const newButton = document.querySelector('#new-button')
+const newForm = document.querySelector('#new-item')
+const closeButton = document.querySelector('#close-form')
+
+newForm.addEventListener('submit', function (event) {
+  event.preventDefault()
+  newForm.style.display = 'none'
+  let name = document.getElementById('name').value
+  let price = document.getElementById('price').value
+  let type = document.getElementById('type').value
+
+  let submittedItem = {
+    id: `00${state.items.length + 1}-${name}`,
+    name: name,
+    price: price,
+    type: type,
+    hidden: false
+  }
+  state.items.push(submittedItem)
+  renderInv()
+})
+
+newButton.addEventListener('click', () => {newForm.style.display = 'flex'})
+closeButton.addEventListener('click', () => {newForm.style.display = 'none'})
