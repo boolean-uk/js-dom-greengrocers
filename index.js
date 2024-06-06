@@ -3,54 +3,76 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35
+      price: 0.35,
+      type: 'veg',
+      hidden: false,
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35
+      price: 0.35,
+      type: 'veg',
+      hidden: false,
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit',
+      hidden: false,
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit',
+      hidden: false,
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit',
+      hidden: false,
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit',
+      hidden: false,
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35
+      price: 0.35,
+      type: 'veg',
+      hidden: false,
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit',
+      hidden: false,
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35
+      price: 0.35,
+      type: 'fruit',
+      hidden: false,
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35
+      price: 0.35,
+      type: 'veg',
+      hidden: false,
     }
   ],
+  alphabetical: false,
+  itemsCopied: [],
   cart: []
 };
 
@@ -58,9 +80,11 @@ renderInv()
 
 function renderInv() {
   let invList = document.querySelector('.store--item-list')
+  invList.innerHTML = ""
 
   for (let i = 0; i < state.items.length; i++) {
 
+    if (state.items[i].hidden === false) {
     let item = state.items[i]
     let itemID = item.id
 
@@ -89,6 +113,7 @@ function renderInv() {
       renderCart() 
           })
     invList.appendChild(invItem)
+        }
   }
 }
 
@@ -156,3 +181,53 @@ function decrementCart(cartObject) {
   }
   renderCart()
 }
+
+// extensions here
+
+const extButtonsSection = document.createElement('div')
+extButtonsSection.classList.add('extension-buttons')
+
+const alphButton = document.createElement('button')
+alphButton.textContent = 'Sort / Unsort Alphabetical'
+extButtonsSection.appendChild(alphButton)
+const filterFruit = document.createElement('button')
+filterFruit.textContent = 'Hide / Show Fruit '
+extButtonsSection.appendChild(filterFruit)
+const filterVeg = document.createElement('button')
+filterVeg.textContent = 'Hide / Show Veg'
+extButtonsSection.appendChild(filterVeg)
+
+document.querySelector('#store').appendChild(extButtonsSection)
+
+alphButton.addEventListener('click', () => {
+  if (state.alphabetical === false) {
+  state.itemsCopied = Array.from(state.items)
+  state.items = state.items.sort((a, b) => a.name.localeCompare(b.name))
+  renderInv()
+  state.alphabetical = true
+} else {
+  state.items = Array.from(state.itemsCopied)
+  state.alphabetical = false
+  renderInv()
+}
+})
+
+filterFruit.addEventListener('click', () => {
+  for (let i = 0; i < state.items.length; i++) {
+    state.items[i].hidden === false
+    if (state.items[i].type === 'fruit') {
+      (state.items[i].hidden === false) ? state.items[i].hidden = true : state.items[i].hidden = false
+    }
+    renderInv()
+  }
+})
+
+filterVeg.addEventListener('click', () => {
+  for (let i = 0; i < state.items.length; i++) {
+    state.items[i].hidden === false
+    if (state.items[i].type === 'veg') {
+      (state.items[i].hidden === false) ? state.items[i].hidden = true : state.items[i].hidden = false
+    }
+    renderInv()
+  }
+})
