@@ -53,3 +53,106 @@ const state = {
   ],
   cart: []
 };
+
+renderInv()
+
+function renderInv() {
+  let invList = document.querySelector('.store--item-list')
+
+  for (let i = 0; i < state.items.length; i++) {
+
+    let item = state.items[i]
+    let itemID = item.id
+
+    let invItem = document.createElement('li')
+    let invIconDiv = document.createElement('div')
+    invIconDiv.classList.add('store--item-icon')
+    let invIconImg = document.createElement('img')
+    invIconImg.setAttribute('src', `assets/icons/${itemID}.svg`)
+    invIconDiv.appendChild(invIconImg)
+    invItem.appendChild(invIconDiv)
+
+    let invItemButton = document.createElement('button')
+    invItemButton.textContent = 'Add to cart'
+    invItem.appendChild(invItemButton)
+
+    invItemButton.addEventListener('click', () => {
+      const foundIndex = state.cart.findIndex(obj => obj['id'] === itemID)
+      if (foundIndex < 0) {
+        let newCartItem = item
+        newCartItem.quantity = 1
+        state.cart.push(newCartItem)
+      } else {
+        state.cart[foundIndex].quantity += 1
+      }
+      console.log(state.cart)
+      renderCart() 
+          })
+    invList.appendChild(invItem)
+  }
+}
+
+function renderCart() {
+  const cartState = state.cart
+  const cartSection = document.querySelector('.cart--item-list')
+  cartSection.innerHTML = ""
+    
+  for (let i = 0; i < cartState.length; i++) {
+    const cartItem = document.createElement('li')
+
+    const cartItemImg = document.createElement('img')
+    cartItemImg.classList.add('cart--item-icon')
+    cartItemImg.setAttribute('src', `assets/icons/${cartState[i].id}.svg`)
+    cartItemImg.setAttribute('alt', cartState[i].name)
+    cartItem.appendChild(cartItemImg)
+
+    const cartItemText = document.createElement('p')
+    cartItemText.textContent = cartState[i].name
+    cartItem.appendChild(cartItemText)
+
+    const cartItemMinus = document.createElement('button')
+    cartItemMinus.classList.add('quantity-btn', 'remove-btn', 'center')
+    cartItem.appendChild(cartItemMinus)
+    cartItemMinus.addEventListener('click', () => {decrementCart(state.cart[i])})
+
+    const cartItemQuant = document.createElement('span')
+    cartItemQuant.classList.add('quantity-text', 'center')
+    cartItemQuant.textContent = cartState[i].quantity
+    cartItem.appendChild(cartItemQuant)
+
+    const cartItemPlus = document.createElement('button')
+    cartItemPlus.classList.add('quantity-btn', 'add-btn', 'center')
+    cartItem.appendChild(cartItemPlus)
+    cartItemPlus.addEventListener('click', () => {incrementCart(state.cart[i])}
+  )
+
+    cartSection.appendChild(cartItem)
+  }
+  calculateTotal()
+}
+
+function calculateTotal() {
+  let totalCount = 0
+      for (let i = 0; i < state.cart.length; i++) {
+        let total = state.cart[i].price * state.cart[i].quantity
+        let fixedTotal =  Math.round(total * 100) / 100
+        totalCount += fixedTotal
+      }
+      totalCount = totalCount.toFixed(2)
+      document.querySelector('.total-number').textContent = `£${totalCount}`
+}
+
+function incrementCart(cartObject) {
+  cartObject.quantity += 1
+  renderCart()
+}
+
+function decrementCart(cartObject) {
+  cartObject.quantity -= 1
+  for (let i = state.cart.length - 1; i >= 0; i--) {
+    if (state.cart[i].quantity === 0) {
+      state.cart.splice(i, 1)
+    }
+  }
+  renderCart()
+}
