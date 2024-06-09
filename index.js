@@ -66,6 +66,7 @@ const state = {
 
 const STORE_ITEMS = document.querySelector(".store--item-list");
 const CART_ITEMS = document.querySelector(".cart--item-list");
+let totalPrice = 0;
 
 function createItemImg(item) {
   const itemImg = document.createElement("img");
@@ -103,9 +104,10 @@ function createCartElement(item) {
   plusButton.textContent = "+";
   const quantityTextSpan = document.createElement("span");
   quantityTextSpan.classList.add("quantity-text", "center");
-  quantityTextSpan.textContent = item.cartQuantity;
+  quantityTextSpan.id = `quantity-${item.id}`;
   li.append(cartImage, cartP, minusButton, quantityTextSpan, plusButton);
   CART_ITEMS.appendChild(li);
+  return quantityTextSpan;
 }
 
 for (let i = 0; i < state.items.length; i++) {
@@ -119,8 +121,10 @@ for (let i = 0; i < state.items.length; i++) {
     if (item.cartQuantity < 2) {
       createCartElement(item);
     }
-    const quantityTextSpan = document.querySelector(".quantity-text");
-    console.log(quantityTextSpan);
-    quantityTextSpan.textContent = item.cartQuantity;
+    const itemQuantity = document.querySelector(`#quantity-${item.id}`);
+    itemQuantity.textContent = item.cartQuantity;
+    totalPrice = totalPrice + item.price;
+    const totalNumber = document.querySelector(".total-number");
+    totalNumber.textContent = "£" + totalPrice.toFixed(2);
   });
 }
