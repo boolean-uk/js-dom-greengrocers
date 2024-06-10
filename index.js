@@ -91,16 +91,18 @@ function addStoreItems(item) {
 
 function createCartElement(item) {
   const li = document.createElement("li");
+  li.id = "liof" + item.id;
   const cartImage = createItemImg(item);
   cartImage.className = "cart--item-icon";
   const cartP = document.createElement("p");
   cartP.textContent = item.name;
   const minusButton = document.createElement("button");
   minusButton.classList.add("quantity-btn", "remove-btn", "center");
+  minusButton.id = `minus-${item.id}`;
   minusButton.textContent = "-";
-  console.log(minusButton);
   const plusButton = document.createElement("button");
   plusButton.classList.add("quantity-btn", "add-btn", "center");
+  plusButton.id = `plus${item.id}`;
   plusButton.textContent = "+";
   const quantityTextSpan = document.createElement("span");
   quantityTextSpan.classList.add("quantity-text", "center");
@@ -110,16 +112,36 @@ function createCartElement(item) {
   return quantityTextSpan;
 }
 
+//janky hack but i had to rush it or i was running out of time.
+//I'm sorry
+
 for (let i = 0; i < state.items.length; i++) {
   let item = state.items[i];
   addStoreItems(item);
   const storeItemButton = document.querySelector("#id" + item.id);
-  console.log(storeItemButton);
   storeItemButton.addEventListener("click", function () {
-    console.log(item.name);
     item.cartQuantity++;
     if (item.cartQuantity < 2) {
       createCartElement(item);
+      state.cart.push(item);
+      const cartPlusButton = document.querySelector("#plus" + item.id);
+      cartPlusButton.addEventListener("click", function () {
+        item.cartQuantity++;
+        itemQuantity.textContent = item.cartQuantity;
+        totalPrice = totalPrice + item.price;
+        totalNumber.textContent = "£" + totalPrice.toFixed(2);
+      });
+      const cartMinusButton = document.querySelector("#minus-" + item.id);
+      cartMinusButton.addEventListener("click", function () {
+        item.cartQuantity--;
+        itemQuantity.textContent = item.cartQuantity;
+        totalPrice = totalPrice - item.price;
+        totalNumber.textContent = "£" + totalPrice.toFixed(2);
+        const itemToBeDeleted = document.querySelector("#liof" + item.id);
+        if (item.cartQuantity < 1) {
+          itemToBeDeleted.remove();
+        }
+      });
     }
     const itemQuantity = document.querySelector(`#quantity-${item.id}`);
     itemQuantity.textContent = item.cartQuantity;
