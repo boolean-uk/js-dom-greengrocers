@@ -1,5 +1,3 @@
-// JavaScript Setup:
-// Define the initial state in 'index.js'.
 const state = {
   items: [
     {
@@ -61,31 +59,18 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCart();
 });
 
-// Display store items
-function renderStoreItems() {
-  const itemsContainer = document.querySelector(".store--item-list");
-  itemsContainer.innerHTML = "";
-
-  state.items.forEach((item) => {
-    const itemLi = document.createElement("li");
-    itemLi.innerHTML = `
-      <div class="store--item-icon">
-        <img src="assets/icons/${item.id}.svg" alt="${item.name}">
-      </div>
-      <button data-id="${item.id}">Add to cart</button>
-    `;
-
-    itemsContainer.appendChild(itemLi);
-  });
-
-  // Add event listeners to buttons
-  const buttons = document.querySelectorAll(".store--item-list button");
-  buttons.forEach((button) => {
-    button.addEventListener("click", addToCart);
-  });
+function createElementWithAttributes(tag, attributes) {
+  const element = document.createElement(tag);
+  for (const key in attributes) {
+    if (key === "textContent") {
+      element.textContent = attributes[key];
+    } else {
+      element.setAttribute(key, attributes[key]);
+    }
+  }
+  return element;
 }
 
-// Add to Cart button to add items to the cart.
 function addToCart(event) {
   const itemId = event.target.getAttribute("data-id");
   const item = state.items.find((item) => item.id === itemId);
@@ -101,5 +86,31 @@ function addToCart(event) {
   renderCart();
   updateCartTotal();
 }
-// Create a function to display cart items in the html body
-function renderCart() {}
+
+function renderStoreItems() {
+  const itemsContainer = document.querySelector(".store--item-list");
+  itemsContainer.innerHTML = "";
+
+  state.items.forEach((item) => {
+    const itemLi = document.createElement("li");
+
+    const div = createElementWithAttributes("div", {
+      class: "store--item-icon",
+    });
+    const img = createElementWithAttributes("img", {
+      src: `assets/icons/${item.id}.svg`,
+      alt: item.name,
+    });
+    div.appendChild(img);
+
+    const button = createElementWithAttributes("button", {
+      "data-id": item.id,
+      textContent: "Add to cart",
+    });
+    button.addEventListener("click", addToCart);
+
+    itemLi.appendChild(div);
+    itemLi.appendChild(button);
+    itemsContainer.appendChild(itemLi);
+  });
+}
