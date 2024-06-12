@@ -7,11 +7,27 @@
     <link rel="stylesheet" href="styles/reset.css" />
     <link rel="stylesheet" href="styles/index.css" />
     <title>Greengrocers</title>
-    <script defer src="index.js"></script>
+    <script defer src="./index.js"></script>
   </head>
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
+      <div class="sorting">
+        <div class="checkbox-bg box">
+          <p>Sort by:</p>
+          <button class="priceButton">Price</button>
+          <button class="alphaButton">Alphabetically</button>
+        </div>
+
+        <div class="checkbox-bg">
+          <p>Show Only:</p>
+          <div>
+            <button class="vegButton">Veg</button>
+            <button class="fruitButton">Fruit</button>
+          </div>
+        </div>
+      
+      </div>
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
