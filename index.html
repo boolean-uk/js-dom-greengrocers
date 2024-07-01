@@ -15,6 +15,23 @@
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
+      <button id="new-button">New</button>
+      <form id="new-item">
+        <button id="close-form">X</button>
+        <label for="name">Item name:</label>
+        <input type="text" id="name" name="name">
+        <br>
+        <label for="price">Item price:</label>
+        <input type="number" id="price" name="price">
+        <br>
+        <label for="type">Type:</label>
+        <select id="type" name="type">
+          <option value="fruit">Fruit</option>
+          <option value="veg">Vegetable</option>
+        </select>
+        <br>
+        <input type="submit" value="Submit">
+      </form>
     </header>
 
     <main id="cart">
